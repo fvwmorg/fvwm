@@ -20,6 +20,8 @@ Changes in stable release 2.4.18 (19-Mar-2004)
     fvwm_make_directory_menu.sh
     fvwm_make_browse_menu.sh
 
+* Fixed installation of FvwmGtk.1.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.17 (10-Oct-2003)
