@@ -33,6 +33,9 @@ Changes in stable release 2.4.9 (not released yet)
 
 * Fixed potentially harmful change in module interface.
 
+* Fixed displaying menu items with icons when using the MenuStyle
+  SubmmenusLeft.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)

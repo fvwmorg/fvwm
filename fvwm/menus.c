@@ -4561,8 +4561,8 @@ static void size_menu_horizontally(MenuSizingParameters *msp)
 		left_objects++;
 	      else
 		right_objects++;
-	      icons_placed++;
 	    }
+	    icons_placed++;
 	  }
 
 	  break;
