@@ -14,6 +14,10 @@ Changes in stable release 2.4.15 (not released yet)
 * Fixed screwed calculation of icon picture size when application
   specifies it explicitly.
 
+* The option ShowOnlyIcons now works as described in the
+  FvwmIconMan man page.  It was accidentally named ShowOnlyIconic
+  before.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.14 (29-Nov-2002)

@@ -1395,11 +1395,11 @@ void read_in_resources (char *file)
 	ConsoleDebug (CONFIG, "Setting followfocus to: %d\n", i);
 	SET_MANAGER (manager, followFocus, i);
       }
-      else if (!strcasecmp (option1, "showonlyiconic")) {
+      else if (!strcasecmp (option1, "showonlyicons")) {
        p = read_next_cmd (READ_ARG);
        if (!p) {
          ConsoleMessage ("Bad line: %s\n", current_line);
-         ConsoleMessage ("Need argument to showonlyiconic\n");
+         ConsoleMessage ("Need argument to showonlyicons\n");
          continue;
        }
        if (!strcasecmp (p, "true")) {
@@ -1413,7 +1413,7 @@ void read_in_resources (char *file)
          ConsoleMessage ("What is this: %s?\n", p);
          continue;
        }
-       ConsoleDebug (CONFIG, "Setting showonlyiconic to: %d\n", i);
+       ConsoleDebug (CONFIG, "Setting showonlyicons to: %d\n", i);
        SET_MANAGER (manager, showonlyiconic, i);
       }
       else if (!strcasecmp (option1, "font")) {
