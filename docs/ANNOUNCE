@@ -22,7 +22,7 @@ Bug Fixes:
   FvwmTaskBar at random.
 
 * Fixed a memory leak in ChangeIcon, ChangeForeColor and
-  ChangeBackColor FvwmScript Instruction.
+  ChangeBackColor FvwmScript options.
 
 * Fixed a core dump in the parsing of FvwmAuto arguments.
 

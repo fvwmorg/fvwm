@@ -1,4 +1,4 @@
-Changes in stable release 2.4.15 (not released yet)
+Changes in stable release 2.4.15 (24-Jan-2003)
 
 * Fix for gmplayer launched by fvwm.  Close stdin on Exec so the
   exec'd process knows its not running interactively.
