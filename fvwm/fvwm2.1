@@ -502,13 +502,13 @@ and MailFunction is
 
 .EX
 AddToFunc MailFunction
- + "I" Next [$0] Iconify -1
- + "I" Next [$0] focus
- + "I" None [$0] Exec exec $0 $1
+ + "I" Next ($0) Iconify -1
+ + "I" Next ($0) focus
+ + "I" None ($0) Exec exec $0 $1
 .EE
 Then the last line of the function becomes
 .EX
- + "I" None [xmh] Exec exec xmh -font fixed
+ + "I" None (xmh) Exec exec xmh -font fixed
 .EE
 The expansion is performed as the function is executed, so you can use the
 same function with all sorts of different arguments.  I could use
@@ -1316,11 +1316,19 @@ invoked from \fIWindowList\fP.
 
 .IP "Focus"
 Moves the viewport or window as needed to make the selected window
-visible.  Sets the keyboard focus to the selected window.  Raises the
-window if needed to make it visible.  Does not warp the pointer into
+visible.  Sets the keyboard focus to the selected window.  Does not
+automatically raise the window.  Does not warp the pointer into
 the selected window (see WarpToWindow function).  Does not de-iconify.
 This command does not alter the order of the windowlist, it rotates the
 windowlist around so that the target window is at the start.
+
+To raise and warp a pointer together with Focus or FlipFocus, use a function:
+.EX
+AddToFunc SelectWindow
++ I Focus
++ I Raise
++ I WarpToWindow 50 8p
+.EE
 
 
 .IP "Function \fI\FunctionName\\fP"
@@ -2141,8 +2149,8 @@ AddToMenu RootMenu "Root Menu" Title
  + "Fvwm Modules"      Popup Module-Popup
  + "Fvwm Window Ops"   Popup Window-Ops
  + ""                  Nop
- + "Previous Focus"    Prev [*] Focus
- + "Next Focus"        Next [*] Focus
+ + "Previous Focus"    Prev (*) Focus
+ + "Next Focus"        Next (*) Focus
  + ""                  Nop
  + "Refresh screen"    Refresh
  + "Recapture screen"  Recapture
@@ -2888,3 +2896,5 @@ which was written by Tom LaStrange.  After Robert Nation came Charles Hines,
 followed by Brady Montz. Currently fvwm is maintained by a number of people
 on the fvwm-workers mailing list (Dan Espen, Steve Robbins, Paul Smith,
 Jason Tibbitts, Dominik Vogt, Bob Woodside and others).
+
+The official FVWM homepage is http://www.fvwm.org/.

@@ -1,4 +1,4 @@
-Welcome to FVWM version 2.2.0.  FVWM is a multiple large virtual desktop
+Welcome to FVWM version 2.2.5.  FVWM is a multiple large virtual desktop
 window manager, originally (a looooong time ago!) derived from twm.
 
 FVWM is intended to have a smaller memory footprint but a rich feature
@@ -30,6 +30,8 @@ INSTALL.fvwm files (INSTALL is the boilerplate autoconf instruction
 file; INSTALL.fvwm contains FVWM-specific details).
 
 For known bugs, check out the BUGS, FAQ and TODO files.
+
+For more information, see the official FVWM homepage http://www.fvwm.org/.
 
 Have fun!
 

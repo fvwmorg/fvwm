@@ -1,5 +1,7 @@
 Changes in official release 2.2.5 (not released yet)
 
+* Fixed the description of Focus in the man page.
+
 * Fixed a compile problem with Slackware 7.1.
 
 * Security fix related to .fvwm2rc being searched in the current directory
