@@ -28,6 +28,9 @@ Changes in stable release 2.4.9 (not released yet)
 
 * Removed some redundant code.
 
+* Fixed a slight bug when waiting until all buttons are released,
+  for example after executing a complex function.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)

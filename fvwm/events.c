@@ -3393,6 +3393,7 @@ static int flush_property_notify(Atom atom, Window w)
 void WaitForButtonsUp(Bool do_handle_expose)
 {
   unsigned int mask;
+  unsigned int bmask;
   long evmask = ButtonPressMask|ButtonReleaseMask|ButtonMotionMask|
     KeyPressMask|KeyReleaseMask;
 
@@ -3408,8 +3409,9 @@ void WaitForButtonsUp(Bool do_handle_expose)
     {
       switch (Event.type)
       {
-      case ButtonReleaseMask:
-	mask = Event.xbutton.state;
+      case ButtonRelease:
+	bmask = (Button1Mask << (Event.xbutton.button - 1));
+	mask = Event.xbutton.state & ~bmask;
 	break;
       case Expose:
 	/* note: handling Expose events will never modify the global Tmp_win */
