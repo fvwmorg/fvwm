@@ -63,6 +63,30 @@ static char *trimleft(char *s)
   return s;
 }
 
+static void CopyStringWithQuotes(char **dest, const char *src)
+{
+	while (src && src[0] == ' ')
+	{
+		src++;
+	}
+	if (src && src[0] == '"')
+	{
+		int len;
+
+		src++;
+		CopyString(dest, src);
+		len = strlen(*dest);
+		if (len > 0 && (*dest)[len - 1] == '"')
+		{
+			(*dest)[len - 1] = '\0';
+		}
+	}
+	else
+	{
+		CopyString(dest, src);
+	}
+}
+
 /**
 *** seekright()
 ***
@@ -1344,7 +1368,7 @@ static void ParseConfigLine(button_info **ubb,char *s)
   case 2:/* Font */
     if (ub->c->font_string)
       free(ub->c->font_string);
-    CopyString(&ub->c->font_string, s);
+    CopyStringWithQuotes(&ub->c->font_string, s);
     break;
   case 3:/* Padding */
     i=sscanf(s,"%d %d",&j,&k);

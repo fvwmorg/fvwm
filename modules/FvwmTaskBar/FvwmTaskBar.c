@@ -244,6 +244,30 @@ static int ErrorHandler(Display*, XErrorEvent*);
 static Bool change_colorset(int cset, Bool force);
 int IsItemIndexIconSuppressed(List *list, int i);
 
+static void CopyStringWithQuotes(char **dest, const char *src)
+{
+	while (src && src[0] == ' ')
+	{
+		src++;
+	}
+	if (src && src[0] == '"')
+	{
+		int len;
+
+		src++;
+		CopyString(dest, src);
+		len = strlen(*dest);
+		if (len > 0 && (*dest)[len - 1] == '"')
+		{
+			(*dest)[len - 1] = '\0';
+		}
+	}
+	else
+	{
+		CopyString(dest, src);
+	}
+}
+
 /******************************************************************************
   Main - Setup the XConnection,request the window list and loop forever
     Based on main() from FvwmIdent:
@@ -1053,10 +1077,10 @@ static void ParseConfigLine(char *tline)
     switch(index)
     {
     case 0: /* Font */
-      CopyString(&font_string, rest);
+      CopyStringWithQuotes(&font_string, rest);
       break;
-    case 1: /* Selfont */
-      CopyString(&selfont_string, rest);
+    case 1: /* SelFont */
+      CopyStringWithQuotes(&selfont_string, rest);
       break;
     case 2: /* Geometry */
       while (isspace((unsigned char)*rest) && *rest != '\n' && *rest != 0)

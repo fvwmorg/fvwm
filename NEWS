@@ -42,7 +42,8 @@ Changes in stable release 2.4.8 (not released yet)
 * Fixed selection in FvwmScript List widget.
 
 * fvwm-menu-headlines: updated the site data, added a configurable
-  timeout on socket reading (20 sec) to avoid fvwm hanging.
+  timeout on socket reading (20 sec) to avoid fvwm hanging, new
+  --icon-error option.
 
 * Fixed a problem with ClickToFocus + ClickToFocusRaisesOff and
   windows that are below others.
@@ -51,6 +52,11 @@ Changes in stable release 2.4.8 (not released yet)
 
 * Fixed CascadePlacement for huge windows, so that the top-left
   corner is always visible.
+
+* Fixed parsing of SendToModule with the first parameter quoted.
+
+* Fixed parsing of fonts in several module configuration options.
+  Fonts in double quotes now should be recognized.
 
 Changes in stable release 2.4.7 (11-Apr-2002)
 
