@@ -75,6 +75,22 @@ static struct charstring key_modifiers[]=
   {0,0}
 };
 
+/* Table to translate a modifier map index to a modifier that we define that
+ * generates that index.  This mapping can be chosen by each client, but the
+ * settings below try to emulate the usual terminal behaviour. */
+static unsigned int modifier_mapindex_to_mask[8] =
+{
+	ShiftMask,
+	Mod3Mask, /* Alt Gr */
+	Mod3Mask | ShiftMask,
+	/* Just guessing below here - LockMask is not used anywhere*/
+	ControlMask,
+	Mod1Mask, /* Alt/Meta on XFree86 */
+	Mod2Mask, /* Num lock on XFree86 */
+	Mod4Mask,
+	Mod5Mask, /* Scroll lock on XFree86 */
+};
+
 static int key_min;
 static int key_max;
 
@@ -349,6 +365,7 @@ int AddBinding(
   int max;
   int maxmods;
   int m;
+  int mask;
   int count = 0;
   KeySym tkeysym;
   Binding *temp;
@@ -405,24 +422,17 @@ int AddBinding(
 	    check_bound_mask = 1;
 	  }
 	  break;
-	case 2:
-	  /* key generates the key sym with caps-lock depressed */
-	  if (modifiers != AnyModifier && !(modifiers & LockMask))
+	default:
+	  /* key generates the key sym with undefined modifiers depressed -
+	   * let's make an educated guess at what modifiers the user expected
+	   * based on the XFree86 default configuration. */
+	  mask = modifier_mapindex_to_mask[m - 1];
+	  if (modifiers != AnyModifier && !(modifiers & mask) != mask)
 	  {
-	    add_modifiers = LockMask;
-	    bind_mask = 4;
+	    add_modifiers = mask;
+	    bind_mask = (1 << m);
 	    /* but don't bind it again if already bound without modifiers */
 	    check_bound_mask = 1;
-	  }
-	  break;
-	default:
-	  /* key generates the key sym with unknown modifiers depressed -
-	   * can't map that to specific modifiers - treat as no modifiers */
-	  if (modifiers != AnyModifier)
-	  {
-	    /* but don't bind it again if already bound with shift, caps-lock
-	     * or no modifiers */
-	    check_bound_mask = 0x7;
 	  }
 	  break;
 	}
