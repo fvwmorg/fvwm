@@ -129,14 +129,14 @@
 .\" ========================================================================
 .\"
 .IX Title "FVWM-MENU-XLOCK 1"
-.TH FVWM-MENU-XLOCK 1 "2002-11-30" "perl v5.8.0" "FVWM Utilities"
+.TH FVWM-MENU-XLOCK 1 "2003-03-15" "perl v5.8.0" "FVWM Utilities"
 .SH "NAME"
 fvwm\-menu\-xlock \- builds xlock menu definition for FVWM
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
 \&\fBfvwm-menu-xlock\fR
 [ \fB\-\-help\fR|\fB\-h\fR|\fB\-?\fR ]
-[ \fB\-\-version\fR|\fB\-v\fR|\fB\-V\fR ]
+[ \fB\-\-version\fR|\fB\-V\fR ]
 [ \fB\-\-name\fR|\fB\-n\fR name ]
 [ \fB\-\-title\fR|\fB\-t\fR title ]
 [ \fB\-\-item\fR format ]
@@ -202,10 +202,19 @@ menu/lock.xpm.
 .IP "\fB\-\-special\-first\fR" 4
 .IX Item "--special-first"
 instructs to include special modes (usually black, bomb and random) first.
+.PP
+Option parameters can be specified either using '=' or in the next argument.
+Short options are ok if not ambiguous: \-h, \-t; but be careful with
+short options, what is now unambiguous, can became ambiguous in the next
+versions.
+.PP
+Additional arguments (after \fB\-\-\fR) will be passed to xlock.
+.PP
+Please see the \fBxlock\fR(1) man page for the xlock options.
 .SH "USAGE"
 .IX Header "USAGE"
 Add these lines to your fvwm configuration file:
-.Sp
+.PP
 .Vb 6
 \&  PipeRead 'fvwm-menu-xlock --name MenuSSaver --title "Screensaver" \e
 \&    --icon-item mini-bball.xpm --special-first -- -nice 19 -nolock'
@@ -217,7 +226,7 @@ Add these lines to your fvwm configuration file:
 .SH "AUTHORS"
 .IX Header "AUTHORS"
 Charles K. Hines <chuck_hines@vnet.ibm.com>, initial version.
-.Sp
+.PP
 Mikhael Goikhman <migo@homemail.com>, from 24 Feb 1999.
 .SH "COPYING"
 .IX Header "COPYING"
@@ -227,5 +236,5 @@ See \s-1GNU\s0 General Public License for details.
 .IX Header "BUGS"
 Depends on the output of xlock. Will produce an empty menu if the structure
 of the output is changed.
-.Sp
+.PP
 Report bugs to fvwm\-bug@fvwm.org.

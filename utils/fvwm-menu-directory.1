@@ -129,14 +129,14 @@
 .\" ========================================================================
 .\"
 .IX Title "FVWM-MENU-DIRECTORY 1"
-.TH FVWM-MENU-DIRECTORY 1 "2002-11-30" "perl v5.8.0" "FVWM Utilities"
+.TH FVWM-MENU-DIRECTORY 1 "2003-03-15" "perl v5.8.0" "FVWM Utilities"
 .SH "NAME"
 fvwm\-menu\-directory \- builds a directory browsing menu for FVWM
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
 \&\fBfvwm-menu-directory\fR
 [ \fB\-\-help\fR|\fB\-h\fR|\fB\-?\fR ]
-[ \fB\-\-version\fR|\fB\-v\fR|\fB\-V\fR ]
+[ \fB\-\-version\fR|\fB\-V\fR ]
 [ \fB\-\-name\fR|\fB\-na\fR \s-1NAME\s0 ]
 [ \fB\-\-title\fR|\fB\-t\fR \s-1NAME\s0 ]
 [ \fB\-\-item\fR|\fB\-it\fR \s-1NAME\s0 ]
@@ -337,56 +337,61 @@ created directory menus without destroying it when closed, default is
 .IP "\fB\-\-menu\-style\fR name" 4
 .IX Item "--menu-style name"
 assign MenuStyle name to the menus
+.PP
+Option parameters can be specified either using '=' or in the next argument.
+Short options are ok if not ambiguous: \f(CW\*(C`\-a\*(C'\fR, \f(CW\*(C`\-x\*(C'\fR, \f(CW\*(C`\-icon\-f\*(C'\fR; but be
+careful with short options, what is now unambiguous, can become ambiguous
+in the next versions.
 .SH "USAGE"
 .IX Header "USAGE"
 Put this into your fvwm configuration file to invoke the script:
-.Sp
+.PP
 .Vb 2
 \&  AddToFunc FuncFvwmMenuDirectory
 \&  + I PipeRead "fvwm-menu-directory -d '$0'"
 .Ve
-.Sp
+.PP
 More complex example (the plus line is a one long line):
-.Sp
+.PP
 .Vb 2
 \&  # AddToFunc FuncFvwmMenuDirectory
 \&  # + I PipeRead "fvwm-menu-directory -d '$0' -x 'Eterm -g 80x40 -e' -a -l -o 6 --exec-app --exec-title 'tcsh -l' --exec-file 'vim -R' -t 'Go to: %d' --wm-icons"
 .Ve
-.Sp
+.PP
 And put this in the menu from which you want to pop-up the directory menus:
-.Sp
+.PP
 .Vb 3
 \&  AddToMenu SomeMenu MissingSubmenuFunction FuncFvwmMenuDirectory
 \&  + "Home Directory"  Popup $[HOME]
 \&  + "Httpd Directory" Popup /home/httpd
 .Ve
-.Sp
+.PP
 Note: please use absolute path names.
-.Sp
+.PP
 It is a good idea to set the menu pop-up delay to something positive
 and enable busy cursor
-.Sp
+.PP
 .Vb 2
 \&  MenuStyle * PopupDelayed, PopupDelay 200
 \&  BusyCursor DynamicMenu True
 .Ve
-.Sp
+.PP
 in your configuration file when using this script for better results.
-.Sp
+.PP
 Another interesting usage (\f(CW\*(C`\-\-reuse\*(C'\fR or \f(CW\*(C`\-r\*(C'\fR is mandatary for this):
-.Sp
+.PP
 .Vb 3
 \&  AddToMenu MenuBrowser
 \&  + DynamicPopupAction Piperead "fvwm-menu-directory -r -na MenuBrowser -d / -s"
 \&  AddToMenu SomeMenu "My Browser" Menu MenuBrowser
 .Ve
-.Sp
+.PP
 Here \f(CW\*(C`\-\-dir\*(C'\fR starting parameter is ignored if there is
 ~/.fvwm/.fvwm\-menu\-directory.dir file, you can delete it.
 .SH "AUTHORS"
 .IX Header "AUTHORS"
 Inspired  on 1999\-06\-07 by Dominik Vogt     <domivogt@fvwm.org>.
-.Sp
+.PP
 Rewritten on 1999\-08\-05 by Mikhael Goikhman <migo@homemail.com>.
 .SH "COPYING"
 .IX Header "COPYING"
