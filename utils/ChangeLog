@@ -1,5 +1,12 @@
 2004-03-19  Dominik Vogt  <dominik.vogt@gmx.de>
 
+	* fvwm_make_browse_menu.sh:
+	* fvwm_make_directory_menu.sh:
+	quoting security fix
+
+	* fvwm-menu-directory.in:
+	backported security fix for file names with eoln
+
 	* fvwmbug.sh.in:
 	script safty patch; see
 	http://securitytracker.com/alerts/2004/Jan/1008781.html
