@@ -1,6 +1,6 @@
-1999-02-24  Hippo
+1999-03-09  Andrew T. Veliath  <andrewtv@usa.net>
 
-	* FvwmPager: Applied label formatting patch from Andreas Dischinger
+	* FvwmRearrange/FvwmRearrange.c: Add GPL header.
 
 1999-02-14  Dominik Vogt  <dominik_vogt@hp.com>
 
