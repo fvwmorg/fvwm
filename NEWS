@@ -1,4 +1,4 @@
-Changes in stable release 2.4.12 (not released yet)
+Changes in stable release 2.4.12 (10-Oct-2002)
 
 * Fixed drawing problems with TiledPixmap and Solid MenuFaces which
   appeared in 2.4.10, replacing the same problem with ?Gradient

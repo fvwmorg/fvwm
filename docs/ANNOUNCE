@@ -1,17 +1,34 @@
-Fvwm-2.4.10 is a bug fixing release for the 2.4.10.  It repairs a
-crash with ssh-askpass that was introduced in 2.4.10.  The release
-is available at the fvwm home page: http://www.fvwm.org/
+Fvwm-2.4.12 is a bug fixing release for 2.4.11.  It fixes some
+minor drawing and animation problems in menus and some other, very
+rare bugs.
 
 Who needs it?
 -------------
 
-Everyone using 2.4.10 is highly recommended to upgrade.
+Users of the 2.4.10 release are strongly recommended to upgrade.
+Other users can safely keep their previous version unless they run
+into one of the problems below.  System administrators are
+recommended to upgrade.
 
+Bug Fixes:
+----------
 
-Changes:
---------
+* Fixed drawing problems with TiledPixmap and Solid MenuFaces which
+  appeared in 2.4.10, replacing the same problem with ?Gradient
+  MenuFaces in 2.4.9.
 
-* Fixed a crash with ssh-askpass introduced in 2.4.10.
+* Fixed accidental menu animation with certain menu position hints.
 
-* Allow the use of mouse buttons other than the first in
-  FvwmWinList when invoked transient.
+* Fixed starting "Move" at random position when pointer iss on a
+  different screen.
+
+* Transient windows do not appear in FvwmWinList after they have
+  been moved on the desktop.
+
+Improvements:
+-------------
+
+* Increased maximum allowed key symbol name length to 200
+  characters.
+
+* Allow quotes in conditional command conditions.
