@@ -1,3 +1,10 @@
+2003-10-10  Mikhael Goikhman  <migo@homemail.com>
+
+	* configure_dev.sh:
+	* fvwm-menu-headlines.1:
+	* fvwm-menu-headlines.in:
+	new BBC headlines
+
 2003-09-03  Mikhael Goikhman  <migo@homemail.com>
 
 	* fvwm-menu-directory.1:

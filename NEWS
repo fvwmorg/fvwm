@@ -23,6 +23,9 @@ Changes in stable release 2.4.17 (not released yet)
 * Fixed sending M_NEW_PAGE packets to the modules if the page did
   not change.
 
+* Added support for new BBC headlines in fvwm-menu-headlines, this
+  replaces the old BBC-Worlds and BBC-SciTech headlines.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.16 (30-May-2003)
