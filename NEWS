@@ -1,5 +1,10 @@
+-------------------------------------------------------------------
+
 Changes in stable release 2.4.17 (not released yet)
 
+* Fixed a compile problem on QNX 4.25.
+
+-------------------------------------------------------------------
 
 Changes in stable release 2.4.16 (30-May-2003)
 
@@ -71,7 +76,7 @@ Changes in stable release 2.4.16 (30-May-2003)
 
 * Expansion of variables like $[w.name] or $[EMPTY_STRING] that are
   empty works.
- 
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
