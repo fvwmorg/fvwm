@@ -31,8 +31,6 @@ Changes in stable release 2.4.9 (not released yet)
 
 * A number of drawing fixes in FvwmPager.
 
-* Removed some redundant code.
-
 * Fixed a slight bug when waiting until all buttons are released,
   for example after executing a complex function.
 
@@ -309,7 +307,8 @@ Changes in stable release 2.4.2 (16-Sep-2001)
 
 * Desk and page can be given as X resources in .Xdefaults, for
   example:
-    xterm.desk: 1 xterm.page: 1 2 3
+    xterm.desk: 1
+    xterm.page: 1 2 3
 
 * Several Shape compilation problems fixed.
 
