@@ -2,12 +2,16 @@
 
 Changes in stable release 2.4.17 (not released yet)
 
+* Fixed error message for incorrect --with-SOME-library argument.
+
+* It is now possible to suppress title action or title completely
+  in menus created by fvwm-menu-directory.
+
 * Fixed a compile problem on QNX 4.25.
 
 * New configure switch --disable-gtk.
 
-* FvwmGtk.1, FvwmGtkDebug and FvwmGtkDebug.1 are not installed if
-  FvwmGtk is not built.
+* FvwmGtk.1 is not installed if FvwmGtk is not built.
 
 * The "Visible" condition does no longer select windows on
   different desks.
