@@ -12,7 +12,7 @@ man
 config.log
 config.cache
 config.status
-stamp-h
+stamp-h*
 bb.out
 TAGS
 .gdb_history
