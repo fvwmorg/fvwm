@@ -335,7 +335,6 @@ void SelectDecor(FvwmWindow *t, window_style *pstyle, short *buttons)
     t->functions &= ~MWM_FUNC_ALL;
     t->functions = (MWM_FUNC_RESIZE | MWM_FUNC_MOVE | MWM_FUNC_MINIMIZE |
 		    MWM_FUNC_MAXIMIZE | MWM_FUNC_CLOSE) & (~(t->functions));
-fprintf(stderr,"func move: %d (%d)\n", (int)t->functions, (int)MWM_FUNC_MOVE);
   }
   if(SHAS_MWM_FUNCTIONS(sflags) && IS_TRANSIENT(t))
   {
