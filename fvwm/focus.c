@@ -348,9 +348,9 @@ void restore_focus_after_unmap(
     {
       for (t = tmp_win->next; t != NULL; t = t->next)
       {
-	if (t->Desk == tmp_win->Desk &&
-	    !DO_SKIP_CIRCULATE(t) &&
-	    !(DO_SKIP_ICON_CIRCULATE(t) && IS_ICONIFIED(t)) &&
+	if (t->Desk == tmp_win->Desk && !DO_SKIP_CIRCULATE(t) &&
+	    !(IS_ICONIFIED(t) && (
+		      DO_SKIP_ICON_CIRCULATE(t) || IS_ICON_SUPPRESSED(t))) &&
 	    (!do_skip_marked_transients || !IS_IN_TRANSIENT_SUBTREE(t)))
 	{
 	  /* If it is on a different desk we have to look for another window */
