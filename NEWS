@@ -1,5 +1,8 @@
 Changes in stable release 2.4.6 (not released yet)
 
+* Fixed a bug that caused windows not being raised and lowered
+  properly.
+
 Changes in stable release 2.4.5 (27-Jan-2002)
 
 * Fixed minor problems in popping sub menus up and down.

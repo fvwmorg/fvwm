@@ -22,6 +22,7 @@
 #define ICON_HEIGHT(t) ((t)->icon_font.height + 6)
 #endif
 
+int get_visible_icon_window_count(FvwmWindow *tmp_win);
 void AutoPlaceIcon(FvwmWindow *);
 void RedoIconName(FvwmWindow *);
 void DrawIconWindow(FvwmWindow *);

@@ -35,6 +35,7 @@
 #include "events.h"
 #include "borders.h"
 #include "virtual.h"
+#include "icons.h"
 #include "gnome.h"
 
 /* ----------------------------- stack ring code --------------------------- */
@@ -328,17 +329,7 @@ static void raise_over_unmanaged(FvwmWindow *t)
 	 t2 = t2->stack_next)
     {
       count++;
-      if (IS_ICONIFIED(t2) && ! IS_ICON_SUPPRESSED(t2))
-      {
-	if (t2->icon_w != None)
-	{
-	  count++;
-        }
-	if (t2->icon_pixmap_w != None)
-	{
-	  count++;
-        }
-      }
+      count += get_visible_icon_window_count(t2);
       if (t2 == t)
       {
 	break;
@@ -459,10 +450,7 @@ static void restack_windows(
     for (t = r, prev = NULL; prev != s; prev = t, t = t->stack_next)
     {
       count++;
-      if (IS_ICONIFIED(t) && !IS_ICON_SUPPRESSED(t))
-      {
-	count += 2;
-      }
+      count += get_visible_icon_window_count(t);
     }
   }
   /* restack the windows between r and s */
@@ -596,10 +584,7 @@ static void RaiseOrLowerWindow(
     remove_window_from_stack_ring(t);
 
     count = 1;
-    if (IS_ICONIFIED(t) && !IS_ICON_SUPPRESSED(t))
-    {
-      count += 2;
-    }
+    count += get_visible_icon_window_count(t);
 
     if (do_move_transients)
     {
@@ -614,10 +599,7 @@ static void RaiseOrLowerWindow(
 	{
 	  /* t2 is a transient to lower */
 	  count++;
-	  if (IS_ICONIFIED(t2) && !IS_ICON_SUPPRESSED(t2))
-	  {
-	    count += 2;
-	  }
+	  count += get_visible_icon_window_count(t2);
 
 	  /* unplug it */
 	  remove_window_from_stack_ring(t2);
@@ -1218,8 +1200,7 @@ static int collect_transients_recursive(
       remove_window_from_stack_ring(s);
       add_window_to_stack_ring_after(s, list_head->stack_prev);
       count++;
-      if (IS_ICONIFIED(t) && !IS_ICON_SUPPRESSED(t))
-	count += 2;
+      count += get_visible_icon_window_count(t);
     }
     s = tmp;
   }

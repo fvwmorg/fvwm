@@ -68,6 +68,27 @@ static void GetBitmapFile(FvwmWindow *tmp_win);
 static void GetXPMFile(FvwmWindow *tmp_win);
 #endif
 
+int get_visible_icon_window_count(FvwmWindow *tmp_win)
+{
+	int count = 0;
+
+	if (tmp_win == NULL || !IS_ICONIFIED(tmp_win) ||
+	    IS_ICON_SUPPRESSED(tmp_win))
+	{
+		return 0;
+	}
+	if (tmp_win->icon_pixmap_w != None)
+	{
+		count++;
+	}
+	if (tmp_win->icon_w != None)
+	{
+		count++;
+	}
+
+	return count;
+}
+
 /****************************************************************************
  *
  * Creates an icon window as needed
