@@ -18,6 +18,9 @@ Changes in stable release 2.4.13 (not released yet)
   2.4.10 or later, some older problems that have been around for a
   long time.
 
+* Windows starting lowered or on any layer other than the default
+  layer are displayed at the right place in FvwmPager.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.12 (10-Oct-2002)

@@ -1575,6 +1575,14 @@ FvwmWindow *AddWindow(Window w, FvwmWindow *ReuseWin)
   /****** grab keys and buttons ******/
   setup_key_and_button_grabs(tmp_win);
 
+  /****** now we can sefely ungrab the server ******/
+  MyXUngrabServer(dpy);
+
+  /****** inform modules of new window ******/
+  BroadcastConfig(M_ADD_WINDOW,tmp_win);
+  BroadcastName(M_WINDOW_NAME,tmp_win->w,tmp_win->frame,
+		(unsigned long)tmp_win,tmp_win->name);
+
   /****** place the window in the stack ring ******/
   if (!position_new_window_in_stack_ring(tmp_win, SDO_START_LOWERED(sflags)))
   {
@@ -1583,14 +1591,6 @@ FvwmWindow *AddWindow(Window w, FvwmWindow *ReuseWin)
     xwc.stack_mode = Above;
     XConfigureWindow(dpy, tmp_win->frame, CWSibling|CWStackMode, &xwc);
   }
-
-  /****** now we can sefely ungrab the server ******/
-  MyXUngrabServer(dpy);
-
-  /****** inform modules of new window ******/
-  BroadcastConfig(M_ADD_WINDOW,tmp_win);
-  BroadcastName(M_WINDOW_NAME,tmp_win->w,tmp_win->frame,
-		(unsigned long)tmp_win,tmp_win->name);
 
   /* these are sent and broadcast before res_{class,name} for the benefit
    * of FvwmIconBox which can't handle M_ICON_FILE after M_RES_NAME */

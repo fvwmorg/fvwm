@@ -29,3 +29,6 @@ Minor Bug Fixes
 
 * The Current, All, Pick, ThisWindow and PointerWindow commands
   work on shaded windows too.
+
+* Windows starting lowered or on any layer other than the default
+  layer are displayed at the right place in FvwmPager.
