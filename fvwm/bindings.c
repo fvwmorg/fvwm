@@ -322,8 +322,7 @@ static void activate_binding(
 
   if (binding == NULL)
     return;
-  if (do_grab_root ||
-      (binding->type == KEY_BINDING && binding->Context == C_ALL))
+  if (do_grab_root)
   {
     /* necessary for key bindings that work over unfocused windows */
     GrabWindowKeyOrButton(

@@ -12,6 +12,8 @@ Changes in stable release 2.4.14 (not released yet)
 * The built-in session management can handle window names, classes
   etc. beginning with whitespace (textedit).
 
+* Removed the flawed "A"ny context key binding patch from 2.4.13.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.13 (1-Nov-2002)
