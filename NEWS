@@ -10,6 +10,11 @@ Changes in stable release 2.4.5 (not released yet)
 * Fixed a problem with the focus in internal Ddd and Netscape
   windows.
 
+* Reduced the time in which fvwm attempts to grab the pointer.
+
+* Fixed unmanaged window when window was mapped/unmapped/mapped too
+  fast.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.
