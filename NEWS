@@ -17,6 +17,9 @@ Changes in stable release 2.4.5 (not released yet)
 
 * Fixed MiniScroll's auto repeating in FvwmScript.
 
+* Fixed a crash with the UseStyle style in combination with
+  HilightBack.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.
