@@ -13,8 +13,8 @@ This script is a part of $PACKAGE-$VERSION package.
 
 Usage: $script [OPTIONS]
 Options:
-	[-h]	[--help]
-	[-v]	[--version]
+	[-h]	[--help] [-?]
+	[-v]	[--version] [-V]
 	[-i]	[--info]
 
 	[-P]	[--prefix]
@@ -70,10 +70,10 @@ with_xpm=@with_xpm@
 
 while test $# -gt 0; do
 	case "$1" in
-		--help|-help|-h)
+		--help|-help|-h|-\?)
 			usage 0 ;;
 
-		--version|-version|-v)
+		--version|-version|-v|-V)
 			echo "$VERSION" ;;
 
 		--prefix|-prefix|-P)
