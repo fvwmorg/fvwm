@@ -960,18 +960,25 @@ Bool PlaceWindow(
     if ( ( DO_NOT_SHOW_ON_MAP(tmp_win) && flags.do_honor_starts_on_page )  &&
 
 	 ( (!(IS_TRANSIENT(tmp_win)) ||
-	    SUSE_START_ON_PAGE_FOR_TRANSIENT(sflags)) &&
+	    SUSE_START_ON_PAGE_FOR_TRANSIENT(sflags))
 
-	   ((SUSE_NO_PPOSITION(sflags)) ||
-	    !(tmp_win->hints.flags & PPosition)) &&
+#if 0
+	   /* dv 08-Jul-2003:  Do not use this.  Instead, force the
+	    * window on the requested page even if the application
+	    * requested a different position. */
+	   && ((SUSE_NO_PPOSITION(sflags)) ||
+	       !(tmp_win->hints.flags & PPosition))
 
+	   /* dv 08-Jul-2003:  This condition is always true because we
+	    * already checked for flags.do_honor_starts_on_page above. */
            /*  RBW - allow StartsOnPage to go through, even if iconic.  */
-           ( ((!((tmp_win->wmhints)&&
-		 (tmp_win->wmhints->flags & StateHint)&&
-		 (tmp_win->wmhints->initial_state == IconicState)))
-              || (flags.do_honor_starts_on_page)) )
+           && ( ((!((tmp_win->wmhints)&&
+		    (tmp_win->wmhints->flags & StateHint)&&
+		    (tmp_win->wmhints->initial_state == IconicState)))
+		 || (flags.do_honor_starts_on_page)) )
 
-	   ) )
+#endif
+		 ) )
     {
       /*
        * We're placing a SkipMapping window - either capturing one that's

@@ -12,6 +12,10 @@ Changes in stable release 2.4.17 (not released yet)
 * The "Visible" condition does no longer select windows on
   different desks.
 
+* With the styles StartsOnPage, SkipMapping and UsePPosition,
+  windows that request a specific position are still placed on the
+  given page.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.16 (30-May-2003)
