@@ -1597,8 +1597,6 @@ void Iconify(FvwmWindow *tmp_win, int def_x, int def_y)
    * window has an icon, but neither a pixmap nor a title. */
   if (HAS_NO_ICON_TITLE(tmp_win) && tmp_win->icon_pixmap_w == None)
   {
-    tmp_win->icon_g.x = 0;
-    tmp_win->icon_g.y = 0;
     tmp_win->icon_g.width = 0;
     tmp_win->icon_g.height = 0;
     tmp_win->icon_p_width = 0;

@@ -15,11 +15,11 @@ Changes in stable release 2.4.16 (not released yet)
   geometry specificaiton appeared after another option with a comma
   at the end.
 
-* Fixed a problem that could cause windows with the NoIcon style
-  to disappear in icon manager modules when iconified.
-
 * FvwmCommand works too when invoked without the DISPLAY variable
   set.
+
+* Fixed displaying iconified windows without an icon in
+  FvwmIconMan.
 
 -------------------------------------------------------------------
 
