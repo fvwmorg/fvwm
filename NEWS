@@ -1,5 +1,8 @@
 Changes in stable release 2.4.16 (not released yet)
 
+* The PageOnly option in FvwmTaskBar now works after a desk change
+  too.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
