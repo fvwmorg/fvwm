@@ -22,6 +22,8 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed problems with wish scripts creating windows that start
   iconic.
 
+* Fixed the NoClose option with unmapped panels in FvwmButtons.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)

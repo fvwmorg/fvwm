@@ -357,6 +357,10 @@ static void DeadPipeCleanup(void)
 	  XMoveWindow(Dpy,swin,b->x,b->y);
 	  XResizeWindow(Dpy,swin,b->w,b->h);
 	  XSetWindowBorderWidth(Dpy,swin,b->bw);
+	  if ((b->flags & b_Panel))
+	  {
+	    XMapWindow(Dpy, swin);
+	  }
 	}
       }
 #ifdef DEBUG_HANGON
