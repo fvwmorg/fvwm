@@ -28,7 +28,7 @@ Changes in stable release 2.4.6 (05-Mar-2002)
 
 * Do not hilight windows after ResizeMove.
 
-* New conditional command This.
+* New conditional command ThisWindow.
 
 * Some fixes in the configure script that caused some rare
   problems detecting gnome and ncurses.
@@ -41,6 +41,9 @@ Changes in stable release 2.4.6 (05-Mar-2002)
 
 * The window handles are now resizes as they should when the
   HandleWidth style changes.
+
+* The Circulate command does not select a random window when no
+  window has the focus.
 
 Changes in stable release 2.4.5 (27-Jan-2002)
 

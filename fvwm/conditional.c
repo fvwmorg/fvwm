@@ -442,7 +442,13 @@ static FvwmWindow *Circulate(char *action, int Direction, char **restofline)
       fw = sf;
   }
   else
+  {
+    if (Direction == 0)
+    {
+      return NULL;
+    }
     fw = NULL;
+  }
 
   for (pass = 0; pass < 3 && !found; pass++)
   {
@@ -786,7 +792,7 @@ void CMD_Pick(F_CMD_ARGS)
   FreeConditionMask(&mask);
 }
 
-void CMD_This(F_CMD_ARGS)
+void CMD_ThisWindow(F_CMD_ARGS)
 {
 	char *restofline;
 	char *flags;
@@ -810,7 +816,8 @@ void CMD_This(F_CMD_ARGS)
 	if (MatchesConditionMask(tmp_win, &mask) && restofline)
 	{
 		old_execute_function(
-			restofline, tmp_win, eventp, C_WINDOW, *Module, 0, NULL);
+			restofline, tmp_win, eventp, C_WINDOW, *Module, 0,
+			NULL);
 	}
 
 	FreeConditionMask(&mask);

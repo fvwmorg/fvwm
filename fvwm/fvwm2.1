@@ -7173,18 +7173,20 @@ Conditions are the same as for
 .BR Next .
 
 .TP
-.BI "This [(" conditions ")] " command
-.B This
+.BI "ThisWindow [(" conditions ")] " command
+.B ThisWindow
 executes the specified
 .I command
-in the context of the current operand window.  If there is no operand window
-(i.e. it is invoked in the root window), the command is ignored.
-.B This
-is always silent, i.e. non-interactive.
-The command is executed only if the given
+in the context of the current operand window.  If there is no
+operand window (it is invoked in the root window), the command is
+ignored.
+.B ThisWindow
+is always non-interactive.  The command is executed only if the
+given
 .I conditions
 are met.  The conditions are the same as for
 .BR Current .
+It returns -1 if used outside a window context.
 
 .IP "\fBWindowId [\fP \fIid\fP \
 \fB] [(\fP \fIconditions\fP \
