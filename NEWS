@@ -54,6 +54,8 @@ Changes in stable release 2.4.16 (not released yet)
 * Fixed problem with empty frame windows if X recycled the window
   id of a window that died recently.
 
+* Fixed loading of application supplied pixmap on 8/24 depth screen.
+ 
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)

@@ -238,7 +238,8 @@ ICON_DBG((stderr,"ciw: iph%s used '%s'\n", (tmp_win->icon_p_height)?"":" not",tm
   /* this does not happen if fvwm is using a non-default visual (with
      private colormap) and the client has supplied a pixmap (not a bitmap) */
   if ((IS_ICON_OURS(tmp_win)) && (tmp_win->icon_p_height > 0)
-      && (Pdefault || (tmp_win->iconDepth == 1) || IS_PIXMAP_OURS(tmp_win)))
+      && (tmp_win->iconDepth == Pdepth || tmp_win->iconDepth == 1 ||
+	  IS_PIXMAP_OURS(tmp_win)))
   {
     tmp_win->icon_p_width += 4;
     tmp_win->icon_p_height += 4;
@@ -294,7 +295,8 @@ ICON_DBG((stderr,"ciw: iph%s used '%s'\n", (tmp_win->icon_p_height)?"":" not",tm
       tmp_win->icon_p_height > 0)
   {
     /* use fvwm's visuals in these cases */
-    if (Pdefault || (tmp_win->iconDepth == 1) || IS_PIXMAP_OURS(tmp_win))
+    if (tmp_win->iconDepth == Pdepth || tmp_win->iconDepth == 1 ||
+	IS_PIXMAP_OURS(tmp_win))
     {
       if (!old_icon_pixmap_w)
       {
@@ -361,7 +363,8 @@ ICON_DBG((stderr,"ciw: iph%s used '%s'\n", (tmp_win->icon_p_height)?"":" not",tm
       /* when fvwm is using the non-default visual client supplied icon pixmaps
        * are drawn in a window with no relief */
       int off;
-      off = (Pdefault || (tmp_win->iconDepth == 1) || IS_PIXMAP_OURS(tmp_win)) ?
+      off = (tmp_win->iconDepth == Pdepth || tmp_win->iconDepth == 1 ||
+	     IS_PIXMAP_OURS(tmp_win)) ?
 	2 : 0;
       FShapeCombineMask(
 	dpy, tmp_win->icon_pixmap_w, FShapeBounding, off, off,
@@ -565,7 +568,8 @@ void DrawIconWindow(FvwmWindow *tmp_win)
 
   /* only relieve unshaped icons that share fvwm's visual */
   if ((tmp_win->iconPixmap != None) && !IS_ICON_SHAPED(tmp_win)
-      && (Pdefault || (tmp_win->iconDepth == 1) || IS_PIXMAP_OURS(tmp_win)))
+      && (tmp_win->iconDepth == Pdepth || tmp_win->iconDepth == 1 ||
+	  IS_PIXMAP_OURS(tmp_win)))
     RelieveRectangle(dpy, tmp_win->icon_pixmap_w, 0, 0,
 		     tmp_win->icon_p_width - 1, tmp_win->icon_p_height - 1,
 		     Relief, Shadow, 2);
@@ -582,7 +586,7 @@ void DrawIconWindow(FvwmWindow *tmp_win)
     }
     else
     {
-      if (Pdefault || IS_PIXMAP_OURS(tmp_win))
+      if (tmp_win->iconDepth == Pdepth || IS_PIXMAP_OURS(tmp_win))
       {
         /* it's a pixmap that need copying */
 	XCopyArea(dpy, tmp_win->iconPixmap, tmp_win->icon_pixmap_w,
@@ -1280,12 +1284,12 @@ void GetIconBitmap(FvwmWindow *tmp_win)
   }
 
   /* sanity check the pixmap depth, it must be the same as the root or 1 */
-  if ((depth != 1) && (depth != DefaultDepth(dpy,Scr.screen)))
+  if (depth != 1 && depth != Pdepth && depth != DefaultDepth(dpy,Scr.screen))
   {
     fvwm_msg(ERR, "GetIconBitmap",
-	     "Window '%s' has a bad icon bitmap depth %d (should be 1 or %d)!"
-	     " Ignoring icon bitmap.",
-	     tmp_win->name, depth, DefaultDepth(dpy,Scr.screen));
+	     "Window '%s' has a bad icon bitmap depth %d "
+	     "(should be 1, %d or %d)! Ignoring icon bitmap.",
+	     tmp_win->name, depth, Pdepth, DefaultDepth(dpy,Scr.screen));
     /* disable icon pixmap hint */
     tmp_win->wmhints->icon_pixmap = None;
     tmp_win->wmhints->flags &= ~IconPixmapHint;
