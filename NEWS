@@ -42,6 +42,8 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed a potential crash with windows being destroyed during a
   recapture operation.
 
+* Fixed a memory leak in some modules when not using glibc.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
