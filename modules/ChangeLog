@@ -1,3 +1,8 @@
+2000-01-13  Dan Espen  <dane@mk.telcordia.com>
+
+	* FvwmForm/FvwmForm.c (MAX_LINES): Increased max lines, max items
+	as per request by Thomas A. Gardiner.
+
 1999-11-30  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* FvwmScroll/FvwmScroll.c:

@@ -1,0 +1,10 @@
+Makefile
+Makefile.in
+config.h
+configure
+man
+config.log
+config.cache
+config.status
+stamp-h
+bb.out

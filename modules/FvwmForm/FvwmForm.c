@@ -43,8 +43,8 @@ void dummy () {
 #define ITEM_VSPC   5
 
 /* tba: use dynamic buffer expanding */
-#define MAX_LINES 16
-#define MAX_ITEMS 64
+#define MAX_LINES 50
+#define MAX_ITEMS 100
 #define ITEMS_PER_LINE 64
 #define CHOICES_PER_SEL 64
 
