@@ -6,6 +6,9 @@ Changes in stable release 2.4.18 (not released yet)
 
 * Fixed the FlickeringMoveWorkaround option to the BugOpts command.
 
+* Security patch in fvwmbug.sh.
+  See http://securitytracker.com/alerts/2004/Jan/1008781.html
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.17 (10-Oct-2003)
