@@ -1249,21 +1249,27 @@ static void ChangeTitle (int NbArg,long *TabArg)
 /******* ChangeIcon *******/
 static void ChangeIcon (int NbArg,long *TabArg)
 {
-  int i=0;
-  char *arg[2];
-  int IdItem;
+	int i=0;
+	char *arg[2];
+	int IdItem;
 
-  arg[0] = CalcArg(TabArg,&i);
-  i++;
-  arg[1] = CalcArg(TabArg,&i);
-  IdItem = TabIdObj[atoi(arg[0])];
-  tabxobj[IdItem]->icon = safestrdup(arg[1]);
-  LoadIcon(tabxobj[IdItem]);
-  if (tabxobj[IdItem]->TypeWidget != SwallowExec)
-    XClearWindow(dpy, tabxobj[IdItem]->win);
-  tabxobj[IdItem]->DrawObj(tabxobj[IdItem]);
-  free(arg[0]);
-  free(arg[1]);
+	arg[0] = CalcArg(TabArg,&i);
+	i++;
+	arg[1] = CalcArg(TabArg,&i);
+	IdItem = TabIdObj[atoi(arg[0])];
+	if (tabxobj[IdItem]->icon)
+	{
+		free(tabxobj[IdItem]->icon);
+	}
+	tabxobj[IdItem]->icon = safestrdup(arg[1]);
+	LoadIcon(tabxobj[IdItem]);
+	if (tabxobj[IdItem]->TypeWidget != SwallowExec)
+	{
+		XClearWindow(dpy, tabxobj[IdItem]->win);
+	}
+	tabxobj[IdItem]->DrawObj(tabxobj[IdItem]);
+	free(arg[0]);
+	free(arg[1]);
 }
 
 /******* ChangeForeColor *******/
@@ -1282,8 +1288,11 @@ static void ChangeForeColor (int NbArg,long *TabArg)
   if (tabxobj[IdItem]->colorset < 0)
     XFreeColors(dpy,Pcmap,(void*)(&(tabxobj[IdItem])->TabColor[fore]),1,0);
 
-  tabxobj[IdItem]->forecolor=(char*)safecalloc(100,sizeof(char));
-  sprintf(tabxobj[IdItem]->forecolor,"%s",arg[1]);
+  if (tabxobj[IdItem]->forecolor)
+  {
+	  free(tabxobj[IdItem]->forecolor);
+  }
+  tabxobj[IdItem]->forecolor = safestrdup(arg[1]);
 
   tabxobj[IdItem]->TabColor[fore] = GetColor(tabxobj[IdItem]->forecolor);
   if (tabxobj[IdItem]->colorset >= 0) {
@@ -1318,8 +1327,11 @@ static void ChangeBackColor (int NbArg,long *TabArg)
   if (tabxobj[IdItem]->colorset < 0)
     XFreeColors(dpy,Pcmap,(void*)(&(tabxobj[IdItem])->TabColor[back]),1,0);
 
-  tabxobj[IdItem]->backcolor = (char*)safecalloc(100,sizeof(char));
-  sprintf(tabxobj[IdItem]->backcolor,"%s",arg[1]);
+  if (tabxobj[IdItem]->backcolor)
+  {
+	  free(tabxobj[IdItem]->backcolor);
+  }
+  tabxobj[IdItem]->backcolor= safestrdup(arg[1]);
 
   tabxobj[IdItem]->TabColor[back] = GetColor(tabxobj[IdItem]->backcolor);
   if (tabxobj[IdItem]->colorset >= 0) {

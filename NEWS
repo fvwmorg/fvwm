@@ -3,6 +3,9 @@ Changes in stable release 2.4.15 (not released yet)
 * Windows using the WindowListSkip style do not appear in the
   FvwmTaskBar at random.
 
+* Fixed a memory leak in ChangeIcon, ChangeForeColor and ChangeBackColor
+  FvwmScript Instruction
+
 Changes in stable release 2.4.14 (29-Nov-2002)
 
 * Modules do not crash anymore when more than 126 windows are on
