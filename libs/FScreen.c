@@ -1034,7 +1034,7 @@ int FScreenGetGeometry(
 
   /* Fill in dimensions for future negative calculations if
    * omitted/forbidden */
-  /*!!! Maybe should use *x_return,*y_return if hints==NULL?  Unreliable... */
+  /* Maybe should use *x_return,*y_return if hints==NULL?  Unreliable... */
   if (hints != NULL  &&  hints->flags & PSize)
   {
     if ((ret & WidthValue)  == 0)
