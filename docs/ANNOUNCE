@@ -1,58 +1,50 @@
-Fvwm 2.4.5 is a bug fix release for version 2.4.4.  It addresses a
-number of less important problems.  If you encountered none of the
-problems you can safely continue using 2.4.4.
+Fvwm 2.4.6 is a maintenance release for 2.4.5.  It fixes a number
+of minor or rare problems.  If you did not encounter any of the
+problems below, you do not need to upgrade.
 
 The release is available at the fvwm home page: http://www.fvwm.org/
 
 
-New features:
+New Features:
 -------------
 
-* New style BackingStoreWindowDefault which is the default
-  now. Fvwm no longer disables backing store on windows by
-  default. This may help with some applications that do not redraw
-  properly.
+* New conditional command This.
 
-* Reduced the time in which fvwm attempts to grab the pointer.
 
 Bug fixes:
 ----------
 
-* Fixed minor problems in popping sub menus up and down.
+* Fixed a bug that caused windows not being raised and lowered
+  properly.
 
-* Fixed moving windows between pages with the keyboard.
+* Suppress error message when using XBM icons.
 
-* Fixed the size of the geometry window that was broken sometimes.
+* Fixed a read descriptor problem in FvwmTaskBar
 
-* Fixed problem with pointer warping to another screen on a dual
-  head setup.
+* Fixed a minor colour update bug in the pager.
 
-* Fixed a problem with the focus in internal Ddd and Netscape
-  windows.
+* Fixed an fvwm crash when a module died at the wrong moment;
+  specifically a transient FvwmPager of FvwmIconMan.
 
-* Fixed unmanaged window when window was mapped/unmapped/mapped too
-  fast.
+* Fixed placement of WindowList on wrong Xinerama screen when
+  called without any options on a screen other than the primary
+  screen.
 
-* Fixed MiniScroll's auto repeating in FvwmScript.
+* Fixed a problem with root bindings and xfishtank.
 
-* Fixed a crash with the UseStyle style in combination with
-  HilightBack.
+* Fixed moving windows with the keyboard over the edge of the
+  screen when the pointer remained of the previous page.
 
-* Fixed excessive redraws of the windows under a window being shaded.
+* Do not hilight windows after ResizeMove.
 
-* Fixed a minor memory leak in the Style command.
+* Some fixes in the configure script that caused some rare
+  problems detecting gnome and ncurses.
 
-* Fixed pixmap background of FvwmButtons behind buttons with only
-  text.
+* Fixed a memory leak in the Pick command.
 
-* Fixed a crash in FvwmIconBox when the application provided an
-  illegal icon.
+* Allow to choose windows with CirculateSkip with the Pick command.
 
-* Fixed a configure problem with libstroke-0.5.1.
+* Fixed an FvwmScript compile problem on dec-osf5.
 
-* Fixed bug that sometimes caused unnecessary redraws when a style
-  was changed.
-
-* Fixed crash when something like "$[$v]" appeared in a command.
-
-* Fixed parsing of conditions with more than one comma.
+* The window handles are now resizes as they should when the
+  HandleWidth style changes.

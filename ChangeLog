@@ -1,5 +1,8 @@
 2002-03-05  Dominik Vogt  <dominik.vogt@gmx.de>
 
+	* fvwm/fvwm2.1:
+	updated for 2.4.6
+
 	* FvwmScript/Instructions.c (InitCom):
 	(MyWarpPointer):
 	fixed a compile problem on dec-osf5
