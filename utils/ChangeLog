@@ -1,3 +1,8 @@
+2004-09-27  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* xpmroot.c (main):
+	fixed compile error
+
 2004-03-19  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm_make_browse_menu.sh:

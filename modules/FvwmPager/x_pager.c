@@ -1494,6 +1494,8 @@ void ReConfigureIcons(Bool do_reconfigure_desk_only)
     if (do_reconfigure_desk_only && t->desk != Scr.CurrentDesk)
       continue;
     CalcGeom(t, icon_w, icon_h, &x, &y, &w, &h);
+    t->icon_view_x = x;
+    t->icon_view_y = y;
     t->icon_view_width = w;
     t->icon_view_height = h;
     if(Scr.CurrentDesk == t->desk)
@@ -1769,6 +1771,8 @@ void AddNewWindow(PagerWindow *t)
 	  t->PagerView = None;
 
   CalcGeom(t, icon_w, icon_h, &x, &y, &w, &h);
+  t->icon_view_x = x;
+  t->icon_view_y = y;
   t->icon_view_width = w;
   t->icon_view_height = h;
   if(Scr.CurrentDesk != t->desk)
@@ -1847,6 +1851,8 @@ void ChangeDeskForWindow(PagerWindow *t,long newdesk)
 
   CalcGeom(t, icon_w, icon_h, &x, &y, &w, &h);
   size_changed = (t->icon_view_width != w || t->icon_view_height != h);
+  t->icon_view_x = x;
+  t->icon_view_y = y;
   t->icon_view_width = w;
   t->icon_view_height = h;
   if(Scr.CurrentDesk != t->desk)
@@ -1905,10 +1911,10 @@ void MoveResizePagerView(PagerWindow *t, Bool do_force_redraw)
   }
 
   CalcGeom(t, icon_w, icon_h, &x, &y, &w, &h);
-  position_changed = (t->pager_view_x != x || t->pager_view_y != y);
+  position_changed = (t->icon_view_x != x || t->icon_view_y != y);
   size_changed = (t->icon_view_width != w || t->icon_view_height != h);
-  t->pager_view_x = x;
-  t->pager_view_y = y;
+  t->icon_view_x = x;
+  t->icon_view_y = y;
   t->icon_view_width = w;
   t->icon_view_height = h;
   if (Scr.CurrentDesk == t->desk)
