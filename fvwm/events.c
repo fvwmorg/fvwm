@@ -69,9 +69,6 @@ unsigned int mods_used = (ShiftMask | ControlMask | Mod1Mask |
 extern int menuFromFrameOrWindowOrTitlebar;
 
 extern Boolean debugging;
-extern Bool fFvwmInStartup;
-
-extern void StartupStuff(void);
 
 int Context = C_NO_CONTEXT;	/* current button press context */
 int Button = 0;
@@ -302,7 +299,6 @@ int GetContext(FvwmWindow *t, XEvent *e, Window *w)
  *	HandleFocusIn - handles focus in events
  *
  ************************************************************************/
-extern Bool lastFocusType;
 void HandleFocusIn()
 {
   XEvent d;
@@ -330,7 +326,7 @@ void HandleFocusIn()
 	{
 	  SetBorder(Scr.Hilite,False,True,True,None);
 	  BroadcastPacket(M_FOCUS_CHANGE, 5,
-                          0, 0, (unsigned long)lastFocusType,
+                          0, 0, 0,
                           Scr.DefaultDecor.HiColors.fore,
                           Scr.DefaultDecor.HiColors.back);
 	  if (Scr.ColormapFocus == COLORMAP_FOLLOWS_FOCUS)
@@ -351,7 +347,7 @@ void HandleFocusIn()
     {
       SetBorder(Tmp_win,True,True,True,None);
       BroadcastPacket(M_FOCUS_CHANGE, 5,
-                      Tmp_win->w, Tmp_win->frame, (unsigned long)lastFocusType,
+                      Tmp_win->w, Tmp_win->frame, (unsigned long)Tmp_win,
                       GetDecor(Tmp_win,HiColors.fore),
                       GetDecor(Tmp_win,HiColors.back));
       if (Scr.ColormapFocus == COLORMAP_FOLLOWS_FOCUS)
@@ -480,6 +476,10 @@ void HandlePropertyNotify()
       free_window_names (Tmp_win, True, False);
 
       Tmp_win->name = (char *)text_prop.value;
+      if (Tmp_win->name && strlen(Tmp_win->name) > 200)
+	/* limit to prevent hanging X server */
+	Tmp_win->name[MAX_WINDOW_NAME_LEN] = 200;
+
       if (Tmp_win->name == NULL)
         Tmp_win->name = NoName;
       BroadcastName(M_WINDOW_NAME,Tmp_win->w,Tmp_win->frame,
@@ -507,6 +507,9 @@ void HandlePropertyNotify()
 	return;
       free_window_names (Tmp_win, False, True);
       Tmp_win->icon_name = (char *) text_prop.value;
+      if (Tmp_win->icon_name && strlen(Tmp_win->icon_name) > 200)
+	/* limit to prevent hanging X server */
+	Tmp_win->icon_name[200] = 0;
       if (Tmp_win->icon_name == NULL)
         Tmp_win->icon_name = NoName;
       BroadcastName(M_ICON_NAME,Tmp_win->w,Tmp_win->frame,
@@ -1528,21 +1531,15 @@ void HandleVisibilityNotify()
 
 /***************************************************************************
  *
- * Waits for next X or module event, fires off startup routines when startup
- * modules have finished or after a timeout if the user has specified a
- * command line module that doesn't quit or gets stuck.
+ * Waits for next X event, or for an auto-raise timeout.
  *
  ****************************************************************************/
-fd_set init_fdset;
-
 int My_XNextEvent(Display *dpy, XEvent *event)
 {
   extern int fd_width, x_fd;
   fd_set in_fdset, out_fdset;
   Window targetWindow;
   int i;
-  static struct timeval timeout = {42, 0};
-  static struct timeval *timeoutP = &timeout;
 
   DBUG("My_XNextEvent","Routine Entered");
 
@@ -1563,18 +1560,6 @@ int My_XNextEvent(Display *dpy, XEvent *event)
   /* If we get to here, then there are no X events waiting to be processed.
    * Just take a moment to check for dead children. */
   ReapChildren();
-
-  /* check for termination of all startup modules */
-  if (fFvwmInStartup) {
-    for(i=0;i<npipes;i++)
-      if (FD_ISSET(i, &init_fdset))
-        break;
-    if (i == npipes) {
-      DBUG("My_XNextEvent", "Starting up after command lines modules\n");
-      StartupStuff();
-      timeoutP = NULL; /* set an infinite timeout to stop ticking */
-    }
-  }  
 
   FD_ZERO(&in_fdset);
   FD_SET(x_fd,&in_fdset);
@@ -1597,7 +1582,7 @@ int My_XNextEvent(Display *dpy, XEvent *event)
              SELECT_TYPE_ARG234 &in_fdset,
              SELECT_TYPE_ARG234 &out_fdset,
              SELECT_TYPE_ARG234 0,
-             SELECT_TYPE_ARG5   timeoutP) > 0)
+             SELECT_TYPE_ARG5   NULL) > 0)
   {
 
   /* Check for module input. */
@@ -1628,16 +1613,7 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 	    }
 	}
     } /* for */
-  } else {
-  /* select has timed out, things must have calmed down so let's decorate */
-    if (fFvwmInStartup) {
-      fvwm_msg(ERR, "My_XNextEvent",
-               "Some command line modules have not quit, Starting up after timeout.\n");
-      StartupStuff();
-      timeoutP = NULL; /* set an infinite timeout to stop ticking */
   }
-  }
-
   DBUG("My_XNextEvent","leaving My_XNextEvent");
   return 0;
 }

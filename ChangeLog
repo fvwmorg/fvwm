@@ -1,3 +1,8 @@
+1999-10-02  Dominik Vogt  <dominik_vogt@gmx.de>
+
+	* fvwm/events.c (HandlePropertyNotify): limits names of icons/windows
+	to 200 characters to prevent hanging X server
+
 1999-22-06  Dominik Vogt  <dominik_vogt@hp.com>
 
 	* fvwm/move.c (InteractiveMove): Small interactive move fix (bug #377)
