@@ -3,6 +3,10 @@ Changes in stable release 2.4.13 (not released yet)
 * Icon titles for window with an icon position hint no longer
   appear at random places.
 
+* Fvwm no longer displays two icon pictures when switching from
+  NoIconOverride to IconOverride with windows that provide their
+  own icon window.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.12 (10-Oct-2002)

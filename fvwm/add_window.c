@@ -1229,10 +1229,16 @@ static void destroy_icon(FvwmWindow *tmp_win)
     XDestroyWindow(dpy, tmp_win->icon_w);
     XDeleteContext(dpy, tmp_win->icon_w, FvwmContext);
   }
-  if((IS_ICON_OURS(tmp_win))&&(tmp_win->icon_pixmap_w != None))
-    XDestroyWindow(dpy, tmp_win->icon_pixmap_w);
-  if(tmp_win->icon_pixmap_w != None)
+  if (tmp_win->icon_pixmap_w != None)
   {
+    if (IS_ICON_OURS(tmp_win))
+    {
+      XDestroyWindow(dpy, tmp_win->icon_pixmap_w);
+    }
+    else
+    {
+      XUnmapWindow(dpy, tmp_win->icon_pixmap_w);
+    }
     XDeleteContext(dpy, tmp_win->icon_pixmap_w, FvwmContext);
   }
   tmp_win->icon_pixmap_w = None;
