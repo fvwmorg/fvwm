@@ -1,3 +1,8 @@
+2002-05-02  Mikhail Kruk  <meshko@cs.brandeis.edu>
+
+	* fvwm/module_interface.c (make_named_packe):
+	Fixed maximal length of a named module packet
+
 2002-04-23  Jochen Klenner  <jochen.klenner@gmx.net>
 
 	* fvwm/windowlist.c (CMD_WindowList):

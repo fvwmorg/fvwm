@@ -16,6 +16,8 @@ Changes in stable release 2.4.8 (not released yet)
 
 * New WindowList option CurrentAtEnd.
 
+* Fixed maximal length of a named module packet
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at
