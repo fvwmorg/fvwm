@@ -195,8 +195,10 @@ void RedrawButton(button_info *b,int clean)
   int f,x,y,px,py;
   int ix,iy,iw,ih;
   XFontStruct *font = buttonFont(b);
+#if 0
 #ifdef I18N_MB
   XFontSet fontset = buttonFontSet(b);
+#endif
 #endif
   XGCValues gcv;
   int rev = 0;

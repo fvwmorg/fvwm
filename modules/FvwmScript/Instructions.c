@@ -1152,8 +1152,6 @@ static void ChangeFont (int NbArg,long *TabArg)
   int IdItem;
 #ifdef I18N_MB
   char **ml;
-  int mc;
-  char *ds;
   XFontStruct **fs_list;
 #else
   XFontStruct *xfont;
