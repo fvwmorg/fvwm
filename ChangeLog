@@ -1,3 +1,7 @@
+1999-22-06  Dominik Vogt  <dominik_vogt@hp.com>
+
+	* fvwm/move.c (InteractiveMove): Small interactive move fix (bug #377)
+
 Thu May 27 07:38:11 1999  DanEspen  <dje@blue>
 
 	* fvwm/fvwm2.1 (EdgeThickness): Updated man pages, EdgeThickness

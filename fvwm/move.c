@@ -788,7 +788,9 @@ void InteractiveMove(Window *win, FvwmWindow *tmp_win, int *FinalX, int *FinalY,
       XFlush(dpy);
     }
 
-  if (eventp->type == ButtonPress)
+  /* Although a move is usually done with a button depressed we have to check
+   * for ButtonRelease too since the event may be faked. */
+  if (eventp->type == ButtonPress || eventp->type == ButtonRelease)
     {
       DragX = eventp->xbutton.x_root;
       DragY = eventp->xbutton.y_root;
