@@ -1,5 +1,8 @@
 Thu May 27 07:38:11 1999  DanEspen  <dje@blue>
 
+	* fvwm/fvwm2.1 (EdgeThickness): Updated man pages, EdgeThickness
+	can be used at any time.
+
 	* NEWS: Updated news for 2.2.2 release.
 
 	* fvwm/complex.c (expand): Applied patch from Brad for empty args.
