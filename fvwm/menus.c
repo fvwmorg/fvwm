@@ -5537,7 +5537,7 @@ MenuRoot *NewMenuRoot(char *name)
   memset(mr->s, 0, sizeof(MenuRootStatic));
   memset(mr->d, 0, sizeof(MenuRootDynamic));
   MR_NEXT_MENU(mr) = Menus.all;
-  MR_NAME(mr) = stripcpy(name);
+  MR_NAME(mr) = safestrdup(name);
   MR_WINDOW(mr) = None;
   scanForPixmap(MR_NAME(mr), &MR_SIDEPIC(mr), '@');
   scanForColor(MR_NAME(mr), &MR_SIDECOLOR(mr), &flag,'^');
