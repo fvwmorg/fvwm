@@ -38,6 +38,8 @@ static int last_read_failed=0;
 static const char *read_system_rc_cmd="Read system"FVWMRC;
 
 
+extern void StartupStuff(void);
+
 /*
  * func to do actual read/piperead work
  * Arg 1 is file name to read.
@@ -92,23 +94,22 @@ static void ReadSubFunc(XEvent *eventp,Window junk,FvwmWindow *tmp_win,
   if (piperead)
     fd = popen(filename,"r");
   else
-    fd = fopen(filename,"r");
-
-  if (!piperead)
   {
-    if (fd == 0 && ofilename[0] != '/')
+    if (ofilename[0] != '/')
       {
 	/* find the home directory to look in */
 	Home = getenv("HOME");
-	if (Home == NULL)
-	  Home = ".";
-	home_file = safemalloc(strlen(Home) + strlen(ofilename)+3);
-	strcpy(home_file,Home);
-	strcat(home_file,"/");
-	strcat(home_file,ofilename);
-	filename = home_file;
-	fd = fopen(filename,"r");
-	if(fd == 0)
+	if (Home != NULL) {
+	  home_file = safemalloc(strlen(Home) + strlen(ofilename)+3);
+	  strcpy(home_file,Home);
+	  strcat(home_file,"/");
+	  strcat(home_file,ofilename);
+	  filename = home_file;
+	  fd = fopen(filename,"r");
+        } else {
+          fd = 0;
+        }
+	if (fd == 0)
 	  {
 	    if((filename != NULL)&&(filename!= ofilename))
 	      free(filename);
@@ -203,6 +204,15 @@ void ReadFile(XEvent *eventp,Window junk,FvwmWindow *tmp_win,
     fvwm_msg(INFO,"Read","trying to read system rc file");
     ExecuteFunction((char *)read_system_rc_cmd,NULL,&Event,C_ROOT,-1);
   }
+
+  if (this_read == 0)
+  {
+    if (debugging)
+    {
+      fvwm_msg(DBG,"ReadFile","about to call startup functions");
+    }
+    StartupStuff();
+  }
 }
 
 void PipeRead(XEvent *eventp,Window junk,FvwmWindow *tmp_win,
@@ -221,6 +231,15 @@ void PipeRead(XEvent *eventp,Window junk,FvwmWindow *tmp_win,
   {
     fvwm_msg(INFO,"PipeRead","trying to read system rc file");
     ExecuteFunction((char *)read_system_rc_cmd,NULL,&Event,C_ROOT,-1);
+  }
+
+  if (this_read == 0)
+  {
+    if (debugging)
+    {
+      fvwm_msg(DBG,"PipeRead","about to call startup functions");
+    }
+    StartupStuff();
   }
 }
 

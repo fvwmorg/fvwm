@@ -1,3 +1,9 @@
+2001-01-19  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/read.c (ReadSubFunc):
+	security fix by Tilmann Boess; do not use the .fvwm2rc from . if HOME
+	variable is not set
+
 2000-05-31  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/placement.c.orig (SmartPlacement):

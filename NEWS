@@ -1,5 +1,8 @@
 Changes in official release 2.2.5 (not released yet)
 
+* Security fix related to .fvwm2rc being searched in the current directory
+  when $HOME is not set.
+
 * A small fix in the code for SmartPlacement.
 
 * Core dump fix in pixmap code.
