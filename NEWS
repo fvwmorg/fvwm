@@ -1,5 +1,10 @@
 Changes in stable release 2.4.9 (not released yet)
 
+* Fixed interaction bug between CascadePlacement and StartsOnPage -
+  if the target page was at a negative x or y page displacement
+  from the current viewport, the window would be placed on the
+  wrong page.
+
 * Fixed a problem with colormap transition when a transient window
   died.
 
