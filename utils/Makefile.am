@@ -62,11 +62,11 @@ NEW_NAME_SYMLINKS = $(XPMROOT_NEW_NAME_SYMLINKS)
 ## Create compatibility symlinks if available, see INSTALL.fvwm
 
 install-exec-local:
-	@$(NEW_NAME_SYMLINKS) rm -f $(bindir)/fvwm-root || true
-	@$(NEW_NAME_SYMLINKS) $(LN_S) xpmroot $(bindir)/fvwm-root || \
+	@$(NEW_NAME_SYMLINKS) rm -f $(DESTDIR)$(bindir)/fvwm-root || true
+	@$(NEW_NAME_SYMLINKS) $(LN_S) xpmroot $(DESTDIR)$(bindir)/fvwm-root || \
 		echo "Warning: $(bindir)/fvwm-root symlink was not created"
 
 install-data-local:
-	@$(NEW_NAME_SYMLINKS) rm -f $(mandir)/man1/fvwm-root.1 || true
-	@$(NEW_NAME_SYMLINKS) $(LN_S) xpmroot.1 $(mandir)/man1/fvwm-root.1 || \
+	@$(NEW_NAME_SYMLINKS) rm -f $(DESTDIR)$(mandir)/man1/fvwm-root.1 || true
+	@$(NEW_NAME_SYMLINKS) $(LN_S) xpmroot.1 $(DESTDIR)$(mandir)/man1/fvwm-root.1 || \
 		echo "Warning: $(mandir)/man1/fvwm-root.1 symlink was not created"

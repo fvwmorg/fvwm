@@ -45,11 +45,11 @@ NEW_NAME_SYMLINKS =
 ## Create compatibility symlinks if available, see INSTALL.fvwm
 
 install-exec-local:
-	@$(NEW_NAME_SYMLINKS) rm -f $(bindir)/fvwm || true
-	@$(NEW_NAME_SYMLINKS) $(LN_S) fvwm2 $(bindir)/fvwm || \
+	@$(NEW_NAME_SYMLINKS) rm -f $(DESTDIR)$(bindir)/fvwm || true
+	@$(NEW_NAME_SYMLINKS) $(LN_S) fvwm2 $(DESTDIR)$(bindir)/fvwm || \
 		echo "Warning: $(bindir)/fvwm symlink was not created"
 
 install-data-local:
-	@$(NEW_NAME_SYMLINKS) rm -f $(mandir)/man1/fvwm.1 || true
-	@$(NEW_NAME_SYMLINKS) $(LN_S) fvwm2.1 $(mandir)/man1/fvwm.1 || \
+	@$(NEW_NAME_SYMLINKS) rm -f $(DESTDIR)$(mandir)/man1/fvwm.1 || true
+	@$(NEW_NAME_SYMLINKS) $(LN_S) fvwm2.1 $(DESTDIR)$(mandir)/man1/fvwm.1 || \
 		echo "Warning: $(mandir)/man1/fvwm.1 symlink was not created"

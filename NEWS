@@ -55,6 +55,8 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed negative arguments of WarpToWindow when used on an
   unmanaged window.
 
+* DESTDIR may be fully used again (only useful for distributors).
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
