@@ -1,3 +1,27 @@
+2002-09-05  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/stack.c (RaiseOrLowerWindow):
+	(__restack_window):
+	(mark_transient_subtree):
+
+	* fvwm/stack.c (restack_windows):
+	(new_layer):
+	(__restack_window):
+	fixed flickering when overlapping transients are lowered
+
+	* fvwm/stack.c (RaiseOrLowerWindow):
+	fixed StackTransientParent style without RaiseTransient or
+	LowerTransient on transient_for window
+	StackTransientParent works only on window in the same layer
+	(mark_transient_subtree):
+	fixed handling of window group hint w/ iconify
+
+	* fvwm/bindings.c (activate_binding):
+	fixed key bindings on window corners
+
+	* libs/fvwmlib.h (C_DECOR):
+	context for all window decorations
+
 2002-09-05  olicha  <olivier.chapuis@free.fr>
 
 	* NEWS:

@@ -17,6 +17,20 @@ Changes in stable release 2.4.10 (not released yet)
 
 * Fixed drawing of menu item reliefs with gradient menu faces.
 
+* Fixed key bindings on window corners.
+
+* Fixed StackTransientParent style without RaiseTransient or
+  LowerTransient on the transient_for window.
+
+* StackTransientParent works only on transient_for window if it is
+  on the same layer.
+
+* Fixed handling of window group hint with the (De)Iconify
+  command.
+
+* No more flickering transients overlapping their transient_for
+  window are lowered.
+
 * Fixed FvwmTaskBar i18n font loading
 
 -------------------------------------------------------------------

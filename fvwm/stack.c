@@ -47,6 +47,10 @@ static void ResyncFvwmStackRing(void);
 #endif
 static void ResyncXStackingOrder(void);
 static void BroadcastRestack(FvwmWindow *s1, FvwmWindow *s2);
+#if 1
+static int collect_transients_recursive(
+  FvwmWindow *t, FvwmWindow *list_head, int layer, Bool do_lower);
+#endif
 
 #define DEBUG_STACK_RING 1
 #ifdef DEBUG_STACK_RING
@@ -435,7 +439,7 @@ static Bool must_move_transients(
 }
 
 static void restack_windows(
-  FvwmWindow *r, FvwmWindow *s, int count, Bool do_broadcast_all)
+  FvwmWindow *r, FvwmWindow *s, int count, Bool do_broadcast_all, Bool do_lower)
 {
   FvwmWindow *t;
   unsigned int flags;
@@ -473,15 +477,15 @@ static void restack_windows(
     }
   }
 
-  changes.sibling = s->frame;
+  changes.sibling = (do_lower) ? r->frame : s->frame;
   if (changes.sibling != None)
   {
-    changes.stack_mode = Above;
+    changes.stack_mode = (do_lower) ? Below : Above;
     flags = CWSibling|CWStackMode;
   }
   else
   {
-    changes.stack_mode = Below;
+    changes.stack_mode = (do_lower) ? Above : Below;
     flags = CWStackMode;
   }
   XConfigureWindow (dpy, r->stack_next->frame, flags, &changes);
@@ -502,15 +506,112 @@ static void restack_windows(
   return;
 }
 
+static Bool __restack_window(
+  FvwmWindow *t, Bool do_lower, Bool do_restack_transients, Bool is_new_window)
+{
+#if 0
+  FvwmWindow *s, *r, *t2, *next, tmp_r;
+#else
+  FvwmWindow *s, *r, tmp_r;
+#endif
+  int count;
+  int test_layer;
+
+  /* detach t, so it doesn't make trouble in the loops */
+  remove_window_from_stack_ring(t);
+
+  count = 1;
+  count += get_visible_icon_window_count(t);
+
+  if (do_restack_transients)
+  {
+    /* collect the transients in a temp list */
+    tmp_r.stack_prev = &tmp_r;
+    tmp_r.stack_next = &tmp_r;
+#if 0
+    for (t2 = Scr.FvwmRoot.stack_next; t2 != &Scr.FvwmRoot; t2 = next)
+    {
+      next = t2->stack_next;
+      if ((IS_TRANSIENT(t2)) && (t2->transientfor == t->w) &&
+	  (t2->layer == t->layer) && !IS_ICONIFIED(t2))
+      {
+	/* t2 is a transient to lower */
+	count++;
+	count += get_visible_icon_window_count(t2);
+
+	/* unplug it */
+	remove_window_from_stack_ring(t2);
+	/* put it above tmp_r */
+	add_window_to_stack_ring_after(t2, tmp_r.stack_prev);
+      }
+    }
+    if (tmp_r.stack_next == &tmp_r)
+    {
+      do_restack_transients = False;
+    }
+#else
+    count = collect_transients_recursive(t, &tmp_r, t->layer, do_lower);
+    if (count == 0)
+    {
+      do_restack_transients = False;
+    }
+    count++;
+#endif
+  }
+
+  test_layer = t->layer;
+  if (do_lower)
+  {
+    test_layer--;
+  }
+  /* now find the place to reinsert t and friends */
+  for (s = Scr.FvwmRoot.stack_next; s != &Scr.FvwmRoot; s = s->stack_next)
+  {
+    if (test_layer >= s->layer)
+    {
+      break;
+    }
+  }
+  r = s->stack_prev;
+
+  if (do_restack_transients)
+  {
+    /* insert all transients between r and s. */
+    add_windowlist_to_stack_ring_after(&tmp_r, r);
+  }
+
+  /*
+  ** Re-insert t - below transients
+  */
+  add_window_to_stack_ring_after(t, s->stack_prev);
+
+  if (is_new_window && IS_TRANSIENT(t) && DO_STACK_TRANSIENT_PARENT(t) &&
+      !IS_ICONIFIED(t))
+  {
+    /* now that the new transient is properly positioned in the stack ring,
+     * raise/lower it again so that its parent is raised/lowered too */
+    RaiseOrLowerWindow(t, do_lower, True, False);
+    /* make sure the stacking order is correct - may be the sledge-hammer
+     * method, but the recursion ist too hard to understand. */
+    ResyncXStackingOrder();
+    return True;
+  }
+  else
+  {
+    /* restack the windows between r and s */
+    restack_windows(r, s, count, do_restack_transients, do_lower);
+  }
+
+  return False;
+}
+
 static void RaiseOrLowerWindow(
   FvwmWindow *t, Bool do_lower, Bool allow_recursion, Bool is_new_window)
 {
-  FvwmWindow *s, *r, *t2, *next, tmp_r;
-  int count;
+  FvwmWindow *t2;
   Bool do_move_transients;
   Bool found_transient;
   Bool no_movement;
-  int test_layer;
 
   /* Do not raise this window after command execution (see HandleButtonPress()).
    */
@@ -542,14 +643,16 @@ static void RaiseOrLowerWindow(
       {
         if (t2->w == t->transientfor)
         {
-	  if (IS_ICONIFIED(t2))
+	  if (IS_ICONIFIED(t2) || t->layer != t2->layer)
 	  {
 	    break;
 	  }
+	  /*!!!prevent loops*/
+	  RaiseOrLowerWindow(t2, do_lower, True, False);
           if ((!do_lower && DO_RAISE_TRANSIENT(t2)) ||
               (do_lower && DO_LOWER_TRANSIENT(t2))  )
           {
-	    RaiseOrLowerWindow(t2,do_lower,False,False);
+	    /* moving the parent moves our window already */
 	    return;
           }
         }
@@ -564,97 +667,32 @@ static void RaiseOrLowerWindow(
   }
   else
   {
+#if 0
     do_move_transients = must_move_transients(t, do_lower, &found_transient);
 
-    /*
-     * This part implements (Dont)FlipTransient style.
-     *
-     * must_move_transients() believes that main should always be below
+    /* must_move_transients() believes that main should always be below
      * its transients. Therefore if it finds a transient but does not wish
      * move it, this means main and its superior transients are already
      * in the correct position at the top or bottom of the layer - depending
-     * on do_lower.
-     */
+     * on do_lower. */
     no_movement = found_transient && !do_move_transients;
+#else
+    /*!!!optimize*/
+    no_movement = False;
+    do_move_transients = must_move_transients(t, do_lower, &found_transient);
+    do_move_transients =
+	    ((do_move_transients || found_transient) &&
+	     ((!do_lower && DO_RAISE_TRANSIENT(t)) ||
+              (do_lower && DO_LOWER_TRANSIENT(t))));
+#endif
   }
 
   if (!no_movement)
   {
-    /* detach t, so it doesn't make trouble in the loops */
-    remove_window_from_stack_ring(t);
-
-    count = 1;
-    count += get_visible_icon_window_count(t);
-
-    if (do_move_transients)
+    if (__restack_window(
+	  t, do_lower, do_move_transients, is_new_window) == True)
     {
-      /* collect the transients in a temp list */
-      tmp_r.stack_prev = &tmp_r;
-      tmp_r.stack_next = &tmp_r;
-      for (t2 = Scr.FvwmRoot.stack_next; t2 != &Scr.FvwmRoot; t2 = next)
-      {
-	next = t2->stack_next;
-	if ((IS_TRANSIENT(t2)) && (t2->transientfor == t->w) &&
-	    (t2->layer == t->layer) && !IS_ICONIFIED(t2))
-	{
-	  /* t2 is a transient to lower */
-	  count++;
-	  count += get_visible_icon_window_count(t2);
-
-	  /* unplug it */
-	  remove_window_from_stack_ring(t2);
-	  /* put it above tmp_r */
-	  add_window_to_stack_ring_after(t2, tmp_r.stack_prev);
-	}
-      }
-      if (tmp_r.stack_next == &tmp_r)
-      {
-	do_move_transients = False;
-      }
-    }
-
-    test_layer = t->layer;
-    if (do_lower)
-    {
-      test_layer--;
-    }
-    /* now find the place to reinsert t and friends */
-    for (s = Scr.FvwmRoot.stack_next; s != &Scr.FvwmRoot; s = s->stack_next)
-    {
-      if (test_layer >= s->layer)
-      {
-	break;
-      }
-    }
-    r = s->stack_prev;
-
-    if (do_move_transients && tmp_r.stack_next != &tmp_r)
-    {
-      /* insert all transients between r and s. */
-      add_windowlist_to_stack_ring_after(&tmp_r, r);
-    }
-
-    /*
-    ** Re-insert t - below transients
-    */
-    add_window_to_stack_ring_after(t, s->stack_prev);
-
-    if (is_new_window && IS_TRANSIENT(t) && DO_STACK_TRANSIENT_PARENT(t) &&
-	!IS_ICONIFIED(t))
-    {
-      /* now that the new transient is properly positioned in the stack ring,
-       * raise/lower it again so that its parent is raised/lowered too */
-      RaiseOrLowerWindow(t, do_lower, True, False);
-      /* make sure the stacking order is correct - may be the sledge-hammer
-       * method, but the recursion ist too hard to understand. */
-      ResyncXStackingOrder();
       return;
-    }
-    else
-    {
-      /* restack the windows between r and s */
-      restack_windows(
-	r, s, count, (do_move_transients && tmp_r.stack_next != &tmp_r));
     }
   }
 
@@ -701,18 +739,16 @@ static void RaiseOrLowerWindow(
         XRaiseWindow (dpy, t2->frame);
       }
     }
-
-
     /*  This needs to be done after all the raise hacks.  */
     raisePanFrames();
-  }
-  /* If the window has been raised, make sure the decorations are updated
-   * immediately in case we are in a complex function (e.g. raise, unshade). */
-  if (!do_lower)
-  {
+    /* If the window has been raised, make sure the decorations are updated
+     * immediately in case we are in a complex function (e.g. raise, unshade).
+     */
     XSync(dpy, 0);
     handle_all_expose();
   }
+
+  return;
 }
 
 /*
@@ -1116,6 +1152,9 @@ void mark_transient_subtree(
   }
   /* now loop over the windows and mark the ones we need to move */
   SET_IN_TRANSIENT_SUBTREE(t, 1);
+#if 1
+  (int)(t->pscratch) = 0;
+#endif
   is_finished = False;
   while (!is_finished)
   {
@@ -1130,7 +1169,7 @@ void mark_transient_subtree(
 
       if (IS_IN_TRANSIENT_SUBTREE(s))
 	continue;
-      if (DO_ICONIFY_WINDOW_GROUPS(s) && s->wmhints &&
+      if (use_window_group_hint && DO_ICONIFY_WINDOW_GROUPS(s) && s->wmhints &&
 	  (s->wmhints->flags & WindowGroupHint) &&
 	  (s->wmhints->window_group != None) &&
 	  (s->wmhints->window_group != s->w) &&
@@ -1152,6 +1191,9 @@ void mark_transient_subtree(
 	{
 	  /* have to move this one too */
 	  SET_IN_TRANSIENT_SUBTREE(s, 1);
+#if 1
+	  (int)(s->pscratch) = (int)(r->pscratch) + 1;
+#endif
 	  /* need another scan through the list */
 	  is_finished = False;
 	  continue;
@@ -1195,6 +1237,7 @@ static int collect_transients_recursive(
     FvwmWindow *tmp;
 
     tmp = s->stack_next;
+    /*!!!reorder transients by transient level*/
     if (IS_IN_TRANSIENT_SUBTREE(s))
     {
       remove_window_from_stack_ring(s);
@@ -1216,6 +1259,7 @@ void new_layer(FvwmWindow *tmp_win, int layer)
   FvwmWindow list_head;
   int add_after_layer;
   int count;
+  Bool do_lower;
 
   tmp_win = get_transientfor_top_fvwmwindow(tmp_win);
   if (layer == tmp_win->layer)
@@ -1235,11 +1279,13 @@ void new_layer(FvwmWindow *tmp_win, int layer)
   {
     /* lower below the windows in the new (lower) layer */
     add_after_layer = layer;
+    do_lower = True;
   }
   else
   {
     /* raise above the windows in the new (higher) layer */
     add_after_layer = layer + 1;
+    do_lower = False;
   }
   /* find the place to insert the windows */
   for (target = Scr.FvwmRoot.stack_next; target != &Scr.FvwmRoot;
@@ -1261,7 +1307,8 @@ void new_layer(FvwmWindow *tmp_win, int layer)
     GNOME_SetLayer(tmp_win);
   }
   /* move the windows without modifying their stacking order */
-  restack_windows(list_head.stack_next->stack_prev, target, count, (count > 1));
+  restack_windows(
+    list_head.stack_next->stack_prev, target, count, (count > 1), do_lower);
 
   return;
 }
@@ -1307,6 +1354,7 @@ static Bool is_on_top_of_layer_ignore_rom(FvwmWindow *fw)
      * windows, but on top of its layer, it would be considered on top. */
     if (Scr.bo.RaiseOverUnmanaged || overlap(fw, t))
     {
+      /*!!!check for recursive transients too*/
       if (!IS_TRANSIENT(t) || t->transientfor != fw->w ||
 	  !DO_RAISE_TRANSIENT(fw))
       {

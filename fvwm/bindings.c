@@ -326,8 +326,7 @@ static void activate_binding(
   {
     /* necessary for key bindings that work over unfocused windows */
     GrabWindowKeyOrButton(
-      dpy, Scr.Root, binding,
-      C_WINDOW|C_TITLE|C_RALL|C_LALL|C_SIDEBAR|C_ROOT|C_ICON,
+      dpy, Scr.Root, binding, C_WINDOW|C_DECOR|C_ROOT|C_ICON,
       GetUnusedModifiers(), None, do_grab);
   }
   if (fFvwmInStartup == True)
@@ -345,13 +344,11 @@ static void activate_binding(
 	C_WINDOW,
 	GetUnusedModifiers(), None, do_grab);
     }
-    if ((binding->Context & (C_WINDOW|C_TITLE|C_RALL|C_LALL|C_SIDEBAR))
-	&& binding->type == KEY_BINDING)
+    if ((binding->Context & (C_WINDOW|C_DECOR)) && binding->type == KEY_BINDING)
     {
       GrabWindowKey(
-	dpy, t->frame, binding,
-	C_WINDOW|C_TITLE|C_RALL|C_LALL|C_SIDEBAR,
-	GetUnusedModifiers(), do_grab);
+	dpy, t->frame, binding, C_WINDOW|C_DECOR, GetUnusedModifiers(),
+	do_grab);
     }
     if (binding->Context & C_ICON)
     {

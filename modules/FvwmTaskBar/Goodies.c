@@ -248,8 +248,6 @@ void InitGoodies(void)
   char tmp[1024];
 #ifdef I18N_MB
   char **ml;
-  int mc;
-  char *ds;
   XFontStruct **fs_list;
 #endif
 

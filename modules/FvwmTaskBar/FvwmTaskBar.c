@@ -1789,8 +1789,6 @@ void StartMeUp(void)
    XSetWindowAttributes attr;
 #ifdef I18N_MB
   char **ml;
-  int mc;
-  char *ds;
   XFontStruct **fs_list;
 #endif
 
