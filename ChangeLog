@@ -23,7 +23,7 @@ Thu May 27 07:38:11 1999  DanEspen  <dje@blue>
 1999-03-17  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
 
 	* INSTALL.fvwm: add note about include directories for optional
-	libraries. 
+	libraries.
 
 1999-03-16  Dominik Vogt  <dominik_vogt@hp.com>
 

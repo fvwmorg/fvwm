@@ -70,7 +70,6 @@ char *WindowBack = NULL;
 char *WindowFore = NULL;
 char *WindowHiBack = NULL;
 char *WindowHiFore = NULL;
-char *WindowLabelFormat = NULL;
 
 int ShowBalloons = 0, ShowPagerBalloons = 0, ShowIconBalloons = 0;
 char *BalloonTypeString = NULL;
@@ -78,7 +77,6 @@ char *BalloonBack = NULL;
 char *BalloonFore = NULL;
 char *BalloonFont = NULL;
 char *BalloonBorderColor = NULL;
-char *BalloonFormatString = NULL;
 int BalloonBorderWidth = 1;
 int BalloonYOffset = 2;
 
@@ -98,6 +96,7 @@ Pixel win_hi_back_pix = -1;
 Pixel win_hi_fore_pix = -1;
 char fAlwaysCurrentDesk = 0;
 PagerStringList string_list = { NULL, 0, NULL, NULL };
+Bool error_occured = False;
 
 static volatile sig_atomic_t isTerminated = False;
 
@@ -192,13 +191,10 @@ int main(int argc, char **argv)
 
   PagerFore = strdup("black");
   PagerBack = strdup("white");
-  WindowLabelFormat = strdup("%i");
   font_string = strdup("fixed");
   HilightC = strdup("black");
   BalloonFont = strdup("fixed");
   BalloonBorderColor = strdup("black");
-  BalloonTypeString = strdup("%i");
-  BalloonFormatString = strdup("%i");
   Desks = (DeskInfo *)safemalloc(ndesks*sizeof(DeskInfo));
   for(i=0;i<ndesks;i++)
     {
@@ -241,9 +237,6 @@ int main(int argc, char **argv)
                  M_ICONIFY|
 		 M_ICON_LOCATION|
 		 M_DEICONIFY|
-		 M_RES_NAME|
-		 M_RES_CLASS|
-		 M_WINDOW_NAME|
 		 M_ICON_NAME|
 		 M_CONFIG_INFO|
 		 M_END_CONFIG_INFO|
@@ -286,10 +279,24 @@ void Loop(int *fd)
   XEvent Event;
 
   while( !isTerminated )
-    {
-      if(My_XNextEvent(dpy,&Event))
+  {
+    if(My_XNextEvent(dpy,&Event))
 	DispatchEvent(&Event);
+    if (error_occured)
+    {
+      Window root;
+      unsigned border_width, depth;
+      int x,y;
+
+      if(XGetGeometry(dpy,Scr.Pager_w,&root,&x,&y,
+                      (unsigned *)&window_w,(unsigned *)&window_h,
+                      &border_width,&depth)==0)
+      {
+          exit(0);
+      }
+      error_occured = False;
     }
+  }
 }
 
 
@@ -333,11 +340,6 @@ void process_message(unsigned long type,unsigned long *body)
       break;
     case M_DEICONIFY:
       list_deiconify(body);
-      break;
-    case M_RES_CLASS:
-    case M_RES_NAME:
-    case M_WINDOW_NAME:
-      list_window_name(body,type);
       break;
     case M_ICON_NAME:
       list_icon_name(body);
@@ -407,10 +409,6 @@ void list_add(unsigned long *body)
   (*prev)->icon_view_width = 0;
   (*prev)->icon_view_height = 0;
   (*prev)->icon_name = NULL;
-  (*prev)->window_name = NULL;
-  (*prev)->res_name = NULL;
-  (*prev)->res_class = NULL;
-  (*prev)->window_label = NULL;
   (*prev)->mini_icon.picture = 0;
   (*prev)->title_height = body[9];
   (*prev)->border_width = body[10];
@@ -828,41 +826,6 @@ void list_deiconify(unsigned long *body)
     }
 }
 
-
-void list_window_name(unsigned long *body,unsigned long type)
-{
-  PagerWindow *t;
-  Window target_w;
-
-  target_w = body[0];
-  t = Start;
-  while((t!= NULL)&&(t->w != target_w))
-    {
-      t = t->next;
-    }
-  if(t!= NULL)
-    {
-      switch (type) {
-      case M_RES_CLASS:
-        if(t->res_class != NULL)
-          free(t->res_class);
-        CopyString(&t->res_class,(char *)(&body[3]));
-        break;
-      case M_RES_NAME:
-        if(t->res_name != NULL)
-          free(t->res_name);
-        CopyString(&t->res_name,(char *)(&body[3]));
-        break;
-      case M_WINDOW_NAME:
-        if(t->window_name != NULL)
-          free(t->window_name);
-        CopyString(&t->window_name,(char *)(&body[3]));
-        break;
-      }
-      LabelWindow(t);
-      LabelIconWindow(t);
-    }
-}
 
 /***********************************************************************
  *
@@ -1287,12 +1250,7 @@ void ParseOptions(void)
 	      GetNextToken(tline2, &WindowHiBack);
 	    }
 	}
-       else if (StrEquals(resource,"WindowLabelFormat"))
-         {
-           if (WindowLabelFormat)
-             free(WindowLabelFormat);
-           CopyString(&WindowLabelFormat,arg1);
-         }
+
 
       /* ... and get Balloon config options ...
          -- ric@giccs.georgetown.edu */
@@ -1364,12 +1322,6 @@ void ParseOptions(void)
 	{
 	  sscanf(arg1, "%d", &BalloonYOffset);
 	}
-      else if (StrEquals(resource,"BalloonStringFormat"))
-         {
-           if (BalloonFormatString)
-             free(BalloonFormatString);
-           CopyString(&BalloonFormatString,arg1);
-          }
 
       free(resource);
       free(arg1);
