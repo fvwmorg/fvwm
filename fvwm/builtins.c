@@ -1877,7 +1877,7 @@ static char *ReadTitleButton(
     {
       for (i = 0; i < BS_MaxButtonState; ++i)
       {
-	ReadDecorFace(spec, &TB_STATE(*tb)[i], BS_All, !i);
+	ReadDecorFace(spec, &TB_STATE(*tb)[i], button, !i);
       }
     }
     else

@@ -1,3 +1,13 @@
+2002-11-26  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm/fvwm.c (InitVariables):
+	fixed DEFAULT_EDGE_SCROLL being interpretted as 100 pixels instead
+	of 100%
+
+	* fvwm/borders.c:
+	* fvwm/builtins.c:
+	backported 2 small fixes regarding titlebar button states
+
 2002-11-13  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/bindings.c (activate_binding):

@@ -2187,7 +2187,7 @@ void CMD_ButtonState(F_CMD_ARGS)
     else if (StrEquals("inactive", token))
     {
       Scr.gs.use_inactive_buttons =
-	ParseToggleArgument(action, &action, DEFAULT_USE_ACTIVE_DOWN_BUTTONS,
+	ParseToggleArgument(action, &action, DEFAULT_USE_INACTIVE_BUTTONS,
 			    True);
     }
     else
