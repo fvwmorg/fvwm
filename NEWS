@@ -3,6 +3,9 @@ Changes in stable release 2.4.14 (not released yet)
 * Modules do not crash anymore when more than 126 windows are on
   the desktop.
 
+* FvwmIconMan displays windows correctly that were iconified and
+  then moved to another page.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.13 (1-Nov-2002)
