@@ -1936,6 +1936,13 @@ static void MenuInteraction(
       flags.do_menu = False;
       flags.is_submenu_mapped = False;
 
+      if (!mrPopup && mrPopdown && mi == MR_PARENT_ITEM(mrPopdown))
+      {
+	/* We're again on the item that we left before.  Deschedule popping it
+	 * down. */
+	mrPopup = mrPopdown;
+	mrPopdown = NULL;
+      }
       if (mrMi == mrPopup)
       {
 	/* must make current popup menu a real menu */
@@ -3151,9 +3158,7 @@ static void select_menu_item(
 	MR_STORED_ITEM(mr).height = 0;
 	MR_STORED_ITEM(mr).y = 0;
       }
-      else if (select == False &&
-	       (MST_FACE(mr).gradient_type == D_GRADIENT ||
-		MST_FACE(mr).gradient_type == B_GRADIENT))
+      else if (select == False)
       {
 	XEvent e;
 	Picture *sidePic = NULL;
@@ -3826,6 +3831,8 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
   GC pmapgc;
   XGCValues gcv;
   unsigned long gcm = GCLineWidth;
+  Bool do_clear = False;
+
   gcv.line_width = 3;
 
   if (fw && !check_if_fvwm_window_exists(fw))
@@ -3900,7 +3907,7 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
 	  XFreePixmap(dpy,pmap);
 	  MR_IS_BACKGROUND_SET(mr) = True;
 	}
-	XClearWindow(dpy, MR_WINDOW(mr));
+	do_clear = True;
 	break;
       case V_GRADIENT:
 	if (MR_IS_BACKGROUND_SET(mr) == False)
@@ -3935,7 +3942,7 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
 	  XFreePixmap(dpy,pmap);
 	  MR_IS_BACKGROUND_SET(mr) = True;
 	}
-	XClearWindow(dpy, MR_WINDOW(mr));
+	do_clear = True;
 	break;
       case D_GRADIENT:
       case B_GRADIENT:
@@ -4016,8 +4023,22 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
 	  XFreePixmap(dpy, pmap);
 	  MR_IS_BACKGROUND_SET(mr) = True;
 	}
-	XClearWindow(dpy, MR_WINDOW(mr));
+	do_clear = True;
 	break;
+      }
+      if (do_clear == True)
+      {
+	if (pevent == NULL)
+	{
+	  XClearWindow(dpy, MR_WINDOW(mr));
+	}
+	else
+	{
+	  XClearArea(
+	    dpy, MR_WINDOW(mr), pevent->xexpose.x,
+	    pevent->xexpose.y, pevent->xexpose.width,
+	    pevent->xexpose.height, False);
+	}
       }
       break;
     case PixmapMenu:
@@ -4088,12 +4109,9 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
   {
     /* be smart about handling the expose, redraw only the entries
      * that we need to */
-    if((MST_FACE(mr).type != SolidMenu &&
-	MST_FACE(mr).type != SimpleMenu &&
-	!MST_HAS_MENU_CSET(mr)) ||
-       pevent == NULL ||
-       (pevent->xexpose.y < (MI_Y_OFFSET(mi) + MI_HEIGHT(mi)) &&
-	(pevent->xexpose.y + pevent->xexpose.height) > MI_Y_OFFSET(mi)))
+    if (pevent == NULL ||
+	(pevent->xexpose.y < (MI_Y_OFFSET(mi) + MI_HEIGHT(mi)) &&
+	 (pevent->xexpose.y + pevent->xexpose.height) > MI_Y_OFFSET(mi)))
     {
       paint_item(mr, mi, fw, True);
     }

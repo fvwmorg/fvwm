@@ -3,6 +3,11 @@ Changes in stable release 2.4.10 (not released yet)
 * The commands Maximize, Resize and ResizeMove can be used on icons
   as it was in 2.2.x.
 
+* Fixed hilighting of menu items with HGradient and VGradient
+  MenuFace.  Reduced flickering with these options.
+
+* Fixed a minor problem with entering submenus via keyboard.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.9 (11-Aug-2002)
