@@ -202,12 +202,12 @@ protocol (even for a local connection) so $DISPLAY should be used for
 local connections, as it may use Unix-domain sockets, which are
 faster.
 
-\fIFvwm\fP has a two special functions for initialization:
-InitFunction and RestartFunction, which are executed during
-Initialization and Restarts (respectively).  These may be customized
-in the user's rc file via the AddToFunc facility (described later) to
-start up modules, xterms, or whatever you'd like have started by
-\fIfvwm\fP.
+Fvwm has three special functions for initialization:
+StartFunction, which is executed on startups and restarts; InitFunction
+and RestartFunction, which are executed during Initialization and Restarts
+(respectively) just after StartFunction.  These may be customized
+in a user's rc file via the AddToFunc facility (described later) to start up
+modules, xterms, or whatever you'd like to have started by fvwm.
 
 \fIFvwm\fP also has a special exit function: ExitFunction, executed
 when exiting or restarting before actually quitting or anything else.
@@ -1418,6 +1418,23 @@ IconPath or PixmapPath command.  To fix this add undefine(`include')
 prior to the IconPath command, or better use the '-m4-prefix' option
 to force all m4 directives to have a prefix of "m4_" (see the
 \fIFvwmM4\fP man page).
+
+
+.IP "ImagePath \fIpath\fP"
+Specifies a colon separated list of directories in which to search
+for images (both monochrome and pixmap).
+
+\fINOTE\fP: ImagePath makes obsolete IconPath and PixmapPath commands in the
+next fvwm versions. In this version all of the three commands are allowed.
+
+The ImagePath may contain environment variables such as $HOME (or
+${HOME}).  Further, a '+' in the path is expanded to the previous
+value of the path, allowing easy appending or prepending to the path.
+
+For example:
+.EX
+ImagePath $HOME/icons:+:/usr/include/X11/bitmaps
+.EE
 
 
 .IP "Key \fIkeyname Context Modifiers Function\fP"

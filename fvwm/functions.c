@@ -32,6 +32,8 @@ extern FvwmWindow *Tmp_win;
 extern int menuFromFrameOrWindowOrTitlebar;
 Bool desperate;
 
+void setImagePath(F_CMD_ARGS);
+
 /*
  * be sure to keep this list properly ordered for bsearch routine!
  *
@@ -115,6 +117,7 @@ static struct functions func_config[] =
   {"IconFont",     LoadIconFont,     F_ICONFONT,            FUNC_NO_WINDOW},
   {"Iconify",      iconify_function, F_ICONIFY,             FUNC_NEEDS_WINDOW},
   {"IconPath",     setIconPath,      F_ICON_PATH,           FUNC_NO_WINDOW},
+  {"ImagePath",    setImagePath,     F_ICON_PATH,           FUNC_NO_WINDOW},
   {"Key",          ParseKeyEntry,    F_KEY,                 FUNC_NO_WINDOW},
   {"KillModule",   module_zapper,    F_ZAP,                 FUNC_NO_WINDOW},
   {"Lower",        lower_function,   F_LOWER,               FUNC_NEEDS_WINDOW},
@@ -170,10 +173,50 @@ static struct functions func_config[] =
 #ifdef WINDOWSHADE
   {"WindowShade",  WindowShade,      F_WINDOW_SHADE,        FUNC_NEEDS_WINDOW},
 #endif /* WINDOWSHADE */
-  {"XORPixmap",    SetXORPixmap,     F_XOR,                 FUNC_NO_WINDOW},
   {"XORValue",     SetXOR,           F_XOR,                 FUNC_NO_WINDOW},
   {"",0,0,0}
 };
+
+
+/* migo (02-Oct-1999): add ImagePath not to break 2.3.x configurations */
+/* setPath() is from fvwm-2.3.x/libs/System.c */
+
+/**
+ * Set a colon-separated path, with environment variable expansions,
+ * and expand '+' to be the value of the previous path.
+ **/
+void setPath( char** p_path, char* newpath, int free_old_path )
+{
+    char* oldpath = *p_path;
+    int oldlen = strlen( oldpath );
+    char* stripped_path = stripcpy( newpath );
+    int found_plus = strchr( newpath, '+' ) != NULL;
+
+    /** Leave room for the old path, if we find a '+' in newpath **/
+    *p_path = envDupExpand( stripped_path, found_plus ? oldlen : 0 );
+    free( stripped_path );
+
+    if ( found_plus ) {
+        char* p = strchr( *p_path, '+' );
+        memmove( p+oldlen, p+1, strlen(p+1) );
+
+        /* copy oldlen+1 bytes to include the trailing NUL */
+        strncpy( p, oldpath, oldlen+1 );
+    }
+
+    if ( free_old_path )
+        free( oldpath );
+}
+void setImagePath(F_CMD_ARGS)
+{
+    extern char *PixmapPath, *IconPath;
+    char *newPixmapPath = strdup(PixmapPath);
+    char *newIconPath   = strdup(IconPath  );
+    setPath( &newPixmapPath, action, 1 );
+    setPath( &newIconPath,   action, 1 );
+    setPixmapPath(eventp, w, tmp_win, context, newPixmapPath, Module);
+    setIconPath  (eventp, w, tmp_win, context, newIconPath,   Module);
+}
 
 
 /*

@@ -1,3 +1,11 @@
+1999-10-02  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm/fvwm.c (StartupStuff): add support for StartFunction
+	* fvwm/function.c (setPath, setImagePath): new functions for ImagePath
+	* NEWS, fvwm/fvwm2.1: document StartFunction & ImagePath support
+
+	* fvwm/events.c (HandlePropertyNotify): fix cut-and-paste typo
+
 1999-10-02  Dominik Vogt  <dominik_vogt@gmx.de>
 
 	* fvwm/events.c (HandlePropertyNotify): limits names of icons/windows

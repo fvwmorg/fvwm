@@ -478,7 +478,7 @@ void HandlePropertyNotify()
       Tmp_win->name = (char *)text_prop.value;
       if (Tmp_win->name && strlen(Tmp_win->name) > 200)
 	/* limit to prevent hanging X server */
-	Tmp_win->name[MAX_WINDOW_NAME_LEN] = 200;
+	Tmp_win->name[200] = 0;
 
       if (Tmp_win->name == NULL)
         Tmp_win->name = NoName;

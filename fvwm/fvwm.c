@@ -515,7 +515,7 @@ int main(int argc, char **argv)
   /* Make sure we have the correct click time now. */
   if (Scr.ClickTime < 0)
     Scr.ClickTime = -Scr.ClickTime;
-
+  fFvwmInStartup = False;
   DBUG("main","Entering HandleEvents loop...");
 
   HandleEvents();
@@ -552,8 +552,11 @@ void StartupStuff(void)
   checkPanFrames();
 #endif
 
-  fFvwmInStartup = False;
-  
+  /* migo (02-Oct-1999): execute StartFunction */
+  if (FindPopup("StartFunction")) {
+    ExecuteFunction("Function StartFunction", NULL, &Event, C_ROOT, -1);
+  }
+
   if(Restarting)
   {
     mr = FindPopup("RestartFunction");
@@ -1290,7 +1293,6 @@ void InitVariables(void)
   Scr.StdReliefGC = 0;
   Scr.StdShadowGC = 0;
   Scr.DrawGC = 0;
-  Scr.DrawPicture = NULL;
   Scr.hasIconFont = False;
   Scr.hasWindowFont = False;
 

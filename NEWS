@@ -1,3 +1,9 @@
+Changes in official release 2.2.3 (??? 1999)
+
+* Added support for StartFunction & ImagePath not to break new configurations.
+
+* Fixed long-window-name-hangs-X bug.
+
 Changes in official release 2.2.2 (May 1999)
 
 * New "Emulate"  command  for independent  control of the  move/resize
