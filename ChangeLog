@@ -1,3 +1,18 @@
+1999-02-28  Matthias Clasen  <clasen@mathematik.uni-freiburg.de>
+
+        * libs/ModParse.c (GetArgument): fix GetArgument for quoted args.
+        (DoPeekArgument): new function needed in GetArgument.
+	Use safemalloc instead of malloc ( change copied from  
+	modules/FvwmEvent/Parse.c ).
+        (PeekArgument): now call DoPeekArgument.
+
+        * fvwm/move.c (InteractiveMove): fix behaviour of
+        InteractiveMove when called from a context other than a
+        ButtonPress or KeyPress.
+
+        * fvwm/builtins.c (WindowShade): fix an off-by-one error
+        with shaded FvwmBorder windows.
+
 1999-02-26  Hippo
 
         * fvwm/builtins.c: Emulate command updates feedback window position.

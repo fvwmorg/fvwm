@@ -42,9 +42,9 @@ int cmsDelayDefault = 10; /* milliseconds */
 /* Perform the movement of the window. ppctMovement *must* have a 1.0 entry
  * somewhere in ins list of floats, and movement will stop when it hits a 1.0
  * entry */
-void AnimatedMoveAnyWindow(FvwmWindow *tmp_win, Window w, int startX, int startY,
-                           int endX, int endY, Bool fWarpPointerToo,
-                           int cmsDelay, float *ppctMovement )
+void AnimatedMoveOfWindow(Window w,int startX,int startY,int endX, int endY,
+			  Bool fWarpPointerToo, int cmsDelay,
+			  float *ppctMovement )
 {
   int pointerX, pointerY;
   int currentX, currentY;
@@ -69,7 +69,6 @@ void AnimatedMoveAnyWindow(FvwmWindow *tmp_win, Window w, int startX, int startY
   lastY = startY;
 
   if (deltaX == 0 && deltaY == 0) return; /* go nowhere fast */
-
   do {
     currentX = startX + deltaX * (*ppctMovement);
     currentY = startY + deltaY * (*ppctMovement);
@@ -82,38 +81,7 @@ void AnimatedMoveAnyWindow(FvwmWindow *tmp_win, Window w, int startX, int startY
       XWarpPointer(dpy,None,Scr.Root,0,0,0,0,
 		   pointerX,pointerY);
     }
-#ifndef NO_ETERM_SUPPORT
-    if (tmp_win)
-    { /* send configure notify event for Eterm */
-      XEvent client_event;
-      client_event.type = ConfigureNotify;
-      client_event.xconfigure.display = dpy;
-      client_event.xconfigure.event = tmp_win->w;
-      client_event.xconfigure.window = tmp_win->w;
-      client_event.xconfigure.x = currentX + tmp_win->boundary_width;
-      client_event.xconfigure.y = currentY + tmp_win->title_height + tmp_win->boundary_width;
-      client_event.xconfigure.width = tmp_win->frame_width - 2 * tmp_win->boundary_width;
-      client_event.xconfigure.height = tmp_win->frame_height - 2 * tmp_win->boundary_width - tmp_win->title_height;
-      client_event.xconfigure.border_width = 0;
-      /* Real ConfigureNotify events say we're above title window, so ... */
-      /* what if we don't have a title ????? */
-      client_event.xconfigure.above = tmp_win->frame;
-      client_event.xconfigure.override_redirect = False;
-      XSendEvent(dpy, tmp_win->w, False, StructureNotifyMask, &client_event);
-#ifdef FVWM_DEBUG_MSGS
-      fvwm_msg(DBG,"AnimatedMoveAnyWindow","Sent ConfigureNotify (w == %d, h == %d)",
-               client_event.xconfigure.width,client_event.xconfigure.height);
-#endif
-    }
-#endif /* NO_ETERM_SUPPORT */
     XFlush(dpy);
-    if (tmp_win) {
-      tmp_win->frame_x = currentX;
-      tmp_win->frame_y = currentY;
-      BroadcastConfig(M_CONFIGURE_WINDOW, tmp_win);
-      FlushOutputQueues();
-    }
-    
     usleep(cmsDelay*1000); /* usleep takes microseconds */
 #ifdef GJB_ALLOW_ABORTING_ANIMATED_MOVES
     /* this didn't work for me -- maybe no longer necessary since
@@ -133,24 +101,6 @@ void AnimatedMoveAnyWindow(FvwmWindow *tmp_win, Window w, int startX, int startY
     }
   while (*ppctMovement != 1.0 && ppctMovement++);
 
-}
-
-/* used for moving menus, not a client window */
-void AnimatedMoveOfWindow(Window w, int startX, int startY,
-                             int endX, int endY, Bool fWarpPointerToo,
-                             int cmsDelay, float *ppctMovement)
-{
-  AnimatedMoveAnyWindow(NULL, w, startX, startY, endX, endY, fWarpPointerToo,
-                        cmsDelay, ppctMovement);
-}
-
-/* used for moving client windows */
-void AnimatedMoveFvwmWindow(FvwmWindow *tmp_win, Window w, int startX, int startY,
-                             int endX, int endY, Bool fWarpPointerToo,
-                             int cmsDelay, float *ppctMovement)
-{
-  AnimatedMoveAnyWindow(tmp_win, w, startX, startY, endX, endY, fWarpPointerToo,
-                        cmsDelay, ppctMovement);
 }
 
 
@@ -222,7 +172,7 @@ void move_window_doit(XEvent *eventp,Window w,FvwmWindow *tmp_win,
   if (w == tmp_win->frame)
   {
     if (fAnimated) {
-      AnimatedMoveFvwmWindow(tmp_win,w,-1,-1,FinalX,FinalY,fWarp,-1,NULL);
+      AnimatedMoveOfWindow(w,-1,-1,FinalX,FinalY,fWarp,-1,NULL);
     }
     SetupFrame (tmp_win, FinalX, FinalY,
 		tmp_win->frame_width, tmp_win->frame_height,FALSE);
@@ -467,11 +417,7 @@ void moveLoop(FvwmWindow *tmp_win, int XOffset, int YOffset, int Width,
   int xl,yt,delta_x,delta_y,paged;
   unsigned int button_mask = 0;
   unsigned int bw = tmp_win->bw;
-  FvwmWindow tmp_win_copy;
 
-  /* make a copy of the tmp_win structure for sending to the pager */
-  memcpy(&tmp_win_copy, tmp_win, sizeof(FvwmWindow));
-  
   XQueryPointer(dpy, Scr.Root, &JunkRoot, &JunkChild,&xl, &yt,
 		&JunkX, &JunkY, &button_mask);
   button_mask &= Button1Mask|Button2Mask|Button3Mask|Button4Mask|Button5Mask;
@@ -529,7 +475,7 @@ void moveLoop(FvwmWindow *tmp_win, int XOffset, int YOffset, int Width,
 	      ((Event.xbutton.button == 5) && (button_mask & Button5Mask)))
 	    {
 	      /* No new button was pressed, just a delayed event */
-	      done = TRUE;
+	      done = 1;
 	      break;
 	    }
 	  if(((Event.xbutton.button == 2)&&(!Scr.gs.EmulateMWM))||
@@ -554,7 +500,7 @@ void moveLoop(FvwmWindow *tmp_win, int XOffset, int YOffset, int Width,
 		  *FinalY = tmp_win->frame_y;
 		  finished = TRUE;
 		}
-	      done = TRUE;
+	      done = 1;
 	      break;
 	    }
 	case ButtonRelease:
@@ -663,41 +609,12 @@ void moveLoop(FvwmWindow *tmp_win, int XOffset, int YOffset, int Width,
 	} /* switch */
       if(!done)
 	{
+	  if(!opaque_move)
+	    MoveOutline(Scr.Root,0,0,0,0);
 	  DispatchEvent();
 	  if(!opaque_move)
 	    MoveOutline(Scr.Root, xl, yt, Width - 1 + 2 * bw, Height - 1 + 2 * bw);
-
 	}
-#ifndef NO_ETERM_SUPPORT
-      if (opaque_move)
-        { /* send configure notify event for Eterm */
-          XEvent client_event;
-          client_event.type = ConfigureNotify;
-          client_event.xconfigure.display = dpy;
-          client_event.xconfigure.event = tmp_win->w;
-          client_event.xconfigure.window = tmp_win->w;
-          client_event.xconfigure.x = xl + tmp_win->boundary_width;
-          client_event.xconfigure.y = yt + tmp_win->title_height + tmp_win->boundary_width;
-          client_event.xconfigure.width = Width - 2 * tmp_win->boundary_width;
-          client_event.xconfigure.height = Height - 2 * tmp_win->boundary_width - tmp_win->title_height;
-          client_event.xconfigure.border_width = 0;
-          /* Real ConfigureNotify events say we're above title window, so ... */
-          /* what if we don't have a title ????? */
-          client_event.xconfigure.above = tmp_win->frame;
-          client_event.xconfigure.override_redirect = False;
-          XSendEvent(dpy, tmp_win->w, False, StructureNotifyMask, &client_event);
-#ifdef FVWM_DEBUG_MSGS
-          fvwm_msg(DBG,"SetupFrame","Sent ConfigureNotify (w == %d, h == %d)",
-                   client_event.xconfigure.width,client_event.xconfigure.height);
-#endif
-	}
-#endif /* NO_ETERM_SUPPORT */
-      if(opaque_move) { /* no point in doing this if server grabbed */
-        tmp_win_copy.frame_x = xl;
-        tmp_win_copy.frame_y = yt;
-        BroadcastConfig(M_CONFIGURE_WINDOW, &tmp_win_copy);
-        FlushOutputQueues();
-      }
     }
   if (!NeedToResizeToo)
     /* Don't wait for buttons to come up when user is placing a new window
@@ -871,7 +788,7 @@ void InteractiveMove(Window *win, FvwmWindow *tmp_win, int *FinalX, int *FinalY,
       XFlush(dpy);
     }
 
-  if (eventp->type != KeyPress)
+  if (eventp->type == ButtonPress)
     {
       DragX = eventp->xbutton.x_root;
       DragY = eventp->xbutton.y_root;
