@@ -43,6 +43,8 @@ Changes in stable release 2.4.5 (not released yet)
 
 * Fixed crash when something like "$[$v]" appeared in a command.
 
+* Fixed parsing of conditions with more than one comma.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.

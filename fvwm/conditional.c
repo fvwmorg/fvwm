@@ -293,7 +293,7 @@ void CreateConditionMask(char *flags, WindowConditionMask *mask)
       free(prev_condition);
 
     prev_condition = condition;
-    tmp = GetNextToken(tmp, &condition);
+    tmp = GetNextSimpleOption(tmp, &condition);
   }
 
   if (prev_condition)
