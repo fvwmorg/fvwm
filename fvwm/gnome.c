@@ -733,7 +733,7 @@ GNOME_SetClientList(void)
 		{
 			if (!DO_SKIP_WINDOW_LIST(t))
 			{
-				wl[i++] = FW_W(t);
+				wl[i++] = t->w;
 			}
 		}
 	}

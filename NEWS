@@ -6,6 +6,9 @@ Changes in stable release 2.4.16 (not released yet)
 * Fixed a possible core dump when more than 256 windows are on
   the desktop.
 
+* Initial drawing and final undrawing of wire frame no longer
+  toggles the pixel in the top left corner of the screen.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
