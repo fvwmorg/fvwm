@@ -1,4 +1,4 @@
-Changes in stable release 2.4.7 (not released yet)
+Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at
   the same time that was broken in 2.4.6.

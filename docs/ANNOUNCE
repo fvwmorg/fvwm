@@ -1,64 +1,29 @@
-Fvwm 2.4.6 is a maintenance release for 2.4.5.  Apart from fixing
-a number of minor or rare problems, it addresses slow opaque
-window movement and resizing that was not encountered in the 2.2.x
-releases.  If yo do not use opaque window movement or resizing and
-did not encounter any of the bugs described below you do not need
-to upgrade.  System administrators are strongly encouraged to move
-to 2.4.6 from any earlier 2.4.x release.
+Fvwm 2.4.7 is a maintenance release for 2.4.6 that fixes a number
+of minor or rare problems.  System administrators are strongly
+encouraged to move to 2.4.6 or 2.4.7 from any earlier 2.4.x release.
 
 The release is available at the fvwm home page: http://www.fvwm.org/
-
-
-New Features:
--------------
-
-* New conditional command ThisWindow.
-
-* Better support of non ISO-8859-1 window and icon titles. See the
-  --disable-compound-text option in INSTALL.fvwm for more details.
 
 
 Bug fixes:
 ----------
 
-* Improved speed of opaque window movement/resizing.
+* Fixed parsing of WindowList with conditions and a position at
+  the same time that was broken in 2.4.6.
 
-* Fixed a bug that caused windows not being raised and lowered
-  properly.
+* Fixed some problems with the DeskOnly option of FvwmTaskBar
+  (windows were duplicated when moving to a different Desk; the
+  StickyIcon style was ignored).
 
-* Suppress error message when using XBM icons.
+* Fixed config.h warnings with some compilers introduced in 2.4.6.
 
-* Fixed a read descriptor problem in FvwmTaskBar
+* Fixed icon titles being raised when they should not be.
 
-* Fixed a minor colour update bug in the pager.
+* Fixed initial drawing of the internals of the FvwmPager window.
 
-* Fixed an fvwm crash when a module died at the wrong moment;
-  specifically a transient FvwmPager of FvwmIconMan.
+* Fixed the FvwmAudio compatible mode in FvwmEvent when external
+  audio player is used.
 
-* Fixed placement of WindowList on wrong Xinerama screen when
-  called without any options on a screen other than the primary
-  screen.
+* Fixed execution on QNX.
 
-* Fixed a problem with root bindings and xfishtank.
-
-* Fixed moving windows with the keyboard over the edge of the
-  screen when the pointer remained of the previous page.
-
-* Do not hilight windows after ResizeMove.
-
-* Some fixes in the configure script that caused some rare
-  problems detecting gnome and ncurses.
-
-* Fixed a memory leak in the Pick command.
-
-* Allow to choose windows with CirculateSkip with the Pick command.
-
-* Fixed an FvwmScript compile problem on dec-osf5.
-
-* The window handles are now resizes as they should when the
-  HandleWidth style changes.
-
-* The Circulate command does not select a random window when no
-  window has the focus.
-
-* Fixed a rare menu placement problem with Xinerama.
+* Minor improvements in the man page.
