@@ -677,6 +677,7 @@ void do_menu(MenuParameters *pmp, MenuReturn *pmret)
   Time t0 = lastTimestamp;
   XEvent tmpevent;
   double_keypress dkp;
+  Bool do_warp;
   /* must be saved before launching parallel menus (by using the dynamic
    * actions). */
   static Bool do_warp_to_title = False;
@@ -731,6 +732,14 @@ void do_menu(MenuParameters *pmp, MenuReturn *pmret)
     pmp->screen_origin_x = pmp->pops->pos_hints.screen_origin_x;
     pmp->screen_origin_y = pmp->pops->pos_hints.screen_origin_y;
   }
+  if (pmp->pops->flags.do_not_warp)
+  {
+    do_warp = False;
+  }
+  else
+  {
+    do_warp = True;
+  }
   /* Figure out where we should popup, if possible */
   if (!pmp->flags.is_already_mapped)
   {
@@ -778,8 +787,8 @@ void do_menu(MenuParameters *pmp, MenuReturn *pmret)
     /* it might also move parent_menu out of the way */
     if (!pop_menu_up(
       &(pmp->menu), pmp, pmp->parent_menu, NULL, pmp->pTmp_win, pmp->pcontext,
-      x, y, prefer_left_submenus, key_press /*warp*/, pmp->pops, NULL,
-      &do_warp_to_title, None))
+      x, y, prefer_left_submenus, do_warp, pmp->pops, NULL, &do_warp_to_title,
+      None))
     {
       fFailedPopup = True;
       XBell(dpy, 0);

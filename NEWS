@@ -37,6 +37,8 @@ Changes in stable release 2.4.16 (not released yet)
 * Fixed parsing of '@<screen>' Xinerama specification in the
   ButtonGeometry option of FvwmButtons.
 
+* The NoWarp menu position hint option works with root menus too.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
