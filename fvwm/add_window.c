@@ -95,6 +95,22 @@ void FetchWmProtocols(FvwmWindow *);
 void GetWindowSizeHints(FvwmWindow *);
 /***********************************************************************/
 
+static void delete_client_context(FvwmWindow *fw)
+{
+  FvwmWindow *cw;
+
+  /* We can not simply delete the context.  X might have reused the
+   * window structure so we would delete the context that was established
+   * by another FvwmWindow structure in the mean time. */
+  if (XFindContext(
+	dpy, fw->w, FvwmContext, (caddr_t *)&cw) != XCNOENT && cw == fw)
+  {
+    XDeleteContext(dpy, fw->w, FvwmContext);
+  }
+
+  return;
+}
+
 Bool setup_window_structure(
   FvwmWindow **ptmp_win, Window w, FvwmWindow *ReuseWin)
 {
@@ -1100,7 +1116,7 @@ void destroy_auxiliary_windows(FvwmWindow *tmp_win,
     XDeleteContext(dpy, tmp_win->frame, FvwmContext);
     XDeleteContext(dpy, tmp_win->decor_w, FvwmContext);
     XDeleteContext(dpy, tmp_win->Parent, FvwmContext);
-    XDeleteContext(dpy, tmp_win->w, FvwmContext);
+    delete_client_context(tmp_win);
   }
 
   if (HAS_TITLE(tmp_win))
@@ -2122,10 +2138,20 @@ void destroy_window(FvwmWindow *tmp_win)
 
   /****** remove from window list ******/
 
-  /* first of all, remove the window from the list of all windows! */
-  tmp_win->prev->next = tmp_win->next;
-  if (tmp_win->next != NULL)
-    tmp_win->next->prev = tmp_win->prev;
+  if (!IS_SCHEDULED_FOR_DESTROY(tmp_win))
+  {
+    /* first of all, remove the window from the list of all windows! */
+    if (tmp_win->prev != NULL)
+    {
+      tmp_win->prev->next = tmp_win->next;
+    }
+    if (tmp_win->next != NULL)
+    {
+      tmp_win->next->prev = tmp_win->prev;
+    }
+    tmp_win->prev = NULL;
+    tmp_win->next = NULL;
+  }
 
   /****** also remove it from the stack ring ******/
 
@@ -2140,12 +2166,16 @@ void destroy_window(FvwmWindow *tmp_win)
 
   if (Scr.flags.is_executing_complex_function && !DO_REUSE_DESTROYED(tmp_win))
   {
+    if (IS_SCHEDULED_FOR_DESTROY(tmp_win))
+    {
+      return;
+    }
     /* mark window for destruction */
     SET_SCHEDULED_FOR_DESTROY(tmp_win, 1);
     Scr.flags.is_window_scheduled_for_destroy = 1;
     /* this is necessary in case the application destroys the client window and
      * a new window is created with the saem window id */
-    XDeleteContext(dpy, tmp_win->w, FvwmContext);
+    delete_client_context(tmp_win);
     /* unmap the the window to fake that it was already removed */
     if (IS_ICONIFIED(tmp_win))
     {

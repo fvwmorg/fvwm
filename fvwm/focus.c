@@ -97,7 +97,8 @@ static void DoSetFocus(Window w, FvwmWindow *Fw, Bool FocusByMouse, Bool NoWarp)
    * Focus-by-mouse type focus events */
   /* Watch out: Fw may not be on the windowlist and the windowlist may be
    * empty */
-  if (Fw && Fw != get_focus_window() && Fw != &Scr.FvwmRoot)
+  if (Fw && Fw != get_focus_window() && Fw != &Scr.FvwmRoot &&
+      !IS_SCHEDULED_FOR_DESTROY(Fw))
   {
     if (FocusByMouse) /* pluck window from list and deposit at top */
     {

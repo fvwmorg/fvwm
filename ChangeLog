@@ -1,3 +1,18 @@
+2003-05-27  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/focus.c (DoSetFocus):
+	don't fiddle with the window list for windows that are going to be
+	destroyed
+
+	* fvwm/add_window.c (delete_client_context):
+	(destroy_auxiliary_windows):
+	(destroy_window):
+	fixed empty frame windows when X reused the window id for a new window
+	while the old one was scheduled to be destroyed
+
+	* fvwm/add_window.c (destroy_window):
+	fixed a core dump when window was destroyed twice in a complex function
+
 2003-05-26  Dan Espen  <dane@mk.telcordia.com>
 
 	* fvwm/builtins.c (CMD_Exec): Fix problem with Rox Filer.

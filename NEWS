@@ -45,6 +45,15 @@ Changes in stable release 2.4.16 (not released yet)
 * Fixed a bug introduced in 2.4.14.  The pointer was sometimes
   warped to another screen during a restart and command execution.
 
+* Fixed a crash when a window was destroyed twice in a complex
+  function.
+
+* Fixed corruption of the window list when windows died at the
+  wrong time.
+
+* Fixed problem with empty frame windows if X recycled the window
+  id of a window that died recently.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
