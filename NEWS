@@ -8,6 +8,8 @@ Changes in stable release 2.4.19 (not released yet)
 
 * Allow whitespace in menu names.
 
+* Fixed a hang when restarting FvwmCommand.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.18 (19-Mar-2004)
