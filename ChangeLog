@@ -1,5 +1,10 @@
 2003-01-24  Dominik Vogt  <dominik.vogt@gmx.de>
 
+	* NEWS:
+	* configure.in:
+	set version to 2.4.16
+
+	* NEWS:
 	* fvwm/fvwm2.1:
 	updated for 2.4.15
 
