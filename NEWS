@@ -6,6 +6,12 @@ Changes in stable release 2.4.14 (not released yet)
 * FvwmIconMan displays windows correctly that were iconified and
   then moved to another page.
 
+* Appliation provided icon windows no longer appear at 0 0 when
+  restarting.
+
+* The built-in session management can handle window names, classes
+  etc. beginning with whitespace (textedit).
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.13 (1-Nov-2002)

@@ -341,6 +341,10 @@ ICON_DBG((stderr,"ciw: iph%s used '%s'\n", (tmp_win->icon_p_height)?"":" not",tm
     attributes.event_mask = XEVMASK_ICONPW;
     valuemask = CWEventMask;
     XChangeWindowAttributes(dpy, tmp_win->icon_pixmap_w, valuemask,&attributes);
+    if (!IS_ICON_OURS(tmp_win))
+    {
+      XMoveWindow(dpy, tmp_win->icon_pixmap_w, def_x, def_y);
+    }
   }
   if (old_icon_pixmap_w && old_icon_pixmap_w != tmp_win->icon_pixmap_w)
   {

@@ -1,3 +1,11 @@
+2002-11-12  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/session.c (LoadWindowStates):
+	fixed parsing of strings beginning with whitespace in session file
+
+	* fvwm/icons.c (CreateIconWindow):
+	fixed initial position of application provided icon windows
+
 2002-11-07  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/stack.c (BroadcastRestack):

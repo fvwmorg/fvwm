@@ -508,8 +508,10 @@ LoadWindowStates(char *filename)
 {
   FILE *f;
   char s[4096], s1[4096];
+  char *s2;
   int i, pos, pos1;
   unsigned long w;
+  int n;
 
   if (!VerifyVersionInfo(filename))
     return;
@@ -531,7 +533,8 @@ LoadWindowStates(char *filename)
 
   while (fgets(s, sizeof(s), f))
   {
-    sscanf(s, "%4000s", s1);
+    n = 0;
+    sscanf(s, "%4000s%n", s1, &n);
 #ifdef SESSION
     /* migo: temporarily */
     if (!strcmp(s1, "[REAL_STATE_FILENAME]"))
@@ -622,27 +625,52 @@ LoadWindowStates(char *filename)
     }
     else if (!strcmp(s1, "[CLIENT_ID]"))
     {
-      sscanf(s, "%*s %[^\n]", s1);
+      s2 = s + n;
+      if (*s2 != 0)
+      {
+	s2++;
+      }
+      sscanf(s2, "%[^\n]", s1);
       matches[num_match - 1].client_id = duplicate(s1);
     }
     else if (!strcmp(s1, "[WINDOW_ROLE]"))
     {
-      sscanf(s, "%*s %[^\n]", s1);
+      s2 = s + n;
+      if (*s2 != 0)
+      {
+	s2++;
+      }
+      sscanf(s2, "%[^\n]", s1);
       matches[num_match - 1].window_role = duplicate(s1);
     }
     else if (!strcmp(s1, "[RES_NAME]"))
     {
-      sscanf(s, "%*s %[^\n]", s1);
+      s2 = s + n;
+      if (*s2 != 0)
+      {
+	s2++;
+      }
+      sscanf(s2, "%[^\n]", s1);
       matches[num_match - 1].res_name = duplicate(s1);
     }
     else if (!strcmp(s1, "[RES_CLASS]"))
     {
-      sscanf(s, "%*s %[^\n]", s1);
+      s2 = s + n;
+      if (*s2 != 0)
+      {
+	s2++;
+      }
+      sscanf(s2, "%[^\n]", s1);
       matches[num_match - 1].res_class = duplicate(s1);
     }
     else if (!strcmp(s1, "[WM_NAME]"))
     {
-      sscanf(s, "%*s %[^\n]", s1);
+      s2 = s + n;
+      if (*s2 != 0)
+      {
+	s2++;
+      }
+      sscanf(s2, "%[^\n]", s1);
       matches[num_match - 1].wm_name = duplicate(s1);
     }
     else if (!strcmp(s1, "[WM_COMMAND]"))
