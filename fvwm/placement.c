@@ -898,6 +898,16 @@ Bool PlaceWindow(
 	  2*tmp_win->boundary_width;
 	Scr.randomy = 0;
       }
+
+      /* the left and top sides are more important in huge windows */
+      if (tmp_win->attr.x < 0)
+      {
+	tmp_win->attr.x = 0;
+      }
+      if (tmp_win->attr.y < 0)
+      {
+	tmp_win->attr.y = 0;
+      }
       break;
     case PLACE_MINOVERLAP:
       CleverPlacement(tmp_win, &screen_g, &xl, &yt, pdeltax, pdeltay, 0);
