@@ -467,7 +467,15 @@ static void restack_windows(
     }
   }
 
-  changes.sibling = r->frame;
+  if (IS_ICONIFIED(r))
+  {
+    changes.sibling = (r->icon_pixmap_w != None) ?
+      r->icon_pixmap_w : r->icon_w;
+  }
+  else
+  {
+    changes.sibling = r->frame;
+  }
   if (changes.sibling == None)
   {
     changes.stack_mode = (do_lower) ? Below : Above;
@@ -479,7 +487,10 @@ static void restack_windows(
     flags = CWStackMode | CWSibling;
   }
   XConfigureWindow (dpy, r->stack_next->frame, flags, &changes);
-  XRestackWindows (dpy, wins, count);
+  if (count > 1)
+  {
+    XRestackWindows (dpy, wins, count);
+  }
   free(wins);
   if (do_broadcast_all)
   {
@@ -657,12 +668,12 @@ static void __RaiseOrLowerWindow(
       for (t2 = Scr.FvwmRoot.stack_next; t2 != &Scr.FvwmRoot;
 	   t2 = t2->stack_next)
       {
-	if (t2 == t)
-	{
-	  break;
-	}
         if (t2->w == t->transientfor)
         {
+	  if (t2 == t)
+	  {
+	    break;
+	  }
 	  if (IS_ICONIFIED(t2) || t->layer != t2->layer)
 	  {
 	    break;
@@ -1199,9 +1210,9 @@ void mark_transient_subtree(
       }
       if (!IS_TRANSIENT(s) && !use_group_hint)
 	continue;
-      r = (FvwmWindow *)s->scratch.p;
-      if (do_ignore_icons && r && IS_ICONIFIED(r))
+      if (do_ignore_icons && IS_ICONIFIED(s))
 	continue;
+      r = (FvwmWindow *)s->scratch.p;
       if (IS_TRANSIENT(s))
       {
 	if (r && IS_IN_TRANSIENT_SUBTREE(r) &&
