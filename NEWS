@@ -44,6 +44,9 @@ Changes in stable release 2.4.9 (not released yet)
 
 * Fixed a memory leak in some modules when not using glibc.
 
+* Applications using Mwm hints can now enforce that a window can
+  not be moved.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)

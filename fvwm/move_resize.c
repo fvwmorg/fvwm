@@ -956,6 +956,11 @@ static void move_window_doit(F_CMD_ARGS, Bool do_animate, int mode)
 
   if (IS_FIXED(tmp_win))
     return;
+  if (check_if_function_allowed(F_MOVE, tmp_win, True, NULL) == 0)
+  {
+    return;
+  }
+
 
   /* gotta have a window */
   w = tmp_win->frame;

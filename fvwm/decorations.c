@@ -335,6 +335,7 @@ void SelectDecor(FvwmWindow *t, window_style *pstyle, short *buttons)
     t->functions &= ~MWM_FUNC_ALL;
     t->functions = (MWM_FUNC_RESIZE | MWM_FUNC_MOVE | MWM_FUNC_MINIMIZE |
 		    MWM_FUNC_MAXIMIZE | MWM_FUNC_CLOSE) & (~(t->functions));
+fprintf(stderr,"func move: %d (%d)\n", (int)t->functions, (int)MWM_FUNC_MOVE);
   }
   if(SHAS_MWM_FUNCTIONS(sflags) && IS_TRANSIENT(t))
   {
@@ -569,9 +570,7 @@ int check_if_function_allowed(int function, FvwmWindow *t,
 	return 0;
       break;
     case F_MOVE:
-      /* Move is a funny hint. Keeps it out of the menu, but you're
-       * still allowed to move. */
-      if((!(t->functions & MWM_FUNC_MOVE))&&menu_string)
+      if (!(t->functions & MWM_FUNC_MOVE))
 	return 0;
       break;
     case F_FUNCTION:
