@@ -273,7 +273,7 @@ static char *FuncGetShad(int *NbArg, long *TabArg)
   char *tmp;
   long Id;
   XColor color;
-  
+
   (*NbArg)++;	    /* La fonction GetValue n'a qu'un seul argument */
   tmp = CalcArg(TabArg,NbArg);
   Id = atoi(tmp);
@@ -847,7 +847,7 @@ static char *FuncSendMsgAndGet(int *NbArg,long *TabArg)
     free(com_name);
     str=(char*)safecalloc(2,sizeof(char));
     sprintf(str,(err) ? "0" : "1");
-    return str; 
+    return str;
   }
 
   /* get the answer from the receiver.                              *
@@ -945,7 +945,7 @@ static char *FuncParse(int *NbArg,long *TabArg)
     step++;
     i += toklen + 4;
   }
-  
+
   if (end > l || end <= start)
   {
     str=(char*)safecalloc(1,sizeof(char));
@@ -1446,8 +1446,8 @@ static void SendSign (int NbArg,long *TabArg)
   free(arg[1]);
 }
 
-/******* WarpPointer *******/
-static void WarpPointer(int NbArg,long *TabArg)
+/******* MyWarpPointer *******/
+static void MyWarpPointer(int NbArg,long *TabArg)
 {
   int i=0;
   char *arg;
@@ -1774,7 +1774,7 @@ static void Key (int NbArg,long *TabArg)
     str = strcat(str, tmp);
     free(tmp);
   }
-  
+
   tmp = safestrdup(CatString3(widget, " ", sig));
   action = safestrdup(CatString3(tmp, " ", str));
   free(sig);
@@ -1801,9 +1801,9 @@ static void Key (int NbArg,long *TabArg)
     free(action);
     return;
   }
-  
+
   AddBinding(dpy, &BindingsList, KEY_BINDING, STROKE_ARG(0)
-	     0, keysym, key_string, modifier, C_WINDOW, 
+	     0, keysym, key_string, modifier, C_WINDOW,
 	     (void *)action, NULL);
   free(key_string);
   free(in_modifier);
@@ -1831,7 +1831,7 @@ void InitCom()
   TabCom[14]=IfThen;
   TabCom[15]=Loop;
   TabCom[16]=While;
-  TabCom[17]=WarpPointer;
+  TabCom[17]=MyWarpPointer;
   TabCom[18]=WriteToFile;
   TabCom[19]=ChangeBackColor;
   TabCom[21]=ChangeValueMax;

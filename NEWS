@@ -9,7 +9,7 @@ Changes in stable release 2.4.6 (not released yet)
 
 * Fixed a minor colour update bug in the pager.
 
-* Fixed an fvwm crash when a module died at the wron moment;
+* Fixed an fvwm crash when a module died at the wrong moment;
   specifically a transient FvwmPager of FvwmIconMan.
 
 * Fixed placement of WindowList on wrong Xinerama screen when
@@ -31,6 +31,8 @@ Changes in stable release 2.4.6 (not released yet)
 * Fixed a memory leak in the Pick command.
 
 * Allow to choose windows with CirculateSkip with the Pick command.
+
+* Fixed an FvwmScript compile problem on dec-osf5.
 
 Changes in stable release 2.4.5 (27-Jan-2002)
 
