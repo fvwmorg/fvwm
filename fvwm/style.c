@@ -2741,23 +2741,32 @@ void check_window_style_change(
 
   /****** common style flags ******/
 
+
+
+
   /* All static common styles can simply be copied. For some there is
    * additional work to be done below. */
   wf = (char *)(&FW_COMMON_STATIC_FLAGS(t));
   sf = (char *)(&SFGET_COMMON_STATIC_FLAGS(*ret_style));
-  sc = (char *)(&SCGET_COMMON_STATIC_FLAGS(*ret_style));
-  /* copy the static common window flags */
-  for (i = 0; i < sizeof(SFGET_COMMON_STATIC_FLAGS(*ret_style)); i++)
-  {
-    wf[i] = (wf[i] & ~sc[i]) | (sf[i] & sc[i]);
-  }
-
   if (IS_STYLE_DELETED(t))
   {
     /* update all styles */
     memset(flags, 0xff, sizeof(*flags));
     SET_STYLE_DELETED(t, 0);
+
+    /* copy the static common window flags */
+    for (i = 0; i < sizeof(SFGET_COMMON_STATIC_FLAGS(*ret_style)); i++)
+    {
+      wf[i] = sf[i];
+    }
+
     return;
+  }
+  sc = (char *)(&SCGET_COMMON_STATIC_FLAGS(*ret_style));
+  /* copy the static common window flags */
+  for (i = 0; i < sizeof(SFGET_COMMON_STATIC_FLAGS(*ret_style)); i++)
+  {
+    wf[i] = (wf[i] & ~sc[i]) | (sf[i] & sc[i]);
   }
 
   /*
