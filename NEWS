@@ -2,6 +2,8 @@ Changes in stable release 2.4.5 (not released yet)
 
 * Fixed moving windows between pages with the keyboard.
 
+* Fixed the size of the geometry window that was broken sometimes.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.
