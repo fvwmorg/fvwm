@@ -373,8 +373,19 @@ color_reduce_pixmap(XpmImage *image,int color_limit) {
     }                                   /* end base table init */
     color_table_ptr = image->colorTable; /* start of xpm color table */
     for(i=0; i<image->ncolors; i++) {   /* all colors in the xpm */
-      c200_substitute_color(&color_table_ptr->c_color,
-                            color_limit); /* fix each one */
+      /* Theres an array for this in the xpm library, but it doesn't
+         appear to be part of the API.  Too bad. dje 01/09/00 */
+      char **visual_color = 0;
+      if (color_table_ptr->c_color) {
+        visual_color = &color_table_ptr->c_color;
+      } else if (color_table_ptr->g_color) {
+        visual_color = &color_table_ptr->g_color;
+      } else if (color_table_ptr->g4_color) {
+        visual_color = &color_table_ptr->g4_color;
+      } else {                          /* its got to be one of these */
+        visual_color = &color_table_ptr->m_color;
+      }
+      c200_substitute_color(visual_color,color_limit);
       color_table_ptr +=1;              /* counter for loop */
     }                                   /* end all colors in xpm */
   }                                     /* end colors limited */
