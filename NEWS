@@ -18,6 +18,9 @@ Fixed a transparency problem in FvwmButtons.
 * Fixed a problem that could cause windows with the NoIcon style
   to disappear in icon manager modules when iconified.
 
+* FvwmCommand works too when invoked without the DISPLAY variable
+  set.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
