@@ -39,6 +39,9 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed problems with the pointer moving off screen in a multi
   head setup.
 
+* Fixed a potential crash with windows being destroyed during a
+  recapture operation.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)

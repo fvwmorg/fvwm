@@ -2462,10 +2462,16 @@ void CaptureOneWindow(
     destroy_window(fw);
     Event.xmaprequest.window = w;
     HandleMapRequestKeepRaised(keep_on_top_win, fw);
-    if (!fFvwmInStartup)
+    /* HandleMapRequestKeepRaised may have destroyed the fw if the window
+     * vanished while in AddWindow(), so don't access fw anymore before
+     * checking if it is a valid window. */
+    if (check_if_fvwm_window_exists(fw))
     {
-      SET_MAP_PENDING(fw, 0);
-      SET_MAPPED(fw, is_mapped);
+      if (!fFvwmInStartup)
+      {
+	SET_MAP_PENDING(fw, 0);
+	SET_MAPPED(fw, is_mapped);
+      }
     }
     /* Clean out isIconicState here, otherwise all new windos may start
      * iconified. */
