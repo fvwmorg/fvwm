@@ -1,5 +1,7 @@
 Changes in stable release 2.4.4 (not released yet)
 
+* Minor title drawing fixes.
+
 * Fixed manual placement with Xinerama.
 
 * Minor button 3 handling fix in FvwmPager.
