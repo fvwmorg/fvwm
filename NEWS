@@ -39,6 +39,8 @@ Changes in stable release 2.4.5 (not released yet)
 * Fixed bug that sometimes caused unnecessary redraws when a style
   was changed.
 
+* Fixed crash when something like "$[$v]" appeared in a command.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.
