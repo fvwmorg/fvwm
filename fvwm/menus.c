@@ -4104,7 +4104,9 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
     /* be smart about handling the expose, redraw only the entries
      * that we need to */
     if (pevent == NULL ||
-	(pevent->xexpose.y < (MI_Y_OFFSET(mi) + MI_HEIGHT(mi)) &&
+	(pevent->xexpose.y <
+	 (MI_Y_OFFSET(mi) + MI_HEIGHT(mi) +
+	  ST_RELIEF_THICKNESS(MR_STYLE(mr))) &&
 	 (pevent->xexpose.y + pevent->xexpose.height) > MI_Y_OFFSET(mi)))
     {
       paint_item(mr, mi, fw, True);
