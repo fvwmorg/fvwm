@@ -31,6 +31,9 @@ Changes in stable release 2.4.16 (not released yet)
 
 * Iconified windows without an icon do not receive focus.
 
+* Fixed a bug in FvwmPager that displayed iconified windows without
+  icon title or picture as not iconified.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)

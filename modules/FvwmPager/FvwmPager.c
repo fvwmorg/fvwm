@@ -621,6 +621,13 @@ void list_add(unsigned long *body)
   (*prev)->border_width = cfgpacket->border_width;
   (*prev)->icon_w = cfgpacket->icon_w;
   (*prev)->icon_pixmap_w = cfgpacket->icon_pixmap_w;
+  if (IS_ICONIFIED(*prev))
+  {
+    (*prev)->icon_x = 0;
+    (*prev)->icon_y = 0;
+    (*prev)->icon_width = 0;
+    (*prev)->icon_height = 0;
+  }
 
   if (win_pix_set)
   {
@@ -687,10 +694,10 @@ void list_configure(unsigned long *body)
     t->y = t->icon_y;
     t->width = t->icon_width;
     t->height = t->icon_height;
-    if(IS_ICON_SUPPRESSED(t))
+    if(IS_ICON_SUPPRESSED(t) || t->width == 0 || t->height == 0)
     {
-      t->x = -10000;
-      t->y = -10000;
+      t->x = -32768;
+      t->y = -32768;
     }
   }
   else
@@ -1059,42 +1066,41 @@ void list_iconify(unsigned long *body)
 
   target_w = body[0];
   t = Start;
-  while((t!= NULL)&&(t->w != target_w))
+  while (t != NULL && t->w != target_w)
+  {
+    t = t->next;
+  }
+  if (t != NULL)
+  {
+    t->t = (char *)body[2];
+    t->frame = body[1];
+    t->icon_x = body[3];
+    t->icon_y = body[4];
+    t->icon_width = body[5];
+    t->icon_height = body[6];
+    SET_ICONIFIED(t, True);
+    if (IS_ICON_SUPPRESSED(t) || t->icon_width == 0 ||
+	t->icon_height == 0)
     {
-      t = t->next;
+      t->x = -32768;
+      t->y = -32768;
     }
-  if(t== NULL)
+    else
     {
-      return;
+      t->x = t->icon_x;
+      t->y = t->icon_y;
     }
-  else
+    t->width = t->icon_width;
+    t->height = t->icon_height;
+    /* if iconifying main pager window turn balloons on or off */
+    if ( t->w == Scr.Pager_w )
     {
-      t->t = (char *)body[2];
-      t->frame = body[1];
-      t->icon_x = body[3];
-      t->icon_y = body[4];
-      t->icon_width = body[5];
-      t->icon_height = body[6];
-      SET_ICONIFIED(t, True);
-      if(IS_ICON_SUPPRESSED(t))
-      {
-	t->x = -32768;
-	t->y = -32768;
-      }
-      else
-      {
-	t->x = t->icon_x;
-	t->y = t->icon_y;
-      }
-      t->width = t->icon_width;
-      t->height = t->icon_height;
+      ShowBalloons = ShowIconBalloons;
+    }
+    MoveResizePagerView(t, True);
+  }
 
-      /* if iconifying main pager window turn balloons on or off */
-      if ( t->w == Scr.Pager_w )
-	ShowBalloons = ShowIconBalloons;
-
-      MoveResizePagerView(t, True);
-    }
+  return;
 }
 
 

@@ -1,3 +1,17 @@
+2003-04-19  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* FvwmPager/x_pager.c (AddNewWindow):
+	* FvwmPager/FvwmPager.c (list_configure):
+	(list_iconify):
+	(list_add):
+	fixed iconified windows without an icon showing up after a restart in
+	the pager; also fixes iconified windows flashing for a moment when they
+	first show up in the pager (e.g. Style * StartIconic).
+
+	* FvwmPager/FvwmPager.c (list_configure):
+	(list_iconify):
+	do not display an icon if a window has none on the desktop
+
 2003-03-16  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* FvwmIconMan/fvwm.c (win_in_viewport):

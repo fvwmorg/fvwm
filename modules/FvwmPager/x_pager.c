@@ -1750,19 +1750,23 @@ void AddNewWindow(PagerWindow *t)
 
   if ((i >= 0) && (i < ndesks))
   {
-    t->PagerView = XCreateWindow(dpy,Desks[i].w, x, y, w, h, 0,
-				 CopyFromParent, InputOutput, CopyFromParent,
-				 valuemask, &attributes);
+    t->PagerView = XCreateWindow(
+      dpy,Desks[i].w, x, y, w, h, 0, CopyFromParent, InputOutput,
+      CopyFromParent, valuemask, &attributes);
     if (windowcolorset > -1)
     {
       SetWindowBackground(
-	dpy, t->PagerView, w, h, &Colorset[windowcolorset], Pdepth,
-	Scr.NormalGC, True);
+	      dpy, t->PagerView, w, h, &Colorset[windowcolorset], Pdepth,
+	      Scr.NormalGC, True);
+    }
+    if (IS_ICONIFIED(t))
+    {
+      XMoveResizeWindow(dpy, t->PagerView, -32768, -32768, 1, 1);
     }
     XMapRaised(dpy, t->PagerView);
   }
   else
-    t->PagerView = None;
+	  t->PagerView = None;
 
   CalcGeom(t, icon_w, icon_h, &x, &y, &w, &h);
   t->icon_view_width = w;
@@ -1778,8 +1782,8 @@ void AddNewWindow(PagerWindow *t)
   if (windowcolorset > -1)
   {
     SetWindowBackground(
-      dpy, t->IconView, w, h, &Colorset[windowcolorset], Pdepth,
-      Scr.NormalGC, True);
+      dpy, t->IconView, w, h, &Colorset[windowcolorset],
+      Pdepth, Scr.NormalGC, True);
   }
   if(Scr.CurrentDesk == t->desk)
   {
@@ -1787,6 +1791,10 @@ void AddNewWindow(PagerWindow *t)
       dpy, 2, AnyModifier, t->IconView, True,
       ButtonPressMask | ButtonReleaseMask|ButtonMotionMask,
       GrabModeAsync, GrabModeAsync, None, None);
+  }
+  if (IS_ICONIFIED(t))
+  {
+    XMoveResizeWindow(dpy, t->IconView, -32768, -32768, 1, 1);
   }
   XMapRaised(dpy,t->IconView);
   Hilight(t,False);
