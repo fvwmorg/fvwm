@@ -1,5 +1,9 @@
 1999-05-10  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
 
+	* configure.in: set version to 2.2.2.
+
+1999-05-10  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
+
 	* utils/fvwmrc_convert: fixes by Julian Gilbey; updated to
 	cvs version 1.4.
 
