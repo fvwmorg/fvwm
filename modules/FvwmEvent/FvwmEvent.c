@@ -107,7 +107,7 @@
 #undef M_ERROR /* Solaris fix */
 #endif
 
-#include "Parse.h"
+#include "ModParse.h"
 
 #ifdef DEBUG
 #define INFO(x) fprintf(stderr,x)
@@ -177,6 +177,8 @@ char	*events[MAX_MESSAGES+MAX_BUILTIN] =
 	"mini_icon",
 	"windowshade",
 	"dewindowshade",
+	"locksonsend",
+	"sendconfig",
 /* add builtins here */
 	"startup",
 	"shutdown",

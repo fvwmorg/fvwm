@@ -214,10 +214,15 @@ char *expand(char *input, char *arguments[],FvwmWindow *tmp_win)
 {
   int l,i,l2,n,k,j;
   char *out;
+  int addto = 0; /*special cas if doing addtofunc */
 
   l = strlen(input);
   l2 = l;
 
+  if(strncasecmp(input, "AddToFunc", 9) == 0 || input[0] == '+')
+  {     
+    addto = 1;
+  } 
   i=0;
   while(i<l)
     {
@@ -246,11 +251,22 @@ char *expand(char *input, char *arguments[],FvwmWindow *tmp_win)
       if(input[i] == '$')
 	{
 	  n = input[i+1] - '0';
-	  if((n >= 0)&&(n <= 9)&&(arguments[n] != NULL))
+         if((n >= 0)&&(n <= 9))
+           {
+          if (arguments[n] != NULL)
 	    {
 	      for(k=0;k<strlen(arguments[n]);k++)
 		out[j++] = arguments[n][k];
 	      i++;
+          } else if (addto == 1)
+          {
+            out[j++] = '$';
+          } else
+          {
+            i++;
+            if (isspace(input[i+1]))
+              i++; /*eliminates extra white space*/
+          }
 	    }
 	  else if(input[i+1] == 'w')
 	    {

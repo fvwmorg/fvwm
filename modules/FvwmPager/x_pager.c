@@ -120,10 +120,13 @@ void initialize_pager(void)
   XGCValues gcv;
   unsigned long gcm;
 
-#if 0
+#if 1
   /* I don't think that this is necessary - just let pager die */
+  /* domivogt (07-mar-1999): But it is! A window being moved in the pager
+   * might die at any moment causing the Xlib calls to generate BadMatch
+   * errors. Without an error handler the pager will die! */
   XSetErrorHandler((XErrorHandler)FvwmErrorHandler);
-#endif /* 0 */
+#endif /* 1 */
 
   wm_del_win = XInternAtom(dpy,"WM_DELETE_WINDOW",False);
 
@@ -1594,24 +1597,16 @@ void MoveWindow(XEvent *Event)
  ************************************************************************/
 XErrorHandler FvwmErrorHandler(Display *dpy, XErrorEvent *event)
 {
-#if 0
-  Window root;
-  unsigned border_width, depth;
-  int x,y;
-
-  if(XGetGeometry(dpy,Scr.Pager_w,&root,&x,&y,
-		  (unsigned *)&window_w,(unsigned *)&window_h,
-		  &border_width,&depth)==0)
-    {
-      exit(0);
-    }
-
+#if 1
+  extern Bool error_occured;
+  error_occured = True;
   return 0;
 #else
   /* really should just exit here... */
+  /* domivogt (07-mar-1999): No, not really. See comment above. */
   fprintf(stderr,"%s: XError!  Bagging out!\n",MyName);
   exit(0);
-#endif /* 0 */
+#endif /* 1 */
 }
 
 

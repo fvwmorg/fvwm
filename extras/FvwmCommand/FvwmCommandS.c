@@ -108,7 +108,7 @@ void server ( char *name ) {
   if (open_fifos (f_stem) < 0) {
     exit (-1);
   }
-  SendText(Fd,"",0); /* tell fvwm that we are here */
+  SendText(Fd," ",0); /* tell fvwm that we are here */
 
   cix = 0;
 

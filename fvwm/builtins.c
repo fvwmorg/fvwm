@@ -424,7 +424,7 @@ void WindowShade(XEvent *eventp,Window w,FvwmWindow *tmp_win,
 		   tmp_win->frame_x,
 		   tmp_win->frame_y,
 		   tmp_win->frame_width,
-		   tmp_win->title_height + tmp_win->boundary_width,
+		   tmp_win->title_height + tmp_win->boundary_width - tmp_win->bw,
 		   False);
         BroadcastPacket(M_WINDOWSHADE, 3,
                         tmp_win->w, tmp_win->frame, (unsigned long)tmp_win);
@@ -1796,7 +1796,7 @@ static void NewMenuStyle(XEvent *eventp,Window w,FvwmWindow *tmp_win,
   char *option = NULL;
   char *optstring = NULL;
   char *nextarg;
-  char *args = NULL;
+  char *args;
   char *arg1;
   MenuStyle *ms;
   MenuStyle *tmpms;
@@ -4493,8 +4493,8 @@ void DirectionFunc(XEvent *eventp,Window junk,FvwmWindow *tmp_win,
   int his_x;
   int his_y;
   int score;
-  int offset= 0;
-  int distance = 0;
+  int offset;
+  int distance;
   int best_score;
   FvwmWindow *window;
   FvwmWindow *best_window;
@@ -4801,6 +4801,7 @@ void Emulate(XEvent *eventp, Window junk, FvwmWindow *tmp_win,
       fvwm_msg(ERR, "Emulate", "Unknown style '%s'", style);
     }
   free(style);
+  ApplyDefaultFontAndColors();
   return;
 }
 

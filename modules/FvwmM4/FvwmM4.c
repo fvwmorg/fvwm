@@ -40,6 +40,8 @@
 #include "../../libs/fvwmlib.h"
 #include <X11/StringDefs.h>
 #include <X11/Shell.h>
+#include <X11/extensions/shape.h>
+#include <X11/Xmu/SysUtil.h>
 #define Resolution(pixels, mm) ((((pixels) * 100000 / (mm)) + 50) / 100)
 
 char *MyName;
@@ -270,7 +272,10 @@ static char *m4_defs(Display *display, const char *host, char *m4_options, char 
 
   if (!m4_default_quotes)
   {
-    fprintf(tmpf, "changequote(%s, %s)dnl\n", m4_startquote, m4_endquote);
+    fprintf(tmpf, "%schangequote(%s, %s)%sdnl\n",
+			(m4_prefix) ? "m4_" : "",
+			m4_startquote, m4_endquote,
+			(m4_prefix) ? "m4_" : "");
   }
 
   hostname = gethostbyname(client);

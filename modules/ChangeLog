@@ -158,6 +158,25 @@ Sat Jan  9 08:52:19 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 	* FvwmIconBox/FvwmIconBox.h:
 	* FvwmButtons/FvwmButtons.h: Moved min/max/abs macros to acconfig.h.
 
+1999-06-23  Dominik Vogt  <dominik_vogt@gmx.de>
+
+	* FvwmEvent.c (events): fixed list of events (core dump)
+
+1999-04-27  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
+
+	* FvwmEvent.1: fixed incorrect statement about calling rsynth.
+	(revision 1.1 -> revision 1.2 merge)
+
+1999-03-12  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
+
+	* Parse.c, Parse.h: removed files from distribution.
+	* FvwmEvent.c: change include Parse.h to ModParse.h (in libs).
+
+1999-02-28  Matthias Clasen  <clasen@mathematik.uni-freiburg.de>
+
+	* Makefile.am (FvwmEvent_SOURCES): Remove Parse.c and Parse.h,
+	use the corresponding functions from libs/ModParse.c.
+
 1999-01-08  Paul D. Smith  <psmith@gnu.org>
 
 	* FvwmPager/FvwmPager.c (main): Remove USE_POSIX/USE_BSD stuff;
