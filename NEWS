@@ -13,6 +13,8 @@ Changes in stable release 2.4.19 (not released yet)
 * A double click no longer works occurs when two different mouse
   buttons are pressed.
 
+* Fixed a relief drawing problem in FvwmWinList.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.18 (19-Mar-2004)

@@ -401,6 +401,7 @@ void DoButton(Button *button, int x, int y, int w, int h, Bool clear_bg)
   /* The margin we want between the relief/text/pixmaps */
 #define INNER_MARGIN 2
 
+  h += 1;
   up=button->up;
   set=button->set;
   topgc = up ? hilite[set] : shadow[set];
@@ -495,7 +496,7 @@ void DoButton(Button *button, int x, int y, int w, int h, Bool clear_bg)
 #endif
 
   /* Draw relief last */
-  RelieveRectangle(dpy,win,x,y,w-1,h,topgc,bottomgc,button->reliefwidth);
+  RelieveRectangle(dpy,win,x,y,w-1,h-1,topgc,bottomgc,button->reliefwidth);
 
   button->needsupdate=0;
 }
