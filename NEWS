@@ -11,6 +11,8 @@ Changes in stable release 2.4.10 (not released yet)
 * Fixed race conditions in FvwmTaskBar with AutoStick that caused
   it to hang.
 
+* Fixed drawing of pager balloons with BalloonBack option.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.9 (11-Aug-2002)

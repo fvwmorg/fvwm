@@ -945,9 +945,6 @@ void initialize_pager(void)
 	Desks[i].balloon.yoffset = 3;
       }
 
-      /* create balloon window
-	 -- ric@giccs.georgetown.edu */
-      valuemask = CWOverrideRedirect | CWEventMask | CWColormap;
       /* tell WM to ignore this window */
       attributes.override_redirect = True;
       attributes.event_mask = ExposureMask;
