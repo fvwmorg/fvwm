@@ -20,6 +20,8 @@ Changes in stable release 2.4.5 (not released yet)
 * Fixed a crash with the UseStyle style in combination with
   HilightBack.
 
+* Fixed excessive redraws of the windows under a window being shaded.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.

@@ -890,10 +890,17 @@ void HandleExpose(void)
 {
   XRectangle r;
 
-  if (Event.xexpose.count != 0)
+#if 0
+  /* This doesn't work well. Sometimes, the expose count is zero although
+   * dozens of expose events are pending.  This happens all the time during
+   * a shading animation.  SImply flush expose events unconditionally. */
+  if (Event.xexpose.count != 0||1)
   {
     flush_accumulate_expose(Event.xexpose.window, &Event);
   }
+#else
+  flush_accumulate_expose(Event.xexpose.window, &Event);
+#endif
   r.x = Event.xexpose.x;
   r.y = Event.xexpose.y;
   r.width = Event.xexpose.width;

@@ -1,3 +1,10 @@
+2002-01-10  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/events.c (HandleExpose):
+	eat up expose events even if the server claims that the expose count is
+	zero; fixes a problem with many redraws of windows that are uncovered
+	by shading a window above them
+
 2002-01-09  olicha  <olivier.chapuis@free.fr>
 
 	* fvwm/style.c (CMD_Style):
