@@ -24,6 +24,8 @@ Improvements and compatibility issues:
 * Applications using Mwm hints can now enforce that a window can
   not be moved.
 
+* fvwm-menu-headlines: added support for CNN and BBC headlines.
+
 
 Bug fixes:
 ----------

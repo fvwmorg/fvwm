@@ -63,6 +63,8 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed a possible crash when a window was recaptured and the
   focus could not be transfered to another window.
 
+* fvwm-menu-headlines: added support for CNN and BBC headlines.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
