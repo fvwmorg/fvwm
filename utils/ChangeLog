@@ -1,3 +1,8 @@
+2002-02-07  Mikhael Goikhman  <migo@homemail.com>
+
+	* Makefile.am:
+	use $FVWM_BUGADDR if set when installing fvwmbug script
+
 2002-01-30  Mikhael Goikhman  <migo@homemail.com>
 
 	* fvwm24_convert.in:
