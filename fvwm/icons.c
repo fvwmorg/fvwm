@@ -1323,7 +1323,7 @@ void GetIconBitmap(FvwmWindow *tmp_win)
  ***********************************************************************/
 void DeIconify(FvwmWindow *tmp_win)
 {
-  FvwmWindow *t,*tmp;
+  FvwmWindow *t, *tmp, *ofw;
   FvwmWindow *sf = get_focus_window();
 
   if (!tmp_win)
@@ -1334,13 +1334,18 @@ void DeIconify(FvwmWindow *tmp_win)
     SET_ICONIFY_AFTER_MAP(tmp_win, 0);
     return;
   }
-  while (IS_ICONIFIED_BY_PARENT(tmp_win))
+  for (ofw = NULL; tmp_win != ofw && IS_ICONIFIED_BY_PARENT(tmp_win); )
   {
-    for (t = Scr.FvwmRoot.next; t != NULL; t = t->next)
+    t = get_transientfor_fvwmwindow(tmp_win);
+    if (t != NULL)
     {
-      if (t != tmp_win && tmp_win->transientfor == t->w)
-	tmp_win = t;
+      ofw = tmp_win;
+      tmp_win = t;
     }
+  }
+  if (IS_ICONIFIED_BY_PARENT(tmp_win))
+  {
+    SET_ICONIFIED_BY_PARENT(tmp_win, 0);
   }
 
   /* AS dje  RaiseWindow(tmp_win); */

@@ -2,6 +2,11 @@
 
 Changes in stable release 2.4.20 (not released yet)
 
+* Fixed parsing of For loops in FvwmScript.
+
+* Fixed a possible endless loop when de-iconifying a transient
+  window.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.19 (30-Sep-2004)

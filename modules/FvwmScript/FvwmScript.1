@@ -55,7 +55,7 @@ fvwm's initialization, or can be bound to a menu or mouse
 button or keystroke to invoke it later.
 
 .SH CONFIGURATION OPTIONS
-The following commands can be used in the config file (see 
+The following commands can be used in the config file (see
 .IR fvwm2 (1),
 section
 .B "MODULE COMMANDS"
@@ -91,7 +91,7 @@ colorsets.
 FvwmScript uses a particular programming language. A script is composed of
 five parts. Heading contains general characteristics of the window and
 default properties for all widgets. The second part contains
-instructions whom are executed at the  startup of the script. The third
+instructions which are executed at the  startup of the script. The third
 part contains periodic tasks which are executed every second.
 The fourth part contains instructions which are executed at exit.
 And the last part contains the description of widgets.
@@ -174,7 +174,7 @@ see the
 section.
 
 .SH MAIN OF A SCRIPT
-The second part of the script contains the description for every widget
+The last part of the script contains the description for every widget
 in the script.
 Each widget description has two parts.
 The first part describes initial properties,
@@ -215,7 +215,7 @@ specifies if strings are drawn with relief or not.
 .I NoFocus
 specifies if the widget can get the keyboard focus or not.
 By default all widgets take focus, except Rectangle, HDipstick and VDipstick
-which cannot. Moreover, the NoFocus widgets are skipped when you 
+which cannot. Moreover, the NoFocus widgets are skipped when you
 circulate around the widgets with the (Shift-)Tab short cut.
 .IR Left " / " Center " / " Right
 specifies the text position. These apply only to ItemDraw, List, Menu,
@@ -308,7 +308,7 @@ of window.
 A minimum height of three items is imposed and the width is made to be at
 least 108.
 
-.IP "\fBMenu\fP: Display a menu whom lets user to choose a option."
+.IP "\fBMenu\fP: Display a menu which lets user to choose a option."
 Items of type Menu are layed out from left to right along the top
 of the window. The size and position properties are ignored.
 
@@ -555,7 +555,7 @@ Return the result of (\fIint1\fP*\fIint2\fP).
 Return the result of (\fIint1\fP/\fIint2\fP).
 
 .IP "(StrCopy {\fIstr\fP} \fIint1 int2\fP)"
-Return the string whom is between position int1 and int2. For example,
+Return the string which is between position int1 and int2. For example,
 (StrCopy {Hello} 1 2) returns {He}
 
 .IP "(LaunchScript {\fIstr\fP})"
@@ -602,7 +602,7 @@ If
 is 1, then FvwmScript waits for an answer from the external program
 and the return value is this answer (a line of no more
 than 32000 characters). If the communication fails, the returned value is 0.
-See the section 
+See the section
 .B A COMMUNICATION PROTOCOL
 for a description of the communication protocol used.
 
@@ -785,7 +785,7 @@ pass the
 via an option to the program). The protocol uses two fifos, in the FVWM user
 directory, named:
 .RI ".tmp-com-in-" comId " and .tmp-com-out-" comId "."
-The program should create and listen on the 
+The program should create and listen on the
 .RI ".tmp-com-in-" comId
 fifo. Then, when FvwmScript executes a function of the form:
 
@@ -801,7 +801,7 @@ to support multi-communications). If
 .I bool
 is 0, FvwmScript does not wait for an answer from the program and
 return 1 if the previous actions succeed and 0 if they failed
-(then the program should "go back" to the in fifo). 
+(then the program should "go back" to the in fifo).
 If
 .I bool
 is 1, then FvwmScript waits (20 sec) for an answer from the program and

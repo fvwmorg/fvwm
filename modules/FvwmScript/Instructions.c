@@ -1539,9 +1539,10 @@ static void Loop (int NbArg,long *TabArg)
   {
     if (TabArg[i] > 100000)	/* Cas du codage d'un nombre */
     {
-      i = (int)TabArg[i] - 200000;
+      int x;
+      x = (int)TabArg[i] - 200000;
       arg[CurrArg] = (char*)safecalloc(1,sizeof(char)*10);
-      sprintf(arg[CurrArg],"%d",i);
+      sprintf(arg[CurrArg],"%d",x);
     }
     else if (TabArg[i] < -100000)	/* Cas d'un id de fonction */
     {
