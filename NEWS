@@ -12,6 +12,12 @@ Changes in stable release 2.4.6 (not released yet)
 * Fixed an fvwm crash when a module died at the wron moment;
   specifically a transient FvwmPager of FvwmIconMan.
 
+* Fixed placement of WindowList on wrong Xinerama screen when
+  called without any options on a screen other than the primary
+  screen.
+
+* Fixed a problem with root bindings and xfishtank.
+
 Changes in stable release 2.4.5 (27-Jan-2002)
 
 * Fixed minor problems in popping sub menus up and down.

@@ -1540,11 +1540,11 @@ void HandleButtonPress(void)
 
   GrabEm(CRS_NONE, GRAB_PASSIVE);
   if (!Tmp_win &&
-      (Event.xbutton.window != Scr.PanFrameTop.win &&
-       Event.xbutton.window != Scr.PanFrameBottom.win &&
-       Event.xbutton.window != Scr.PanFrameLeft.win &&
-       Event.xbutton.window != Scr.PanFrameRight.win) &&
-      (Event.xbutton.window != Scr.Root || Event.xbutton.subwindow != None))
+      Event.xbutton.window != Scr.PanFrameTop.win &&
+      Event.xbutton.window != Scr.PanFrameBottom.win &&
+      Event.xbutton.window != Scr.PanFrameLeft.win &&
+      Event.xbutton.window != Scr.PanFrameRight.win &&
+      Event.xbutton.window != Scr.Root)
   {
     /* event in unmanaged window or subwindow of a client */
     /* DV: of course we should never have got an event in this case since the
@@ -1925,7 +1925,6 @@ void HandleEnterNotify(void)
   {
     FvwmWindow *lf = get_last_screen_focus_window();
 
-fprintf(stderr,"entered root\n");
     if (!Scr.flags.is_pointer_on_this_screen)
     {
       Scr.flags.is_pointer_on_this_screen = 1;
