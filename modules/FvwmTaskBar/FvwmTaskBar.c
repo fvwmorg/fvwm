@@ -1482,7 +1482,6 @@ void LoopOnEvents(void)
       /* useful because of dynamic style change */
       if (!Event.xconfigure.send_event)
       {
-	PurgeConfigEvents();
 	break;
       }
       else if (Event.xconfigure.x != win_x || Event.xconfigure.y != win_y)
