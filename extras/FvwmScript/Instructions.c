@@ -924,7 +924,7 @@ void Quit (int NbArg,long *TabArg)
   tv.tv_usec = 0;
   FD_ZERO(&in_fdset);
   FD_SET(x_fd,&in_fdset);
-  select(32, &in_fdset, NULL, NULL, &tv);
+  select(32, SELECT_TYPE_ARG234 &in_fdset, NULL, NULL, &tv);
   if (FD_ISSET(x_fd, &in_fdset))
   {
    if (XCheckTypedEvent(x11base->display,SelectionRequest,&event))

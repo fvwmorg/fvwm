@@ -117,11 +117,7 @@ void Loop(int *fvwmfd){
   FD_SET(fd, &fdset);
   FD_SET(fvwmfd[1], &fdset);
   while (1){
-#ifdef __hpux
-    select(fd_width,(int *)&fdset, 0, 0, NULL);
-#else
-    select(fd_width,&fdset, 0, 0, NULL);
-#endif
+    select(fd_width,SELECT_TYPE_ARG234 &fdset, 0, 0, NULL);
     if (FD_ISSET(fd, &fdset)){
       /* read from the fvwmpipe.in and send the stuff to fvwm */
       res = read(fd, s, 255);

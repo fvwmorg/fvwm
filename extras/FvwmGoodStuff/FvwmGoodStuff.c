@@ -1338,12 +1338,7 @@ int My_XNextEvent(Display *dpy, XEvent *event)
   FD_SET(x_fd,&in_fdset);
   FD_SET(fd[1],&in_fdset);
 
-#ifdef __hpux
-  select(fd_width,(int *)&in_fdset, 0, 0, NULL);
-#else
-  select(fd_width,&in_fdset, 0, 0, NULL);
-#endif
-
+  select(fd_width,SELECT_TYPE_ARG234 &in_fdset, 0, 0, NULL);
 
   if(FD_ISSET(x_fd, &in_fdset))
     {

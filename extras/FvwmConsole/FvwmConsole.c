@@ -1,10 +1,10 @@
 /*
   Fvwm command input interface.
- 
+
   Copyright 1996, Toshi Isogai. No guarantees or warantees or anything
-  are provided. Use this program at your own risk. Permission to use 
+  are provided. Use this program at your own risk. Permission to use
   this program for any purpose is given,
-  as long as the copyright is kept intact. 
+  as long as the copyright is kept intact.
 */
 
 #include "FvwmConsole.h"
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
   char **eargv;
   int i,j,k;
   char *xterm_a[] = { "-title", Name, "-name", Name, "-e", NULL, NULL };
-  int  clpid; 
+  int  clpid;
 
   /* Why is this not just put in the initializer of xterm_a?
      Apparently, it is a non-standard extension to use a non-constant address (of client)
@@ -88,9 +88,9 @@ int main(int argc, char *argv[]){
   eargv[j] = NULL;
 
   /* Dead pipes mean fvwm died */
-  signal (SIGPIPE, DeadPipe);  
-  signal (SIGINT, SigHandler);  
-  signal (SIGQUIT, SigHandler);  
+  signal (SIGPIPE, DeadPipe);
+  signal (SIGINT, SigHandler);
+  signal (SIGQUIT, SigHandler);
 
   Fd[0] = atoi(argv[1]);
   Fd[1] = atoi(argv[2]);
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]){
 	execvp( *eargv, eargv );
 	ErrMsg("exec");
   }
-  
+
   server();
 return (0);
 }
@@ -126,9 +126,9 @@ void SigHandler(int dummy) {
 /* close sockets and spawned process                     */
 /*********************************************************/
 void CloseSocket() {
-  send(Ns, C_CLOSE, strlen(C_CLOSE), 0); 
+  send(Ns, C_CLOSE, strlen(C_CLOSE), 0);
   close(Ns);     /* remove the socket */
-  unlink( S_name ); 
+  unlink( S_name );
 
 }
 
@@ -165,7 +165,7 @@ void server ( void ) {
 
   /* bind the above name to the socket */
   /* first, erase the old socket */
-  unlink( S_name ); 
+  unlink( S_name );
   len = sizeof(sas) - sizeof( sas.sun_path) + strlen( sas.sun_path );
 
   if( bind(s, (struct sockaddr *)&sas,len) < 0 ) {
@@ -179,21 +179,21 @@ void server ( void ) {
     ErrMsg( "listen" );
 	exit(1);
   }
-  
+
   /* accept connections */
   clen = sizeof(csas);
   if(( Ns = accept(s, (struct sockaddr *)&csas, &clen)) < 0 ) {
 	ErrMsg( "accept");
 	exit(1);
   }
-  
+
   /* send config lines to Client */
   tline = NULL;
-  send(Ns, C_BEG, strlen(C_BEG), 0); 
+  send(Ns, C_BEG, strlen(C_BEG), 0);
   GetConfigLine(Fd,&tline);
   while(tline != NULL) {
 	if(strlen(tline)>1) {
-	  send(Ns, tline, strlen(tline),0); 
+	  send(Ns, tline, strlen(tline),0);
 	}
 	GetConfigLine(Fd,&tline);
   }
@@ -209,20 +209,16 @@ void server ( void ) {
 	FD_SET(Ns, &fdset);
 	FD_SET(Fd[1], &fdset);
 
-#ifdef __hpux
-    select(FD_SETSIZE,(int *)&fdset, 0, 0, NULL);
-#else
-    select(FD_SETSIZE,&fdset, 0, 0, NULL);
-#endif  
+    select(FD_SETSIZE,SELECT_TYPE_ARG234 &fdset, 0, 0, NULL);
     if (FD_ISSET(Fd[1], &fdset)){
 	  if( ReadFvwmPacket(Fd[1],header,&body) > 0)	 {
-		if(header[1] == M_PASS) { 
+		if(header[1] == M_PASS) {
 		  msglen = strlen((char *)&body[3]);
 		  if( msglen > MAX_MESSAGE_SIZE-2 ) {
 			msglen = MAX_MESSAGE_SIZE-2;
 		  }
-		  send( Ns, (char *)&body[3], msglen, 0 ); 
-		} 
+		  send( Ns, (char *)&body[3], msglen, 0 );
+		}
 		free(body);
 	  }
 	}
