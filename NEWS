@@ -3,6 +3,8 @@ Changes in stable release 2.4.16 (not released yet)
 * The PageOnly option in FvwmTaskBar now works after a desk change
   too.
 
+* Fixed a compile error on IRIX 6.5.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
