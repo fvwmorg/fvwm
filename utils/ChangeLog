@@ -3,6 +3,11 @@
 	* Makefile.am:
 	setup symlinks for fvwm-root
 
+	* fvwm-menu-headlines.1:
+	* fvwm-menu-headlines.in:
+	updated site database;
+	added --timeout
+
 2002-05-03  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwmrc_convert.1:

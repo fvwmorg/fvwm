@@ -37,9 +37,12 @@ Changes in stable release 2.4.8 (not released yet)
 * Fixed calculation of average bg colour in colour sets with large
   pictures.
 
-* Fixed some minor problems regarding the multibyte patch
+* Fixed some minor problems regarding the multibyte patch.
 
-* Fixed selection in FvwmScript List widget
+* Fixed selection in FvwmScript List widget.
+
+* fvwm-menu-headlines: updated the site data, added a configurable
+  timeout on socket reading (20 sec) to avoid fvwm hanging.
 
 Changes in stable release 2.4.7 (11-Apr-2002)
 
