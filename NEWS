@@ -9,6 +9,9 @@ Changes in stable release 2.4.7 (not released yet)
 
 * Fixed config.h warnings with some compilers introduced in 2.4.6.
 
+* Fixed the FvwmAudio compatible mode in FvwmEvent when external
+  audio player is used.
+
 Changes in stable release 2.4.6 (10-Mar-2002)
 
 * Better support of non ISO-8859-1 window and icon titles. See the

@@ -1,3 +1,8 @@
+2002-03-29  Mikhael Goikhman  <migo@homemail.com>
+
+	* FvwmEvent/FvwmEvent.c (config):
+	fixed PlayCmd in audio compatible mode
+
 2002-03-18  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* FvwmIconMan/FvwmIconMan.1:
