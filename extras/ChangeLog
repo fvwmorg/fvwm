@@ -1,3 +1,7 @@
+1999-06-25  Dominik Vogt  <dominik_vogt@hp.com>
+
+	* FvwmCommand/FvwmCommandS.c: fixed zero write bug
+
 1999-05-01  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
 
 	* FvwmScript/Widgets/TextField.c (dec): move #define to first column.
