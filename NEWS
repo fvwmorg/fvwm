@@ -1,6 +1,6 @@
 -------------------------------------------------------------------
 
-Changes in stable release 2.4.19 (not released yet)
+Changes in stable release 2.4.19 (30-Sep-2004)
 
 * Fixed BackingStore style option.
 
@@ -10,7 +10,7 @@ Changes in stable release 2.4.19 (not released yet)
 
 * Fixed a hang when restarting FvwmCommand or FvwmConsole.
 
-* A double click no longer works occurs when two different mouse
+* A double click no longer occurs when two different mouse
   buttons are pressed.
 
 * Fixed a relief drawing problem in FvwmWinList.
