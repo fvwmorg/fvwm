@@ -342,11 +342,22 @@ static void activate_binding(
   /* grab keys immediately */
   for (t = Scr.FvwmRoot.next; t != NULL; t = t->next)
   {
-    if (binding->Context & (C_WINDOW|C_TITLE|C_RALL|C_LALL|C_SIDEBAR))
+    if ((binding->Context & C_WINDOW) &&
+	(binding->type == MOUSE_BINDING
+	 STROKE_CODE(|| binding->type == STROKE_BINDING)))
     {
-      GrabWindowKeyOrButton(
-	dpy, t->frame, binding, C_WINDOW|C_TITLE|C_RALL|C_LALL|C_SIDEBAR,
+      GrabWindowButton(
+	dpy, t->Parent, binding,
+	C_WINDOW,
 	GetUnusedModifiers(), None, do_grab);
+    }
+    if ((binding->Context & (C_WINDOW|C_TITLE|C_RALL|C_LALL|C_SIDEBAR))
+	&& binding->type == KEY_BINDING)
+    {
+      GrabWindowKey(
+	dpy, t->frame, binding,
+	C_WINDOW|C_TITLE|C_RALL|C_LALL|C_SIDEBAR,
+	GetUnusedModifiers(), do_grab);
     }
     if (binding->Context & C_ICON)
     {
