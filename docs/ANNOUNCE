@@ -1,34 +1,31 @@
-Fvwm-2.4.12 is a bug fixing release for 2.4.11.  It fixes some
-minor drawing and animation problems in menus and some other, very
-rare bugs.
+Fvwm-2.4.13 is a bug fixing release for all earlier 2.4.x
+versions.  Most important it fixes a number of problems stacking
+windows, transient windows and icons.
 
 Who needs it?
 -------------
 
-Users of the 2.4.10 release are strongly recommended to upgrade.
-Other users can safely keep their previous version unless they run
-into one of the problems below.  System administrators are
-recommended to upgrade.
+Users of 2.4.10, 2.4.11 or 2.4.12 are highly encouraged to
+upgrade.  Users of 2.4.9 and below are recommended to upgrade.
+System administrators are higly recommended to upgrade from 2.4.12
+or below.
 
-Bug Fixes:
-----------
+Important Bug Fixes
+-------------------
 
-* Fixed drawing problems with TiledPixmap and Solid MenuFaces which
-  appeared in 2.4.10, replacing the same problem with ?Gradient
-  MenuFaces in 2.4.9.
+* Fixed a number of problems with window stacking, some new in
+  2.4.10 or later, some older problems that have been around for a
+  long time.
 
-* Fixed accidental menu animation with certain menu position hints.
+Minor Bug Fixes
+---------------
 
-* Fixed starting "Move" at random position when pointer iss on a
-  different screen.
+* Icon titles for window with an icon position hint no longer
+  appear at random places.
 
-* Transient windows do not appear in FvwmWinList after they have
-  been moved on the desktop.
+* Fvwm no longer displays two icon pictures when switching from
+  NoIconOverride to IconOverride with windows that provide their
+  own icon window.
 
-Improvements:
--------------
-
-* Increased maximum allowed key symbol name length to 200
-  characters.
-
-* Allow quotes in conditional command conditions.
+* The Current, All, Pick, ThisWindow and PointerWindow commands
+  work on shaded windows too.
