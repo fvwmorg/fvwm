@@ -1,3 +1,7 @@
+1999-05-01  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
+
+	* FvwmScript/Widgets/TextField.c (dec): move #define to first column.
+
 1999-03-12  Paul D. Smith  <psmith@gnu.org>
 
 	* FvwmTaskBar/ButtonArray.c (ButtonDraw): If we didn't have enough

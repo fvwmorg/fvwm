@@ -1,3 +1,8 @@
+1999-05-10  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
+
+	* utils/fvwmrc_convert: fixes by Julian Gilbey; updated to
+	cvs version 1.4.
+
 1999-03-17  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
 
 	* INSTALL.fvwm: add note about include directories for optional
