@@ -1,3 +1,8 @@
+2002-02-28  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm/fvwm2.1:
+	fixed syntax line of Maximize
+
 2002-02-27  Mikhael Goikhman  <migo@homemail.com>
 
 	* fvwm/commands.h:
