@@ -1,38 +1,34 @@
-Fvwm-2.4.14 is a bug fixing release for all earlier 2.4.x
-versions.  It hopefully fixes the remaining stacking problems that
-appeared in 2.4.9.  Furthermore, the Key command works again as it
-used to before 2.4.13.
+Fvwm-2.4.15 maintenance release for all earlier 2.4.x versions.
+It contains a number of minor fixes in fvwm and some of the
+modules.
 
 Who needs it?
 -------------
 
+Users and system administrators of 2.4.14 may or may not upgrade,
+depending on wether they see one of the problems described below.
 Users of 2.4.10, 2.4.11, 2.4.12 or 2.4.13 are highly encouraged to
 upgrade.  Users of 2.4.9 and below are recommended to upgrade.
 System administrators are higly encouraged to upgrade from 2.4.13
 or below.
 
-Important Bug Fixes
--------------------
+Bug Fixes:
+----------
 
-* Icons no longer appear on top of all other windows after a
-  restart.
+* Fix for gmplayer launched by fvwm.  Close stdin on Exec so the
+  exec'd process knows its not running interactively.
 
-* Removed the flawed "A"ny context key binding patch from 2.4.13.
+* Windows using the WindowListSkip style do not appear in the
+  FvwmTaskBar at random.
 
-Minor Bug Fixes
----------------
+* Fixed a memory leak in ChangeIcon, ChangeForeColor and
+  ChangeBackColor FvwmScript Instruction.
 
-* The built-in session management can handle window names, classes
-  etc. beginning with whitespace (textedit).
+* Fixed a core dump in the parsing of FvwmAuto arguments.
 
-* The default EdgeScroll (if not specified) was incorrectly
-  assumed to be 100 pixels instead of 100 percents.
+* Fixed screwed calculation of icon picture size when application
+  specifies it explicitly.
 
-* Application provided icon windows no longer appear at 0 0 when
-  restarting.
-
-* Modules do not crash anymore when more than 126 windows are on
-  the desktop.
-
-* FvwmIconMan displays windows correctly that were iconified and
-  then moved to another page.
+* The option ShowOnlyIcons now works as described in the
+  FvwmIconMan man page.  It was accidentally named ShowOnlyIconic
+  before.
