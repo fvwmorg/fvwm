@@ -2315,6 +2315,10 @@ void RestoreWithdrawnLocation(
   if(!tmp)
     return;
 
+  /* always get the latest size hints in case the application changed the
+   * gravity and we do not yet know about it */
+  XSync(dpy, 0);
+  GetWindowSizeHints(tmp);
   get_unshaded_geometry(tmp, &unshaded_g);
   gravity_get_naked_geometry(
     tmp->hints.win_gravity, tmp, &naked_g, &unshaded_g);
