@@ -1657,6 +1657,15 @@ FvwmWindow *AddWindow(Window w, FvwmWindow *ReuseWin)
       tmp_win, tmp_win->frame_g.x, tmp_win->frame_g.y,
       tmp_win->frame_g.width, tmp_win->frame_g.height, False);
   }
+  if (!IS_SHADED(tmp_win) && !IS_ICONIFIED(tmp_win))
+  {
+    /* TK always wants some special treatment: If the window is simply mapped,
+     * the tk menus come up at funny Y coordinates.  Tell it its geometry
+     * *again* to work around this problem. */
+    SendConfigureNotify(
+      tmp_win, tmp_win->frame_g.x, tmp_win->frame_g.y, tmp_win->frame_g.width,
+      tmp_win->frame_g.height, 0, False);
+  }
   if (!XGetGeometry(dpy, tmp_win->w, &JunkRoot, &JunkX, &JunkY, &JunkWidth,
 		    &JunkHeight, &JunkBW,  &JunkDepth))
   {
