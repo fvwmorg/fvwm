@@ -26,6 +26,9 @@ Changes in stable release 2.4.8 (not released yet)
 * Allow to bind a function to the focus click and pass it to the
   application at the same time.
 
+* Fixed a problem with fvwm not accepting keyboard input when the
+  application with the focus vanished at the start of a session.
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at

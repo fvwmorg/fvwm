@@ -1503,6 +1503,9 @@ static void InitVariables(void)
   Scr.gs.use_active_down_buttons = DEFAULT_USE_ACTIVE_DOWN_BUTTONS;
   Scr.gs.use_inactive_buttons = DEFAULT_USE_INACTIVE_BUTTONS;
   /* Not the right place for this, should only be called once somewhere .. */
+  Scr.flags.is_pointer_on_this_screen = !!XQueryPointer(
+	  dpy, Scr.Root, &JunkRoot, &JunkChild, &JunkX, &JunkY, &JunkX, &JunkY,
+	  &JunkMask);
 
   return;
 }
