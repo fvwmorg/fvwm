@@ -77,16 +77,16 @@
 /* NOTE: hard coded to 1 */
 #define USEDECOR 1
 
-/* Enables multi-pixmap themeable titlebars */
-#undef FANCY_TITLEBARS
-
 /* Enables session management functionality. */
 #undef SESSION
+
+/* Enables X11 compound text conversion for windows and icons names */
+#undef COMPOUND_TEXT
 
 /* Enables X11 multibyte character support */
 #undef I18N_MB
 
-/* Enables to use setlocale() provided by X */
+/* Enables to use setlocale() provided by X */;
 #undef X_LOCALE
 
 /* Specify a type for sig_atomic_t if it's not available.  */

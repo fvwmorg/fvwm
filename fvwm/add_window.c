@@ -207,8 +207,70 @@ static void get_name_property(
 
   return;
 }
-#else
+#else /* I18N_MB */
 #define GET_NAME_PROPERTY(a, b, c, d) get_name_property(a, b, c)
+#ifdef COMPOUND_TEXT
+static void get_name_property(
+  Status (func)(Display *, Window, XTextProperty *), Window w, char **ret_name)
+{
+  XTextProperty text_prop;
+  int num;
+  char **list;
+
+  /* Note: we dump the name because we cannot keep the list in memory
+   * without a lot of changes */
+  if (func(dpy, w, &text_prop) != 0)
+  {
+    if (text_prop.value)
+    {
+      if (text_prop.encoding == XA_STRING)
+      {
+        /* STRING encoding, use this as it is */
+	CopyString(&*ret_name, (char *)text_prop.value);
+	XFree(text_prop.value);
+      }
+      else
+      {
+        /* not STRING encoding, try to convert */
+        if (XmbTextPropertyToTextList(dpy, &text_prop, &list, &num) == Success
+            && num > 0 && *list)
+	{
+          /* XXX: does not consider the conversion is REALLY succeeded */
+          XFree(text_prop.value); /* return of XGetWM(Icon)Name() */
+	  CopyString(&*ret_name, *list);
+	  if (list)
+	    XFreeStringList(list);
+        }
+	else
+	{
+          if (list)
+            XFreeStringList(list);
+          XFree(text_prop.value); /* return of XGet(Icon)WMName() */
+	  if (func(dpy, w, &text_prop))
+	  {
+	    CopyString(&*ret_name, (char *)text_prop.value);
+	    XFree(text_prop.value);
+	  }
+	  else
+	  {
+	    *ret_name = NoName;
+	  }
+        }
+      }
+    }
+    else
+    {
+      *ret_name = NoName;
+    }
+  }
+  else
+  {
+    *ret_name = NoName;
+  }
+
+  return;
+}
+#else /* COMPOUND_TEXT */
 static void get_name_property(
   Status (func)(Display *, Window, XTextProperty *), Window w, char **ret_name)
 {
@@ -221,7 +283,8 @@ static void get_name_property(
 
   return;
 }
-#endif
+#endif /* COMPOUND_TEXT */
+#endif /* I18N_MB */
 
 void setup_window_name(FvwmWindow *tmp_win)
 {
@@ -1964,7 +2027,11 @@ static void free_text_property(char **ptext, char ***ptext_list)
 #define FREE_TEXT_PROPERTY(a, b) free_text_property(a)
 static void free_text_property(char **ptext)
 {
+#ifdef COMPOUND_TEXT
+  free(*ptext);
+#else
   XFree(*ptext);
+#endif
   *ptext = NULL;
 }
 #endif

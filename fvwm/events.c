@@ -428,7 +428,60 @@ fprintf(stderr, "hpn: got name packet for window 0x%08x", (int)Tmp_win);
 #if 0
 fprintf(stderr, " '%s'\n", Tmp_win->name);
 #endif
-#else
+#else /* I18N_MB */
+#ifdef COMPOUND_TEXT
+    if (!XGetWMName (dpy, Tmp_win->w, &text_prop))
+      return;
+    if (text_prop.value)
+    {
+      if (text_prop.encoding == XA_STRING)
+      {
+        /* STRING encoding, use this as it is */
+	free_window_names (Tmp_win, True, False);
+	CopyString(&Tmp_win->name, (char *)text_prop.value);
+	XFree(text_prop.value);
+      }
+      else
+      {
+	int num;
+	char **list;
+
+	fprintf(stderr,"Not a String\n");
+        /* not STRING encoding, try to convert */
+        if (XmbTextPropertyToTextList(dpy, &text_prop, &list, &num) >= Success
+            && num > 0 && *list)
+	{
+	  free_window_names (Tmp_win, True, False);
+	  fprintf(stderr,"\tSuccess\n");
+          /* XXX: does not consider the conversion is REALLY succeeded */
+          XFree(text_prop.value); /* return of XGetWMName() */
+	  CopyString(&Tmp_win->name, (char *)list[0]);
+	  if (list)
+	    XFreeStringList(list);
+        }
+	else
+	{
+          if (list)
+            XFreeStringList(list);
+          XFree(text_prop.value); /* return of XGet(Icon)WMName() */
+	  if (XGetWMName(dpy, Tmp_win->w, &text_prop))
+	  {
+	    free_window_names (Tmp_win, True, False);
+	    CopyString(&Tmp_win->name, (char *)text_prop.value);
+	    XFree(text_prop.value);
+	  }
+	  else
+	  {
+	    return;
+	  }
+        }
+      }
+    }
+    else
+    {
+      return;
+    }
+#else /* COMPOUND_TEXT */
     if (!XGetWMName(dpy, Tmp_win->w, &text_prop))
       return;
     free_window_names (Tmp_win, True, False);
@@ -436,7 +489,8 @@ fprintf(stderr, " '%s'\n", Tmp_win->name);
     if (Tmp_win->name && strlen(Tmp_win->name) > MAX_WINDOW_NAME_LEN)
       /* limit to prevent hanging X server */
       Tmp_win->name[MAX_WINDOW_NAME_LEN] = 0;
-#endif
+#endif /* COMPOUND_TEXT */
+#endif /* I18N_MB */
 
     SET_NAME_CHANGED(Tmp_win, 1);
 
@@ -509,7 +563,58 @@ fprintf(stderr, " '%s'\n", Tmp_win->name);
       Tmp_win->icon_name = (char *)text_prop.value;
       Tmp_win->icon_name_list = NULL;
     }
-#else
+#else /* I18N_MB */
+#ifdef COMPOUND_TEXT
+    if (!XGetWMIconName (dpy, Tmp_win->w, &text_prop))
+      return;
+    if (text_prop.value)
+    {
+      if (text_prop.encoding == XA_STRING)
+      {
+        /* STRING encoding, use this as it is */
+	free_window_names (Tmp_win, False, True);
+	CopyString(&Tmp_win->icon_name, (char *)text_prop.value);
+	XFree(text_prop.value);
+      }
+      else
+      {
+	int num;
+	char **list;
+
+        /* not STRING encoding, try to convert */
+        if (XmbTextPropertyToTextList(dpy, &text_prop, &list, &num) >= Success
+            && num > 0 && *list)
+	{
+	  free_window_names (Tmp_win, False, True);
+          /* XXX: does not consider the conversion is REALLY succeeded */
+          XFree(text_prop.value); /* return of XGetWM(Icon)Name() */
+	  CopyString(&Tmp_win->icon_name, (char *)list[0]);
+	  if (list)
+	    XFreeStringList(list);
+        }
+	else
+	{
+          if (list)
+            XFreeStringList(list);
+          XFree(text_prop.value); /* return of XGet(Icon)WMName() */
+	  if (XGetWMIconName(dpy, Tmp_win->w, &text_prop))
+	  {
+	    free_window_names (Tmp_win, False, True);
+	    CopyString(&Tmp_win->icon_name, (char *)text_prop.value);
+	    XFree(text_prop.value);
+	  }
+	  else
+	  {
+	    return;
+	  }
+        }
+      }
+    }
+    else
+    {
+      return;
+    }
+#else /* COMPOUND_TEXT */
     if (!XGetWMIconName (dpy, Tmp_win->w, &text_prop))
       return;
     free_window_names (Tmp_win, False, True);
@@ -518,7 +623,8 @@ fprintf(stderr, " '%s'\n", Tmp_win->name);
 	MAX_ICON_NAME_LEN)
       /* limit to prevent hanging X server */
       Tmp_win->icon_name[MAX_ICON_NAME_LEN] = 0;
-#endif
+#endif /* COMPOUND_TEXT */
+#endif /* I18N_MB */
     SET_WAS_ICON_NAME_PROVIDED(Tmp_win, 1);
     if (Tmp_win->icon_name == NULL)
     {

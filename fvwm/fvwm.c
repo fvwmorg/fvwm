@@ -75,7 +75,7 @@
 /* need to get prototype for XrmUniqueQuark for XUniqueContext call */
 #include <X11/Xresource.h>
 
-#ifdef I18N_MB
+#if defined(I18N_MB) || defined(COMPOUND_TEXT)
 #include <X11/Xlocale.h>
 #endif
 
@@ -202,9 +202,17 @@ int main(int argc, char **argv)
 
   setVersionInfo();
 
-#ifdef I18N_MB
-  if (setlocale(LC_CTYPE, "") == NULL)
-    fvwm_msg(ERR, "main", "Can't set locale. Check your $LC_CTYPE or $LANG.\n");
+#if defined(I18N_MB) || defined(COMPOUND_TEXT)
+  {
+    char *s;
+
+    if ((s = setlocale(LC_CTYPE, "")) == NULL)
+      fvwm_msg(ERR, "main","Can't set locale. Check your $LC_CTYPE or $LANG.\n");
+    else if (!XSupportsLocale())
+    {
+      fvwm_msg(WARN, "main", "X does not support current locale: %s\n", s);
+    }
+  }
 #endif
 
   /* Put the default module directory into the environment so it can be used
