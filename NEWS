@@ -63,6 +63,11 @@ Changes in stable release 2.4.16 (not released yet)
 * FvwmEvent now executes all window related events within a window
   context, so PassId is not needed anymore, and all prefixes
   "WindowId $0" may be removed in user event handlers.
+
+* Fixed "GotoDeskAndPage prev" on desks larger than 2x2.
+
+* Expansion of variables like $[w.name] or $[EMPTY_STRING] that are
+  empty works.
  
 -------------------------------------------------------------------
 

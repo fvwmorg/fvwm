@@ -1345,7 +1345,12 @@ void CMD_GotoDeskAndPage(F_CMD_ARGS)
     val[1] = prev_desk_and_page_page_x;
     val[2] = prev_desk_and_page_page_y;
   }
-  else if (GetIntegerArguments(action, NULL, val, 3) != 3)
+  else if (GetIntegerArguments(action, NULL, val, 3) == 3)
+  {
+    val[1] *= Scr.MyDisplayWidth;
+    val[2] *= Scr.MyDisplayHeight;
+  }
+  else
   {
     return;
   }
@@ -1357,7 +1362,7 @@ void CMD_GotoDeskAndPage(F_CMD_ARGS)
   }
   prev_desk_and_page_page_x = Scr.Vx;
   prev_desk_and_page_page_y = Scr.Vy;
-  MoveViewport(val[1] * Scr.MyDisplayWidth, val[2] * Scr.MyDisplayHeight, True);
+  MoveViewport(val[1], val[2], True);
   if (is_new_desk)
   {
     prev_desk = Scr.CurrentDesk;

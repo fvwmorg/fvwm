@@ -1,34 +1,131 @@
-Fvwm-2.4.15 maintenance release for all earlier 2.4.x versions.
-It contains a number of minor fixes in fvwm and some of the
-modules.
+Dedication
+----------
 
-Who needs it?
--------------
+  This release is dedicated to all victims of the war in Iraq that
+  began in March, 2003.  The following people, many of them users
+  or developers of fvwm, would like to express their sympathies to
+  those affected:
 
-Users and system administrators of 2.4.14 may or may not upgrade,
-depending on wether they see one of the problems described below.
-Users of 2.4.10, 2.4.11, 2.4.12 or 2.4.13 are highly encouraged to
-upgrade.  Users of 2.4.9 and below are recommended to upgrade.
-System administrators are higly encouraged to upgrade from 2.4.13
-or below.
+  Alex Wallis
+  André Bonhôte
+  Ben Winslow
+  Bob Crochelt
+  Bob Woodside
+  Cameron Simpson
+  Dan Espen
+  Dennis McGregor
+  Diane Merriman
+  Dominik Vogt
+  Dorothy Robinson
+  Fabien Villard
+  Gregg Dameron
+  Jeremie Petit
+  John Latham
+  Kingsly John
+  Larry Gensch
+  Marcus Lundblad
+  Mathias Megyei
+  Mike Han
+  Mikhael Goikhman
+  Olivier Chapuis
+  Paul Smith
+  Rainer Koehler
+  Ross Hamilton
+  Scott Smedley
+  Timothy Groves
+  Tomas Ögren
+  Uwe Pross
+
+-------------------------------------------------------------------
+
+fvwm-2.4.16 maintenance release for all earlier 2.4.x versions.
+It contains many small fixes in fvwm and some of the modules.
+
+This release is available at the home page: http://www.fvwm.org/.
+We are 10 year old now, participate in the birthday events!
+
+Who needs to upgrade?
+---------------------
+
+Everyone who needs a support or experiences a problem with earlier
+2.4.x versions.  Like the previous versions, this one includes
+some synchronization syntax enhancements with 2.5.x versions that
+will be suggested on the support mailing lists, so the sooner
+users upgrade the sooner they could use the suggested solutions.
+System administrators are encouraged to install this version to
+grant their users an access to the latest stable version.
 
 Bug Fixes:
 ----------
 
-* Fix for gmplayer launched by fvwm.  Close stdin on Exec so the
-  exec'd process knows its not running interactively.
+* Fixed a transparency problem in FvwmButtons.
 
-* Windows using the WindowListSkip style do not appear in the
-  FvwmTaskBar at random.
+* Fixed a possible core dump when more than 256 windows are on
+  the desktop.
 
-* Fixed a memory leak in ChangeIcon, ChangeForeColor and
-  ChangeBackColor FvwmScript options.
+* Initial drawing and final undrawing of wire frame no longer
+  toggles the pixel in the top left corner of the screen.
 
-* Fixed a core dump in the parsing of FvwmAuto arguments.
+* Fixed parsing of button geometries in FvwmButtons when the
+  geometry specificaiton appeared after another option with a comma
+  at the end.
 
-* Fixed screwed calculation of icon picture size when application
-  specifies it explicitly.
+* FvwmCommand works too when invoked without the DISPLAY variable
+  set.
 
-* The option ShowOnlyIcons now works as described in the
-  FvwmIconMan man page.  It was accidentally named ShowOnlyIconic
-  before.
+* Fixed displaying iconified windows without an icon in
+  FvwmIconMan.
+
+* Fixed a bug with aspect pixmaps in colorsets.
+
+* Fixed a bug in FvwmPager that displayed iconified windows without
+  icon title or picture as not iconified.
+
+* Fixed parsing of '@<screen>' Xinerama specification in the
+  ButtonGeometry option of FvwmButtons.
+
+* Fixed a problem with styles not being properly applied after a
+  DestroyStyle command.
+
+* Fixed a bug introduced in 2.4.14.  The pointer was sometimes
+  warped to another screen during a restart and command execution.
+
+* Fixed a crash when a window was destroyed twice in a complex
+  function.
+
+* Fixed corruption of the window list when windows died at the
+  wrong time.
+
+* Fixed problem with empty frame windows if X recycled the window
+  id of a window that died recently.
+
+* Fixed loading of application supplied pixmap on 8/24 depth screen.
+
+* Fixed "GotoDeskAndPage prev" on desks larger than 2x2.
+
+* Expansion of variables like $[w.name] or $[EMPTY_STRING] that are
+  empty works.
+
+* The PageOnly option in FvwmTaskBar now works after a desk change
+  too.
+
+* Iconified windows without an icon do not receive focus.
+
+Improvements:
+-------------
+
+* All single letter variables are deprecated now; new variables:
+
+    $[w.id], $[w.name], $[w.iconname], $[w.class], $[w.resource],
+    $[desk.n], $[version.num], $[version.info], $[version.line],
+    $[desk.pagesx], $[desk.pagesy]
+
+* The NoWarp menu position hint option works with root menus too.
+
+* WindowListFunc is executed now within a window context, so
+  a prefix "WindowId $0" is not needed in its definition anymore
+  and it is advised to remove it in user configs.
+
+* FvwmEvent now executes all window related events within a window
+  context, so PassId is not needed anymore, and all prefixes
+  "WindowId $0" may be removed in user event handlers.

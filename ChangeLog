@@ -1,3 +1,14 @@
+2003-05-29  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm/virtual.c (CMD_GotoDeskAndPage):
+	fixed "GotoDeskAndPage prev" on desks larger than 2x2
+
+	* fvwm/functions.c (expand_extended_var):
+	(expand):
+	fixed expanding variables that are empty, for example $[w.resource]
+	or $[version.info] or $[EMPTY_STRING];
+	actually add announced earlier $[desk.pagesx] and $[desk.pagesy]
+
 2003-05-28  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/menus.c (do_menu):

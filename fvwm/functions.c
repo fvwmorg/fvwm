@@ -322,10 +322,12 @@ static char *function_vars[] =
   "version.num",
   "version.info",
   "version.line",
+  "desk.pagesx",
+  "desk.pagesy",
   NULL
 };
 
-static int expand_extended_var(
+static signed int expand_extended_var(
   char *var_name, char *output, FvwmWindow *tmp_win)
 {
   char *rest;
@@ -348,14 +350,14 @@ static int expand_extended_var(
   case 3:
     if (!isdigit(*rest) || (*rest == '0' && *(rest + 1) != 0))
       /* not a non-negative integer without leading zeros */
-      return 0;
+      return -1;
     if (sscanf(rest, "%d%n", &cs, &n) < 1)
-      return 0;
+      return -1;
     if (*(rest + n) != 0)
       /* trailing characters */
-      return 0;
+      return -1;
     if (cs < 0)
-      return 0;
+      return -1;
     AllocColorset(cs);
     switch (i)
     {
@@ -430,7 +432,7 @@ static int expand_extended_var(
   case 14:
   case 15:
     if (!tmp_win || IS_ICONIFIED(tmp_win))
-      return 0;
+      return -1;
     else
     {
       is_numeric = True;
@@ -453,7 +455,7 @@ static int expand_extended_var(
 	val = tmp_win->frame_g.height;
 	break;
       default:
-	return 0;
+	return -1;
       }
     }
     break;
@@ -515,6 +517,16 @@ static int expand_extended_var(
     /* version.line */
     string = Fvwm_VersionInfo;
     break;
+  case 26:
+    /* desk.pagesx */
+    is_numeric = True;
+    val = (int)(Scr.VxMax / Scr.MyDisplayWidth) + 1;
+    break;
+  case 27:
+    /* desk.pagesy */
+    is_numeric = True;
+    val = (int)(Scr.VyMax / Scr.MyDisplayHeight) + 1;
+    break;
   default:
     /* unknown variable - try to find it in the environment */
     string = getenv(var_name);
@@ -530,7 +542,7 @@ static int expand_extended_var(
     {
       strcpy(output, string);
     }
-    return string ? strlen(string) : 0;
+    return string ? strlen(string) : -1;
   }
 }
 
@@ -578,7 +590,7 @@ static char *expand(
 	  if (!addto)
 	  {
 	    xlen = expand_extended_var(var, NULL, tmp_win);
-	    if (xlen > 0)
+	    if (xlen >= 0)
 	      l2 += xlen - (k + 2);
 	  }
 	  i += k + 2;
@@ -686,7 +698,7 @@ static char *expand(
 	  k = strlen(var);
 	  xlen = expand_extended_var(var, &out[j], tmp_win);
 	  input[m] = ']';
-	  if (xlen > 0)
+	  if (xlen >= 0)
 	  {
 	    j += xlen;
 	    i += k + 2;
