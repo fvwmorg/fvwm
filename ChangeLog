@@ -1,3 +1,11 @@
+2001-12-31  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/module_interface.c (ExecuteModuleCommand):
+	handle XQueryPointer return code for dual head setups
+
+	* fvwm/misc.c (GrabEm):
+	Pointer was warped to other screen with a dual head setup
+
 2001-12-20  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/move_resize.c (resize_geometry_window):

@@ -1,6 +1,12 @@
+2001-12-31  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* FvwmScript/Widgets/PopupMenu.c (EvtMousePopupMenu):
+	* FvwmScript/Widgets/Menu.c (EvtMouseMenu):
+	Pointer was warped to other screen with a dual head setup
+
 2001-12-19  olicha  <olivier.chapuis@free.fr>
 
-	* FvwmScript/Instructions.c (FuncSendMsgAndGet): 
+	* FvwmScript/Instructions.c (FuncSendMsgAndGet):
 	Be more safe
 
 2001-11-28  Dominik Vogt  <dominik.vogt@gmx.de>
