@@ -1,7 +1,11 @@
+2003-02-08  Dan Espen  <dane@mk.telcordia.com>
+
+	* fvwm/fvwm2.1: backslash lines beginning with a quote.
+
 2003-02-03  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/menus.c (calculate_item_sizes):
-	backed out fatch from 30-Jan-2003
+	backed out patch from 30-Jan-2003
 
 2003-01-30  Dominik Vogt  <dominik.vogt@gmx.de>
 

@@ -829,7 +829,7 @@ By using the
 built-in, it is easy to read in new configuration files as you go.
 
 Lines beginning with '#' are ignored by fvwm.  Lines starting with
-'*' are expected to contain module configuration commands (rather
+\'*' are expected to contain module configuration commands (rather
 than configuration commands for fvwm itself). Like in shell
 scripts embedded newlines in a configuration file line can be
 quoted by preceding them with a backslash.  All lines linked in
@@ -1469,7 +1469,7 @@ selects an item that is the only one with this hot-key.
 If the menu-label contains a sub-string which is set off by stars,
 then the text between the stars is expected to be the name of an
 xpm-icon or bitmap-file to insert in the menu.  To get a literal
-'*', insert "**".  For example
+\'*', insert "**".  For example
 .EX
  + Calculator*xcalc.xpm* Exec exec xcalc
 .EE
@@ -4263,8 +4263,8 @@ describes where the binding applies.  Valid contexts are 'R' for
 the root window, 'W' for an application window, 'T' for a window
 title-bar, 'S' for a window side, top, or bottom bar, 'F' for a
 window frame (the corners), 'I' for an Icon window, or '0' through
-'9' for title-bar buttons, or any combination of these letters.
-'A' is for any context except for title-bar buttons.  For
+\'9' for title-bar buttons, or any combination of these letters.
+\'A' is for any context except for title-bar buttons.  For
 instance, a context of "FST" applies when the mouse is anywhere in
 a window's border except the title-bar buttons.  Only 'S' and 'W'
 are valid for an undecorated window.
@@ -4893,7 +4893,7 @@ the
 .I scr-spec
 argument specifies the Xinerama screen on which the IconBox is
 defined.  It can be the usual screen Xinerama specification, 'p',
-'c', 'g', a screen number or the additional 'w' for the screen
+\'c', 'g', a screen number or the additional 'w' for the screen
 where the window center is located.  This is only useful with
 multiple Xinerama screens.  Perhaps easier to use is an X11
 geometry string:
@@ -6655,7 +6655,7 @@ the primary screen's number.  Instead, the letter 'c' indicates to
 use the curent screen (containing the pointer) whenever the
 primary screen is used.  This may be very confusing under some
 circumstances.  With
-'g', the global screen is used as the primary screen, effectively
+\'g', the global screen is used as the primary screen, effectively
 disabling the primary screen.  Calling this function with any
 other argument (including none) resets the primary screen to 0.
 
