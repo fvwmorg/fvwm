@@ -1831,27 +1831,19 @@ void StartMeUp(void)
      selfont_string = font_string;
 
 #ifdef I18N_MB
-   if ((ButtonFontset=XCreateFontSet(dpy,font_string,&ml,&mc,&ds)) == NULL) {
-#ifdef STRICTLY_FIXED
-     if ((ButtonFontset=XCreateFontSet(dpy,"fixed",&ml,&mc,&ds)) == NULL) {
-#else
-     if ((ButtonFontset=XCreateFontSet(dpy,"-*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*",&ml,&mc,&ds)) == NULL) {
-#endif
-       fprintf(stderr, "%s: Couldn't load fixed font. Exiting!\n",Module);
-       exit(1);
-     }
+   if ((ButtonFontset=GetFontSetOrFixed(dpy,font_string)) == NULL)
+   {
+	   fprintf(stderr,
+		   "%s: Couldn't load font. Exiting!\n",Module);
+	   exit(1);
    }
    XFontsOfFontSet(ButtonFontset,&fs_list,&ml);
    ButtonFont = fs_list[0];
-   if ((SelButtonFontset = XCreateFontSet(dpy,selfont_string,&ml,&mc,&ds))
-       == NULL) {
-#ifdef STRICTLY_FIXED
-     if ((SelButtonFontset=XCreateFontSet(dpy,"fixed",&ml,&mc,&ds)) == NULL)
-#else
-     if ((SelButtonFontset=XCreateFontSet(dpy,"-*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*",&ml,&mc,&ds)) == NULL)
-#endif
-       fprintf(stderr, "%s: Couldn't load fixed font. Exiting!\n",Module);
-       exit(1);
+   if ((SelButtonFontset=GetFontSetOrFixed(dpy,selfont_string)) == NULL)
+   {
+	   fprintf(stderr,
+		   "%s: Couldn't load selfont. Exiting!\n",Module);
+	   exit(1);
    }
    XFontsOfFontSet(SelButtonFontset,&fs_list,&ml);
    SelButtonFont = fs_list[0];

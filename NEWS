@@ -17,6 +17,8 @@ Changes in stable release 2.4.10 (not released yet)
 
 * Fixed drawing of menu item reliefs with gradient menu faces.
 
+* Fixed FvwmTaskBar i18n font loading
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.9 (11-Aug-2002)

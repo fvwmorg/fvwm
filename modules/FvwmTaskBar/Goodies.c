@@ -261,15 +261,10 @@ void InitGoodies(void)
   }
 
 #ifdef I18N_MB
-  if ((StatusFontset=XCreateFontSet(dpy,statusfont_string,&ml,&mc,&ds))==NULL) {
-#ifdef STRICTLY_FIXED
-    if ((StatusFontset=XCreateFontSet(dpy,"-*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*",&ml,&mc,&ds))==NULL) {
-#else
-    if ((StatusFontset=XCreateFontSet(dpy,"fixed,-*--14-*",&ml,&mc,&ds))==NULL) {
-#endif
-      fprintf(stderr, "%s: Couldn't load fixed fontset...exiting !\n",Module);
-      exit(1);
-    }
+  if ((StatusFontset=GetFontSetOrFixed(dpy,statusfont_string)) == NULL)
+  {
+	  fprintf(stderr, "%s: Couldn't load status font exiting !\n",Module);
+	  exit(1);
   }
   XFontsOfFontSet(StatusFontset,&fs_list,&ml);
   StatusFont = fs_list[0];
