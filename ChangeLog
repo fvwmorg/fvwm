@@ -1,8 +1,13 @@
+1999-03-16  Dominik Vogt  <dominik_vogt@hp.com>
+
+	* fvwm/menus.c (DoMenusOverlap): Use real numbers for the width
+	modifier to avoid excessive roundoff.
+
 1999-02-28  Matthias Clasen  <clasen@mathematik.uni-freiburg.de>
 
         * libs/ModParse.c (GetArgument): fix GetArgument for quoted args.
         (DoPeekArgument): new function needed in GetArgument.
-	Use safemalloc instead of malloc ( change copied from  
+	Use safemalloc instead of malloc ( change copied from
 	modules/FvwmEvent/Parse.c ).
         (PeekArgument): now call DoPeekArgument.
 
