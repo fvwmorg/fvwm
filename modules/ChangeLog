@@ -1,3 +1,9 @@
+1999-06-24  Dominik Vogt  <dominik_vogt@gmx.de>
+
+	* FvwmPager/x_pager.c (initialize_pager):
+	(FvwmErrorHandler): installed missing error handler. This has most
+	likely cause bugs #122, #311 and #358
+
 1999-06-22  Dominik Vogt  <dominik_vogt@hp.com>
 
 	* FvwmForm/FvwmForm.c (ReadXServer): made char array unsigned (test

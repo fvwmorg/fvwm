@@ -35,8 +35,6 @@ extern int window_w, window_h,window_x,window_y,usposition,uselabel,xneg,yneg;
 extern int StartIconic;
 extern int MiniIcons;
 extern int ShowBalloons, ShowPagerBalloons, ShowIconBalloons;
-extern char *BalloonFormatString;
-extern char *WindowLabelFormat;
 
 extern int icon_w, icon_h, icon_x, icon_y;
 XFontStruct *font, *windowFont;
@@ -82,8 +80,6 @@ static char s_g_bits[] = {0x01, 0x02, 0x04, 0x08};
 Window		icon_win;               /* icon window */
 BalloonWindow balloon;            /* balloon window */
 
-static char *GetBalloonLabel(const PagerWindow *pw,const char *fmt);
-
 /***********************************************************************
  *
  *  Procedure:
@@ -124,10 +120,13 @@ void initialize_pager(void)
   XGCValues gcv;
   unsigned long gcm;
 
-#if 0
+#if 1
   /* I don't think that this is necessary - just let pager die */
+  /* domivogt (07-mar-1999): But it is! A window being moved in the pager
+   * might die at any moment causing the Xlib calls to generate BadMatch
+   * errors. Without an error handler the pager will die! */
   XSetErrorHandler((XErrorHandler)FvwmErrorHandler);
-#endif /* 0 */
+#endif /* 1 */
 
   wm_del_win = XInternAtom(dpy,"WM_DELETE_WINDOW",False);
 
@@ -1598,24 +1597,16 @@ void MoveWindow(XEvent *Event)
  ************************************************************************/
 XErrorHandler FvwmErrorHandler(Display *dpy, XErrorEvent *event)
 {
-#if 0
-  Window root;
-  unsigned border_width, depth;
-  int x,y;
-
-  if(XGetGeometry(dpy,Scr.Pager_w,&root,&x,&y,
-		  (unsigned *)&window_w,(unsigned *)&window_h,
-		  &border_width,&depth)==0)
-    {
-      exit(0);
-    }
-
+#if 1
+  extern Bool error_occured;
+  error_occured = True;
   return 0;
 #else
   /* really should just exit here... */
+  /* domivogt (07-mar-1999): No, not really. See comment above. */
   fprintf(stderr,"%s: XError!  Bagging out!\n",MyName);
   exit(0);
-#endif /* 0 */
+#endif /* 1 */
 }
 
 
@@ -1651,16 +1642,11 @@ void LabelWindow(PagerWindow *t)
       XChangeGC(dpy, StdGC,Globalgcm,&Globalgcv);
 
     }
-  { /* Update the window label for this window */
-    if (t->window_label)
-      free(t->window_label);
-    t->window_label = GetBalloonLabel(t,WindowLabelFormat);
-  }
   if(t->PagerView != None)
     {
       XClearWindow(dpy, t->PagerView);
       XDrawString (dpy, t->PagerView,StdGC,2,windowFont->ascent+2 ,
-		        t->window_label, strlen(t->window_label));
+			t->icon_name, strlen(t->icon_name));
     }
 }
 
@@ -1698,14 +1684,9 @@ void LabelIconWindow(PagerWindow *t)
       XChangeGC(dpy,StdGC,Globalgcm,&Globalgcv);
 
     }
-  { /* Update the window label for this window */
-    if (t->window_label)
-      free(t->window_label);
-    t->window_label = GetBalloonLabel(t,WindowLabelFormat);
-  }
   XClearWindow(dpy, t->IconView);
   XDrawString (dpy, t->IconView,StdGC,2,windowFont->ascent+2 ,
-	       t->window_label, strlen(t->window_label));
+	       t->icon_name, strlen(t->icon_name));
 
 }
 void PictureWindow (PagerWindow *t)
@@ -1976,15 +1957,9 @@ void MapBalloonWindow (XEvent *event)
   /* associate balloon with its pager window */
   balloon.pw = t;
 
-  /* get the label for this balloon */
-  if (balloon.label)
-    free(balloon.label);
-  balloon.label = GetBalloonLabel(balloon.pw,BalloonFormatString);
-
-  { /* calculate window width to accommodate string */
-    window_changes.width = 4 + XTextWidth(balloon.font,balloon.label,
-                                          strlen(balloon.label));
-  }
+  /* calculate window width to accommodate string */
+  window_changes.width = 4 + XTextWidth(balloon.font, t->icon_name,
+                                        strlen(t->icon_name));
 
   /* get x and y coords relative to pager window */
   x = (view_width / 2) - (window_changes.width / 2) - balloon.border;
@@ -2041,57 +2016,6 @@ void MapBalloonWindow (XEvent *event)
 }
 
 
-/* Generate the BallonLabel from the format string 
-   -- disching@fmi.uni-passau.de */
-char *GetBalloonLabel(const PagerWindow *pw,const char *fmt)
-{
-  char *dest = strdup("");
-  unsigned int allocSize = 0;
-  const unsigned int enlargeSize = 32;
-  const char *pos = fmt;
-  char buffer[2];
-
-  buffer[1] = '\0';
-
-#define INSERT(s) while (strlen(s)+strlen(dest)+1>allocSize) { \
-                    dest = realloc(dest,allocSize+enlargeSize); \
-                    allocSize += enlargeSize; \
-                  } \
-                  strcat(dest,s)
-
-  while (*pos) {
-    if (*pos=='%' && *(pos+1)!='\0') {
-      pos++;
-      switch (*pos) {
-      case 'i':
-        INSERT(pw->icon_name);
-        break;
-      case 't':
-        INSERT(pw->window_name);
-        break;
-      case 'r':
-        INSERT(pw->res_name);
-        break;
-      case 'c':
-        INSERT(pw->res_class);
-        break;
-      case '%':
-        buffer[0] = '%';
-        INSERT(buffer);
-        break;
-      default:
-      }
-    } else {
-      buffer[0] = *pos;
-      INSERT(buffer);
-    }
-    pos++;
-  }
-#undef INSERT
-  return dest;
-}
-
-
 /* -- ric@giccs.georgetown.edu */
 void UnmapBalloonWindow (void)
 {
@@ -2111,5 +2035,5 @@ void DrawInBalloonWindow (void)
 
   XDrawString(dpy, balloon.w, BalloonGC,
               2, balloon.font->ascent,
-              balloon.label,strlen(balloon.label));
+              balloon.pw->icon_name, strlen(balloon.pw->icon_name));
 }
