@@ -6,8 +6,15 @@ Changes in stable release 2.4.15 (not released yet)
 * Windows using the WindowListSkip style do not appear in the
   FvwmTaskBar at random.
 
-* Fixed a memory leak in ChangeIcon, ChangeForeColor and ChangeBackColor
-  FvwmScript Instruction
+* Fixed a memory leak in ChangeIcon, ChangeForeColor and
+  ChangeBackColor FvwmScript Instruction.
+
+* Fixed a core dump in the parsing of FvwmAuto arguments.
+
+* Fixed screwed calculation of icon picture size when application
+  specifies it explicitly.
+
+-------------------------------------------------------------------
 
 Changes in stable release 2.4.14 (29-Nov-2002)
 
@@ -17,7 +24,7 @@ Changes in stable release 2.4.14 (29-Nov-2002)
 * FvwmIconMan displays windows correctly that were iconified and
   then moved to another page.
 
-* Appliation provided icon windows no longer appear at 0 0 when
+* Application provided icon windows no longer appear at 0 0 when
   restarting.
 
 * The built-in session management can handle window names, classes

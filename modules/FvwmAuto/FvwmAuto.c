@@ -200,9 +200,9 @@ main(int argc, char **argv)
   {
     char *token;
 
-    if (*argv[7] && !StrEquals(argv[7],"NOP")) /* not empty */
+    if (argc >= 8 && *argv[7] && !StrEquals(argv[7],"NOP")) /* not empty */
       enter_fn=argv[7];		/* override default */
-    else
+    else if (argc >= 8)
       enter_fn=NULL;		/* nop */
 
     /* This is a hack to prevent user interaction with old configs. */
@@ -212,7 +212,7 @@ main(int argc, char **argv)
       if (!StrEquals(token, "Silent"))
         enter_fn = safestrdup(CatString2("Silent ", enter_fn));
     }
-    if (argv[8] && *argv[8] && !StrEquals(argv[8],"NOP"))
+    if (argc >= 9 && argv[8] && *argv[8] && !StrEquals(argv[8],"NOP"))
       /* leave function specified */
       leave_fn=argv[8];
     if (leave_fn)

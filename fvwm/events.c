@@ -2360,8 +2360,22 @@ void HandleConfigureRequest(void)
     xwc.y = cre->y;
     if((Tmp_win)&&((Tmp_win->icon_pixmap_w == cre->window)))
     {
-      Tmp_win->icon_p_height = cre->height+ cre->border_width +
-	cre->border_width;
+      int bw;
+
+      if (cre->value_mask & CWBorderWidth)
+      {
+	      bw = cre->border_width;
+      }
+      else
+      {
+	      bw = 0;
+      }
+      if ((cre->value_mask & (CWWidth | CWHeight)) ==
+	  (CWWidth | CWHeight))
+      {
+	Tmp_win->icon_p_height = cre->height+ cre->border_width +
+	  cre->border_width;
+      }
     }
     else if((Tmp_win)&&((Tmp_win->icon_w == cre->window)))
     {
