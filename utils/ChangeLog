@@ -1,3 +1,9 @@
+2002-01-30  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm24_convert.in:
+	* Makefile.am:
+	use the same generation as for other perl scripts
+
 2001-11-10  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm24_convert:
