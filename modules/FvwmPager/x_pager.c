@@ -1551,13 +1551,13 @@ void DrawGrid(int desk, int erase)
   {
     if(uselabel)
       XFillRectangle(dpy,Desks[desk].title_w,Desks[desk].HiliteGC,
-		     0,(LabelsBelow ? desk_h : 0),desk_w,label_h - 1);
+		     0,(LabelsBelow ? desk_h : 0),desk_w,label_h);
   }
   else
   {
     if(uselabel && erase)
       XClearArea(dpy,Desks[desk].title_w,
-		 0,(LabelsBelow ? desk_h : 0),desk_w,label_h - 1,False);
+		 0,(LabelsBelow ? desk_h : 0),desk_w,label_h,False);
   }
 
   d = desk1+desk;

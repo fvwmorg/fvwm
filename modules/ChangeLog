@@ -7,6 +7,8 @@
 	(DispatchEvent):
 	fixed problem w/ pager not updating properly when getting expose events
 	right after a resize
+	(DrawGrid):
+	another label drawing fix w/ labelsbelow
 
 	* FvwmPager/x_pager.c (ReConfigure):
 	fixed flickering of hilit desk title when moving pager
