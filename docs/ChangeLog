@@ -1,7 +1,8 @@
-Tue Feb 23 10:31:22 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
+1999-03-12  Paul D. Smith  <psmith@gnu.org>
 
-	* links.html: updated changed links, removed some dead links and
-	one happily obsolete one -- my old v2.0.46 autoconf patches.
+	* Makefile.am: Removed version.html from the distribution.
+	* version.html: Removed; it's not referenced and the info in it is
+	superceded by download.html.
 
 1999-02-19  Dominik Vogt  <dominik_vogt@hp.com>
 
