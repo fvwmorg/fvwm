@@ -10,6 +10,9 @@ Changes in stable release 2.4.19 (not released yet)
 
 * Fixed a hang when restarting FvwmCommand.
 
+* A double click no longer works occurs when two different mouse
+  buttons are pressed.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.18 (19-Mar-2004)

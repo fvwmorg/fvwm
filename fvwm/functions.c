@@ -855,9 +855,9 @@ static char *expand(
  * clicking, but is moving the cursor
  *
  ****************************************************************************/
-#define DEBUG_CAT 0
 static cfunc_action_type CheckActionType(
-  int x, int y, XEvent *d, Bool may_time_out, Bool is_button_pressed)
+  int x, int y, XEvent *d, Bool may_time_out, Bool is_button_pressed,
+  int *ret_button)
 {
   int xcurrent,ycurrent,total = 0;
   Time t0;
@@ -865,12 +865,6 @@ static cfunc_action_type CheckActionType(
   XEvent old_event;
   extern Time lastTimestamp;
   Bool do_sleep = False;
-#if DEBUG_CAT
-int cev = 0;
-int clp = 0;
-int csleep = 0;
-int cc[5] = {0,0,0,0,0};
-#endif
 
   xcurrent = x;
   ycurrent = y;
@@ -880,30 +874,18 @@ int cc[5] = {0,0,0,0,0};
   while ((total < Scr.ClickTime && lastTimestamp - t0 < Scr.ClickTime) ||
 	 !may_time_out)
   {
-#if DEBUG_CAT
-clp++;
-#endif
     if (!(x - xcurrent <= dist && xcurrent - x <= dist &&
 	  y - ycurrent <= dist && ycurrent - y <= dist))
     {
-#if DEBUG_CAT
-fprintf(stderr, "cat stats (1): clp: %d (%d/%d/%d/%d/%d)  cev: %d csleep: %d\n", clp, cc[0], cc[1], cc[2], cc[3], cc[4], cev, csleep);
-#endif
       return (is_button_pressed) ? CF_MOTION : CF_TIMEOUT;
     }
 
     if (do_sleep)
     {
-#if DEBUG_CAT
-csleep += 20000;
-#endif
       usleep(20000);
     }
     else
     {
-#if DEBUG_CAT
-csleep += 1;
-#endif
       usleep(1);
       do_sleep = 1;
     }
@@ -911,23 +893,14 @@ csleep += 1;
     if (XCheckMaskEvent(dpy, ButtonReleaseMask|ButtonMotionMask|
 			PointerMotionMask|ButtonPressMask|ExposureMask, d))
     {
-#if DEBUG_CAT
-cev++;
-#endif
       do_sleep = 0;
       StashEventTime(d);
       switch (d->xany.type)
       {
       case ButtonRelease:
-#if DEBUG_CAT
-cc[0]++;
-fprintf(stderr, "cat stats (2): clp: %d (%d/%d/%d/%d/%d)  cev: %d csleep: %d\n", clp, cc[0], cc[1], cc[2], cc[3], cc[4], cev, csleep);
-#endif
+	*ret_button = d->xbutton.button;
 	return CF_CLICK;
       case MotionNotify:
-#if DEBUG_CAT
-cc[1]++;
-#endif
 	if (d->xmotion.same_screen == False)
 	{
 	  break;
@@ -940,23 +913,14 @@ cc[1]++;
 	}
         else
 	{
-#if DEBUG_CAT
-fprintf(stderr, "cat stats (3): clp: %d (%d/%d/%d/%d/%d)  cev: %d csleep: %d\n", clp, cc[0], cc[1], cc[2], cc[3], cc[4], cev, csleep);
-#endif
 	  return CF_CLICK;
 	}
 	break;
       case ButtonPress:
-#if DEBUG_CAT
-cc[2]++;
-#endif
 	if (may_time_out)
 	  is_button_pressed = True;
 	break;
       case Expose:
-#if DEBUG_CAT
-cc[3]++;
-#endif
 	/* must handle expose here so that raising a window with "I" works */
 	memcpy(&old_event, &Event, sizeof(XEvent));
 	memcpy(&Event, d, sizeof(XEvent));
@@ -965,19 +929,12 @@ cc[3]++;
 	memcpy(&Event, &old_event, sizeof(XEvent));
 	break;
       default:
-#if DEBUG_CAT
-cc[4]++;
-fprintf(stderr,"%d ", d->xany.type);
-#endif
 	/* can't happen */
 	break;
       }
     }
   }
 
-#if DEBUG_CAT
-fprintf(stderr, "cat stats (4): clp: %d (%d/%d/%d/%d/%d)  cev: %d csleep: %d\n", clp, cc[0], cc[1], cc[2], cc[3], cc[4], cev, csleep);
-#endif
   return (is_button_pressed) ? CF_HOLD : CF_TIMEOUT;
 }
 
@@ -1649,6 +1606,7 @@ static void execute_complex_function(F_CMD_ARGS, Bool *desperate)
   XEvent d, *ev;
   FvwmFunction *func;
   static unsigned int depth = 0;
+  int button;
 
   /* FindFunction expects a token, not just a quoted string */
   func_name = PeekToken(action, &taction);
@@ -1785,6 +1743,7 @@ static void execute_complex_function(F_CMD_ARGS, Bool *desperate)
   case ButtonRelease:
     x = eventp->xbutton.x_root;
     y = eventp->xbutton.y_root;
+    button = eventp->xbutton.button;
     /* Take the click which started this fuction off the
      * Event queue.  -DDN- Dan D Niles dniles@iname.com */
     XCheckMaskEvent(dpy, ButtonPressMask, &d);
@@ -1792,25 +1751,38 @@ static void execute_complex_function(F_CMD_ARGS, Bool *desperate)
   default:
     XQueryPointer( dpy, Scr.Root, &JunkRoot, &JunkChild,
 		   &x,&y,&JunkX, &JunkY, &JunkMask);
+    button = 0;
     break;
   }
 
   /* Wait and see if we have a click, or a move */
   /* wait forever, see if the user releases the button */
-  type = CheckActionType(x, y, &d, HaveHold, True);
+  type = CheckActionType(x, y, &d, HaveHold, True, &button);
   if (type == CF_CLICK)
   {
     ev = &d;
     /* If it was a click, wait to see if its a double click */
     if(HaveDoubleClick)
     {
-      type = CheckActionType(x, y, &d, True, False);
+      int button2;
+
+      type = CheckActionType(x, y, &d, True, False, &button2);
       switch (type)
       {
-      case CF_CLICK:
       case CF_HOLD:
       case CF_MOTION:
 	type = CF_DOUBLE_CLICK;
+	ev = &d;
+	break;
+      case CF_CLICK:
+	if (button == button2)
+	{
+	  type = CF_DOUBLE_CLICK;
+	}
+	else
+	{
+	  type = CF_CLICK;
+	}
 	ev = &d;
 	break;
       case CF_TIMEOUT:
