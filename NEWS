@@ -29,6 +29,8 @@ Changes in stable release 2.4.19 (not released yet)
 * Fixed a problem with fvwm startup and shutdown when the pointer
   was grabbed by another application.
 
+* Fixed parsing of the Pointer option to the Move command.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.18 (19-Mar-2004)

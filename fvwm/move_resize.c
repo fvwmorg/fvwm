@@ -197,6 +197,7 @@ static int GetMoveArguments(
   if (s1 && fPointer && StrEquals(s1, "pointer"))
   {
       *fPointer = True;
+      *paction = action;
       free(s1);
       return 0;
   }

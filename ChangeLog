@@ -1,3 +1,8 @@
+2004-07-19  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/move_resize.c (GetMoveArguments):
+	Fixed parsing of the Pointer option to the Move command.
+
 2004-07-15  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/fvwm.c (StartupStuff):
