@@ -1,6 +1,6 @@
 -------------------------------------------------------------------
 
-Changes in stable release 2.4.17 (not released yet)
+Changes in stable release 2.4.17 (10-Oct-2003)
 
 * Fixed error message for incorrect --with-SOME-library argument.
 
