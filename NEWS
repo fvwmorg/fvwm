@@ -14,6 +14,9 @@ Changes in stable release 2.4.12 (not released yet)
 * Fixed starting Move at random position when pointer is on a
   different screen.
 
+* Transient windows do not appear in FvwmWinList after they have
+  been moved on the desktop.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.11 (20-Sep-2002)
