@@ -1,3 +1,9 @@
+2002-03-24  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/events.c (HandleEnterNotify):
+	fixed icons being raised right after iconification when done without the
+	mouse and via a function
+
 2002-03-16  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/fvwm2.1:

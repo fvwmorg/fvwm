@@ -499,6 +499,8 @@ void initialize_pager(void)
   {
     window_h = Rows * (Scr.VHeight / Scr.VScale + m + label_h + 1) - 1;
   }
+  desk_w = (window_w - Columns + 1) / Columns;
+  desk_h = (window_h - Rows * label_h - Rows + 1) / Rows;
 
   if (is_transient)
   {

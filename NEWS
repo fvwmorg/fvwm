@@ -9,6 +9,10 @@ Changes in stable release 2.4.7 (not released yet)
 
 * Fixed config.h warnings with some compilers introduced in 2.4.6.
 
+* Fixed icon titles being raised when they should not be.
+
+* Fixed initial drawing of the internals of the FvwmPager window.
+
 * Fixed the FvwmAudio compatible mode in FvwmEvent when external
   audio player is used.
 
@@ -49,7 +53,8 @@ Changes in stable release 2.4.6 (10-Mar-2002)
 
 * Fixed a memory leak in the Pick command.
 
-* Allow to choose windows with CirculateSkip with the Pick command.
+* Allow to choose windows with CirculateSkip with the Pick
+  command.
 
 * Fixed an FvwmScript compile problem on dec-osf5.
 
@@ -77,15 +82,16 @@ Changes in stable release 2.4.5 (27-Jan-2002)
 
 * Reduced the time in which fvwm attempts to grab the pointer.
 
-* Fixed unmanaged window when window was mapped/unmapped/mapped too
-  fast.
+* Fixed unmanaged window when window was mapped/unmapped/mapped
+  too fast.
 
 * Fixed MiniScroll's auto repeating in FvwmScript.
 
 * Fixed a crash with the UseStyle style in combination with
   HilightBack.
 
-* Fixed excessive redraws of the windows under a window being shaded.
+* Fixed excessive redraws of the windows under a window being
+  shaded.
 
 * Fixed a minor memory leak in the Style command.
 
@@ -120,9 +126,9 @@ Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Fixed ClickToFocusClickRaises style.
 
-* FvwmForm: Customize pointers, support ISO_Tab key, buttons can activate
-  on press or release, special pointer during grab, arrow keys useful in form
-  with one input field.
+* FvwmForm: Customize pointers, support ISO_Tab key, buttons can
+  activate on press or release, special pointer during grab, arrow
+  keys useful in form with one input field.
 
 * New OpaqueMoveSize argument "unlimited".
 
@@ -133,11 +139,11 @@ Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Mouse bindings are activated without a recapture.
 
-* FvwmScript: new keyboard bindings. New flags NoFocus and Left, Center,
-  and Right for text position. Amelioration of the Menu and PopupMenu
-  Widgets. New functions GetPid, Parse, SendMsgAndGet and LastString.
-  New instruction Key for key bindings. New command SendToModule ScriptName
-  SendString.
+* FvwmScript: new keyboard bindings. New flags NoFocus and Left,
+  Center, and Right for text position. Amelioration of the Menu
+  and PopupMenu Widgets. New functions GetPid, Parse,
+  SendMsgAndGet and LastString.  New instruction Key for key
+  bindings. New command SendToModule ScriptName SendString.
 
 * Command "Silent" when precedes "Key", "Mouse" and "PointerKey"
   disables warning messages.
@@ -157,8 +163,8 @@ Changes in stable release 2.4.3 (08-Oct-2001)
 
 * Fixed flickering icon titles.
 
-* New X resource fvwmscreen to select the Xinerama screen on which to
-  place new windows.
+* New X resource fvwmscreen to select the Xinerama screen on which
+  to place new windows.
 
 * Coordinates of a window during motion are show relative to the
   Xinerama screen.
@@ -167,9 +173,9 @@ Changes in stable release 2.4.3 (08-Oct-2001)
 
 Changes in stable release 2.4.2 (16-Sep-2001)
 
-* Desk and page can be given as X resources in .Xdefaults, for example:
-    xterm.desk: 1
-    xterm.page: 1 2 3
+* Desk and page can be given as X resources in .Xdefaults, for
+  example:
+    xterm.desk: 1 xterm.page: 1 2 3
 
 * Several Shape compilation problems fixed.
 
@@ -212,9 +218,11 @@ Changes in stable release 2.4.1 (15-Sep-2001)
 
 * FvwmIconBox, FvwmTaskBar and FvwmWinList support aliases.
 
-* Enhancements in fvwm-menu-headlines and support for 10 more sites.
+* Enhancements in fvwm-menu-headlines and support for 10 more
+  sites.
 
-* Color enhancements in button vectors: @2 is bg color, @3 is fg color.
+* Color enhancements in button vectors: @2 is bg color, @3 is fg
+  color.
 
 * Improved detection of the Shape library.
 
@@ -226,14 +234,17 @@ Changes in stable release 2.4.1 (15-Sep-2001)
   with the system.fvwm2rc-sample-95 configuration.
 
 * The modules FvwmPager, FvwmIconMan, FvwmWinList and FvwmButtos
-  set the transient_for hint when started with the "transient" option.
+  set the transient_for hint when started with the "transient"
+  option.
 
-* Fixed FvwmIconMan with the transient option when mapped off screen.
+* Fixed FvwmIconMan with the transient option when mapped off
+  screen.
 
-* Fixed ClickToFocus focus policy when iconifying the focused window.
+* Fixed ClickToFocus focus policy when iconifying the focused
+  window.
 
-* Fixed some focus problems in conjunction with unclutter vs xv/xmms
-  and Open Look applications.
+* Fixed some focus problems in conjunction with unclutter vs
+  xv/xmms and Open Look applications.
 
 * Fixed a problem that could cause windows to be lost off screen
   with interactive window motion.
@@ -256,41 +267,45 @@ Changes in stable release 2.4.1 (15-Sep-2001)
 
 * Fixed parameters of fvwm24_convert.
 
-* Fixed a number of building problems related to old vendor unices,
-  libstroke-0.5, autoconf-2.50, bogus gnome-config and imlib-config.
+* Fixed a number of building problems related to old vendor
+  unices, libstroke-0.5, autoconf-2.50, bogus gnome-config and
+  imlib-config.
 
 * Fixed drawing of title bar buttons with MWMDecorStick.
 
 * Fixed missing button or key events over the pan frames.
 
-* Fixed placement of the FvwmDragWell, FvwmButtons and FvwmForm modules.
+* Fixed placement of the FvwmDragWell, FvwmButtons and FvwmForm
+  modules.
 
-* Fixed parsing double quotes in FvwmPager's Font and SmallFont options.
-  Fixed FvwmPager crash with certain font strings.
+* Fixed parsing double quotes in FvwmPager's Font and SmallFont
+  options.  Fixed FvwmPager crash with certain font strings.
 
-* Fixed drawing of the grid lines in an iconified FvwmPager window.
+* Fixed drawing of the grid lines in an iconified FvwmPager
+  window.
 
 * Fixed button grabbing problem for buttons > 3 in FvwmTaskBar.
 
-* Fixed some exotic problems with window gravity and resizing windows.
+* Fixed some exotic problems with window gravity and resizing
+  windows.
 
-* Fixed a problem with maximizing windows with the vieport not starting
-  on a page boundary.
+* Fixed a problem with maximizing windows with the vieport not
+  starting on a page boundary.
 
 * Fixed handling of parentheses in FvwmButtons button actions.
 
-* Work around a key binding problem with keys that generate the same
-  symbol with more than one key code (e.g. Shift-F1 = F11).
+* Work around a key binding problem with keys that generate the
+  same symbol with more than one key code (e.g. Shift-F1 = F11).
 
 * The Desk option of FvwmBacker is compatible to earlier version.
-  Desk or Page coordinates can be omitted to indicate that desk
-  or page changes trigger no action at all.
+  Desk or Page coordinates can be omitted to indicate that desk or
+  page changes trigger no action at all.
 
-* Fixed double updating of background with FvwmBacker sometimes leading
-  to the wrong background.
+* Fixed double updating of background with FvwmBacker sometimes
+  leading to the wrong background.
 
-* Fixed several escaping errors in fvwm-menu-directory, so files and
-  directories containing special chars and spaces should work.
+* Fixed several escaping errors in fvwm-menu-directory, so files
+  and directories containing special chars and spaces should work.
 
 * Fixed PlacedByButton3 condition.
 
@@ -316,9 +331,9 @@ Changes in stable release 2.4.0 (03-Jul-2001)
 
 Changes in beta release 2.3.33 (22-Jun-2001)
 
-* Module configuration commands are now partially expanded similarly to
-  any other commands, except that single alphabetic-letter parameters are
-  not expanded for backward compatibility.
+* Module configuration commands are now partially expanded similar
+  to any other commands, except that single alphabetic-letter
+  parameters are not expanded for backward compatibility.
 
 Changes in beta release 2.3.32 (4-May-2001)
 
@@ -339,20 +354,24 @@ Changes in beta release 2.3.30 (29-Mar-2001)
 
 * The configure option --disable-modality was removed.
 
-* New FvwmCommand -c option to read multiple commands from standard input.
+* New FvwmCommand -c option to read multiple commands from
+  standard input.
 
 Changes in beta release 2.3.29 (2-Mar-2001)
 
 * New temporary option -debug_stack_ring.
 
-* New styles IconifyWindowGroupsTogether and IconifyWindowGroupsOff.
+* New styles IconifyWindowGroupsTogether and
+  IconifyWindowGroupsOff.
 
-* New styles KeepWindowGroupsOnDesk and ScatterWindowGroups to cope with
-  applications using the window group hint incorrectly (mozilla).
+* New styles KeepWindowGroupsOnDesk and ScatterWindowGroups to
+  cope with applications using the window group hint incorrectly
+  (mozilla).
 
 * New BugOpts option FlickeringQtDialogsWorkaround.
 
-* New configure option --disable-package-subdirs, see INSTALL.fvwm for info.
+* New configure option --disable-package-subdirs, see INSTALL.fvwm
+  for info.
 
 * New option "None" to the IconBox style.
 
@@ -360,8 +379,8 @@ Changes in beta release 2.3.28 (25-Jan-2001)
 
 * Renamed configure option --enable-kanji to --enable-multibyte.
 
-* Security fix related to .fvwm2rc being searched in the current directory
-  when $HOME is not set.
+* Security fix related to .fvwm2rc being searched in the current
+  directory when $HOME is not set.
 
 * New menu styles PopdownImmediately, PopdownDelayed and PopdownDelay.
 
