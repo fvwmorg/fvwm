@@ -22,6 +22,8 @@ Changes in stable release 2.4.5 (not released yet)
 
 * Fixed excessive redraws of the windows under a window being shaded.
 
+* Fixed a minor memory leak in the Style command.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.
