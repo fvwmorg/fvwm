@@ -724,6 +724,8 @@ static void parse_colorset(char *line)
       XImage *mask_image = None;
       unsigned int i, j, k = 0;
       unsigned long red = 0, blue = 0, green = 0;
+      unsigned long tred, tblue, tgreen;
+      double dred = 0.0, dblue = 0.0, dgreen = 0.0;
 
       /* create an array to store all the pixmap colors in */
       colors = (XColor *)safemalloc(cs->width * cs->height * sizeof(XColor));
@@ -752,16 +754,39 @@ static void parse_colorset(char *line)
 	for (i = 0; i < k; i += 256)
 	  XQueryColors(dpy, Pcmap, &colors[i], min(k - i, 256));
 	/* calculate average, ignore overflow: .red is short, red is long */
-	for (i = 0; i < k; i++) {
-	  red += colors[i].red;
-	  green += colors[i].green;
-	  blue += colors[i].blue;
-	}
-	free(colors);
-	/* get it */
-	color.red = red / k;
-	color.green = green / k;
-	color.blue = blue / k;
+
+        for (i = 0; i < k; i++)
+        {
+          tred = red;
+          red += colors[i].red;
+          if (red < tred)
+          {
+            dred += (double)tred;
+            red = colors[i].red;
+          }
+          tgreen = green;
+          green += colors[i].green;
+          if (green < tgreen)
+          {
+            dgreen += (double)tgreen;
+            green = colors[i].green;
+          }
+          tblue = blue;
+          blue += colors[i].blue;
+          if (blue < tblue)
+          {
+            dblue += (double)tblue;
+            blue = colors[i].blue;
+          }
+        }
+        dred += red;
+        dgreen += green;
+        dblue += blue;
+        free(colors);
+        /* get it */
+        color.red = dred / k;
+        color.green = dgreen / k;
+        color.blue = dblue / k;
 	if (privateCells) {
 	  color.pixel = cs->bg;
 	  XStoreColor(dpy, Pcmap, &color);

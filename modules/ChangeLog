@@ -1,5 +1,9 @@
 2002-05-27  Dominik Vogt  <dominik.vogt@gmx.de>
 
+	* FvwmTheme/FvwmTheme.c (parse_colorset):
+	fixed integer overflow in calculation of average bg colour in colour
+	sets
+
 	* FvwmEvent/FvwmEvent.1 (argument):
 	corrected man page example
 
