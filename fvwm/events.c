@@ -1754,7 +1754,8 @@ void HandleButtonPress(void)
     }
     if (!IS_ICONIFIED(Tmp_win))
     {
-      DrawDecorations(Tmp_win, DRAW_ALL, True, True, PressedW);
+      DrawDecorations(
+	Tmp_win, DRAW_ALL, (Tmp_win == get_focus_window()), True, PressedW);
     }
   }
   else if (Tmp_win && Event.xbutton.window == Tmp_win->Parent &&
