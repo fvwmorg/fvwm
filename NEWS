@@ -31,6 +31,8 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed a slight bug when waiting until all buttons are released,
   for example after executing a complex function.
 
+* Fixed potentially harmful change in module interface.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
