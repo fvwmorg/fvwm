@@ -1,6 +1,12 @@
 2002-04-11  Mikhael Goikhman  <migo@homemail.com>
 
 	* NEWS:
+	* configure.in:
+	changed to 2.4.8
+
+2002-04-11  Mikhael Goikhman  <migo@homemail.com>
+
+	* NEWS:
 	* docs/ANNOUNCE:
 	* docs/fvwm.lsm.in:
 	* fvwm/fvwm2.1:
