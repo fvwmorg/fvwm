@@ -1076,7 +1076,7 @@ int DoMenusOverlap(MenuRoot *mr, int x, int y, int width, int height,
   x_overlap = 0;
   if (fTolerant) {
     /* Don't use multiplier if doing an intolerant check */
-    prior_width *= (float)(mr->ms->feel.PopupOffsetPercent) / 100.0;
+    prior_width *= mr->ms->feel.PopupOffsetPercent / 100;
   }
   if (y <= prior_y + prior_height - tolerance2 &&
       prior_y <= y + height - tolerance2 &&

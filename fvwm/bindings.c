@@ -118,7 +118,7 @@ void ParseBindEntry(XEvent *eventp,Window w,FvwmWindow *tmp_win,
   Binding *temp;
   int button,i,min,max;
   int n1=0,n2=0,n3=0;
-  KeySym keysym;
+  KeySym keysym = 0;
   KeySym tkeysym;
   int contexts;
   int mods;

@@ -557,7 +557,6 @@ int main(int argc, char **argv)
   oldErrorHandler=XSetErrorHandler(myErrorHandler);
 
   UberButton=(button_info*)mymalloc(sizeof(button_info));
-  memset(UberButton, 0, sizeof(button_info));
   UberButton->flags=0;
   UberButton->parent=NULL;
   UberButton->BWidth=1;

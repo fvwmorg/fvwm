@@ -1,9 +1,3 @@
-1999-03-12  Paul D. Smith  <psmith@gnu.org>
-
-	* Makefile.am: Removed version.html from the distribution.
-	* version.html: Removed; it's not referenced and the info in it is
-	superceded by download.html.
-
 1999-02-19  Dominik Vogt  <dominik_vogt@hp.com>
 
 	* download.html: updated for 2.2

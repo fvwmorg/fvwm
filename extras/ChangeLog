@@ -1,21 +1,3 @@
-1999-06-25  Dominik Vogt  <dominik_vogt@hp.com>
-
-	* FvwmCommand/FvwmCommandS.c: fixed zero write bug
-
-1999-05-01  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
-
-	* FvwmScript/Widgets/TextField.c (dec): move #define to first column.
-
-1999-03-12  Paul D. Smith  <psmith@gnu.org>
-
-	* FvwmTaskBar/ButtonArray.c (ButtonDraw): If we didn't have enough
-	room to write _any_ of the title on the button (if there are
-	_lots_ of buttons) then we'd get into an infinite loop as
-	search_len is not checked to make sure it stays >0.  Make that
-	check.  Note we don't test to see if the "..." itself will fit; I
-	suspect you could get buttons small enough that the "..." will
-	overwrite some of the button.  Oh well, at least it doesn't freeze up.
-
 1999-02-15  Bob Woodside <proteus@pcnet.com>
 
 	* FvwmConsole/FvwmConsole.h: Switched the order of the includes for

@@ -1,30 +1,9 @@
-1999-06-24  Dominik Vogt  <dominik_vogt@gmx.de>
+1999-09-24  Dominik Vogt  <dominik.vogt@gmx.de>
 
-	* FvwmPager/x_pager.c (initialize_pager):
-	(FvwmErrorHandler): installed missing error handler. This has most
-	likely cause bugs #122, #311 and #358
-
-1999-06-22  Dominik Vogt  <dominik_vogt@hp.com>
-
-	* FvwmForm/FvwmForm.c (ReadXServer): made char array unsigned (test
-	for >= 160 may fail).
-
-Thu Apr 29 16:08:54 1999  DanEspen  <dje@blue>
-
-	* FvwmForm/FvwmForm.c (ReadXServer): Allow international chars in form.
-
-1999-04-27  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
-
-	* FvwmButtons/FvwmButtons.c (main): Fix for PR#206.
-
-1999-03-17  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
-
-	* FvwmM4/FvwmM4.c (m4_defs): fix bad interaction between
-	-m4-prefix and -m4-[e|s]quotes.  Reported as PR#201 and PR#246.
-
-1999-03-09  Andrew T. Veliath  <andrewtv@usa.net>
-
-	* FvwmRearrange/FvwmRearrange.c: Add GPL header.
+	* FvwmM4/FvwmM4.c (Resolution):
+	* FvwmCpp/FvwmCpp.c (Resolution):
+	removed unused include files <X11/extensions/shape.h> and
+	<X11/Xmu/SysUtil.h>
 
 1999-02-14  Dominik Vogt  <dominik_vogt@hp.com>
 
