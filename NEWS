@@ -6,6 +6,9 @@ Changes in stable release 2.4.12 (not released yet)
 
 * Fixed accidental menu animation with certain menu position hints.
 
+* Increased maximum allowed key symbol name length to 200
+  characters.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.11 (20-Sep-2002)
