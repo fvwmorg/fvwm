@@ -900,13 +900,13 @@ Bool PlaceWindow(
       }
 
       /* the left and top sides are more important in huge windows */
-      if (attr_g->x < PageLeft)
+      if (tmp_win->attr.x < PageLeft)
       {
-	attr_g->x = PageLeft;
+	tmp_win->attr.x = PageLeft;
       }
-      if (attr_g->y < PageTop)
+      if (tmp_win->attr.y < PageTop)
       {
-	attr_g->y = PageTop;
+	tmp_win->attr.y = PageTop;
       }
       break;
     case PLACE_MINOVERLAP:
