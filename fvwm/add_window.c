@@ -1079,10 +1079,6 @@ void setup_frame_attributes(
 	  break;
   }
   XChangeWindowAttributes(dpy, tmp_win->w, CWBackingStore, &xswa);
-  if (pstyle->flags.use_backing_store == BACKINGSTORE_OFF)
-  {
-    xswa.backing_store = NotUseful;
-  }
   XChangeWindowAttributes(dpy, tmp_win->decor_w, CWBackingStore, &xswa);
   if (HAS_TITLE(tmp_win))
   {
@@ -1094,17 +1090,17 @@ void setup_frame_attributes(
 				&xswa);
     }
   }
-
   /* parent_relative is applied to the frame and the parent */
   xswa.background_pixmap = pstyle->flags.use_parent_relative
 			   ? ParentRelative : None;
-  XChangeWindowAttributes(dpy, tmp_win->frame, CWBackPixmap, &xswa);
-  XChangeWindowAttributes(dpy, tmp_win->Parent, CWBackPixmap, &xswa);
-
   /* Save_under is only useful on the frame */
   xswa.save_under = pstyle->flags.do_save_under
 		    ? Scr.flags.do_save_under : NotUseful;
-  XChangeWindowAttributes(dpy, tmp_win->frame, CWSaveUnder, &xswa);
+  XChangeWindowAttributes(
+	  dpy, tmp_win->Parent, CWBackPixmap | CWBackingStore, &xswa);
+  XChangeWindowAttributes(
+	  dpy, tmp_win->frame, CWBackPixmap | CWBackingStore | CWSaveUnder,
+	  &xswa);
 }
 
 void destroy_auxiliary_windows(FvwmWindow *tmp_win,
