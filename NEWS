@@ -8,7 +8,7 @@ Changes in stable release 2.4.19 (not released yet)
 
 * Allow whitespace in menu names.
 
-* Fixed a hang when restarting FvwmCommand.
+* Fixed a hang when restarting FvwmCommand or FvwmConsole.
 
 * A double click no longer works occurs when two different mouse
   buttons are pressed.

@@ -53,6 +53,7 @@ int main ( int argc, char *argv[]) {
   char *home;
   char *s_name;
 
+  signal (SIGPIPE, sclose);
   signal (SIGINT, sclose);
   signal (SIGQUIT, sclose);
 
