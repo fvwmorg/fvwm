@@ -11,6 +11,8 @@ Changes in stable release 2.4.8 (not released yet)
 * New FvwmIconMan configuration syntax now conforms to the syntax of
   other modules, see the man page.
 
+* New WindowList option CurrentAtEnd.
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at

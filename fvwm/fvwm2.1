@@ -3306,6 +3306,7 @@ passed to WindowList can be
 .IR "Layer m [n]" ,
 .IR UseListSkip " / " OnlyListSkip ,
 .IR NoDeskSort ,
+.IR CurrentAtEnd ,
 .IR ReverseOrder ,
 .IR UseIconName ,
 .IR Alphabetic " / " NotAlphabetic ,
@@ -3339,6 +3340,12 @@ option, only windows in layers between m and n are displayed. n
 defaults to m.  With the
 .I ReverseOrder
 option the order of the windows in the list is reversed.
+
+With the
+.I CurrentAtEnd
+option the currently focused window (if any) is shown at the bottom
+of the list.  This is mostly intended for simulating the Alt-Tab
+behaviour in another GUI.
 
 If you wanted to use the
 .B WindowList

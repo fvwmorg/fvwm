@@ -1,3 +1,8 @@
+2002-04-23  Jochen Klenner  <jochen.klenner@gmx.net>
+
+	* fvwm/windowlist.c (CMD_WindowList):
+	Added new Windowlist option CurrentAtEnd
+
 2002-04-21  Mikhael Goikhman  <migo@homemail.com>
 
 	* INSTALL.fvwm:

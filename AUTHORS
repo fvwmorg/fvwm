@@ -2,9 +2,8 @@ To find out what should go in this file, see "Information For
 Maintainers of GNU Software" (maintain.texi), the section called
 "Recording Changes".
 
-
-Suzanne Britton:
-Multi-pixmap titlebars patch.
+Jochen Klenner:
+WindowList option CurrentAtEnd.
 
 Lorenz Minder:
 Patches for fvwm-setup95 and safestrdup.

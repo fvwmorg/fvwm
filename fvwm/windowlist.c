@@ -121,6 +121,7 @@ void CMD_WindowList(F_CMD_ARGS)
   /* Condition vars. */
   Bool use_condition = False;
   Bool do_reverse_sort_order = False;
+  Bool current_at_end = False;
   WindowConditionMask mask;
   char *cond_flags;
   Bool was_get_menu_opts_called = False;
@@ -185,6 +186,8 @@ void CMD_WindowList(F_CMD_ARGS)
         flags |= SHOW_ALPHABETIC;
       else if (StrEquals(tok,"ReverseOrder"))
         do_reverse_sort_order = True;
+      else if (StrEquals(tok,"CurrentAtEnd"))
+        current_at_end = True;
       else if (StrEquals(tok,"NoDeskSort"))
         flags |= NO_DESK_SORT;
       else if (StrEquals(tok,"UseIconName"))
@@ -319,8 +322,15 @@ void CMD_WindowList(F_CMD_ARGS)
     return;
   }
   /* get the windowlist starting from the current window (if any)*/
-  if ((t = get_focus_window()) == NULL)
+  t = get_focus_window();
+  if (t == NULL)
     t = Scr.FvwmRoot.next;
+  else if (current_at_end) {
+    if (t->next)
+      t = t->next;
+    else
+      t = Scr.FvwmRoot.next;
+  }
   for (ii = 0; ii < numWindows; ii++)
   {
     if (do_reverse_sort_order)
