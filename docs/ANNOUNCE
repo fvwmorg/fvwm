@@ -1,11 +1,13 @@
-fvwm-2.4.17 maintenance release for all earlier 2.4.x versions.
-It contains several small fixes in fvwm and some of the modules.
+fvwm-2.4.18 maintenance release for all earlier 2.4.x versions.
+It contains important security fixes in several scripts.
 
 This release is available at the home page: http://www.fvwm.org/.
-We are 10 years old now as of Juny 2003!
 
 Who needs to upgrade?
 ---------------------
+
+Because of the security issues with fvwm-2.3.4 to fvwm-2.4.17, it
+is strongly recommended to upgrade to fvwm-2.4.18.
 
 Everyone who needs a support or experiences a problem with earlier
 2.4.x versions.  Like the previous versions, this one includes
@@ -18,29 +20,14 @@ grant their users an access to the latest stable version.
 Bug Fixes:
 ----------
 
-* Fixed error message for incorrect --with-SOME-library argument.
+* Corrected rebooting the machine in FvwmScript-Quit.
 
-* Fixed a compile problem on QNX 4.25.
+* Fixed the FlickeringMoveWorkaround option to the BugOpts command.
 
-* The "Visible" condition does no longer select windows on
-  different desks.
+* Security patch in fvwmbug.sh.
+  See http://securitytracker.com/alerts/2004/Jan/1008781.html
 
-* Fixed sending M_NEW_PAGE packets to the modules if the page did
-  not change.
-
-* With the styles StartsOnPage, SkipMapping and UsePPosition,
-  windows that request a specific position are still placed on the
-  given page.
-
-Improvements:
--------------
-
-* It is now possible to suppress title action or title completely
-  in menus created by fvwm-menu-directory.
-
-* New configure switch --disable-gtk.
-
-* FvwmGtk.1 is not installed if FvwmGtk is not built.
-
-* Added support for new BBC headlines in fvwm-menu-headlines, this
-  replaces the old BBC-Worlds and BBC-SciTech headlines.
+* Security fixes in
+    fvwm-menu-directory (BugTraq id 9161)
+    fvwm_make_directory_menu.sh
+    fvwm_make_browse_menu.sh

@@ -167,10 +167,10 @@ Steps: 1. When building a release, update the CVS sources first. For a
        2. Make sure you have XPM, the strokes library and a X server with
           the shape extension.
        3. Run
-            automake --add-missing; autoreconf
-	  If you checked out fresh sources in step 1, run the same line
+            aclocal && autoheader && automake -a && autoreconf
+	  If you checked out fresh sources in step 1, run this line
           again:
-            automake --add-missing; autoreconf
+            automake -a && autoreconf
        4. If building a stable release, remove the config.cache file.
        5. ./configure
        6. make clean
