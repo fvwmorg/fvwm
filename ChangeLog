@@ -1,3 +1,15 @@
+2002-03-03  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/conditional.c (CMD_Pick):
+	fixed a memory leak
+	allow to pick windows that have CirculateSkip set
+
+	* acinclude.m4:
+	disabled a destructing gnome_prefix logic
+
+	* fvwm/fvwm2.1 (Example):
+	corrected statement about CaptureHonorsStartsOnPage being the default
+
 2002-03-01  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/move_resize.c (CMD_ResizeMove):
@@ -20,9 +32,8 @@
 
 2002-02-26  Dominik Vogt  <dominik.vogt@gmx.de>
 
-	* aclocal.m4 (smr_CHECK_LIB):
-	fixed a bug with variable expansion and autoconf cache values w/
-	autoconf-2.52
+	* acinclude.m4 (smr_CHECK_LIB):
+	fixed a bug with variable expansion and autoconf cache values
 
 2002-02-23  Dominik Vogt  <dominik.vogt@gmx.de>
 
