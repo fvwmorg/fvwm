@@ -1,3 +1,8 @@
+2002-08-25  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* ChangeLog:
+	cleaned up
+
 2002-08-29  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/menus.c (paint_menu):
@@ -1164,7 +1169,8 @@
 
 2001-08-25  Mikhael Goikhman  <migo@homemail.com>
 
-	* libs/Strings.{c,h}:
+	* libs/Strings.h:
+	* libs/Strings.c:
 	new function QuoteString() to add and escape single quotes to strings
 
 	* fvwm/menus.c (MenuInteraction):
@@ -3320,9 +3326,20 @@
 
 2001-02-10  Mikhael Goikhman  <migo@homemail.com>
 
-	* fvwm/{builtins,functions,fvwm,menus,module_interface}.c:
-	* fvwm/{move_resize,read,session,style,windowlist}.c:
-	* libs/{Parse.c,envvar.c,safemalloc.c,safemalloc.h}:
+	* fvwm/builtins.c:
+	* fvwm/functions.c:
+	* fvwm/fvwm.c:
+	* fvwm/menus.c:
+	* fvwm/module_interface.c:
+	* fvwm/move_resize.c:
+	* fvwm/read.c:
+	* fvwm/session.c:
+	* fvwm/style.c:
+	* fvwm/windowlist.c:
+	* libs/Parse.c.c:
+	* libs/envvar.c.c:
+	* libs/safemalloc.c.c:
+	* libs/safemalloc.h:
 	safestrdup patch by Lorenz Minder
 
 2001-02-06  Dan Espen  <dane@mk.telcordia.com>
@@ -3680,7 +3697,8 @@
 
 	* fvwm/menu.c (CopyMenuStyle):
 	* fvwm/menu.h:
-	* fvwm/function.{c,h}:
+	* fvwm/function.h:
+	* fvwm/function.c:
 	* fvwm/fvwm2.1:
 	* test/purify/purify.fvwm2rc:
 	* NEWS:
@@ -4803,7 +4821,8 @@
 
 2000-11-19  olicha  <olivier.chapuis@free.fr>
 
-	* fvwm/utils/fvwm-menu-desktop.{in,1}
+	* fvwm/utils/fvwm-menu-desktop.in:
+	* fvwm/utils/fvwm-menu-desktop.1:
 	fixes for KDE2
 
 2000-11-19  Dominik Vogt  <dominik.vogt@gmx.de>
@@ -5788,7 +5807,8 @@
 
 2000-05-20  olicha  <olivier.chapuis@free.fr>
 
-	* fvwm/update{c,h} (apply_window_updates):
+	* fvwm/updateh:
+	* fvwm/updatec (apply_window_updates):
 	* fvwm/styles.c (check_window_style_change):
 	Send a CONFIGURE_WINDOW message to module in the case of a
 	WindowListSkip/Hit and (No)Icon style changes.
@@ -6540,12 +6560,18 @@
 
 2000-02-18  Hippo
 
-	* fvwm/{{fvwm,style}.h,{add_window,style}.c}: New style flags
+	* fvwm/fvwm.h:
+	* fvwm/style.h:
+	* fvwm/add_window.c:
+	* fvwm/style.c:
+	New style flags
 	ParentalRelativity, Opacity.
 
 2000-02-14  Hippo
 
-	* fvwm/add_window.{c,h}: Simplified window creation calls,
+	* fvwm/add_window.c: Simplified window creation calls,
+	* fvwm/add_window.h:
+	Simplified window creation calls,
 	BackingStore controllable on client and decoration.
 	* fvwm/borders.c: removed some pointless testing
 	* fvwm/builtins.c: unshading now displays the frame properly and in
@@ -6942,11 +6968,15 @@
 2000-01-18  olicha  <olivier.chapuis@free.fr>
 
 	* fvwm/builtins.c (wait_func, recapture):
-	* fvwm/cursor.{c,h} (setBusyCursor):
-	* fvwm/function.{c,h}:
-	* fvwm/fvwm.{c,h} (StartupStuff, InitVariables):
+	* fvwm/cursor.h:
+	* fvwm/cursor.c (setBusyCursor):
+	* fvwm/function.h:
+	* fvwm/function.c:
+	* fvwm/fvwm.h:
+	* fvwm/fvwm.c (StartupStuff, InitVariables):
 	* fvwm/menus.c (MenuInteraction, pop_menu_up):
-	* fvwm/misc.{c,h} (GrabEm, UngrabEm):
+	* fvwm/misc.h:
+	* fvwm/misc.c (GrabEm, UngrabEm):
 	* fvwm/module_interface.c (ExecuteModuleSync):
 	* fvwm/read.c (cursor_control, ReadFile, PipeRead):
 	* fvwm/screen.h (ScreenInfo):
@@ -7476,7 +7506,7 @@
 
 1999-12-22  Mikhael Goikhman  <migo@homemail.com>
 
-	fvwm/menus.c (menuShortcuts): added XK_ISO_Left_Tab (like XK_Tab),
+	* fvwm/menus.c (menuShortcuts): added XK_ISO_Left_Tab (like XK_Tab),
 	{Ctrl,Alt}-{Up,Down} bindings synchronized with [Shift-]{Ctrl,Alt}-Tab,
 	some regrouping of 'case' sections
 
@@ -8132,7 +8162,8 @@
 
 1999-11-18  olicha  <olivier.chapuis@free.fr>
 
-	* libs/Module.{c,h} (SendFvwmPipe): Added SendFvwmPipe form
+	* libs/Module.h:
+	* libs/Module.c (SendFvwmPipe): Added SendFvwmPipe form
 	FvwmIconMan
 
 1999-11-17  Mikhael Goikhman  <migo@homemail.com>
@@ -8332,21 +8363,27 @@
 
 1999-11-11  olicha  <olivier.chapuis@free.fr>
 
-	* fvwm/module_interface.{c,h} (initModules):
+	* fvwm/module_interface.h:
+	* fvwm/module_interface.c (initModules):
 	(do_execute_module):
 	(PositiveWrite):
 	(setSyncMaskFunc):
-	* fvwm/function.{c,h} (functions):
-	* libs/Module.{c,h} (SetSyncMask):
+	* fvwm/function.h:
+	* fvwm/function.c (functions):
+	* libs/Module.h:
+	* libs/Module.c (SetSyncMask):
 	Implemented a synchronous mask that lists the messages that fvwm
 	will treat as synchronous. See FvwmWinList for an example.
 
 1999-11-11  olicha  <olivier.chapuis@free.fr>
 
 	* NEWS: New builtin function StrokeFunc
-	* fvwm/builtins.{c,h} (strokeFunc): New builtin function StrokeFunc
-	* fvwm/cursor.{c,h}: New context CRS_STROKE, default: XC_plus
-	* fvwm/functions.{c,h}: New builtin function StrokeFunc
+	* fvwm/builtins.h:
+	* fvwm/builtins.c (strokeFunc): New builtin function StrokeFunc
+	* fvwm/cursor.h:
+	* fvwm/cursor.c: New context CRS_STROKE, default: XC_plus
+	* fvwm/functions.h:
+	* fvwm/functions.c: New builtin function StrokeFunc
 	* fvwm/fvwm2.1: StrokeFunc doc. Update CursorStyle and Stroke entries.
 	* libs/Bindings.c (CheckBinding): Check the button in Stroke bindings
 
@@ -8445,20 +8482,26 @@
 	* NEWS: BusyCursor, EscapeFunc and CursorStyle.
 	* fvwm/ConfigFvwmDefaults: add the binding Key Escape A MC EscapeFunc
 	* fvwm/builtins.c (wait_func, recapture): Busy cursor stuff
-	* fvwm/cursor.{c,h} (cursor_type, default_cursors, CursorStyle,
-	  setBusyCursor, myCusorNameToIndex):
+	* fvwm/cursor.h:
+	* fvwm/cursor.c (cursor_type, default_cursors, CursorStyle):
+	(setBusyCursor):
+	(myCusorNameToIndex):
 	Add CRS_ROOT and ROOT context for CursorStyle. We can use X11 cursor
 	name in the CursorStyle command. Busy cursor stuff.
 	* fvwm/focus.c (FocusOn): update GrabEm and GrabEm.
-	* fvwm/function.{c,h} (func_config, execute_complex_function,
-	  DeferExecution):
+	* fvwm/function.h:
+	* fvwm/function.c (func_config):
+	(execute_complex_function):
+	(DeferExecution):
 	New functions BusyCursor and EscapeFunc. Busy cursor stuff.
-	* fvwm/fvwm.{c,h} (StartupStuff, InitVariables):
+	* fvwm/fvwm.h:
+	* fvwm/fvwm.c (StartupStuff, InitVariables):
 	Some Busy cursor stuff, the new external int GrabPointerState.
 	* fvwm/fvwm2.1: BusyCursor and EscapeFunc documentation.
 	Update CursorStyle documentation.
 	* fvwm/menus.c (MenuInteraction, pop_menu_up): Busy cursor stuff.
-	* fvwm/misc.{c,h} (GrabEm, UngrabEm):
+	* fvwm/misc.h:
+	* fvwm/misc.c (GrabEm, UngrabEm):
 	Busy cursor stuff. Grab context bits for GrabPointerState.
 	* fvwm/module_interface.c (ExecuteModuleSync):
 	Busy cursor stuff and some logic fixes.
@@ -8504,9 +8547,11 @@
 
 1999-10-20  Hippo
 
-	* libs/Colorset.{h,c}: AllocColorset duplicates colorset 0 into new
+	* libs/Colorset.h:
+	* libs/Colorset.c: AllocColorset duplicates colorset 0 into new
 	members.
-	* libs/safemalloc.{h,c}: new function saferealloc().
+	* libs/safemalloc.h:
+	* libs/safemalloc.c: new function saferealloc().
 	* fvwm/fvwm.c: colorset 0 defaults to black on grey in case FvwmTheme
 	fails to start.
 	* fvwm/fvwm2.1: Documented DefaultColorset command.
@@ -8937,7 +8982,8 @@
 
 1999-09-29  Hippo
 
-	* libs/Colorset.{h,c} Removed unused structure member colorset.mask
+	* libs/Colorset.h:
+	* libs/Colorset.c Removed unused structure member colorset.mask
 
 1999-09-28  Bob Woodside  <proteus@pcnet.com>
 
@@ -8964,7 +9010,9 @@
 
 1999-09-28  Hippo
 
-	* libs/Colorset.{h,c}, modules/FvwmTheme/FvwmTheme.c: simplified
+	* libs/Colorset.h:
+	* libs/Colorset.c:
+	* modules/FvwmTheme/FvwmTheme.c: simplified
 	the colorset structure to allow for expansion.
 
 1999-09-27  Olivier Chapuis  <olivier.chapuis@free.fr>
@@ -9207,7 +9255,11 @@ Wed Sep 15 20:44:57 1999  DanEspen  <dje@blue>
 
 1999-09-08  Neil Bird  <neil.bird@rdel.co.uk>
 
-	* fvwm/{functions.c,functions.h,fvwm2.1,style.c,style.h}:
+	* fvwm/functions.c:
+	* fvwm/functions.h:
+	* fvwm/fvwm2.1:
+	* fvwm/style.c:
+	* fvwm/style.h:
 	Add DestroyStyle command, and [try to] remove Style memory leaks.
 
 1999-09-07  Dominik Vogt  <dominik.vogt@gmx.de>
@@ -9253,7 +9305,9 @@ Wed Sep 15 20:44:57 1999  DanEspen  <dje@blue>
 
 1999-09-02  Hippo
 
-	* fvwm/{fvwm.c,screen.h,icons.c} Fixed client supplied icon pixmaps
+	* fvwm/fvwm.c:
+	* fvwm/screen.h:
+	* fvwm/icons.c: Fixed client supplied icon pixmaps
 	with the -visual option and different root/fvwm depths with Exceed
 	* fvwm/borders.c: title button pixmaps that are smaller then the title
 	height by an odd number are one pixel down (makes win95 styles better)
@@ -9267,9 +9321,16 @@ Wed Sep 15 20:44:57 1999  DanEspen  <dje@blue>
 
 1999-09-01  Hippo
 
-	* libs/Picture.{c,h}:
-	* fvwm/{fvwm,colormaps,menus,move_resize,virtual}.c
-	* fvwm/{colormaps,screen,move_resize}.h: Fixed XorPixmap with
+	* libs/Picture.h:
+	* libs/Picture.c:
+	* fvwm/fvwm.c:
+	* fvwm/colormaps.c:
+	* fvwm/menus.c:
+	* fvwm/move_resize.c:
+	* fvwm/virtual.c:
+	* fvwm/colormaps.h:
+	* fvwm/screen.h:
+	* fvwm/move_resize.h: Fixed XorPixmap with
 	fvwm -visual option.
 
 1999-09-01  Dominik Vogt  <dominik.vogt@gmx.de>
@@ -9293,7 +9354,8 @@ Wed Sep 15 20:44:57 1999  DanEspen  <dje@blue>
 1999-08-31  Hippo
 
 	* fvwm/move_resize.c: different method of doing XORPixmap (fails)
-	* libs/Picture.{h,c}: DestroyPicture now frees the colors allocated
+	* libs/Picture.h:
+	* libs/Picture.c: DestroyPicture now frees the colors allocated
 	by LoadPicture., New functions: UseDefaltVisual, UseFvwmVisual.
 
 1999-08-30  Dominik Vogt  <dominik.vogt@gmx.de>
@@ -9336,7 +9398,8 @@ Wed Sep 15 20:44:57 1999  DanEspen  <dje@blue>
 
 1999-08-27 Hippo
 
-	* libs/Picture.{h,c}: New function GetPictureAndFree() == {
+	* libs/Picture.h:
+	* libs/Picture.c: New function GetPictureAndFree() == {
 	GetPicture() then free all colors }, used by FvwmAnimate.
 	* fvwm/move_resize.c: SetXORPixmap can use the pixmap from FvwmAnimate.
 
@@ -9858,7 +9921,8 @@ Sat Aug 21 09:55:27 1999  DanEspen  <dje@blue>
 
 1999-07-28  Hippo
 
-	* libs/Colorset.{c,h}: New function CreateBackgroundPixmap() creates a
+	* libs/Colorset.h:
+	* libs/Colorset.c: New function CreateBackgroundPixmap() creates a
 	pixmap from a colrset suitable for using in XSetTile() XSetFillStyle().
 
 1999-07-23  Mikhael Goikhman  <migo@homemail.com>
@@ -9903,13 +9967,16 @@ Sat Aug 21 09:55:27 1999  DanEspen  <dje@blue>
 1999-07-16  Hippo
 
 	* configure.in: New module FvwmTheme.
-	* libs/Colorset.{h,c}: New lib functions for Colorset handling.
+	* libs/Colorset.h:
+	* libs/Colorset.c: New lib functions for Colorset handling.
 	* fvwm/add_window.c: added backing_store = NotUseful hint to the
 	  client parent (not the border though that may be worth doing).
 	* fvwm/builtins.c: removed DefaultBackground command.
 	* fvwm/colors.c: moved AllocGradient and CreateGradientPixmap to libs/
-	* fvwm/functions.{c,h}: removed DefaultBackground command.
-	* fvwm/{fvwm.c, screen.h}: removed DefaultBackground structure.
+	* fvwm/functions.h:
+	* fvwm/functions.c: removed DefaultBackground command.
+	* fvwm/fvwm.c:
+	* fvwm/screen.h: removed DefaultBackground structure.
 	* fvwm/fvwm2.1: removed DefaultBackground command.
 	* libs/Graphics.c: moved SetWindowBackground to libs/Colorset.c,
 	  Added AllocGradient() & CreateGradientPixmap().
@@ -10132,7 +10199,8 @@ Sun Jul 11 11:16:15 1999  DanEspen  <dje@blue>
 	Fixed char * to be const char *, there are more places to do the same.
 
 	* fvwm/fvwm.h:
-	* fvwm/fvwm.c ({get|set}InitFunctionName): new functions
+	* fvwm/fvwm.c (getInitFunctionName):
+	* fvwm/fvwm.c (setInitFunctionName): new functions
 	* fvwm/fvwm/session.c (SessionInit): use setInitFunctionName
 	* fvwm/fvwm.c (StartupStuff, Done): use getInitFunctionName
 	* sample.fvwmrc/system.fvwm2rc:
@@ -10150,11 +10218,13 @@ Sun Jul 11 11:16:15 1999  DanEspen  <dje@blue>
 
 1997-07-01  Hippo
 
-	* {fvwm,libs}/Makefile.am: Reordered .c file for faster parallel makes.
+	* fvwm/Makefile.am:
+	* libs/Makefile.am: Reordered .c file for faster parallel makes.
 	* libs/ModGraph.c: merged with Picture.c.
 	* libs/Picture.c: Rewrote InitPictureCmap(), removed SavePictureCMap
 	  Added GetColor().
-	* {fvwm/modules}/* Fixes due to the above, removed lots of GetColor()s.
+	* fvwm/*:
+	* modules/* Fixes due to the above, removed lots of GetColor()s.
 
 1999-07-01  Paul D. Smith  <psmith@gnu.org>
 
@@ -10696,7 +10766,10 @@ Sun Jul 11 11:16:15 1999  DanEspen  <dje@blue>
 
 1999-06-10  Hippo
 
-	* fvwm/{{colors,fvwm,icons}.c,screen.h}: clean up of icon rendering:
+	* fvwm/colors.c;
+	* fvwm/fvwm.c:
+	* fvwm/icons.c:
+	* fvwm/screen.h: clean up of icon rendering:
 	removed Bool usingDefaultVisual & GC IconPixmapGC,
 	client supplied icon bitmaps are always drawn in correct colors,
 	client supplied icon pixmaps have no relief when fvwm is using a
@@ -10704,7 +10777,9 @@ Sun Jul 11 11:16:15 1999  DanEspen  <dje@blue>
 
 1999-06-10  Chris Rankin  <rankinc@zipworld.com.au>
 
-	* modules/Fvwm{Icon{Man,Box},WinList}: Modified signal handling
+	* modules/FvwmIconBox:
+	* modules/FvwmIconMan:
+	* modules/FvwmWinList: Modified signal handling
 	to use fvwmsignal.
 
 1999-06-09  Bob Woodside  <proteus@pcnet.com>
@@ -11340,7 +11415,8 @@ Mon May 17 21:38:18 1999  DanEspen  <dje@blue>
 
 1999-05-19  Hippo
 
-	* fvwm/{fvwm,read}.c: Fixed startup delays due to having modules
+	* fvwm/fvwm.c:
+	* fvwm/read.c: Fixed startup delays due to having modules
 	started by reading a file.  The only modules that are waited for are
 	those specified on the command line.
 
@@ -11423,8 +11499,11 @@ Tue May 18 12:44:11 1999  Steve ROBBINS  <stever@bic.mni.mcgill.ca>
 	* removed libs/ModGraph.h
 	* libs/ModGraph.c: new structure Background: contains useful stuff
 	* libs/Graphics.c: new functions CreateStretch{X,Y,}Pixmap()
-	* fvwm/{{lots.c},screen.h} use Background struct.
-	* modules/Fvwm{Ident,Scroll,Buttons}: use Background Struct
+	* fvwm/*.c:
+	* fvwm/screen.h use Background struct.
+	* modules/FvwmIdent:
+	* modules/FvwmScroll:
+	* modules/FvwmButtons: use Background Struct
 
 Sun May 16 10:22:00 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
@@ -11483,7 +11562,7 @@ Sun May 16 10:22:00 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-05-13 Hippo
 
-	* fvwm/{lots} New command "DefaultBackground":
+	* fvwm/* New command "DefaultBackground":
 	understands TiledPixmap <pixmap>. With no args uses DefaultColors.
 	Used by some modules.
 
@@ -11829,11 +11908,14 @@ Sat May  1 01:42:02 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-04-29  Hippo
 
-	* libs/ModGraph.{h,c}: new function (Graphics *)CreateGraphics(void);
-	* libs/Picture.{h,c}: new function (void)SavePictureCMap.
+	* libs/ModGraph.h:
+	* libs/ModGraph.c: new function (Graphics *)CreateGraphics(void);
+	* libs/Picture.h:
+	* libs/Picture.c: new function (void)SavePictureCMap.
 	* fvwm/builtins.c: use XFlushGC before sending look to modules,
 	removed subliminal advertisment
-	* libs/ModGraph.{h,c}: changed DEFGRAPHSTR for FvwmButtons
+	* libs/ModGraph.h:
+	* libs/ModGraph.c: changed DEFGRAPHSTR for FvwmButtons
 
 1999-04-28  Matthias Clasen  <clasen@mathematik.uni-freiburg.de>
 
@@ -11858,7 +11940,8 @@ Sat May  1 01:42:02 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-04-28  Hippo
 
-	* libs/ModGraph.{h,c}: SetWindowBackground takes width/height of window
+	* libs/ModGraph.h:
+	* libs/ModGraph.c: SetWindowBackground takes width/height of window
 
 1999-04-28  Dominik Vogt  <dominik.vogt@gmx.de>
 
@@ -11933,7 +12016,8 @@ Sat May  1 01:42:02 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-04-27  Hippo
 
-	* libs/ModGraph.{h,c}: Added GPL copyright, added SetWindowBackground()
+	* libs/ModGraph.h:
+	* libs/ModGraph.c: Added GPL copyright, added SetWindowBackground()
 
 Mon Apr 26 13:02:25 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
@@ -11961,7 +12045,8 @@ Mon Apr 26 09:45:19 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-04-26  Hippo
 
-	* libs/ModGraph.{h,c}: new functions InitGraphics/ParseGraphics for
+	* libs/ModGraph.h:
+	* libs/ModGraph.c: new functions InitGraphics/ParseGraphics for
 	modules to use to make sense of the Default_graphics config message
 	* fvwm/modconf.c: uses ModGraph.h
 
@@ -12152,7 +12237,12 @@ Fri Apr 23 12:29:19 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-04-21  Hippo
 
-	* libs/Picture.{c,h},fvwm/{add_window,fvwm,icons,menus}.c: Partly
+	* libs/Picture.h:
+	* libs/Picture.c:
+	* fvwm/add_window.c:
+	* fvwm/fvwm.c:
+	* fvwm/icons.c:
+	* fvwm/menus.c: Partly
  	fixed -visual Truecolor with different depths, Client supplied
  	icon pixmaps look ugly and XorPixmap has no effect.
 
@@ -12400,7 +12490,8 @@ Sat Apr 17 13:55:41 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-04-16  Hippo
 
-	* fvwm/module.{h,c}: Removed M_NEW_LOOK, will be a text config line
+	* fvwm/module.h:
+	* fvwm/module.c: Removed M_NEW_LOOK, will be a text config line
 	* fvwm/module.h: Fixed macro MAX_MESSAGE to allow 32 message types
 	* fvwm/module.h: renamed M_ADD_WINDOW to M_OLD_ADD_WINDOW, renamed
 	M_CONFIGURE_WINDOW to M_OLD_CONFIGURE_WINDOW.
@@ -12526,7 +12617,8 @@ Tue Apr 13 23:13:24 1999  DanEspen  <dje@blue>
 
 1999-04-13  Hippo
 
-	* fvwm/fvwm{.c,2.1}: implemented -visual and -visualId options.
+	* fvwm/fvwm.c:
+	* fvwm/fvwm2.1: implemented -visual and -visualId options.
 	* fvwm/builtins.c: Colorlimit ignored on static colormaps.
 
 1999-04-12  Matthias Clasen  <clasen@mathematik.uni-freiburg.de>
@@ -12541,8 +12633,10 @@ Tue Apr 13 23:13:24 1999  DanEspen  <dje@blue>
 
 1999-04-12  Hippo
 
-	* fvwm/fvwm.{h,c}: removed unused Scr.CornerWidth
-	* fvwm/module.{h,c}: New functions SendLook(module) & BroadcastLook()
+	* fvwm/fvwm.h:
+	* fvwm/fvwm.c: removed unused Scr.CornerWidth
+	* fvwm/module.h:
+	* fvwm/module.c: New functions SendLook(module) & BroadcastLook()
 	* fvwm/builtins.c: BroadcastLook() from Xor{Value,Pixmap} and
 	Default{Colors,Font}.
 
@@ -12863,7 +12957,17 @@ Thu Apr  8 23:45:05 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-04-05  Tomas Ogren  <stric@ing.umu.se>
 
-	* fvwm/{colormaps.c,events.c,fvwm.c,gnome.c,icccm2.c,misc.c,misc.h,module.c,module.h,session.c,virtual.c}:
+	* fvwm/colormaps.c:
+	* fvwm/events.c:
+	* fvwm/fvwm.c:
+	* fvwm/gnome.c:
+	* fvwm/icccm2.c:
+	* fvwm/misc.c:
+	* fvwm/misc.h:
+	* fvwm/module.c:
+	* fvwm/module.h:
+	* fvwm/session.c:
+	* fvwm/virtual.c:
 	Misc function prototype fixes to make MIPSpro cc -fullwarn happy.
 
 1999-04-05  Tomas Ogren  <stric@ing.umu.se>
@@ -13324,7 +13428,11 @@ Tue Mar 30 20:54:15 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-03-29  Hippo
 
-	* fvwm/{builtins,colors,fvwm,icccm2,menus}.c: All GC's are now created
+	* fvwm/builtins.c:
+	* fvwm/colors.c:
+	* fvwm/fvwm.c:
+	* fvwm/icccm2.c:
+	* fvwm/menus.c: All GC's are now created
 	from Scr.NoFocusWin which could have a non-default Visual is somebody
 	coded a -visual option.  ICCCM2 stuff uses NoFocusWin rather than
 	creating another hidden window.
@@ -13741,11 +13849,17 @@ Sat Mar 20 15:22:02 1999  DanEspen  <dje@blue>
 
 18 Mar 1999  Hippo
 
-	* fvwm/{fvwm2.1,builtins.c} WindowShadeAnimate takes a'p' suffix to
+	* fvwm/fvwm2.1:
+	* fvwm/builtins.c: WindowShadeAnimate takes a'p' suffix to
 	mean pixels for the step size.
-	* fvwm/{screen.h,{builtins,fvwm,session}.c} New GlobalOpt:
+	* fvwm/screen.h:
+	* fvwm/builtins.c:
+	* fvwm/fvwm.c:
+	* fvwm/session.c: New GlobalOpt
 	WindowShadeShrinks (with default WindowShadeScrolls) for oclock
-	* fvwm/{fvwm{2.1,.h},builtins.c} Patch from Neil Bird to add conditions
+	* fvwm/fvwm2.1:
+	* fvwm/fvwm.h:
+	* fvwm/builtins.c: Patch from Neil Bird to add conditions
 	to the WindowId command.
 
 1999-03-17  Matthias Clasen  <clasen@mathematik.uni-freiburg.de>
@@ -14475,16 +14589,31 @@ Sun Feb 28 11:03:42 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 
 1999-02-27  Matthias Clasen  <clasen@mathematik.uni-freiburg.de>
 
-	* fvwm/{add_window,builtins,events,functions,fvwm,misc,
-	   placement,session,style,windows}.c:
-	* fvwm/{fvwm,misc}.h:
+	* fvwm/add_window.c:
+	* fvwm/builtins.c:
+	* fvwm/events.c:
+	* fvwm/functions.c:
+	* fvwm/fvwm.c:
+	* fvwm/misc.c:
+	* fvwm/placement.c:
+	* fvwm/session.c:
+	* fvwm/style.c:
+	* fvwm/windows.c:
+	* fvwm/fvwm.h:
+	* fvwm/misc.h:
 	* fvwm/fvwm2.1:
 	implement a layered stacking order.
 
 	* configure.in, acconfig.h:
-	* fvwm/{session,add_window,events,fvwm,icons}.c:
-	* fvwm/{fvwm,misc}.h:
-	* NEWS, fvwm/fvwm2.1:
+	* fvwm/session.c:
+	* fvwm/add_window.c:
+	* fvwm/events.c:
+	* fvwm/fvwm.c:
+	* fvwm/icons.c:
+	* fvwm/fvwm.h:
+	* fvwm/misc.h:
+	* NEWS:
+	* fvwm/fvwm2.1:
 	add session management functionality ( make fvwm a client
 	of a X SMP compliant session manager).
 
@@ -14532,10 +14661,18 @@ Tue Feb 23 13:02:33 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 	Transparent Eterm will stay transparent. #define NO_ETERM_SUPPORT if
 	you think this is horrible.
 
-	* fvwm/{module.{c,h},move.c} Opaque and Animated moves send module
-	messages.  FvwmPager follows the move.
+	* fvwm/module.c:
+	* fvwm/module.h:
+	* fvwm/move.c:
+	Opaque and Animated moves send module messages.  FvwmPager follows the
+	move.
 
-	* fvwm/{events,fvwm,modconf,module,read}.c: moved invocation of
+	* fvwm/events.c:
+	* fvwm/fvwm.c:
+	* fvwm/modconf.c:
+	* fvwm/module.c:
+	* fvwm/read.c:
+	moved invocation of
 	StartupStuff() from ReadSubFunc to main event loop.  Initial capture
 	happens only after all command line args are finished and any modules
 	that the command line args invoke.  Any number of -cmd's can be
@@ -14545,7 +14682,10 @@ Tue Feb 23 13:02:33 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 	capture.FvwmCPP & FvwmM4 can now be rewritten to exec() the subprocess
 	and avoid using a Read of a temp file.
 
-	* fvwm/{events,focus,module}.c: FOCUS_CHANGE packet has the third
+	* fvwm/events.c:
+	* fvwm/focus.c:
+	* fvwm/module.c:
+	FOCUS_CHANGE packet has the third
 	(previously useless) paramter set to denote FlipFocus/Focus.  Modules
 	can now accuraetly track the internal window list order.
 
@@ -14553,7 +14693,11 @@ Tue Feb 23 13:02:33 1999  Steve Robbins  <steve@nyongwa.montreal.qc.ca>
 	look at the ends. If they don't line up I think you have an Xserver
 	bug.
 
-	* fvwm/{{builtins,functions,fvwm}.c,fvwm2.1,misc.h}: XORPixmap.
+	* fvwm/builtins.c:
+	* fvwm/functions.c:
+	* fvwm/fvwm.c:
+	* fvwm/fvwm2.1:
+	* fvwm/misc.h: XORPixmap.
 	Eat this Enlightenment 8-).  Actually it's meant to improve the
 	visibility of rubberband lines in PsuedoColor displays (use Colorlimit
 	first) but it looks great on TrueColor.  It plays nicely with XORValue
