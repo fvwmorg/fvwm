@@ -1308,7 +1308,7 @@ static void ParseConfigLine(button_info **ubb,char *s)
     i=sscanf(s,"%63s",geom);
     if(i==1)
     {
-      parse_window_geometry(geom);
+      parse_window_geometry(geom, 0);
     }
     break;
   }
@@ -1319,30 +1319,7 @@ static void ParseConfigLine(button_info **ubb,char *s)
     i=sscanf(s,"%63s",geom);
     if(i==1)
     {
-      int flags;
-      int g_x;
-      int g_y;
-      unsigned int width;
-      unsigned int height;
-
-      flags = XParseGeometry(geom,&g_x,&g_y,&width,&height);
-      if (!flags)
-	break;
-      UberButton->w = 0;
-      UberButton->h = 0;
-      if (flags&WidthValue)
-	button_width = width;
-      if (flags&HeightValue)
-	button_height = height;
-      if (flags&XValue)
-	UberButton->x = g_x;
-      if (flags&YValue)
-	UberButton->y = g_y;
-      if (flags&XNegative)
-	UberButton->w = 1;
-      if (flags&YNegative)
-	UberButton->h = 1;
-      has_button_geometry = 1;
+      parse_window_geometry(geom, 1);
     }
     break;
   }
@@ -1630,7 +1607,7 @@ char *expand_action(char *in_action, button_info *b)
   return action;
 }
 
-void parse_window_geometry(char *geom)
+void parse_window_geometry(char *geom, int is_button_geometry)
 {
   int flags;
   int g_x;
@@ -1641,10 +1618,20 @@ void parse_window_geometry(char *geom)
   flags = FScreenParseGeometry(geom,&g_x,&g_y,&width,&height);
   UberButton->w = 0;
   UberButton->h = 0;
-  if (flags&WidthValue)
-    w = width;
-  if (flags&HeightValue)
-    h = height;
+  if (is_button_geometry)
+  {
+    if (flags&WidthValue)
+      button_width = width;
+    if (flags&HeightValue)
+      button_height = height;
+  }
+  else
+  {
+    if (flags&WidthValue)
+      w = width;
+    if (flags&HeightValue)
+      h = height;
+  }
   if (flags&XValue)
     UberButton->x = g_x;
   if (flags&YValue)
@@ -1653,7 +1640,7 @@ void parse_window_geometry(char *geom)
     UberButton->w = 1;
   if (flags&YNegative)
     UberButton->h = 1;
-  has_button_geometry = 0;
+  has_button_geometry = is_button_geometry;
 
   return;
 }
