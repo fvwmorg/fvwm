@@ -621,8 +621,9 @@ void focus_grab_buttons(FvwmWindow *tmp_win, Bool is_focused)
   Bool do_grab_window = False;
   unsigned char grab_buttons = Scr.buttons2grab;
 
-  if (!tmp_win)
+  if (!tmp_win || IS_SCHEDULED_FOR_DESTROY(tmp_win))
   {
+    /* It's pointless to grab buttons on dying windows */
     return;
   }
   accepts_input_focus = do_accept_input_focus(tmp_win);

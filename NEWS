@@ -57,6 +57,12 @@ Changes in stable release 2.4.9 (not released yet)
 
 * DESTDIR may be fully used again (only useful for distributors).
 
+* Fixed a key binding problem with key symbols that are generated
+  by several keys.
+
+* Fixed a possible crash when a window was recaptured and the
+  focus could not be transfered to another window.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)

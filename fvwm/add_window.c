@@ -2157,6 +2157,7 @@ void destroy_window(FvwmWindow *tmp_win)
   /* already done above? */
   if (!IS_SCHEDULED_FOR_DESTROY(tmp_win))
   {
+    SET_SCHEDULED_FOR_DESTROY(tmp_win, 1);
     /****** adjust fvwm internal windows and the focus ******/
 
     adjust_fvwm_internal_windows(tmp_win);
