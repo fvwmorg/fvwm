@@ -7,6 +7,9 @@ Changes in stable release 2.4.13 (not released yet)
   NoIconOverride to IconOverride with windows that provide their
   own icon window.
 
+* The Current, All, Pick, ThisWindow and PointerWindow commands
+  imply the CirculateHitShaded condition.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.12 (10-Oct-2002)

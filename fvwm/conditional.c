@@ -430,6 +430,7 @@ static FvwmWindow *Circulate(char *action, int Direction, char **restofline)
   { /* override for Current [] */
     mask.my_flags.use_circulate_hit = 1;
     mask.my_flags.use_circulate_hit_icon = 1;
+    mask.my_flags.use_circulate_hit_shaded = 1;
   }
   CreateConditionMask(flags, &mask);
   if (flags)
@@ -569,6 +570,7 @@ void CMD_All(F_CMD_ARGS)
     free(flags);
   mask.my_flags.use_circulate_hit = 1;
   mask.my_flags.use_circulate_hit_icon = 1;
+  mask.my_flags.use_circulate_hit_shaded = 1;
 
   num = 0;
   for (t = Scr.FvwmRoot.next; t; t = t->next)
@@ -784,6 +786,7 @@ void CMD_Pick(F_CMD_ARGS)
   DefaultConditionMask(&mask);
   mask.my_flags.use_circulate_hit = 1;
   mask.my_flags.use_circulate_hit_icon = 1;
+  mask.my_flags.use_circulate_hit_shaded = 1;
   CreateConditionMask(flags, &mask);
   if (flags)
     free(flags);

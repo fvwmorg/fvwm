@@ -1,3 +1,11 @@
+2002-10-16  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/conditional.c (Circulate):
+	(CMD_All):
+	(CMD_Pick):
+	Current, All, Pick, ThisWindow and PointerWindow imply the
+	CirculateHitShaded condition.
+
 2002-10-14  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/add_window.c (destroy_icon):
