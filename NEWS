@@ -8,6 +8,9 @@ Changes in stable release 2.4.10 (not released yet)
 
 * Fixed a minor problem with entering submenus via keyboard.
 
+* Fixed race conditions in FvwmTaskBar with AutoStick that caused
+  it to hang.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.9 (11-Aug-2002)
@@ -43,7 +46,7 @@ Changes in stable release 2.4.9 (11-Aug-2002)
 
 * A number of drawing fixes in FvwmPager.
 
-* Fixed a slight bug when waiting until all buttons are released,
+* fixed a slight bug when waiting until all buttons are released,
   for example after executing a complex function.
 
 * Fixed potentially harmful change in module interface.
