@@ -69,14 +69,17 @@ char *CreateFlagString(char *string, char **restptr)
     start = c;
     length = 0;
     while (*c != closeopt) {
+      char *d;
       if (*c == 0) {
 	fvwm_msg(ERR, "CreateFlagString",
 		 "Conditionals require closing parenthesis");
 	*restptr = NULL;
 	return NULL;
       }
-      c++;
-      length++;
+      /* skip quoted string */
+      d = SkipQuote(c, NULL, NULL, NULL);
+      length += d - c;
+      c = d;
     }
 
     /* We must allocate a new string because we null terminate the string

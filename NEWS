@@ -9,6 +9,8 @@ Changes in stable release 2.4.12 (not released yet)
 * Increased maximum allowed key symbol name length to 200
   characters.
 
+* Allow quotes in conditional command conditions.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.11 (20-Sep-2002)
