@@ -60,3 +60,5 @@ Bug fixes:
 
 * The Circulate command does not select a random window when no
   window has the focus.
+
+* Fixed a rare menu placement problem with Xinerama.

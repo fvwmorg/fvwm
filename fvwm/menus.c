@@ -2719,7 +2719,8 @@ static int pop_menu_up(
     {
       y = fw->frame_g.y + fw->frame_g.height -
 	fw->boundary_width - fw->title_g.height - MR_HEIGHT(mr);
-      cy = fw->frame_g.y - fw->boundary_width - fw->title_g.height / 2;
+      cy = fw->frame_g.y + fw->frame_g.height - fw->boundary_width -
+	fw->title_g.height / 2;
     }
     else
     {

@@ -45,6 +45,8 @@ Changes in stable release 2.4.6 (05-Mar-2002)
 * The Circulate command does not select a random window when no
   window has the focus.
 
+* Fixed a rare menu placement problem with Xinerama.
+
 Changes in stable release 2.4.5 (27-Jan-2002)
 
 * Fixed minor problems in popping sub menus up and down.

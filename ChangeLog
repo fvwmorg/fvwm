@@ -1,3 +1,8 @@
+2002-03-07  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/menus.c (pop_menu_up):
+	fixed a menu placement bug w/ xinerama
+
 2002-03-07  Dan Espen  <dane@mk.telcordia.com>
 
 	* fvwm/bindings.c (ParseBinding): Handle keysym lengths up to 30.
