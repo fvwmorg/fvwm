@@ -694,9 +694,14 @@ static void InteractiveMove(
 
   if (do_start_at_pointer)
   {
-    XQueryPointer(
+    if (XQueryPointer(
       dpy, Scr.Root, &JunkRoot, &JunkChild, &DragX, &DragY, &JunkX, &JunkY,
-      &JunkMask);
+      &JunkMask) == False)
+    {
+      /* pointer is on a different screen */
+      DragX = 0;
+      DragY = 0;
+    }
   }
   else
   {
@@ -835,12 +840,19 @@ static void AnimatedMoveAnyWindow(
     XMoveWindow(dpy,w,currentX,currentY);
     if (fWarpPointerToo == True)
     {
-      XQueryPointer(dpy, Scr.Root, &JunkRoot, &JunkChild,
-		    &JunkX,&JunkY,&pointerX,&pointerY,&JunkMask);
-      pointerX += currentX - lastX;
-      pointerY += currentY - lastY;
-      XWarpPointer(dpy,None,Scr.Root,0,0,0,0,
-		   pointerX,pointerY);
+      if (XQueryPointer(dpy, Scr.Root, &JunkRoot, &JunkChild,
+			&JunkX,&JunkY,&pointerX,&pointerY,&JunkMask) == False)
+      {
+	/* pointer is on a different screen */
+	pointerX = currentX;
+	pointerY = currentY;
+      }
+      else
+      {
+	pointerX += currentX - lastX;
+	pointerY += currentY - lastY;
+      }
+      XWarpPointer(dpy,None,Scr.Root,0,0,0,0, pointerX,pointerY);
     }
     if (tmp_win && !IS_SHADED(tmp_win))
     {
@@ -1566,11 +1578,27 @@ Bool moveLoop(FvwmWindow *tmp_win, int XOffset, int YOffset, int Width,
   /* prevent flicker when paging */
   SET_WINDOW_BEING_MOVED_OPAQUE(tmp_win, do_move_opaque);
 
-  XQueryPointer(dpy, Scr.Root, &JunkRoot, &JunkChild,&xl, &yt,
-                &JunkX, &JunkY, &button_mask);
+  {
+    int xl_bak;
+    int yt_bak;
+
+    xl_bak = xl;
+    yt_bak = yt;
+    if (XQueryPointer(
+	  dpy, Scr.Root, &JunkRoot, &JunkChild, &xl, &yt, &JunkX, &JunkY,
+	  &button_mask) == False)
+    {
+      /* pointer is on a different screen */
+      xl = xl_bak;
+      yt = yt_bak;
+    }
+    else
+    {
+      xl += XOffset;
+      yt += YOffset;
+    }
+  }
   button_mask &= DEFAULT_ALL_BUTTONS_MASK;
-  xl += XOffset;
-  yt += YOffset;
   xl_orig = xl;
   yt_orig = yt;
 
