@@ -1,72 +1,81 @@
-fvwm-2.4.8 release is the latest stable version as of 11-Jun-2002,
-it fixes a number of bugs and problems.  System administrators are
-strongly encouraged to move to 2.4.8 from any earlier 2.4.x release.
+Fvwm-2.4.9 is a maintenance release for the earlier stable 2.4.x
+versions.  It fixes a number of minor bugs and problems.
 
 The release is available at the fvwm home page: http://www.fvwm.org/
+
+Who needs it?
+-------------
+
+Normal users should upgrade if they encountered any problems on
+the list below.
+
+System administrators are encouraged to move to 2.4.9.
 
 
 Improvements and compatibility issues:
 --------------------------------------
 
-* Setup "fvwm" and "fvwm-root" name symlinks for the executable and
-  the man page when installing, see INSTALL.fvwm.
+* Restored old way of handling clicks in windows with ClickToFocus
+  and ClickToFocusPassesClickOff.  This fixes a problem with
+  click+drag in an unfocused rxvt or aterm window.
 
-* New FvwmIconMan configuration syntax now conforms to the syntax of
-  other modules, see the man page.
+* DESTDIR may be fully used again (only useful for distributors).
 
-* New WindowList option CurrentAtEnd.
-
-* Always display the current desk number in the FvwmPager window
-  title.
-
-* A small security patch regarding TMPDIR.
-
-* fvwm-menu-headlines: updated the site data, added a configurable
-  timeout on socket reading (20 sec) to avoid fvwm hanging, new
-  --icon-error option.
-
-* Fonts in double quotes now should work in module configurations.
+* Applications using Mwm hints can now enforce that a window can
+  not be moved.
 
 
 Bug fixes:
 ----------
 
-* A fix for switching between czech and us keyboard layout.
-
-* Remember the icon position when an icon is moved
-  non-interactively.
-
-* Fixed another problem with the DeskOnly option and sticky icons
-  in FvwmTaskBar.
-
-* Fixed maximal length of a named module packet
-
-* Fixed a crash on a config with a new 2.5.x Colorset command.
-
-* Allow to bind a function to the focus click and pass it to the
-  application at the same time.
-
-* Fixed a problem with fvwm not accepting keyboard input when the
-  application with the focus vanished at the start of a session.
+* Fixed interaction bug between CascadePlacement and StartsOnPage -
+  if the target page was at a negative x or y page displacement
+  from the current viewport, the window would be placed on the
+  wrong page.
 
 * Fixed a problem with colormap transition when a transient window
   died.
 
-* Fixed calculation of average bg colour in colour sets with large
-  pictures.
+* Fixed a FvwmScript crash with Swallow widget and very long window
+  names.
 
-* Fixed some minor problems regarding the multibyte patch.
+* Fixed problems with $fg and $bg variables in FvwmButtons when the
+  UseOld option was used.
 
-* Fixed selection in FvwmScript List widget.
+* Fixed wrong warp coordinates when WarpToWindow was used with two
+  arguments on an unmanaged window.
 
-* Fixed a problem with ClickToFocus + ClickToFocusRaisesOff and
-  windows that are below others.
+* Added a workaround for popup menus in TK applications that appear
+  on some random position.
 
-* Fixed the ClickToFocusPassesClick style.
+* Fixed problems with wish scripts creating windows that start
+  iconic.
 
-* Fixed CascadePlacement for huge windows, so that the top-left
-  corner is always visible.
+* Fixed the NoClose option with unmapped panels in FvwmButtons.
 
-* Fixed parsing of SendToModule with the first parameter quoted.
+* A number of drawing fixes in FvwmPager.
 
-* Fixed copying PopupOffset values in CopyMenuStyle.
+* Fixed a slight bug when waiting until all buttons are released,
+  for example after executing a complex function.
+
+* Fixed potentially harmful change in module interface.
+
+* Fixed displaying menu items with icons when using the MenuStyle
+  SubmmenusLeft.
+
+* Fixed problems with the pointer moving off screen in a multi
+  head setup.
+
+* Fixed a potential crash with windows being destroyed during a
+  recapture operation.
+
+* Fixed a memory leak in some modules when not using glibc.
+
+* Fixed negative arguments of WarpToWindow when used on an
+  unmanaged window.
+
+* Fixed a key binding problem with key symbols that are generated
+  by several keys.
+
+* Fixed a possible crash when a window was recaptured and the
+  focus could not be transfered to another window.
