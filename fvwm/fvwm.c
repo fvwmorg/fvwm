@@ -207,11 +207,19 @@ int main(int argc, char **argv)
     char *s;
 
     if ((s = setlocale(LC_CTYPE, "")) == NULL)
+    {
       fvwm_msg(ERR, "main","Can't set locale. Check your $LC_CTYPE or $LANG.\n");
+    }
     else if (!XSupportsLocale())
     {
       fvwm_msg(WARN, "main", "X does not support current locale: %s\n", s);
     }
+#ifdef I18N_MB
+    else if (XSetLocaleModifiers("") == NULL)
+    {
+      fvwm_msg(WARN, "main", "Cannot set locale modifiers\n");
+    }
+#endif
   }
 #endif
 

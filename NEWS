@@ -37,6 +37,8 @@ Changes in stable release 2.4.8 (not released yet)
 * Fixed calculation of average bg colour in colour sets with large
   pictures.
 
+* Fixed some minor problems regarding the multibyte patch
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at

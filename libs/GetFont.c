@@ -67,20 +67,12 @@ XFontSet GetFontSetOrFixed(Display *disp, char *fontname)
   {
     fprintf(stderr,
             "[FVWM][GetFontSetOrFixed]: "
-	    "WARNING -- can't get fontset %s, trying 'fixed'\n",
+	    "WARNING -- can't get fontset %s, trying: \n"
+	    "\t-*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*\n",
             fontname);
   }
   if (!fontset)
   {
-    /* fixed should always be avail, so try that */
-#ifdef STRICTLY_FIXED
-    if ((fontset = XCreateFontSet(disp,"fixed",&ml,&mc,&ds))==NULL)
-    {
-      fprintf(stderr,
-	      "[FVWM][GetFontSetOrFixed]: "
-	      "ERROR -- can't get fontset 'fixed'\n");
-    }
-#else
     /* Yes, you say it's not a *FIXED* font, but it helps you. */
     if ((fontset =
 	 XCreateFontSet(disp,
@@ -88,9 +80,9 @@ XFontSet GetFontSetOrFixed(Display *disp, char *fontname)
 			&ml, &mc, &ds)) == NULL)
     {
       fprintf(stderr,"[FVWM][GetFontSetOrFixed]: "
-	      "ERROR -- can't get fontset 'fixed'\n");
+	      "ERROR -- can't get fontset: \n"
+	      "\t-*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*\n");
     }
-#endif
   }
 
   return fontset;

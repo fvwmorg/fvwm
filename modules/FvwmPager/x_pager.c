@@ -332,13 +332,9 @@ void initialize_pager(void)
   if (!uselabel || ((fontset =
 		     XCreateFontSet(dpy, font_string, &ml, &mc, &ds)) == NULL))
   {
-#ifdef STRICTLY_FIXED
-    if ((fontset = XCreateFontSet(dpy, "fixed", &ml, &mc, &ds)) == NULL)
-#else
     if ((fontset =
 	 XCreateFontSet(dpy, "-*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*",
 			&ml, &mc, &ds)) == NULL)
-#endif
     {
       fprintf(stderr,"%s: No fonts available\n",MyName);
       exit(1);
@@ -855,20 +851,16 @@ void initialize_pager(void)
 #ifdef I18N_MB
       if ( (Desks[i].balloon.fontset = XCreateFontSet(dpy, BalloonFont, &ml,
 						      &mc, &ds)) == NULL ) {
-#ifdef STRICTLY_FIXED
-	if ( (Desks[i].balloon.fontset = XCreateFontSet(dpy, "fixed", &ml, &mc,
-							&ds)) == NULL )
-#else
 	if ( (Desks[i].balloon.fontset =
 	      XCreateFontSet(dpy,
 			     "-*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*",
 			     &ml, &mc, &ds)) == NULL )
-#endif
 	{
 	  fprintf(stderr,"%s: No fonts available.\n", MyName);
 	  exit(1);
 	}
-	fprintf(stderr, "%s: Can't find font '%s', using fixed.\n",
+	fprintf(stderr, "%s: Can't find font '%s', using: \n"
+		"\t-*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*\n",
 		MyName, BalloonFont);
       }
       XFontsOfFontSet(Desks[i].balloon.fontset, &fs_list, &ml);
