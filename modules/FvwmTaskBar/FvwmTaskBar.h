@@ -129,6 +129,4 @@ extern void WarpTaskBar(int x, Bool force);
 extern void PurgeConfigEvents(void);
 extern void redraw_buttons(void);
 
-extern void CopyStringWithQuotes(char **dest, const char *src);
-
 #endif

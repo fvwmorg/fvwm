@@ -222,7 +222,7 @@ int main(int argc, char **argv)
   while(tline != (char *)0) {
     if(strlen(tline)>1) {
       if(strncasecmp(tline, CatString3(MyName,"Font",""),Clength+4)==0) {
-        CopyString(&font_string,&tline[Clength+4]);
+        CopyStringWithQuotes(&font_string,&tline[Clength+4]);
       }
       else if(strncasecmp(tline,CatString3(MyName,"Fore",""), Clength+4)==0) {
         CopyString(&ForeColor,&tline[Clength+4]);

@@ -1,3 +1,8 @@
+2002-06-10  Mikhael Goikhman  <migo@homemail.com>
+
+	* libs/Strings.[ch]:
+	added CopyStringWithQuotes, not perfect, but works for now
+
 2002-06-06  Mikhael Goikhman  <migo@homemail.com>
 
 	* fvwm/module_interface.c (CMD_SendToModule):
