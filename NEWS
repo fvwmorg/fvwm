@@ -1,5 +1,7 @@
 Changes in official release 2.2.5 (not released yet)
 
+* When fvwm is run remotely, startup is noticably faster.
+
 * Fixed the description of Focus in the man page.
 
 * Fixed a compile problem with Slackware 7.1.

@@ -1,7 +1,8 @@
-2001-02-24  Dan Espen  <dane@mk.telcordia.com>
+2001-02-25  Dan Espen  <dane@mk.telcordia.com>
 
 	* fvwm/fvwm.c (main): Read commands from config files without
 	doing XSync on each comamnd.  (Speed up.)
+	* NEWS: Add speedup to NEWS.
 
 2001-02-21  Mikhael Goikhman  <migo@homemail.com>
 
