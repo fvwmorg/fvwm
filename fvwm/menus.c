@@ -4319,7 +4319,7 @@ static void merge_continuation_menus(MenuRoot *mr)
  * the size_menu_... functions.
  *
  ****************************************************************************/
-static void _calculate_item_sizes(MenuSizingParameters *msp)
+static void calculate_item_sizes(MenuSizingParameters *msp)
 {
   MenuItem *mi;
   unsigned short w;
@@ -5047,7 +5047,7 @@ static void make_menu(MenuRoot *mr, MenuParameters *pmp)
   {
     memset(&msp, 0, sizeof(MenuSizingParameters));
     msp.menu = mr;
-    _calculate_item_sizes(&msp);
+    calculate_item_sizes(&msp);
     /* Call size_menu_horizontally first because it calculated some values
      * used by size_menu_vertically. */
     size_menu_horizontally(&msp);
