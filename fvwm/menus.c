@@ -2799,15 +2799,6 @@ static int pop_menu_up(
    * Clip to screen
    ***************************************************************/
 
-  if (parent_menu)
-  {
-    bw = MST_BORDER_WIDTH(mr);
-    bwp = MST_BORDER_WIDTH(parent_menu);
-    x_overlap =
-      do_menus_overlap(parent_menu, x, y, MR_WIDTH(mr), MR_HEIGHT(mr),
-		       bwp, bwp, bwp, True);
-  }
-
   {
     fscreen_scr_arg fscr;
 
@@ -2818,6 +2809,15 @@ static int pop_menu_up(
       &fscr, FSCREEN_XYPOS, &x, &y, MR_WIDTH(mr), MR_HEIGHT(mr));
     /* "this" screen is defined -- so get its coords for future reference */
     FScreenGetScrRect(&fscr, FSCREEN_XYPOS, &scr_x, &scr_y, &scr_w, &scr_h);
+  }
+
+  if (parent_menu)
+  {
+    bw = MST_BORDER_WIDTH(mr);
+    bwp = MST_BORDER_WIDTH(parent_menu);
+    x_overlap =
+      do_menus_overlap(parent_menu, x, y, MR_WIDTH(mr), MR_HEIGHT(mr),
+		       bwp, bwp, bwp, True);
   }
 
   /***************************************************************
@@ -3874,7 +3874,7 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
     case SolidMenu:
       XSetWindowBackground(dpy, MR_WINDOW(mr), MST_FACE(mr).u.back);
       flush_expose(MR_WINDOW(mr));
-      XClearWindow(dpy,MR_WINDOW(mr));
+      do_clear = True;
       break;
     case GradientMenu:
       bounds.x = bw;
@@ -4020,20 +4020,6 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
 	do_clear = True;
 	break;
       }
-      if (do_clear == True)
-      {
-	if (pevent == NULL)
-	{
-	  XClearWindow(dpy, MR_WINDOW(mr));
-	}
-	else
-	{
-	  XClearArea(
-	    dpy, MR_WINDOW(mr), pevent->xexpose.x,
-	    pevent->xexpose.y, pevent->xexpose.width,
-	    pevent->xexpose.height, False);
-	}
-      }
       break;
     case PixmapMenu:
       p = ST_FACE(ms).u.p;
@@ -4087,11 +4073,24 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
      XSetWindowBackgroundPixmap(dpy, MR_WINDOW(mr),
 				ST_FACE(ms).u.p->picture);
      flush_expose(MR_WINDOW(mr));
-     XClearWindow(dpy,MR_WINDOW(mr));
+     do_clear = True;
      break;
     } /* switch(type) */
   } /* if (ms) */
 
+  if (do_clear == True)
+  {
+    if (pevent == NULL)
+    {
+      XClearWindow(dpy, MR_WINDOW(mr));
+    }
+    else
+    {
+      XClearArea(
+	dpy, MR_WINDOW(mr), pevent->xexpose.x, pevent->xexpose.y,
+	pevent->xexpose.width, pevent->xexpose.height, False);
+    }
+  }
   /* draw the relief */
   RelieveRectangle(dpy, MR_WINDOW(mr), 0, 0, MR_WIDTH(mr) - 1,
 		   MR_HEIGHT(mr) - 1, (Pdepth < 2)
