@@ -1,5 +1,9 @@
 Changes in official release 2.2.3 (??? 1999)
 
+* Several minor bugfixes.
+
+* Fixed dragging windows out of the pager.
+
 * Added support for StartFunction & ImagePath not to break new configurations.
 
 * Fixed long-window-name-hangs-X bug.

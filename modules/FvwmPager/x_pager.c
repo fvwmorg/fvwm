@@ -1468,10 +1468,10 @@ void MoveWindow(XEvent *Event)
 			    x, y, &x1, &y1, &dumwin);
       XUngrabPointer(dpy,CurrentTime);
       XSync(dpy,0);
-      if(t->flags & ICONIFIED)
-	SendInfo(fd,"Move",t->icon_w);
-      else
-	SendInfo(fd,"Move",t->w);
+      sprintf(command, "Move %dp %dp", x, y);
+      SendInfo(fd,command,t->w);
+      SendInfo(fd,"Raise",t->w);
+      SendInfo(fd,"Move",t->w);
       return;
     }
   else
@@ -1782,6 +1782,7 @@ void PictureIconWindow (PagerWindow *t)
 
 void IconMoveWindow(XEvent *Event,PagerWindow *t)
 {
+  char command[100];
   int x1,y1,finished = 0,wx,wy,n,x=0,y=0,xi=0,yi=0;
   Window dumwin;
   int m,n1,m1;
@@ -1851,10 +1852,10 @@ void IconMoveWindow(XEvent *Event,PagerWindow *t)
 			    x, y, &x1, &y1, &dumwin);
       XUngrabPointer(dpy,CurrentTime);
       XSync(dpy,0);
-      if(t->flags & ICONIFIED)
-	SendInfo(fd,"Move",t->icon_w);
-      else
-	SendInfo(fd,"Move",t->w);
+      sprintf(command, "Move %dp %dp", x, y);
+      SendInfo(fd,command,t->w);
+      SendInfo(fd,"Raise",t->w);
+      SendInfo(fd,"Move",t->w);
     }
   else
     {

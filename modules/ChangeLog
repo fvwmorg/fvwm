@@ -1,3 +1,9 @@
+1999-10-14  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* FvwmPager/x_pager.c (IconMoveWindow):
+	(MoveWindow): move window to cursor position before moving it out of
+	the pager
+
 1999-10-01  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* FvwmPager/x_pager.c (FvwmErrorHandler):
