@@ -359,6 +359,23 @@ static Color_Info base_array[] = {
 
 #define NColors (sizeof(base_array) / sizeof(Color_Info))
 
+/* if c_color isn't set, copy it from one of the other colours */
+Bool xpmcolor_require_c_color(XpmColor *p)
+{
+  if (p->c_color != NULL)
+    return False;
+  else if (p->g_color != NULL)
+    p->c_color = strdup(p->g_color);
+  else if (p->g4_color != NULL)
+    p->c_color = strdup(p->g4_color);
+  else if (p->m_color != NULL)
+    p->c_color = strdup(p->m_color);
+  else
+    p->c_color = strdup("none");
+
+  return True;
+}
+
 /* given an xpm, change colors to colors close to the
    subset above. */
 void
@@ -366,6 +383,8 @@ color_reduce_pixmap(XpmImage *image,int color_limit) {
   int i;
   XpmColor *color_table_ptr;
   static char base_init = 'n';
+  Bool do_free;
+
   if (color_limit > 0) {                /* If colors to be limited */
     if (base_init == 'n') {             /* if base table not created yet */
       c100_init_base_table();           /* init the base table */

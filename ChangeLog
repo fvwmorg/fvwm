@@ -1,3 +1,8 @@
+2000-05-31  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/placement.c.orig (SmartPlacement):
+	some minor fixes in smart placement
+
 2000-01-13  Dan Espen  <dane@mk.telcordia.com>
 
 	* .cvsignore: Add .cvsignore to try to stop things coming out of the
@@ -82,7 +87,8 @@ Thu May 27 07:38:11 1999  DanEspen  <dje@blue>
 
         * fvwm/virtual.c: EdgeThickness command can be used at any time to alter
         the panframe windows. Panframe windows unmapped when paging to the end
-        page and wrapping is disabled.  Panframe windows go right into the corners.
+        page and wrapping is disabled.  Panframe windows go right into the
+	corners.
 
 	* fvwm/placement.c: fixed wandering on restart/recapture caused by
 	old_bw being ignored.

@@ -1,6 +1,13 @@
+Changes in official release 2.2.5 (not released yet)
+
+* A small fix in the code for SmartPlacement.
+
+* Core dump fix in pixmap code.
+
 Changes in official release 2.2.4 (November 1999)
 
 * Fixed HP-UX 10.20 build problems.
+
 * Fixed build problems without shape extension.
 
 Changes in official release 2.2.3 (October 1999)
@@ -15,8 +22,8 @@ Changes in official release 2.2.3 (October 1999)
 
 Changes in official release 2.2.2 (May 1999)
 
-* New "Emulate"  command  for independent  control of the  move/resize
-* feedback window.
+* New "Emulate" command for independent control of the move/resize
+  feedback window.
 
 * EdgeThickness command can be issued at any time.
 
@@ -30,8 +37,8 @@ Changes in official release 2.2.2 (May 1999)
 
 * Fix bug in window shading that left one row of pixels visible.
 
-* Fix to FvwmTaskbar so that  it won't loop  when  there are too  many
-* buttons.
+* Fix to FvwmTaskbar so that it won't loop when there are too many
+  buttons.
 
 * Fix positioning bug on overlapping menus.
 
