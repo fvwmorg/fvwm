@@ -712,7 +712,7 @@ void focus_grab_buttons(FvwmWindow *tmp_win, Bool is_focused)
 	    else
 	    {
 	      XUngrabButton(dpy, (i+1), mods, tmp_win->Parent);
-              tmp_win->grabbed_buttons &= !(1<<i);
+              tmp_win->grabbed_buttons &= ~(1<<i);
 	    }
 	  }
 	} /* for */

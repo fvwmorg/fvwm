@@ -61,6 +61,9 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed a possible crash when a window was recaptured and the
   focus could not be transfered to another window.
 
+* Fixed a minor problem with clicks on focused windows being
+  ignored.
+
 * fvwm-menu-headlines: added support for CNN and BBC headlines.
 
 -------------------------------------------------------------------
