@@ -1,3 +1,9 @@
+2002-09-24  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/move_resize.c (moveLoop):
+	fixed starting move at random position when pointer is on a different
+	screen
+
 2002-09-23  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/conditional.c (CreateFlagString):

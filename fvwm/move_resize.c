@@ -1583,25 +1583,18 @@ Bool moveLoop(FvwmWindow *tmp_win, int XOffset, int YOffset, int Width,
   /* prevent flicker when paging */
   SET_WINDOW_BEING_MOVED_OPAQUE(tmp_win, do_move_opaque);
 
+  if (XQueryPointer(
+	dpy, Scr.Root, &JunkRoot, &JunkChild, &xl, &yt, &JunkX, &JunkY,
+	&button_mask) == False)
   {
-    int xl_bak;
-    int yt_bak;
-
-    xl_bak = xl;
-    yt_bak = yt;
-    if (XQueryPointer(
-	  dpy, Scr.Root, &JunkRoot, &JunkChild, &xl, &yt, &JunkX, &JunkY,
-	  &button_mask) == False)
-    {
-      /* pointer is on a different screen */
-      xl = xl_bak;
-      yt = yt_bak;
-    }
-    else
-    {
-      xl += XOffset;
-      yt += YOffset;
-    }
+    /* pointer is on a different screen */
+    xl = 0;
+    yt = 0;
+  }
+  else
+  {
+    xl += XOffset;
+    yt += YOffset;
   }
   button_mask &= DEFAULT_ALL_BUTTONS_MASK;
   xl_orig = xl;
