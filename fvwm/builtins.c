@@ -63,9 +63,6 @@
 
 static char *ReadTitleButton(
     char *s, TitleButton *tb, Boolean append, int button);
-#ifdef FANCY_TITLEBARS
-static char *ReadMultiPixmapDecor(char *s, DecorFace *df);
-#endif
 static void DestroyFvwmDecor(FvwmDecor *decor);
 
 extern float rgpctMovementDefault[32];
@@ -1066,7 +1063,7 @@ void CMD_HilightColor(F_CMD_ARGS)
   if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
   {
     fvwm_msg(
-      ERR, "SetHiColor",
+      ERR, "CMD_HilightColor",
       "Decors do not support the HilightColor command anymore."
       " Please use 'Style <stylename> HilightFore <forecolor>' and"
       " 'Style <stylename> HilightBack <backcolor>' instead."
@@ -1097,7 +1094,7 @@ void CMD_HilightColorset(F_CMD_ARGS)
   if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
   {
     fvwm_msg(
-      ERR, "SetHiColorset",
+      ERR, "CMD_HilightColorset",
       "Decors do not support the HilightColorset command anymore."
       " Please use 'Style <stylename> HilightColorset <colorset>' instead."
       " Sorry for the inconvenience.");
@@ -1247,6 +1244,21 @@ void CMD_Colorset(F_CMD_ARGS)
   int n = -1, ret;
   char *token;
 
+  /* migo (19/May/2002): this block also fixes a crash with new configs */
+  char *ptr;
+  for (ptr = action; *ptr; ptr++)
+  {
+    if (*ptr != ' ' && !isxdigit(*ptr))
+    {
+      /* suppose it is a new Colorset command and pass it to FvwmTheme */
+      char *old_action = action;
+      action = CatString2("FvwmTheme Colorset ", action);
+      CMD_SendToModule(F_PASS_ARGS);
+      action = old_action;
+      return;
+    }
+  }
+
   token = PeekToken(action, NULL);
   if (token == NULL)
     return;
@@ -1255,7 +1267,9 @@ void CMD_Colorset(F_CMD_ARGS)
   if ((ret == 0) || (n < 0))
     return;
 
-  LoadColorset(action);
+  /* add a check to avoid crash in intentionally-incorect-config */
+  if (LoadColorset(action) < 0)
+    return;
   BroadcastColorset(n);
 
   if (n == Scr.DefaultColorset)
@@ -1404,10 +1418,6 @@ void CMD_WindowFont(F_CMD_ARGS)
 
 void FreeDecorFace(Display *dpy, DecorFace *df)
 {
-#ifdef FANCY_TITLEBARS
-  int i;
-#endif
-
   switch (DFS_FACE_TYPE(df->style))
   {
   case GradientButton:
@@ -1424,18 +1434,6 @@ void FreeDecorFace(Display *dpy, DecorFace *df)
     if (df->u.p)
       DestroyPicture(dpy, df->u.p);
     break;
-
-#ifdef FANCY_TITLEBARS
-  case MultiPixmap:
-    if (df->u.multi_pixmaps) {
-      for (i=0; i < NUM_TB_PIXMAPS; i++) {
-        if (df->u.multi_pixmaps[i])
-          DestroyPicture(dpy, df->u.multi_pixmaps[i]);
-      }
-      free(df->u.multi_pixmaps);
-    }
-    break;
-#endif
 
   case VectorButton:
   case DefaultVectorButton:
@@ -1668,19 +1666,6 @@ Bool ReadDecorFace(char *s, DecorFace *df, int button, int verbose)
       else
 	DFS_FACE_TYPE(df->style) = PixmapButton;
     }
-#ifdef FANCY_TITLEBARS
-    else if (strncasecmp(style,"MultiPixmap",11)==0) {
-      if (button != -1) {
-        if (verbose)
-          fvwm_msg(ERR, "ReadDecorFace",
-                   "MultiPixmap is only valid for TitleStyle");
-        return False;
-      }
-      s = ReadMultiPixmapDecor(s, df);
-      if (!s)
-        return False;
-    }
-#endif
 #ifdef MINI_ICONS
     else if (strncasecmp (style, "MiniIcon", 8) == 0)
     {
@@ -1988,78 +1973,6 @@ static char *ReadTitleButton(
   return end;
 }
 
-#ifdef FANCY_TITLEBARS
-/*****************************************************************************
- *
- * Reads a multi-pixmap titlebar config. (tril@igs.net)
- *
- ****************************************************************************/
-static char *ReadMultiPixmapDecor(char *s, DecorFace *df)
-{
-  static char *pm_names[NUM_TB_PIXMAPS+1] = {
-    "Main",
-    "LeftMain",
-    "RightMain",
-    "UnderText",
-    "LeftOfText",
-    "RightOfText",
-    "LeftEnd",
-    "RightEnd",
-    "Buttons",
-    "LeftButtons",
-    "RightButtons",
-    NULL
-  };
-  Picture **pm;
-  char *token;
-  Bool stretched;
-  int pm_id, i;
-
-  df->style.face_type = MultiPixmap;
-  df->u.multi_pixmaps = pm =
-    (Picture**)safecalloc(NUM_TB_PIXMAPS, sizeof(Picture*));
-
-  s = GetNextTokenIndex(s, pm_names, 0, &pm_id);
-  while (pm_id >= 0) {
-    s = DoPeekToken(s, &token, ",()", NULL, NULL);
-    stretched = False;
-    if (StrEquals(token, "stretched")) {
-      stretched = True;
-      s = DoPeekToken(s, &token, ",", NULL, NULL);
-    }
-    else if (StrEquals(token, "tiled"))
-      s = DoPeekToken(s, &token, ",", NULL, NULL);
-    if (!token)
-      break;
-    if (pm[pm_id]) {
-      fvwm_msg(WARN, "ReadMultiPixmapDecor",
-               "Ignoring already-specified %s pixmap", pm_names[i]);
-      continue;
-    }
-    if (stretched)
-      df->u.multi_stretch_flags |= (1 << pm_id);
-    pm[pm_id] = CachePicture(dpy, Scr.NoFocusWin, NULL, token, Scr.ColorLimit);
-    if (!pm[pm_id])
-      fvwm_msg(ERR, "ReadMultiPixmapDecor", "Pixmap '%s' could not be loaded",
-               token);
-    s = GetNextTokenIndex(s, pm_names, 0, &pm_id);
-  }
-
-  if (!pm[TBP_MAIN] && !(pm[TBP_LEFT_MAIN] && pm[TBP_RIGHT_MAIN])) {
-    fvwm_msg(ERR, "ReadMultiPixmapDecor",
-             "No Main pixmap found for TitleStyle MultiPixmap "
-             "(you must specify either Main, or both LeftMain and RightMain)");
-    for (i=0; i < NUM_TB_PIXMAPS; i++) {
-      if (pm[i])
-        DestroyPicture(dpy, pm[i]);
-    }
-    free(pm);
-    return NULL;
-  }
-
-  return s;
-}
-#endif /* FANCY_TITLEBARS */
 
 #ifdef USEDECOR
 /*****************************************************************************

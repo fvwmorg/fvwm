@@ -1,3 +1,9 @@
+2002-05-19  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm/builtins.c (CMD_Colorset):
+	fixed a crash on a new 2.5.x Colorset syntax;
+	support (kind of) this new sytax by passing it to FvwmTheme
+
 2002-05-02  Mikhail Kruk  <meshko@cs.brandeis.edu>
 
 	* fvwm/module_interface.c (make_named_packe):

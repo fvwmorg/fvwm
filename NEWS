@@ -18,6 +18,8 @@ Changes in stable release 2.4.8 (not released yet)
 
 * Fixed maximal length of a named module packet
 
+* Fixed a crash on a config with a new 2.5.x Colorset command.
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at
