@@ -13,6 +13,9 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed problems with $fg and $bg variables in FvwmButtons when the
   UseOld option was used.
 
+* Fixed wrong warp coordinates when WarpToWindow was used with two
+  arguments on an unmanaged window.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
