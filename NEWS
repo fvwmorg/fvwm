@@ -1,5 +1,8 @@
 Changes in stable release 2.4.11 (not released yet)
 
+* Allow the use of mousr buttons other than the first in
+  FvwmWinList when invoked transient.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.10 (15-Sep-2002)
