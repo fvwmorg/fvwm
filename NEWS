@@ -7,6 +7,8 @@ Changes in stable release 2.4.7 (not released yet)
   (windows were duplicated when moving to a different Desk; the
   StickyIcon style was ignored).
 
+* Fixed config.h warnings with some compilers introduced in 2.4.6.
+
 Changes in stable release 2.4.6 (10-Mar-2002)
 
 * Better support of non ISO-8859-1 window and icon titles. See the
