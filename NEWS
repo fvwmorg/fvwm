@@ -3,6 +3,9 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed a problem with colormap transition when a transient window
   died.
 
+* Fixed a FvwmScript crash with Swallow widget and very long window
+  names.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
