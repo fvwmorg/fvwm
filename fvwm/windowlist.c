@@ -123,12 +123,12 @@ void CMD_WindowList(F_CMD_ARGS)
   Bool do_reverse_sort_order = False;
   WindowConditionMask mask;
   char *cond_flags;
+  Bool was_get_menu_opts_called = False;
 
   memset(&mops, 0, sizeof(mops));
   memset(&mret, 0, sizeof(MenuReturn));
   /* parse postitioning args - must call this even if no action is given
    * because it sets the xinerama screen origin */
-  opts = get_menu_options(action, w, tmp_win, eventp, NULL, NULL, &mops);
   if (action && *action)
   {
     /* Look for condition - CreateFlagString returns NULL if no '(' or '[' */
@@ -146,6 +146,8 @@ void CMD_WindowList(F_CMD_ARGS)
       CreateConditionMask(cond_flags, &mask);
       free(cond_flags);
     }
+    opts = get_menu_options(action, w, tmp_win, eventp, NULL, NULL, &mops);
+    was_get_menu_opts_called = True;
 
     /* parse options */
     while (opts && *opts)
@@ -288,6 +290,10 @@ void CMD_WindowList(F_CMD_ARGS)
       if (tok)
         free(tok);
     }
+  }
+  if (was_get_menu_opts_called == False)
+  {
+    opts = get_menu_options(action, w, tmp_win, eventp, NULL, NULL, &mops);
   }
 
   globalFlags = flags;

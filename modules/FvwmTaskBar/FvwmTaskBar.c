@@ -623,7 +623,7 @@ void ProcessMessage(unsigned long type,unsigned long *body)
 	}
 	else if (!IsItemIndexSticky(&windows,i))
 	{
-	  is_on_desk = (DeskNumber != cfgpacket->desk);
+	  is_on_desk = (DeskNumber == cfgpacket->desk);
 	  is_changing_desk = (Desk != cfgpacket->desk);
 	}
 	UpdateItemIndexDesk(&windows, i, cfgpacket->desk);

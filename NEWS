@@ -1,3 +1,12 @@
+Changes in stable release 2.4.7 (not released yet)
+
+* Fixed parsing of WindowList with conditions and a position at
+  the same time that was broken in 2.4.6.
+
+* Fixed some problems with the DeskOnly option of FvwmTaskBar
+  (windows were duplicated when moving to a different Desk; the
+  StickyIcon style was ignored).
+
 Changes in stable release 2.4.6 (10-Mar-2002)
 
 * Better support of non ISO-8859-1 window and icon titles. See the
