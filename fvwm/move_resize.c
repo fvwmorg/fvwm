@@ -854,7 +854,7 @@ static void AnimatedMoveAnyWindow(
       }
       XWarpPointer(dpy,None,Scr.Root,0,0,0,0, pointerX,pointerY);
     }
-    if (tmp_win && !IS_SHADED(tmp_win))
+    if (tmp_win && !IS_SHADED(tmp_win) && !Scr.bo.DisableConfigureNotify)
     {
       /* send configure notify event for windows that care about their
        * location */
@@ -1892,7 +1892,8 @@ Bool moveLoop(FvwmWindow *tmp_win, int XOffset, int YOffset, int Width,
     } /* switch */
     xl += x_virtual_offset;
     yt += y_virtual_offset;
-    if (do_move_opaque && !IS_ICONIFIED(tmp_win) && !IS_SHADED(tmp_win))
+    if (do_move_opaque && !IS_ICONIFIED(tmp_win) && !IS_SHADED(tmp_win) &&
+	!Scr.bo.DisableConfigureNotify)
     {
       /* send configure notify event for windows that care about their
        * location; don't send anything if position didn't change */
