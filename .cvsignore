@@ -3,6 +3,8 @@ Makefile.in
 aclocal.m4
 config.h
 config.h.in
+config.sub
+config.guess
 configure
 install-sh
 missing
