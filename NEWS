@@ -24,6 +24,8 @@ Changes in stable release 2.4.9 (not released yet)
 
 * Fixed the NoClose option with unmapped panels in FvwmButtons.
 
+* A number of drawing fixes in FvwmPager.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
