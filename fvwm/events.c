@@ -1639,7 +1639,8 @@ void HandleButtonPress(void)
   Window OldPressedW;
   Window eventw;
   Bool do_regrab_buttons = False;
-  Bool do_pass_click;
+  Bool do_pass_click = True;
+  Bool do_wait_for_button_release = False;
   Bool has_binding = False;
 
   DBUG("HandleButtonPress","Routine Entered");
@@ -1745,7 +1746,8 @@ void HandleButtonPress(void)
       else /* don't pass click to just focused window */
       {
 	XAllowEvents(dpy,AsyncPointer,CurrentTime);
-        UngrabEm(GRAB_PASSIVE);
+	do_wait_for_button_release = True;
+	do_pass_click = False;
       }
     }
     if (!IS_ICONIFIED(Tmp_win))
@@ -1878,6 +1880,10 @@ void HandleButtonPress(void)
         HAS_DEPRESSABLE_BORDER(ButtonWindow), None);
   }
   ButtonWindow = NULL;
+  if (do_wait_for_button_release)
+  {
+    WaitForButtonsUp(True);
+  }
   UngrabEm(GRAB_PASSIVE);
 
   return;

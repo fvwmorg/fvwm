@@ -662,7 +662,7 @@ int myErrorHandler(Display *dpy, XErrorEvent *event)
   }
   if((event->error_code == BadWindow) || (event->error_code == BadDrawable)
      || (event->error_code == BadMatch) || (event->request_code==X_GrabButton)
-     || (event->request_code == X_GetGeometry) 
+     || (event->request_code == X_GetGeometry)
      || (event->error_code == BadPixmap))
     return 0;
 
@@ -2287,6 +2287,8 @@ void SpawnSome(void)
   static char first=1;
   button_info *b,*ub=UberButton;
   int button=-1;
+  char *p;
+
   if(!first)
     return;
   first=0;
@@ -2299,7 +2301,12 @@ void SpawnSome(void)
 	fprintf(stderr,"%s: Button 0x%06x did not find a \"%s\" window, %s",
 		MyName,(ushort)b,b->hangon,"spawning own\n");
 #endif
-	SendText(fd,b->spawn,0);
+	p = expand_action(b->spawn, NULL);
+	if (p)
+	{
+	  MySendText(fd, p, 0);
+	  free(p);
+	}
       }
 }
 

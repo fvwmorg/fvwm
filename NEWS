@@ -6,6 +6,13 @@ Changes in stable release 2.4.9 (not released yet)
 * Fixed a FvwmScript crash with Swallow widget and very long window
   names.
 
+* Restored old way of handling clicks in windows with ClickToFocus
+  and ClickToFocusPassesClickOff.  This fixes a problem with
+  click+drag in an unfocused rxvt or aterm window.
+
+* Fixed problems with $fg and $bg variables in FvwmButtons when the
+  UseOld option was used.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
