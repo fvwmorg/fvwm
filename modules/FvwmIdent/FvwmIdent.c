@@ -686,7 +686,7 @@ void list_end(void)
 				mysizehints.height,
 				&Colorset[colorset], Pdepth, gc,
 				True);
-	    /* ask for movement events iff transparent */
+	    /* ask for movement events if transparent */
 	    if (Colorset[colorset].pixmap == ParentRelative)
 	      mw_events |= StructureNotifyMask;
 	    else
