@@ -4,6 +4,11 @@ Changes in stable release 2.4.17 (not released yet)
 
 * Fixed a compile problem on QNX 4.25.
 
+* New configure switch --disable-gtk.
+
+* FvwmGtk.1, FvwmGtkDebug and FvwmGtkDebug.1 are not installed if
+  FvwmGtk is not built.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.16 (30-May-2003)

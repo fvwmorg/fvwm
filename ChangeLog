@@ -1,3 +1,8 @@
+2003-06-19  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* configure.in:
+	new configure option --deisable-gtk to disable detection of gtk library
+
 2003-06-17  Dan Espen  <dane@mk.telcordia.com>
 
 	* fvwm/builtins.c (ReadDecorFace): Off by one patch from Anil
