@@ -1,30 +1,43 @@
-Fvwm 2.4.3 is a bug fix release for version 2.4.2 fixing some
-problems with shaped windows that were introduced in 2.4.2.  There
-are also some improvements and fixes regarding key bindings and
-Xinerama screens.  It is recommended to upgrade from 2.4.2 or
-stick with 2.4.1 or below if you encounter none of the problems
-listed below.
+Fvwm 2.4.4 is a bug fix release for version 2.4.3.  The most
+important fixes are related to key bindings with the Shift key and
+some problems with ClickToFocus.  We recommend to upgrade from any
+earlier 2.4.x release to 2.4.4.
 
 The release is available at the fvwm home page: http://www.fvwm.org/
 
 Bug fixes:
 ----------
 
-** Fixed activation of shape extension.
+* Minor title drawing fixes.
 
-** Fixed problems with overriding key bindings.
+* Fixed manual placement with Xinerama.
 
-** Single letter key names are allowed in upper and lower case in
-   key bindings as before 2.4.0.
+* Minor button 3 handling fix in FvwmPager.
 
-** Fixed WindowList placement with Xinerama.
+* Fixed *FvwmIconMan*shaped option with empty managers.
 
-** Fixed flickering icon titles.
+* Fixed ClickToFocusClickRaises style.
 
-** New X resource fvwmscreen to select the Xinerama screen on which to
-   place new windows.
+* FvwmForm: Customize pointers, support ISO_Tab key, buttons can activate
+  on press or release, special pointer during grab, arrow keys useful in form
+  with one input field.
 
-** Coordinates of a window during motion are show relative to the
-   Xinerama screen.
+* New OpaqueMoveSize argument "unlimited".
 
-** Some icon placement improvements with Xinerama.
+* Fixed binding keys with and without "Shift" modifier under some
+  circumstances.
+
+* Fixed binding actions to the client window with ClickToFocus.
+
+* Mouse bindings are activated without a recapture.
+
+* FvwmScript: new keyboard bindings. New flags NoFocus and Left, Center,
+  and Right for text position. Amelioration of the Menu and PopupMenu
+  Widgets. New functions GetPid, Parse, SendMsgAndGet and LastString.
+  New instruction Key for key bindings. New command SendToModule ScriptName
+  SendString.
+
+* Command "Silent" when precedes "Key", "Mouse" and "PointerKey"
+  disables warning messages.
+
+* Restored the default Alt-Tab behaviour from 2.4.0.
