@@ -1,9 +1,9 @@
 Changes in stable release 2.4.11 (19-Sep-2002)
 
-* Allow the use of mousr buttons other than the first in
+* Allow the use of mouse buttons other than the first in
   FvwmWinList when invoked transient.
 
-* Fixed a crash with ss-askpass introduced in 2.4.10.
+* Fixed a crash with ssh-askpass introduced in 2.4.10.
 
 -------------------------------------------------------------------
 

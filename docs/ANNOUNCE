@@ -1,50 +1,17 @@
-Fvwm-2.4.10 is a bu fixing release for the earlier stable 2.4.x
-versions.  It fixes a number of minor bugs and problems.
-
-The release is available at the fvwm home page: http://www.fvwm.org/
+Fvwm-2.4.10 is a bug fixing release for the 2.4.10.  It repairs a
+crash with ssh-askpass that was introduced in 2.4.10.  The release
+is available at the fvwm home page: http://www.fvwm.org/
 
 Who needs it?
 -------------
 
-Normal users should upgrade if they encountered any problems on
-the list below.
+Everyone using 2.4.10 is highly recommended to upgrade.
 
-System administrators are encouraged to move to 2.4.10.
 
-Bug fixes:
-----------
+Changes:
+--------
 
-* The commands Maximize, Resize and ResizeMove can be used on icons
-  as it was in 2.2.x.
+* Fixed a crash with ssh-askpass introduced in 2.4.10.
 
-* Fixed hilighting of menu items with HGradient and VGradient
-  MenuFace.  Reduced flickering with these options.
-
-* Fixed a minor problem with entering submenus via keyboard.
-
-* Fixed race conditions in FvwmTaskBar with AutoStick that caused
-  it to hang.
-
-* Fixed drawing of pager balloons with BalloonBack option.
-
-* Fixed drawing of SidePic menu background with B/D gradients.
-
-* Fixed drawing of menu item reliefs with gradient menu faces.
-
-* Fixed key bindings on window corners.
-
-* Fixed FvwmTaskBar i18n font loading
-
-* Fixed StackTransientParent style without RaiseTransient or
-  LowerTransient on the parent window.
-
-* StackTransientParent works only on parent window if it is on the
-  same layer.
-
-* Fixed handling of window group hint with the (De)Iconify
-  command.
-
-* No more flickering when a transient overlapping its parent window
-  is lowered.
-
-* Fixed hilighting of unfocused windows.
+* Allow the use of mouse buttons other than the first in
+  FvwmWinList when invoked transient.
