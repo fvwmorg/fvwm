@@ -1,6 +1,6 @@
 Changes in stable release 2.4.13 (not released yet)
 
-* Icon titles for window with an icon position hint no longer
+* Icon titles for windows with an icon position hint no longer
   appear at random places.
 
 * Fvwm no longer displays two icon pictures when switching from
@@ -8,7 +8,7 @@ Changes in stable release 2.4.13 (not released yet)
   own icon window.
 
 * The Current, All, Pick, ThisWindow and PointerWindow commands
-  imply the CirculateHitShaded condition.
+  work on shaded windows too.
 
 * Fixed a problem stacking iconified transients.
 

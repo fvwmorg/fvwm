@@ -1,5 +1,5 @@
 Fvwm-2.4.13 is a bug fixing release for all earlier 2.4.x
-versions.  Most important it fixes a number of problems stacking
+versions.  Most important, it fixes a number of problems stacking
 windows, transient windows and icons.
 
 Who needs it?
@@ -7,7 +7,7 @@ Who needs it?
 
 Users of 2.4.10, 2.4.11 or 2.4.12 are highly encouraged to
 upgrade.  Users of 2.4.9 and below are recommended to upgrade.
-System administrators are higly recommended to upgrade from 2.4.12
+System administrators are higly encouraged to upgrade from 2.4.12
 or below.
 
 Important Bug Fixes
@@ -20,7 +20,7 @@ Important Bug Fixes
 Minor Bug Fixes
 ---------------
 
-* Icon titles for window with an icon position hint no longer
+* Icon titles for windows with an icon position hint no longer
   appear at random places.
 
 * Fvwm no longer displays two icon pictures when switching from
