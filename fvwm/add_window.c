@@ -250,6 +250,7 @@ void setup_class_and_resource(FvwmWindow *tmp_win)
 void setup_wm_hints(FvwmWindow *tmp_win)
 {
   tmp_win->wmhints = XGetWMHints(dpy, tmp_win->w);
+  set_focus_model(tmp_win);
 }
 
 static void destroy_window_font(FvwmWindow *tmp_win)
@@ -1589,7 +1590,10 @@ void FetchWmProtocols (FvwmWindow *tmp)
     for (i = 0, ap = protocols; i < n; i++, ap++)
     {
       if (*ap == (Atom)_XA_WM_TAKE_FOCUS)
+      {
 	SET_WM_TAKES_FOCUS(tmp, 1);
+	set_focus_model(tmp);
+      }
       if (*ap == (Atom)_XA_WM_DELETE_WINDOW)
 	SET_WM_DELETES_WINDOW(tmp, 1);
     }
@@ -1608,7 +1612,10 @@ void FetchWmProtocols (FvwmWindow *tmp)
       for (i = 0, ap = protocols; i < nitems; i++, ap++)
       {
 	if (*ap == (Atom)_XA_WM_TAKE_FOCUS)
+	{
 	  SET_WM_TAKES_FOCUS(tmp, 1);
+	  set_focus_model(tmp);
+	}
 	if (*ap == (Atom)_XA_WM_DELETE_WINDOW)
 	  SET_WM_DELETES_WINDOW(tmp, 1);
       }

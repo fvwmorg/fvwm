@@ -20,6 +20,7 @@ extern char NoName[];
 extern char NoClass[];
 extern char NoResource[];
 
+void setup_wm_hints(FvwmWindow *tmp_win);
 void setup_focus_policy(FvwmWindow *tmp_win);
 void setup_window_font(
   FvwmWindow *tmp_win, window_style *pstyle, Bool do_destroy);

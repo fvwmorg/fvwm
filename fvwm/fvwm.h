@@ -535,6 +535,12 @@ typedef struct FvwmWindow
   int shade_anim_steps;
   unsigned char grabbed_buttons;
 
+#define FM_NO_INPUT        0
+#define FM_PASSIVE         1
+#define FM_LOCALLY_ACTIVE  2
+#define FM_GLOBALLY_ACTIVE 3
+  unsigned char focus_model;
+
   void *pscratch;             /* multi purpose scratch pointer */
 } FvwmWindow;
 
