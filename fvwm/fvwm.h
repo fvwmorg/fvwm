@@ -547,7 +547,12 @@ typedef struct FvwmWindow
 
   unsigned char initial_backing_store;
 
-  void *pscratch;             /* multi purpose scratch pointer */
+  /* multi purpose scratch structure */
+  struct
+  {
+    void *p;
+    int i;
+  } scratch;
 } FvwmWindow;
 
 /* include this down here because FvwmWindows must be defined when including

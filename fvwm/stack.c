@@ -40,6 +40,16 @@
 
 /* ----------------------------- stack ring code --------------------------- */
 
+/* If more than this many transients are in a single branch of a transient
+ * tree, they will end up in more or less random stacking order. */
+#define MAX_TRANSIENTS_IN_BRANCH 200000
+/* Same for total levels of transients. */
+#define MAX_TRANSIENT_LEVELS     10000
+/* This number must fit in a signed int! */
+#define LOWER_PENALTY (MAX_TRANSIENTS_IN_BRANCH * MAX_TRANSIENT_LEVELS)
+
+static void __RaiseOrLowerWindow(
+  FvwmWindow *t, Bool do_lower, Bool allow_recursion, Bool is_new_window);
 static void RaiseOrLowerWindow(
   FvwmWindow *t, Bool do_lower, Bool allow_recursion, Bool is_new_window);
 #if 0
@@ -488,6 +498,59 @@ static void restack_windows(
   return;
 }
 
+static void __sort_transient_ring(FvwmWindow *ring)
+{
+  FvwmWindow *s;
+  FvwmWindow *t;
+  FvwmWindow *u;
+  FvwmWindow *prev;
+
+  if (ring->stack_next->stack_next == ring)
+  {
+    /* only one or zero windows */
+    return;
+  }
+  /* Implementation note:  this sorting algorithm is about the most inefficient
+   * possible.  It just swaps the position of two adjacent windows in the ring
+   * if they are in the wrong order.  Since transient windows are rare, this
+   * should not cause any notable performance hit.  Because it is important that
+   * the order of windows with the same key is not changed, we can not just use
+   * qsort() here. */
+  for (t = ring->stack_next, prev = ring; t->stack_next != ring;
+       prev = t->stack_prev)
+  {
+    s = t->stack_next;
+    if (t->scratch.i < s->scratch.i)
+    {
+      /* swap windows */
+      u = s->stack_next;
+      s->stack_next = t;
+      t->stack_next = u;
+      u = t->stack_prev;
+      t->stack_prev = s;
+      s->stack_prev = u;
+      s->stack_prev->stack_next = s;
+      t->stack_next->stack_prev = t;
+      if (prev != ring)
+      {
+	/* move further up the ring? */
+	t = prev;
+      }
+      else
+      {
+	/* hit start of ring */
+      }
+    }
+    else
+    {
+      /* correct order, advance one window */
+      t = t->stack_next;
+    }
+  }
+
+  return;
+}
+
 static Bool __restack_window(
   FvwmWindow *t, Bool do_lower, Bool do_restack_transients, Bool is_new_window)
 {
@@ -531,6 +594,8 @@ static Bool __restack_window(
 
   if (do_restack_transients)
   {
+    /* re-sort the transient windows according to their scratch.i register */
+    __sort_transient_ring(&tmp_r);
     /* insert all transients between r and s. */
     add_windowlist_to_stack_ring_after(&tmp_r, r);
   }
@@ -560,7 +625,9 @@ static Bool __restack_window(
   return False;
 }
 
-static void RaiseOrLowerWindow(
+/* Important note:  __RaiseOrLowerWindow must *only* be called by
+ * RaiseOrLowerWindow()! */
+static void __RaiseOrLowerWindow(
   FvwmWindow *t, Bool do_lower, Bool allow_recursion, Bool is_new_window)
 {
   FvwmWindow *t2;
@@ -571,7 +638,7 @@ static void RaiseOrLowerWindow(
   SET_SCHEDULED_FOR_RAISE(t, 0);
 
   /* New windows are simply raised/lowered without touching the transientfor
-   * at first.  Then, further down in the code, RaiseOrLowerWindow() is called
+   * at first.  Then, further down in the code, __RaiseOrLowerWindow() is called
    * again to raise/lower the transientfor if necessary.  We can not do the
    * recursion stuff for new windows because the must_move_transients() call
    * needs a properly ordered stack ring - but the new window is still at the
@@ -600,7 +667,19 @@ static void RaiseOrLowerWindow(
 	  {
 	    break;
 	  }
-	  RaiseOrLowerWindow(t2, do_lower, True, False);
+	  if (do_lower && (!IS_TRANSIENT(t2) || !DO_STACK_TRANSIENT_PARENT(t2)))
+	  {
+	    /* hit the highest level transient; lower this subtree below all
+	     * other subtrees of the same window */
+	    t->scratch.i = -LOWER_PENALTY;
+	  }
+	  else
+	  {
+	    /* Add a bonus to the stack ring position for this branch of the
+	     * transient tree over all other branches. */
+	    t->scratch.i = MAX_TRANSIENTS_IN_BRANCH;
+	  }
+	  __RaiseOrLowerWindow(t2, do_lower, True, False);
           if ((!do_lower && DO_RAISE_TRANSIENT(t2)) ||
               (do_lower && DO_LOWER_TRANSIENT(t2))  )
           {
@@ -676,6 +755,21 @@ static void RaiseOrLowerWindow(
     XSync(dpy, 0);
     handle_all_expose();
   }
+
+  return;
+}
+
+static void RaiseOrLowerWindow(
+  FvwmWindow *t, Bool do_lower, Bool allow_recursion, Bool is_new_window)
+{
+  FvwmWindow *fw;
+
+  /* clean the auxiliary registers used in stacking transients */
+  for (fw = Scr.FvwmRoot.next; fw != NULL; fw = fw->next)
+  {
+    fw->scratch.i = 0;
+  }
+  __RaiseOrLowerWindow(t, do_lower, allow_recursion, is_new_window);
 
   return;
 }
@@ -1072,11 +1166,11 @@ void mark_transient_subtree(
     SET_IN_TRANSIENT_SUBTREE(s, 0);
     if (IS_TRANSIENT(s) && (layer < 0 || layer == s->layer))
     {
-      s->pscratch = get_transientfor_fvwmwindow(s);
+      s->scratch.p = get_transientfor_fvwmwindow(s);
     }
     else
     {
-      s->pscratch = NULL;
+      s->scratch.p = NULL;
     }
   }
   /* now loop over the windows and mark the ones we need to move */
@@ -1105,7 +1199,7 @@ void mark_transient_subtree(
       }
       if (!IS_TRANSIENT(s) && !use_group_hint)
 	continue;
-      r = (FvwmWindow *)s->pscratch;
+      r = (FvwmWindow *)s->scratch.p;
       if (do_ignore_icons && r && IS_ICONIFIED(r))
 	continue;
       if (IS_TRANSIENT(s))
@@ -1117,6 +1211,8 @@ void mark_transient_subtree(
 	{
 	  /* have to move this one too */
 	  SET_IN_TRANSIENT_SUBTREE(s, 1);
+	  /* used for stacking transients */
+	  s->scratch.i += r->scratch.i + 1;
 	  /* need another scan through the list */
 	  is_finished = False;
 	  continue;
