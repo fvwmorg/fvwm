@@ -328,7 +328,6 @@ static char *function_vars[] =
 static int expand_extended_var(
   char *var_name, char *output, FvwmWindow *tmp_win)
 {
-  char *s;
   char *rest;
   char dummy[64];
   char *target = (output) ? output : dummy;

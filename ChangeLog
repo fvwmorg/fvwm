@@ -1,3 +1,11 @@
+2003-03-19  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/functions.c (expand_extended_var):
+	removed unused variable
+
+	* libs/Colorset.c (CreateBackgroundPixmap):
+	fixed size calculation of aspect pixmaps
+
 2003-03-17  Mikhael Goikhman  <migo@homemail.com>
 
 	* fvwm/functions.c:

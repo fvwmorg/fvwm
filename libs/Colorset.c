@@ -335,7 +335,7 @@ Pixmap CreateBackgroundPixmap(Display *dpy, Window win, int width, int height,
     /* make a pixmap big enough to cover the destination but with the aspect
      * ratio of the cs_pixmap */
     big_width = trim_side ? height * cs_width / cs_height : width;
-    big_height = trim_side ? height : width * cs_width / cs_width;
+    big_height = trim_side ? height : width * cs_height / cs_width;
     big_pixmap = CreateStretchPixmap(
       dpy, cs_pixmap, cs_width, cs_height, depth, big_width, big_height, gc);
 

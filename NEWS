@@ -27,6 +27,8 @@ Changes in stable release 2.4.16 (not released yet)
     $[desk.n], $[version.num], $[version.info], $[version.line],
     $[desk.pagesx], $[desk.pagesy]
 
+* Fixed a bug with aspect pixmaps in colorsets.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
