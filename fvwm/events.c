@@ -3304,6 +3304,19 @@ void CoerceEnterNotifyOnCurrentWindow(void)
     Event.xany.window = child;
     if (XFindContext(dpy, child, FvwmContext, (caddr_t *) &Tmp_win) == XCNOENT)
       Tmp_win = NULL;
+    else
+    {
+      XTranslateCoordinates(
+	dpy, Scr.Root, child, root_x, root_y, &JunkX, &JunkY, &child);
+      if (child == Tmp_win->Parent)
+      {
+	      child = Tmp_win->w;
+      }
+      if (child != None)
+      {
+	Event.xany.window = child;
+      }
+    }
     HandleEnterNotify();
     Tmp_win = None;
   }
