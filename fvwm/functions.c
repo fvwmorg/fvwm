@@ -917,6 +917,7 @@ static cfunc_action_type CheckActionType(
 	}
 	break;
       case ButtonPress:
+	*ret_button = d->xbutton.button;
 	if (may_time_out)
 	  is_button_pressed = True;
 	break;
@@ -1771,9 +1772,6 @@ static void execute_complex_function(F_CMD_ARGS, Bool *desperate)
       {
       case CF_HOLD:
       case CF_MOTION:
-	type = CF_DOUBLE_CLICK;
-	ev = &d;
-	break;
       case CF_CLICK:
 	if (button == button2)
 	{
