@@ -13,6 +13,8 @@ Changes in stable release 2.4.10 (not released yet)
 
 * Fixed drawing of pager balloons with BalloonBack option.
 
+* Fixed drawing of SidePic menu background with B/D gradients.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.9 (11-Aug-2002)
