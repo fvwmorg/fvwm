@@ -26,6 +26,9 @@ Changes in stable release 2.4.19 (not released yet)
 * The option CurrentGlobalPageAnyDesk was accidentally named
   CurrentGlobbalPageAnyDesk before.
 
+* Fixed a problem with fvwm startup and shutdown when the pointer
+  was grabbed by another application.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.18 (19-Mar-2004)

@@ -789,10 +789,16 @@ void StartupStuff(void)
   if (Scr.ClickTime < 0)
     Scr.ClickTime = -Scr.ClickTime;
 
-  /* It is safe to Ungrab here: if not and one of the init functions not
-   * finish we've got a complete freeze ! */
+# if 0
+  /* It is safe to ungrab here: if not, and one of the init functions
+   * does not finish, we've got a complete freeze! */
+  /* DV (15-Jul-2004): No, it is not safe to ungrab.  If another application
+   * grabs the pointer before execute_function gets it, the start functions
+   * are not executed.  And the pointer is grabbed during function execution
+   * anyway, so releasing it here buys us nothing. */
   UngrabEm(GRAB_STARTUP);
   XUngrabPointer(dpy, CurrentTime);
+#endif
 
   /* migo (04-Sep-1999): execute StartFunction */
   if (FindFunction(startFuncName)) {
@@ -807,6 +813,9 @@ void StartupStuff(void)
     old_execute_function(action, NULL, &Event, C_ROOT, 1, 0, NULL);
     free(action);
   }
+  /* see comment above */
+  UngrabEm(GRAB_STARTUP);
+  XUngrabPointer(dpy, CurrentTime);
 
   /*
      This should be done after the initialization is finished, since
