@@ -148,10 +148,12 @@ typedef struct
   int action_arg;
 } event_entry;
 
+#define ARG_NO_WINID 1024  /* just a large number */
+
 event_entry event_table[MAX_MESSAGES+MAX_BUILTIN] =
 {
   { "new_page",	-1 },
-  { "new_desk", 0 },
+  { "new_desk", 0 | ARG_NO_WINID },
   { "old_add_window", 0 },
   { "raise_window", 0 },
   { "lower_window", 0 },
@@ -170,10 +172,10 @@ event_entry event_table[MAX_MESSAGES+MAX_BUILTIN] =
   { "error", -1 },
   { "config_info", -1 },
   { "end_config_info", -1 },
-  { "icon_file", -1 },
+  { "icon_file", 0 },
   { "default_icon", -1 },
   { "string", -1 },
-  { "mini_icon", -1 },
+  { "mini_icon", 0 },
   { "windowshade", 0 },
   { "dewindowshade", 0 },
   { "lockonsend", -1 },
@@ -394,20 +396,38 @@ void execute_event(short event, unsigned long *body)
 	  }
 	else
 	  {
-	    if(PassID && (event_table[event].action_arg != -1))
+	    int action_arg = event_table[event].action_arg;
+	    int fw = 0;
+
+	    if (action_arg != -1 && !(action_arg & ARG_NO_WINID))
 	    {
-	      if (M_NEW_DESK == (1 << event))
-		sprintf(buf, "%s %s %ld", cmd_line, action_table[event],
-			body[event_table[event].action_arg]);
+	      fw = body[action_arg];
+	    }
+
+	    if (PassID && action_arg != -1)
+	    {
+	      if (action_arg & ARG_NO_WINID)
+	      {
+		action_arg &= ~ARG_NO_WINID;
+		sprintf(buf, "%s %s %ld", cmd_line,
+			action_table[event],
+			body[action_arg]);
+	      }
 	      else
-		sprintf(buf, "%s %s 0x%lx", cmd_line, action_table[event],
-			body[event_table[event].action_arg]);
+	      {
+		sprintf(buf, "%s %s 0x%lx", cmd_line,
+			action_table[event],
+			body[action_arg]);
+	      }
 	    }
 	    else
-	      sprintf(buf,"%s %s", cmd_line, action_table[event]);
+	    {
+	      sprintf(buf, "%s %s", cmd_line, action_table[event]);
+	    }
 	    INFO(buf);
 	    INFO("\n");
-	    SendText(fd,buf,0);		/* let fvwm execute the function */
+	    /* let fvwm execute the function */
+	    SendText(fd, buf, fw);
 	    last_time = now;
 	  }
 	free(buf);

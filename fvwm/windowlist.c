@@ -105,6 +105,7 @@ void CMD_WindowList(F_CMD_ARGS)
   int desk = Scr.CurrentDesk;
   int flags = SHOW_EVERYTHING;
   char *func = NULL;
+  char *ffunc = NULL;
   char *tfunc = NULL;
   char *default_action = NULL;
   MenuReturn mret;
@@ -496,16 +497,12 @@ void CMD_WindowList(F_CMD_ARGS)
           strcat(t_hot,"\t");
           strcat(t_hot,tname);
         }
-        if (!func)
-        {
-          tfunc = safemalloc(40);
-          sprintf(tfunc,"WindowListFunc %lu", t->w);
-        }
-        else
-	{
-          tfunc = safemalloc(strlen(func) + 32);
-          sprintf(tfunc,"%s %lu", func, t->w);
-	}
+	ffunc = func ? func : "WindowListFunc";
+	tfunc = safemalloc(strlen(ffunc) + 36);
+	/* support two ways for now: window context
+	 * (new) and window id param (old) */
+	sprintf(tfunc, "WindowId %lu %s %lu", t->w, ffunc, t->w);
+
         AddToMenu(mr, t_hot, tfunc, FALSE, FALSE);
         free(tfunc);
 #ifdef MINI_ICONS

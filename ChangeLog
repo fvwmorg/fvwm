@@ -1,3 +1,14 @@
+2003-05-28  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm/ConfigFvwmDefaults:
+	* fvwm/fvwm2.1:
+	* fvwm/windowlist.c:
+	* NEWS:
+	WindowListFunc is executed now within a window context,
+	so "WindowId $0" is not needed anymore in its definition.
+	Documented FvwmEvent behaviour of executing window related event
+	handlers within a window context.
+
 2003-05-27  olicha  <olivier.chapuis@free.fr>
 
 	* fvwm/icons.c (CreateIconWindow): 

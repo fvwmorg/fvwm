@@ -128,10 +128,10 @@ You can even call different shell commands for each event just by setting
 .nf
 .sp
 	*FvwmEvent: Cmd exec
-	*FvwmEvent: add_window killname "APPL ERROR"
+	*FvwmEvent: add_window 'killname "APPL ERROR"'
 .sp
 .fi
-.IP "*FvwmEvent: PassID"
+.IP "*FvwmEvent: PassId"
 Specifies that the event action will have an ID parameter added to the end
 of the command line. Most events will have the windowID of the window that the
 event refers to, new_desk will have the new desk number. The windowID is a
@@ -177,6 +177,10 @@ e.g. for audio-events:
 	*FvwmEvent: dewindowshade beep.au
 .sp
 .fi
+The window related event handlers are executed within a window
+context.  Previously PassId was used for this purpose, but now using
+PassId is not needed.
+
 Provided \fIfvwm\fP supports it (not yet), there's an additional event to
 replace all \fIfvwm\fP beeps with a sound:
 .nf

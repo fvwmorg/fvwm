@@ -55,6 +55,14 @@ Changes in stable release 2.4.16 (not released yet)
   id of a window that died recently.
 
 * Fixed loading of application supplied pixmap on 8/24 depth screen.
+
+* WindowListFunc is executed now within a window context, so
+  a prefix "WindowId $0" is not needed in its definition anymore
+  and it is advised to remove it in user configs.
+
+* FvwmEvent now executes all window related events within a window
+  context, so PassId is not needed anymore, and all prefixes
+  "WindowId $0" may be removed in user event handlers.
  
 -------------------------------------------------------------------
 

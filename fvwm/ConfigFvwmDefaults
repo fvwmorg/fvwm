@@ -15,13 +15,15 @@ Key F1 R A Popup MenuFvwmRoot
 Key Escape A MC EscapeFunc
 
 # Needed by the builtin WindowList command, this should match the manpage.
-AddToFunc WindowListFunc I WindowId $0 Iconify off
-+ I WindowId $0 FlipFocus
-+ I WindowId $0 Raise
-+ I WindowId $0 WarpToWindow 5p 5p
+AddToFunc WindowListFunc
++ I Iconify off
++ I FlipFocus
++ I Raise
++ I WarpToWindow 5p 5p
 
 # Also in fvwm man page.
-AddToFunc UrgencyFunc I Iconify off
+AddToFunc UrgencyFunc
++ I Iconify off
 + I FlipFocus
 + I Raise
 + I WarpToWindow 5p 5p

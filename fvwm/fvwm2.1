@@ -3287,10 +3287,10 @@ run with the window id of that window passed in as $0. The default
 "WindowListFunc" looks like this:
 .EX
 AddToFunc WindowListFunc
- + I WindowId $0 Iconify off
- + I WindowId $0 FlipFocus
- + I WindowId $0 Raise
- + I WindowId $0 WarpToWindow 5p 5p
+ + I Iconify off
+ + I FlipFocus
+ + I Raise
+ + I WarpToWindow 5p 5p
 .EE
 You can destroy the builtin "WindowListFunc" and create your own
 if these defaults do not suit you.
@@ -3341,7 +3341,7 @@ list to a key (or button) like this:
 .EX
 # Here we call an existing function, but it may be different
 AddToFunc SwitchToWindow
-+ I WindowListFunc $w
++ I WindowListFunc
 
 Key Tab A M WindowList "Prev SwitchToWindow"
 .EE
@@ -3394,9 +3394,9 @@ without a key name.
 
 If you pass in a function via
 .IR "Function funcname" ,
-$0 is the window id:
+it is called within a window context of the selected window:
 .EX
-AddToFunc IFunc I WindowId $0 Iconify toggle
+AddToFunc IFunc I Iconify toggle
 WindowList Function IFunc, NoSticky, \\
   CurrentDesk, NoIcons
 .EE
@@ -6830,7 +6830,7 @@ if you wanted.  An example of using "$w" is:
 .EX
 AddToFunc PrintFunction
  + I Raise
- + I Exec xdpr -id $w
+ + I Exec xdpr -id $[w.id]
 .EE
 Note that "$$" is expanded to '$'.
 
@@ -7329,12 +7329,20 @@ WindowId 0x34567890 Raise
 WindowId root 1 WarpToWindow 50 50
 WindowId $0 (Silly_Popup) Delete
 .EE
-Mostly this is useful for functions used with the
+In the past this command was mostly useful for functions used with
+the
 .B WindowList
 built-in, or for selective processing of
 .B FvwmEvent
-calls (as in the last example).
-
+calls (as in the last example), but currently these handler functions
+are called within a window context, so this command is not really
+needed in these cases.  Still it may be useful if, for example, the
+window id should be stored in the environment variable for a further
+proceeding.
+.EX
+Pick SetEnv BOOKMARKED_WINDOW $[w.id]
+WindowId $[BOOKMARKED_WINDOW] WarpToWindow
+.EE
 
 .SS MODULE COMMANDS
 
