@@ -9,6 +9,9 @@ Changes in stable release 2.4.17 (not released yet)
 * FvwmGtk.1, FvwmGtkDebug and FvwmGtkDebug.1 are not installed if
   FvwmGtk is not built.
 
+* The "Visible" condition does no longer select windows on
+  different desks.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.16 (30-May-2003)
