@@ -430,21 +430,23 @@ static Bool must_move_transients(
   return False;
 }
 
-static Window __get_stacking_sibling(FvwmWindow *fw)
+static Window __get_stacking_sibling(FvwmWindow *fw, Bool do_stack_below)
 {
   Window w;
 
-  if (IS_ICONIFIED(fw))
+  /* default to frame window */
+  w = fw->frame;
+  if (IS_ICONIFIED(fw) && do_stack_below == True)
   {
-    w = (fw->icon_pixmap_w != None) ? fw->icon_pixmap_w : fw->icon_w;
-  }
-  else
-  {
-    w = None;
-  }
-  if (w == None)
-  {
-    w = fw->frame;
+    /* override with icon windows when stacking below */
+    if (fw->icon_pixmap_w != None)
+    {
+      w = fw->icon_pixmap_w;
+    }
+    else if (fw->icon_w != None)
+    {
+      w = fw->icon_w;
+    }
   }
 
   return w;
@@ -489,10 +491,10 @@ static void restack_windows(
     }
   }
 
-  changes.sibling = __get_stacking_sibling(r);
+  changes.sibling = __get_stacking_sibling(r, True);
   if (changes.sibling == None)
   {
-    changes.sibling = __get_stacking_sibling(s);
+    changes.sibling = __get_stacking_sibling(s, False);
     is_reversed = 1;
   }
   else

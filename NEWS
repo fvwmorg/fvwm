@@ -17,6 +17,9 @@ Changes in stable release 2.4.14 (not released yet)
 * The default EdgeScroll (if not specified) was incorrectly
   assumed to be 100 pixels instead of 100 percents.
 
+* Icons no longer appear on top of all other windows after a
+  restart.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.13 (1-Nov-2002)
