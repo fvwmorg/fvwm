@@ -1925,6 +1925,7 @@ void HandleEnterNotify(void)
   {
     FvwmWindow *lf = get_last_screen_focus_window();
 
+fprintf(stderr,"entered root\n");
     if (!Scr.flags.is_pointer_on_this_screen)
     {
       Scr.flags.is_pointer_on_this_screen = 1;
