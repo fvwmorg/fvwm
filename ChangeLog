@@ -1,3 +1,9 @@
+2003-10-11  Mikhael Goikhman  <migo@homemail.com>
+
+	* configure.in:
+	* NEWS:
+	set the version to 2.4.18
+
 2003-10-10  Mikhael Goikhman  <migo@homemail.com>
 
 	* NEWS:
