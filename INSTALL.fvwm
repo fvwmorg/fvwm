@@ -21,6 +21,8 @@ To disable these 4 symlinks, i.e. install only fvwm2 names, specify:
 
   % make install NEW_NAME_SYMLINKS=false
 
+Distributions are encouraged to start to use "fvwm" as the executable.
+
 
 Important Note!
 ===============

@@ -1,4 +1,4 @@
-Changes in stable release 2.4.8 (not released yet)
+Changes in stable release 2.4.8 (11-Jun-2002)
 
 * A fix for switching between czech and us keyboard layout.
 
@@ -55,8 +55,7 @@ Changes in stable release 2.4.8 (not released yet)
 
 * Fixed parsing of SendToModule with the first parameter quoted.
 
-* Fixed parsing of fonts in several module configuration options.
-  Fonts in double quotes now should be recognized.
+* Fonts in double quotes now should work in module configurations.
 
 Changes in stable release 2.4.7 (11-Apr-2002)
 
