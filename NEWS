@@ -1,4 +1,4 @@
-Changes in stable release 2.4.6 (05-Mar-2002)
+Changes in stable release 2.4.6 (10-Mar-2002)
 
 * Better support of non ISO-8859-1 window and icon titles. See the
   --disable-compound-text option in INSTALL.fvwm for more details.
@@ -42,7 +42,7 @@ Changes in stable release 2.4.6 (05-Mar-2002)
 * The window handles are now resizes as they should when the
   HandleWidth style changes.
 
-* The Circulate command does not select a random window when no
+* The Current command does not select a random window when no
   window has the focus.
 
 * Fixed a rare menu placement problem with Xinerama.

@@ -1,10 +1,10 @@
 Fvwm 2.4.6 is a maintenance release for 2.4.5.  Apart from fixing
-a number of minor or rare problems, it addresses slow opaque window
-movement and resizing that was not encountered in the 2.2.x
+a number of minor or rare problems, it addresses slow opaque
+window movement and resizing that was not encountered in the 2.2.x
 releases.  If yo do not use opaque window movement or resizing and
 did not encounter any of the bugs described below you do not need
-to upgrade.  System administrators are strongly encouraged to
-install 2.4.6.
+to upgrade.  System administrators are strongly encouraged to move
+to 2.4.6 from any earlier 2.4.x release.
 
 The release is available at the fvwm home page: http://www.fvwm.org/
 
