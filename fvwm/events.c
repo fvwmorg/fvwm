@@ -1291,7 +1291,9 @@ void HandleMapRequestKeepRaised(Window KeepRaised, FvwmWindow *ReuseWin)
       }
       if (is_new_window)
       {
-	/* the window will not be mapped - fake an UnmapNotify event */
+	/* the window will not be mapped - fake a MapNotify and an UnmapNotify
+	 * event */
+	fake_map_unmap_notify(Tmp_win, MapNotify);
 	fake_map_unmap_notify(Tmp_win, UnmapNotify);
       }
       break;
