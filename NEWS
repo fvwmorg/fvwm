@@ -42,6 +42,9 @@ Changes in stable release 2.4.16 (not released yet)
 * Fixed a problem with styles not being properly applied after a
   DestroyStyle command.
 
+* Fixed a bug introduced in 2.4.14.  The pointer was sometimes
+  warped to another screen during a restart and command execution.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
