@@ -2014,6 +2014,12 @@ void HandleEnterNotify(void)
       }
       if (Tmp_win && Tmp_win == xcrossing_last_grab_window)
       {
+	if (Event.xcrossing.window == Tmp_win->decor_w ||
+	    Event.xcrossing.window == Tmp_win->icon_w ||
+	    Event.xcrossing.window == Tmp_win->icon_pixmap_w)
+	{
+	  xcrossing_last_grab_window = NULL;
+	}
 	return;
       }
     }

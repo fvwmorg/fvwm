@@ -1,5 +1,8 @@
 2002-07-18  Dominik Vogt  <dominik.vogt@gmx.de>
 
+	* fvwm/events.c (HandleEnterNotify):
+	another click+drag fix
+
 	* fvwm/move_resize.c (CMD_Resize):
 	(moveLoop):
 	* fvwm/builtins.c (CMD_StrokeFunc):
