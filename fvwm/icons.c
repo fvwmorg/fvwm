@@ -743,6 +743,8 @@ void AutoPlaceIcon(FvwmWindow *t)
     t->icon_g.x = t->wmhints->icon_x;
     t->icon_g.y = t->wmhints->icon_y;
     t->icon_xl_loc = t->icon_g.x;
+    do_move_pixmap = True;
+    do_move_title = True;
   }
   /* dje 10/12/97:
      Look thru chain of icon boxes assigned to window.
