@@ -6,8 +6,8 @@
    Description:		
 
    Modifications:	$Log$
-   Modifications:	Revision 1.1  1998/10/14 00:03:23  tibbs
-   Modifications:	Initial revision
+   Modifications:	Revision 1.1.1.1  1998/10/14 00:03:23  tibbs
+   Modifications:	Import from 2.0.47d
    Modifications:	
 */
 
