@@ -1273,6 +1273,13 @@ void HandleMapRequestKeepRaised(Window KeepRaised, FvwmWindow *ReuseWin)
       break;
 
     case IconicState:
+      if (is_new_window)
+      {
+	/* the window will not be mapped - fake a MapNotify and an UnmapNotify
+	 * event */
+	fake_map_unmap_notify(Tmp_win, MapNotify);
+	fake_map_unmap_notify(Tmp_win, UnmapNotify);
+      }
       if (isIconifiedByParent ||
 	  ((tmp = get_transientfor_fvwmwindow(Tmp_win)) && IS_ICONIFIED(tmp)))
       {
@@ -1288,13 +1295,6 @@ void HandleMapRequestKeepRaised(Window KeepRaised, FvwmWindow *ReuseWin)
       else
       {
 	Iconify(Tmp_win, 0, 0);
-      }
-      if (is_new_window)
-      {
-	/* the window will not be mapped - fake a MapNotify and an UnmapNotify
-	 * event */
-	fake_map_unmap_notify(Tmp_win, MapNotify);
-	fake_map_unmap_notify(Tmp_win, UnmapNotify);
       }
       break;
     }
