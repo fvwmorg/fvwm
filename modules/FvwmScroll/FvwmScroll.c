@@ -33,7 +33,6 @@
 #include <X11/Xatom.h>
 #include <X11/Intrinsic.h>
 #include <X11/cursorfont.h>
-#include <X11/Xmu/WinUtil.h>
 
 #include "../../fvwm/module.h"
 #include "FvwmScroll.h"

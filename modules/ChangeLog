@@ -1,3 +1,8 @@
+1999-11-30  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* FvwmScroll/FvwmScroll.c:
+	removed unnecessary include of <X11/Xmu/WinUtil.h>
+
 1999-10-14  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* FvwmPager/x_pager.c (IconMoveWindow):

@@ -1,6 +1,7 @@
 Changes in official release 2.2.4 (November 1999)
 
-* Fixed a HP-UX 10.20 build problem.
+* Fixed HP-UX 10.20 build problems.
+* Fixed build problems without shape extension.
 
 Changes in official release 2.2.3 (October 1999)
 

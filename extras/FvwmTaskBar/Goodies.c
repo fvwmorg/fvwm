@@ -12,7 +12,9 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Intrinsic.h>
+#ifdef SHAPE
 #include <X11/extensions/shape.h>
+#endif
 
 #include "Goodies.h"
 #include "minimail.xbm"
@@ -343,8 +345,10 @@ void CreateTipWindow(int x, int y, int w, int h) {
   XFillRectangle(dpy, pclip, gc0, 0, 0, w+4, h+4);
   XFillRectangle(dpy, pclip, gc1, 1, 1, w-1, h-1);
 
+#ifdef SHAPE
   XShapeCombineMask(dpy, Tip.win, ShapeBounding, 0, 0, pmask, ShapeSet);
   XShapeCombineMask(dpy, Tip.win, ShapeClip,     0, 0, pclip, ShapeSet);
+#endif
 
   XFreeGC(dpy, gc0);
   XFreeGC(dpy, gc1);
