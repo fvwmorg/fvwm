@@ -1,3 +1,8 @@
+1999-03-17  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
+
+	* FvwmM4/FvwmM4.c (m4_defs): fix bad interaction between
+	-m4-prefix and -m4-[e|s]quotes.  Reported as PR#201 and PR#246.
+
 1999-03-09  Andrew T. Veliath  <andrewtv@usa.net>
 
 	* FvwmRearrange/FvwmRearrange.c: Add GPL header.
