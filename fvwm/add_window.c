@@ -1956,7 +1956,15 @@ void GetWindowSizeHints(FvwmWindow *tmp)
 	broken_cause = "aspect ratio";
       tmp->hints.flags &= ~PAspect;
       fvwm_msg (WARN, "GetWindowSizeHints",
-		"%s window %#lx has broken aspect ratio: %d/%d - %d/%d\n",
+		"The applicaton window \"%s\"\n"
+		"(window id %#lx)"
+		" has broken aspect ratio: %d/%d - %d/%d\n"
+		"Fvwm is ignoring the aspect ratio.  "
+		"If you are having a problem\n"
+		"with the application, send this message to"
+		" the application owner.\n"
+		"There is no need to notify "
+		"fvwm-workers@fvwm.org.\n",
 		tmp->name, tmp->w, minAspectX, minAspectY, maxAspectX,
 	  	maxAspectY);
     }
@@ -1997,9 +2005,13 @@ void GetWindowSizeHints(FvwmWindow *tmp)
   if (*broken_cause != 0)
   {
     fvwm_msg(WARN, "GetWindowSizeHints",
-	     "%s window %#lx has broken (%s) size hints\n"
-	     "Please send a bug report to the application owner,\n"
-	     "\tyou may use fvwm-workers@fvwm.org as a reference.\n"
+	     "The application window \"%s\"\n(window id %#lx) "
+	     "has broken size hints (%s).\n"
+	     "Fvwm is ignoring those hints.  "
+	     "If you are having a problem\n"
+	     "with the application, send this message to"
+	     " the application owner.\n"
+	     "There is no need to notify fvwm-workers@fvwm.org.\n"
 	     "hint override = %d\n"
 	     "flags = %lx\n"
 	     "min_width = %d, min_height = %d, "
