@@ -1,4 +1,4 @@
-Changes in stable release 2.4.6 (not released yet)
+Changes in stable release 2.4.6 (05-Mar-2002)
 
 * Fixed a bug that caused windows not being raised and lowered
   properly.
