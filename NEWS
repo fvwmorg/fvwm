@@ -1,5 +1,9 @@
 Changes in stable release 2.4.4 (not released yet)
 
+* Fixed manual placement with Xinerama.
+
+* Minor button 3 handling fix in FvwmPager.
+
 * Fixed *FvwmIconMan*shaped option with empty managers.
 
 * Fixed ClickToFocusClickRaises style.

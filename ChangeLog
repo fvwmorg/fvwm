@@ -1,8 +1,14 @@
+2001-11-28  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/placement.c (PlaceWindow):
+	fixed manual placement on Xinerama screens other than the one with the
+	top left corner of the total screen
+
 2001-11-15  olicha  <olivier.chapuis@free.fr>
 
 	* fvwm/bindings.c (activate_binding):
 	Fixed immediate application of mouse/stroke bindings
-	
+
 2001-11-10  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/events.c (HandleButtonPress):
