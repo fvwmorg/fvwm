@@ -2,6 +2,8 @@
 
 Changes in stable release 2.4.18 (not released yet)
 
+* Corrected rebooting the machine in FvwmScript-Quit.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.17 (10-Oct-2003)
