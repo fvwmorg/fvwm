@@ -1,3 +1,8 @@
+2002-09-06  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* acinclude.m4:
+	autoconf-2.53 fix
+
 2002-09-05  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/stack.c (RaiseOrLowerWindow):
