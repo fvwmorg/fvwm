@@ -272,7 +272,7 @@ void initialize_viz_pager(void)
     default_pixmap = ParentRelative;
 }
 
-void draw_desk_background(int i)
+void draw_desk_background(int i, int page_w, int page_h)
 {
 	if (Desks[i].highcolorset > -1)
 	{
@@ -285,6 +285,13 @@ void draw_desk_background(int i)
 		{
 			SetWindowBackground(
 				dpy, Desks[i].title_w, desk_w, desk_h + label_h,
+				&Colorset[Desks[i].highcolorset], Pdepth,
+				Scr.NormalGC, True);
+		}
+		if (HilightDesks && Scr.CurrentDesk - desk1 == i)
+		{
+			SetWindowBackground(
+				dpy, Desks[i].CPagerWin, page_w, page_h,
 				&Colorset[Desks[i].highcolorset], Pdepth,
 				Scr.NormalGC, True);
 		}
@@ -827,7 +834,6 @@ void initialize_pager(void)
     Desks[i].w = XCreateWindow(
       dpy, Desks[i].title_w, x - 1, LabelsBelow ? -1 : label_h - 1, w, desk_h,
       1, CopyFromParent, InputOutput, CopyFromParent, valuemask, &attributes);
-    draw_desk_background(i);
 
     if (HilightDesks)
     {
@@ -858,14 +864,12 @@ void initialize_pager(void)
       Desks[i].CPagerWin=XCreateWindow(dpy, Desks[i].w, -32768, -32768, w, h, 0,
 				       CopyFromParent, InputOutput,
 				       CopyFromParent, valuemask, &attributes);
-      if (Desks[i].highcolorset > -1 &&
-	  Colorset[Desks[i].highcolorset].pixmap)
-      {
-	SetWindowBackground(
-	    dpy, Desks[i].CPagerWin, w, h, &Colorset[Desks[i].highcolorset],
-	    Pdepth, Scr.NormalGC, True);
-      }
+      draw_desk_background(i, w, h);
       XMapRaised(dpy,Desks[i].CPagerWin);
+    }
+    else
+    {
+      draw_desk_background(i, 0, 0);
     }
 
     XMapRaised(dpy,Desks[i].w);
@@ -1081,8 +1085,8 @@ void DispatchEvent(XEvent *Event)
     if (w != icon_win)
     {
       /* icon_win is not handled here */
-      ReConfigure();
       discard_events(Expose, w, NULL);
+      ReConfigure();
     }
     break;
   case Expose:
@@ -1401,7 +1405,7 @@ void ReConfigure(void)
 	  else
 	    XMoveResizeWindow(dpy, Desks[i].CPagerWin, -32768, -32768,w,h);
 	}
-	draw_desk_background(i);
+	draw_desk_background(i, w, h);
       }
     }
   }
