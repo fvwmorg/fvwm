@@ -57,6 +57,10 @@ Changes in stable release 2.4.8 (11-Jun-2002)
 
 * Fonts in double quotes now should work in module configurations.
 
+* Fixed copying PopupOffset values in CopyMenuStyle.
+
+-------------------------------------------------------------------
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at

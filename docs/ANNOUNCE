@@ -68,3 +68,5 @@ Bug fixes:
   corner is always visible.
 
 * Fixed parsing of SendToModule with the first parameter quoted.
+
+* Fixed copying PopupOffset values in CopyMenuStyle.

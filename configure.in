@@ -345,7 +345,7 @@ AC_SUBST(readline_CFLAGS)
 
 dnl ********* multibyte
 with_multibyte=no
-problem_multibyte=": This is the suggested default"
+problem_multibyte=": Use --enable-multibyte to enable"
 
 dnl FreeBSD has libxpg4, check this and use if found.
 if test "$enable_multibyte" = yes; then

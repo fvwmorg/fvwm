@@ -1,3 +1,10 @@
+2002-06-11  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm/menus.c (CMD_CopyMenuStyle):
+	fixed copying PopupOffset values in CopyMenuStyle
+	* configure.in:
+	reword message for the multibyte default
+
 2002-06-10  Mikhael Goikhman  <migo@homemail.com>
 
 	* libs/Strings.[ch]:
