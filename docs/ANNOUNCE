@@ -1,4 +1,4 @@
-Fvwm-2.4.9 is a maintenance release for the earlier stable 2.4.x
+Fvwm-2.4.10 is a bu fixing release for the earlier stable 2.4.x
 versions.  It fixes a number of minor bugs and problems.
 
 The release is available at the fvwm home page: http://www.fvwm.org/
@@ -9,78 +9,42 @@ Who needs it?
 Normal users should upgrade if they encountered any problems on
 the list below.
 
-System administrators are encouraged to move to 2.4.9.
-
-
-Improvements and compatibility issues:
---------------------------------------
-
-* Restored old way of handling clicks in windows with ClickToFocus
-  and ClickToFocusPassesClickOff.  This fixes a problem with
-  click+drag in an unfocused rxvt or aterm window.
-
-* DESTDIR may be fully used again (only useful for distributors).
-
-* Applications using Mwm hints can now enforce that a window can
-  not be moved.
-
-* fvwm-menu-headlines: added support for CNN and BBC headlines.
-
+System administrators are encouraged to move to 2.4.10.
 
 Bug fixes:
 ----------
 
-* Fixed interaction bug between CascadePlacement and StartsOnPage -
-  if the target page was at a negative x or y page displacement
-  from the current viewport, the window would be placed on the
-  wrong page.
+* The commands Maximize, Resize and ResizeMove can be used on icons
+  as it was in 2.2.x.
 
-* Fixed a problem with colormap transition when a transient window
-  died.
+* Fixed hilighting of menu items with HGradient and VGradient
+  MenuFace.  Reduced flickering with these options.
 
-* Fixed a FvwmScript crash with Swallow widget and very long window
-  names.
+* Fixed a minor problem with entering submenus via keyboard.
 
-* Fixed problems with $fg and $bg variables in FvwmButtons when the
-  UseOld option was used.
+* Fixed race conditions in FvwmTaskBar with AutoStick that caused
+  it to hang.
 
-* Fixed wrong warp coordinates when WarpToWindow was used with two
-  arguments on an unmanaged window.
+* Fixed drawing of pager balloons with BalloonBack option.
 
-* Added a workaround for popup menus in TK applications that appear
-  on some random position.
+* Fixed drawing of SidePic menu background with B/D gradients.
 
-* Fixed problems with wish scripts creating windows that start
-  iconic.
+* Fixed drawing of menu item reliefs with gradient menu faces.
 
-* Fixed the NoClose option with unmapped panels in FvwmButtons.
+* Fixed key bindings on window corners.
 
-* A number of drawing fixes in FvwmPager.
+* Fixed FvwmTaskBar i18n font loading
 
-* Fixed a slight bug when waiting until all buttons are released,
-  for example after executing a complex function.
+* Fixed StackTransientParent style without RaiseTransient or
+  LowerTransient on the parent window.
 
-* Fixed potentially harmful change in module interface.
+* StackTransientParent works only on parent window if it is on the
+  same layer.
 
-* Fixed displaying menu items with icons when using the MenuStyle
-  SubmmenusLeft.
+* Fixed handling of window group hint with the (De)Iconify
+  command.
 
-* Fixed problems with the pointer moving off screen in a multi
-  head setup.
+* No more flickering when a transient overlapping its parent window
+  is lowered.
 
-* Fixed a potential crash with windows being destroyed during a
-  recapture operation.
-
-* Fixed a memory leak in some modules when not using glibc.
-
-* Fixed negative arguments of WarpToWindow when used on an
-  unmanaged window.
-
-* Fixed a key binding problem with key symbols that are generated
-  by several keys.
-
-* Fixed a possible crash when a window was recaptured and the
-  focus could not be transfered to another window.
-
-* Fixed a performance problem with large numbers of mouse binding
-  commands.
+* Fixed hilighting of unfocused windows.
