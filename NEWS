@@ -3,6 +3,8 @@ Changes in stable release 2.4.6 (not released yet)
 * Fixed a bug that caused windows not being raised and lowered
   properly.
 
+* Suppress error message when using XBM icons.
+
 * Fixed a read descriptor problem in FvwmTaskBar
 
 * Fixed a minor colour update bug in the pager.
