@@ -1,16 +1,4 @@
-Note, the changes for the last STABLE release start with release
-_+_A HREF="#2.4.4"_-_2.4.4_+_/A_-_.
-
-Changes in beta release 2.5.0 (not released yet)
-
-* Window titlebars may now be designed using a new powerful TitleStyle
-  option MultiPixmap, that enables to specify separate pixmaps for
-  different parts of the titlebar: Main, LeftEnd, LeftOfText, UnderText,
-  RightOfText, RightEnd and more.
-
-_+_A NAME="2.4.4"_-_
 Changes in stable release 2.4.4 (not released yet)
-_+_/A_-_
 
 * FvwmForm: Customize pointers, support ISO_Tab key, buttons can activate
   on press or release, special pointer during grab, arrow keys useful in form
