@@ -1,43 +1,58 @@
-Fvwm 2.4.4 is a bug fix release for version 2.4.3.  The most
-important fixes are related to key bindings with the Shift key and
-some problems with ClickToFocus.  We recommend to upgrade from any
-earlier 2.4.x release to 2.4.4.
+Fvwm 2.4.5 is a bug fix release for version 2.4.4.  It addresses a
+number of less important problems.  If you encountered none of the
+problems you can safely continue using 2.4.4.
 
 The release is available at the fvwm home page: http://www.fvwm.org/
+
+
+New features:
+-------------
+
+* New style BackingStoreWindowDefault which is the default
+  now. Fvwm no longer disables backing store on windows by
+  default. This may help with some applications that do not redraw
+  properly.
+
+* Reduced the time in which fvwm attempts to grab the pointer.
 
 Bug fixes:
 ----------
 
-* Minor title drawing fixes.
+* Fixed minor problems in popping sub menus up and down.
 
-* Fixed manual placement with Xinerama.
+* Fixed moving windows between pages with the keyboard.
 
-* Minor button 3 handling fix in FvwmPager.
+* Fixed the size of the geometry window that was broken sometimes.
 
-* Fixed *FvwmIconMan*shaped option with empty managers.
+* Fixed problem with pointer warping to another screen on a dual
+  head setup.
 
-* Fixed ClickToFocusClickRaises style.
+* Fixed a problem with the focus in internal Ddd and Netscape
+  windows.
 
-* FvwmForm: Customize pointers, support ISO_Tab key, buttons can activate
-  on press or release, special pointer during grab, arrow keys useful in form
-  with one input field.
+* Fixed unmanaged window when window was mapped/unmapped/mapped too
+  fast.
 
-* New OpaqueMoveSize argument "unlimited".
+* Fixed MiniScroll's auto repeating in FvwmScript.
 
-* Fixed binding keys with and without "Shift" modifier under some
-  circumstances.
+* Fixed a crash with the UseStyle style in combination with
+  HilightBack.
 
-* Fixed binding actions to the client window with ClickToFocus.
+* Fixed excessive redraws of the windows under a window being shaded.
 
-* Mouse bindings are activated without a recapture.
+* Fixed a minor memory leak in the Style command.
 
-* FvwmScript: new keyboard bindings. New flags NoFocus and Left, Center,
-  and Right for text position. Amelioration of the Menu and PopupMenu
-  Widgets. New functions GetPid, Parse, SendMsgAndGet and LastString.
-  New instruction Key for key bindings. New command SendToModule ScriptName
-  SendString.
+* Fixed pixmap background of FvwmButtons behind buttons with only
+  text.
 
-* Command "Silent" when precedes "Key", "Mouse" and "PointerKey"
-  disables warning messages.
+* Fixed a crash in FvwmIconBox when the application provided an
+  illegal icon.
 
-* Restored the default Alt-Tab behaviour from 2.4.0.
+* Fixed a configure problem with libstroke-0.5.1.
+
+* Fixed bug that sometimes caused unnecessary redraws when a style
+  was changed.
+
+* Fixed crash when something like "$[$v]" appeared in a command.
+
+* Fixed parsing of conditions with more than one comma.
