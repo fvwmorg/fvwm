@@ -21,6 +21,8 @@ Changes in stable release 2.4.6 (not released yet)
 * Fixed moving windows with the keyboard over the edge of the
   screen when the pointer remained of the previous page.
 
+* New conditional command This.
+
 Changes in stable release 2.4.5 (27-Jan-2002)
 
 * Fixed minor problems in popping sub menus up and down.
