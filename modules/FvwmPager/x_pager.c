@@ -281,13 +281,6 @@ void draw_desk_background(int i, int page_w, int page_h)
 			Colorset[Desks[i].highcolorset].bg);
 		XSetForeground(
 			dpy, Desks[i].rvGC, Colorset[Desks[i].highcolorset].fg);
-		if (uselabel && HilightDesks && i == Scr.CurrentDesk)
-		{
-			SetWindowBackground(
-				dpy, Desks[i].title_w, desk_w, desk_h + label_h,
-				&Colorset[Desks[i].highcolorset], Pdepth,
-				Scr.NormalGC, True);
-		}
 		if (HilightDesks && Scr.CurrentDesk - desk1 == i)
 		{
 			SetWindowBackground(
@@ -306,7 +299,7 @@ void draw_desk_background(int i, int page_w, int page_h)
 			dpy, Desks[i].NormalGC,Colorset[Desks[i].colorset].fg);
 		XSetForeground(
 			dpy, Desks[i].DashedGC,Colorset[Desks[i].colorset].fg);
-		if (uselabel && (!HilightDesks || i != Scr.CurrentDesk))
+		if (uselabel)
 		{
 			SetWindowBackground(
 				dpy, Desks[i].title_w, desk_w, desk_h + label_h,
