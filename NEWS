@@ -24,6 +24,9 @@ Changes in stable release 2.4.5 (not released yet)
 
 * Fixed a minor memory leak in the Style command.
 
+* Fixed pixmap background of FvwmButtons behind buttons with only
+  text.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.
