@@ -44,6 +44,7 @@
 #include "borders.h"
 #include "virtual.h"
 #include "stack.h"
+#include "colormaps.h"
 
 static Bool lastFocusType;
 /* Last window which Fvwm gave the focus to NOT the window that really has the
@@ -372,7 +373,9 @@ void restore_focus_after_unmap(
   if (tmp_win == Scr.pushed_window)
     Scr.pushed_window = NULL;
   if (tmp_win == colormap_win)
-    colormap_win = NULL;
+  {
+    InstallWindowColormaps(set_focus_to);
+  }
 
   return;
 }
