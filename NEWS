@@ -1,5 +1,7 @@
 Changes in stable release 2.4.5 (not released yet)
 
+* Fixed minor problems in popping sub menus up and down.
+
 * Fixed moving windows between pages with the keyboard.
 
 * Fixed the size of the geometry window that was broken sometimes.
