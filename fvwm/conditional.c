@@ -257,7 +257,7 @@ void CreateConditionMask(char *flags, WindowConditionMask *mask)
     else if (StrEquals(condition,"CurrentPageAnyDesk") ||
 	    StrEquals(condition,"CurrentScreen"))
       mask->my_flags.needs_current_page = 1;
-    else if (StrEquals(condition,"CurrentGlobbalPageAnyDesk"))
+    else if (StrEquals(condition,"CurrentGlobalPageAnyDesk"))
       mask->my_flags.needs_current_global_page = 1;
     else if (StrEquals(condition,"CirculateHit"))
       mask->my_flags.use_circulate_hit = 1;

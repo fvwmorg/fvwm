@@ -1,3 +1,8 @@
+2004-07-15  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/conditional.c (CreateConditionMask):
+	renamed CurrentGlobbalPageAnyDesk to CurrentGlobalPageAnyDesk
+
 2004-07-08  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/add_window.c (RestoreWithdrawnLocation):
