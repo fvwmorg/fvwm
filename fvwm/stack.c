@@ -430,6 +430,22 @@ static Bool must_move_transients(
   return False;
 }
 
+static Window __get_visible_window(FvwmWindow *fw)
+{
+  Window w;
+
+  if (IS_ICONIFIED(fw))
+  {
+    w = (fw->icon_pixmap_w != None) ? fw->icon_pixmap_w : fw->icon_w;
+  }
+  else
+  {
+    w = fw->frame;
+  }
+
+  return w;
+}
+
 static void restack_windows(
   FvwmWindow *r, FvwmWindow *s, int count, Bool do_broadcast_all, Bool do_lower)
 {
@@ -438,6 +454,8 @@ static void restack_windows(
   int i;
   XWindowChanges changes;
   Window *wins;
+  int do_stack_above;
+  int is_reversed;
 
   if (count <= 0)
   {
@@ -467,25 +485,27 @@ static void restack_windows(
     }
   }
 
-  if (IS_ICONIFIED(r))
+  changes.sibling = __get_visible_window(r);
+  if (changes.sibling == None)
   {
-    changes.sibling = (r->icon_pixmap_w != None) ?
-      r->icon_pixmap_w : r->icon_w;
+    changes.sibling = __get_visible_window(s);
+    is_reversed = 1;
   }
   else
   {
-    changes.sibling = r->frame;
+    is_reversed = 0;
   }
   if (changes.sibling == None)
   {
-    changes.stack_mode = (do_lower) ? Below : Above;
+    do_stack_above = !do_lower;
     flags = CWStackMode;
   }
   else
   {
-    changes.stack_mode = Below;
+    do_stack_above = 0;
     flags = CWStackMode | CWSibling;
   }
+  changes.stack_mode = (do_stack_above ^ is_reversed) ? Above : Below;
   XConfigureWindow (dpy, r->stack_next->frame, flags, &changes);
   if (count > 1)
   {
