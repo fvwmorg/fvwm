@@ -430,13 +430,13 @@ int main(int argc, char **argv)
     int i;
     for(i=0;i<num_config_commands;i++)
     {
-      ExecuteFunction(config_commands[i], NULL,&Event,C_ROOT,-1);
+      ExecuteFunction(config_commands[i], NULL,&Event,C_ROOT,1);
       free(config_commands[i]);
     }
   }
   else
   {
-    ExecuteFunction(default_config_command, NULL,&Event,C_ROOT,-1);
+    ExecuteFunction(default_config_command, NULL,&Event,C_ROOT,1);
   }
   DBUG("main","Done running config_commands");
 
@@ -554,20 +554,20 @@ void StartupStuff(void)
 
   /* migo (02-Oct-1999): execute StartFunction */
   if (FindPopup("StartFunction")) {
-    ExecuteFunction("Function StartFunction", NULL, &Event, C_ROOT, -1);
+    ExecuteFunction("Function StartFunction", NULL, &Event, C_ROOT, 1);
   }
 
   if(Restarting)
   {
     mr = FindPopup("RestartFunction");
     if(mr != NULL)
-      ExecuteFunction("Function RestartFunction",NULL,&Event,C_ROOT,-1);
+      ExecuteFunction("Function RestartFunction",NULL,&Event,C_ROOT,1);
   }
   else
   {
     mr = FindPopup("InitFunction");
     if(mr != NULL)
-      ExecuteFunction("Function InitFunction",NULL,&Event,C_ROOT,-1);
+      ExecuteFunction("Function InitFunction",NULL,&Event,C_ROOT,1);
   }
 } /* StartupStuff */
 
@@ -727,7 +727,7 @@ void SetRCDefaults()
 
   while (defaults[i])
   {
-    ExecuteFunction(defaults[i],NULL,&Event,C_ROOT,-1);
+    ExecuteFunction(defaults[i],NULL,&Event,C_ROOT,1);
     i++;
   }
 } /* SetRCDefaults */
@@ -1456,7 +1456,7 @@ void Done(int restart, char *command)
 
   mr = FindPopup("ExitFunction");
   if(mr != NULL)
-    ExecuteFunction("Function ExitFunction",NULL,&Event,C_ROOT,-1);
+    ExecuteFunction("Function ExitFunction",NULL,&Event,C_ROOT,1);
 
   /* Close all my pipes */
   ClosePipes();
