@@ -1733,8 +1733,7 @@ void HandleButtonPress(void)
       if (!DO_NOT_PASS_CLICK_FOCUS_CLICK(Tmp_win) ||
 	  get_focus_window() != Tmp_win)
       {
-	XAllowEvents(dpy,ReplayPointer,CurrentTime);
-	/*	return;*/
+        /* fall through and pass the click to the app later. */
       }
       else /* don't pass click to just focused window */
       {

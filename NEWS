@@ -23,6 +23,9 @@ Changes in stable release 2.4.8 (not released yet)
 * Always display the current desk number in the FvwmPager window
   title.
 
+* Allow to bind a function to the focus click and pass it to the
+  application at the same time.
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at
