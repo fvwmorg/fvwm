@@ -84,7 +84,7 @@ static unsigned int prev_desk_and_page_page_y = 0;
  * read (or if action is empty).
  *
  **************************************************************************/
-static int GetDeskNumber(char *action)
+static int GetDeskNumber(char *action, int current_desk)
 {
   int n;
   int m;
@@ -99,11 +99,11 @@ static int GetDeskNumber(char *action)
 
   n = GetIntegerArguments(action, NULL, &(val[0]), 4);
   if (n <= 0)
-    return Scr.CurrentDesk;
+    return current_desk;
   if (n == 1)
-    return Scr.CurrentDesk + val[0];
+    return current_desk + val[0];
 
-  desk = Scr.CurrentDesk;
+  desk = current_desk;
   m = 0;
 
   if (val[0] == 0)
@@ -1285,7 +1285,7 @@ static void MapDesk(int desk, Bool grab)
  *************************************************************************/
 void CMD_GotoDesk(F_CMD_ARGS)
 {
-  goto_desk(GetDeskNumber(action));
+  goto_desk(GetDeskNumber(action, Scr.CurrentDesk));
 }
 
 void CMD_Desk(F_CMD_ARGS)
@@ -1463,7 +1463,7 @@ void CMD_MoveToDesk(F_CMD_ARGS)
 
   if (DeferExecution(eventp,&w,&tmp_win,&context,CRS_SELECT,ButtonRelease))
     return;
-  desk = GetDeskNumber(action);
+  desk = GetDeskNumber(action, tmp_win->Desk);
   if (desk == tmp_win->Desk)
     return;
   do_move_window_to_desk(tmp_win, desk);
