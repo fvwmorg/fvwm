@@ -661,6 +661,10 @@ static void __RaiseOrLowerWindow(
       for (t2 = Scr.FvwmRoot.stack_next; t2 != &Scr.FvwmRoot;
 	   t2 = t2->stack_next)
       {
+	if (t2 == t)
+	{
+	  break;
+	}
         if (t2->w == t->transientfor)
         {
 	  if (IS_ICONIFIED(t2) || t->layer != t2->layer)
