@@ -1,3 +1,7 @@
+2003-05-26  Dan Espen  <dane@mk.telcordia.com>
+
+	* fvwm/builtins.c (CMD_Exec): Fix problem with Rox Filer.
+
 2003-05-25  Dan Espen  <dane@mk.telcordia.com>
 
 	* fvwm/decorations.c: Sync up motif hints structure to aix,hp,
