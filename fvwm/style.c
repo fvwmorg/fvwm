@@ -2558,7 +2558,7 @@ void CMD_Style(F_CMD_ARGS)
 	  SCSET_USE_ICON_POSITION_HINT(*ptmpstyle, 1);
         }
 #ifdef USEDECOR
-        if (StrEquals(token, "UseDecor"))
+        else if (StrEquals(token, "UseDecor"))
         {
 	  found = True;
 	  SAFEFREE(SGET_DECOR_NAME(*ptmpstyle));
