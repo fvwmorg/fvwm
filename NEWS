@@ -1,6 +1,6 @@
 Changes in stable release 2.4.16 (not released yet)
 
-Fixed a transparency problem in FvwmButtons.
+* Fixed a transparency problem in FvwmButtons.
 
 * The PageOnly option in FvwmTaskBar now works after a desk change
   too.
