@@ -1,37 +1,38 @@
-Fvwm-2.4.13 is a bug fixing release for all earlier 2.4.x
-versions.  Most important, it fixes a number of problems stacking
-windows, transient windows and icons.
+Fvwm-2.4.14 is a bug fixing release for all earlier 2.4.x
+versions.  It hopefully fixes the remaining stacking problems that
+appeared in 2.4.9 and.  Furthermore, the Key command works again
+as it used to before 2.4.13.
 
 Who needs it?
 -------------
 
-Users of 2.4.10, 2.4.11 or 2.4.12 are highly encouraged to
+Users of 2.4.10, 2.4.11, 2.4.12 or 2.4.13 are highly encouraged to
 upgrade.  Users of 2.4.9 and below are recommended to upgrade.
-System administrators are higly encouraged to upgrade from 2.4.12
+System administrators are higly encouraged to upgrade from 2.4.13
 or below.
 
 Important Bug Fixes
 -------------------
 
-* Fixed a number of problems with window stacking, some new in
-  2.4.10 or later, some older problems that have been around for a
-  long time.
+* Icons no longer appear on top of all other windows after a
+  restart.
+
+* Removed the flawed "A"ny context key binding patch from 2.4.13.
 
 Minor Bug Fixes
 ---------------
 
-* Icon titles for windows with an icon position hint no longer
-  appear at random places.
+* The built-in session management can handle window names, classes
+  etc. beginning with whitespace (textedit).
 
-* Fvwm no longer displays two icon pictures when switching from
-  NoIconOverride to IconOverride with windows that provide their
-  own icon window.
+* The default EdgeScroll (if not specified) was incorrectly
+  assumed to be 100 pixels instead of 100 percents.
 
-* The Current, All, Pick, ThisWindow and PointerWindow commands
-  work on shaded windows too.
+* Application provided icon windows no longer appear at 0 0 when
+  restarting.
 
-* Windows starting lowered or on any layer other than the default
-  layer are displayed at the right place in FvwmPager.
+* Modules do not crash anymore when more than 126 windows are on
+  the desktop.
 
-* Bindings with the "A"ny context can not be overridden by Gnome
-  panel or OpenOffice.
+* FvwmIconMan displays windows correctly that were iconified and
+  then moved to another page.
