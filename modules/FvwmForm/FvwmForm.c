@@ -1338,7 +1338,9 @@ void ReadXServer ()
 	  break;
 	default:
 	  old_cursor = abs_cursor;
-	  if (buf[0] >= ' ' && buf[0] < '\177') {  /* regular char */
+	  if((buf[0] >= ' ' &&
+              buf[0] < '\177') ||
+             (buf[0] >= 160)) {         /* regular or intl char */
 	    if (++(cur_text->input.n) >= cur_text->input.buf) {
 	      cur_text->input.buf += cur_text->input.size;
 	      cur_text->input.value =

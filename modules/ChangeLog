@@ -1,3 +1,7 @@
+Thu Apr 29 16:08:54 1999  DanEspen  <dje@blue>
+
+	* FvwmForm/FvwmForm.c (ReadXServer): Allow international chars in form.
+
 1999-03-17  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
 
 	* FvwmM4/FvwmM4.c (m4_defs): fix bad interaction between
