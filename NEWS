@@ -19,6 +19,9 @@ Changes in stable release 2.4.9 (not released yet)
 * Added a workaround for popup menus in TK applications that appear
   on some random position.
 
+* Fixed problems with wish scripts creating windows that start
+  iconic.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
