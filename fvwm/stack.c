@@ -430,7 +430,7 @@ static Bool must_move_transients(
   return False;
 }
 
-static Window __get_visible_window(FvwmWindow *fw)
+static Window __get_stacking_sibling(FvwmWindow *fw)
 {
   Window w;
 
@@ -439,6 +439,10 @@ static Window __get_visible_window(FvwmWindow *fw)
     w = (fw->icon_pixmap_w != None) ? fw->icon_pixmap_w : fw->icon_w;
   }
   else
+  {
+    w = None;
+  }
+  if (w == None)
   {
     w = fw->frame;
   }
@@ -485,10 +489,10 @@ static void restack_windows(
     }
   }
 
-  changes.sibling = __get_visible_window(r);
+  changes.sibling = __get_stacking_sibling(r);
   if (changes.sibling == None)
   {
-    changes.sibling = __get_visible_window(s);
+    changes.sibling = __get_stacking_sibling(s);
     is_reversed = 1;
   }
   else
