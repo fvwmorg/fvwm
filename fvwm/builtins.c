@@ -782,6 +782,8 @@ void CMD_Exec(F_CMD_ARGS)
   /* Not everyone has vfork! */
   if (!(fork())) /* child process */
   {
+    /* close stdin so the exec'd process knows its not interactive */
+    close(0);
     if (execl(exec_shell_name, exec_shell_name, "-c", cmd, NULL)==-1)
     {
       fvwm_msg(ERR,"exec_function","execl failed (%s)",strerror(errno));

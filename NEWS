@@ -1,5 +1,8 @@
 Changes in stable release 2.4.15 (not released yet)
 
+* Fix for gmplayer launched by fvwm.  Close stdin on Exec so the
+  exec'd process knows its not running interactively.
+
 * Windows using the WindowListSkip style do not appear in the
   FvwmTaskBar at random.
 
