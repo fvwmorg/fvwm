@@ -1793,6 +1793,10 @@ Bool moveLoop(FvwmWindow *tmp_win, int XOffset, int YOffset, int Width,
       break;
 
     case MotionNotify:
+      if (Event.xmotion.same_screen == False)
+      {
+	continue;
+      }
       xl = Event.xmotion.x_root;
       yt = Event.xmotion.y_root;
       if (xl > 0 && xl < Scr.MyDisplayWidth - 1)
@@ -2635,6 +2639,10 @@ void CMD_Resize(F_CMD_ARGS)
       break;
 
     case MotionNotify:
+      if (Event.xmotion.same_screen == False)
+      {
+	continue;
+      }
       if (!fForceRedraw)
       {
 	x = Event.xmotion.x_root;

@@ -45,8 +45,17 @@ Bool GetLocationFromEventOrQuery(Display *dpy, Window w, XEvent *eventp,
     *ret_y = eventp->xkey.y_root;
     return True;
   case MotionNotify:
-    *ret_x = eventp->xmotion.x_root;
-    *ret_y = eventp->xmotion.y_root;
+    if (eventp->xmotion.same_screen == True)
+    {
+      *ret_x = eventp->xmotion.x_root;
+      *ret_y = eventp->xmotion.y_root;
+    }
+    else
+    {
+      /* pointer is on different screen */
+      *ret_x = 0;
+      *ret_y = 0;
+    }
     return True;
   default:
     return XQueryPointer(

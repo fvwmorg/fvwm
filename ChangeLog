@@ -1,3 +1,13 @@
+2002-07-18  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/move_resize.c (CMD_Resize):
+	(moveLoop):
+	* fvwm/builtins.c (CMD_StrokeFunc):
+	* fvwm/focus.c (SetPointerEventPosition):
+	* fvwm/functions.c (CheckActionType):
+	* libs/Pointer.c (GetLocationFromEventOrQuery):
+	fixed some bugs w/ pointer on wrong screen
+
 2002-07-17  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/menus.c (size_menu_horizontally):

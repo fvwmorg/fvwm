@@ -860,6 +860,10 @@ fprintf(stderr, "cat stats (2): clp: %d (%d/%d/%d/%d/%d)  cev: %d csleep: %d\n",
 #if DEBUG_CAT
 cc[1]++;
 #endif
+	if (d->xmotion.same_screen == False)
+	{
+	  break;
+	}
 	if ((d->xmotion.state & DEFAULT_ALL_BUTTONS_MASK) ||
             !is_button_pressed)
 	{
