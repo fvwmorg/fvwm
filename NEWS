@@ -15,6 +15,9 @@ Fixed a transparency problem in FvwmButtons.
   geometry specificaiton appeared after another option with a comma
   at the end.
 
+* Fixed a problem that could cause windows with the NoIcon style
+  to disappear in icon manager modules when iconified.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
