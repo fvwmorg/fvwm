@@ -1,3 +1,8 @@
+1999-02-14  Dominik Vogt  <dominik_vogt@hp.com>
+
+	* FvwmForm/FvwmForm.c (ReadXServer): made char array unsigned (test
+	for >= 160 may fail).
+
 Thu Apr 29 16:08:54 1999  DanEspen  <dje@blue>
 
 	* FvwmForm/FvwmForm.c (ReadXServer): Allow international chars in form.

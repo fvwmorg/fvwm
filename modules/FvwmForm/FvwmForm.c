@@ -1150,7 +1150,7 @@ void ReadXServer ()
   Item *item, *old_item;
   KeySym ks;
   char *sp, *dp, *ep;
-  static char buf[10], n;
+  static unsigned char buf[10], n;
 
   while (XEventsQueued(dpy, QueuedAfterReading)) {
     XNextEvent(dpy, &event);
