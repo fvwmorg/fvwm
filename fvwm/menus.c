@@ -3944,7 +3944,6 @@ static void paint_menu(MenuRoot *mr, XEvent *pevent, FvwmWindow *fw)
 	  int cindex = -1;
 	  XRectangle r;
 	  Picture *sidePic = NULL;
-	  int bw = MST_BORDER_WIDTH(mr);
 
 	  if (MR_SIDEPIC(mr))
 	    sidePic = MR_SIDEPIC(mr);
