@@ -1,3 +1,13 @@
+2002-04-21  Mikhael Goikhman  <migo@homemail.com>
+
+	* INSTALL.fvwm:
+	* NEWS:
+	* fvwm/Makefile.am:
+	setup fvwm and fvwm.1 symlinks for forward compatibility when installing
+
+	* fvwm/fvwm2.1:
+	fixed two places
+
 2002-04-18  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/move_resize.c (move_window_doit):

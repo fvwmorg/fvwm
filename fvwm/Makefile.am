@@ -38,3 +38,18 @@ AM_CFLAGS = \
 	-DFVWM_DATADIR=\"$(FVWM_DATADIR)\" \
 	-DFVWM_CONFDIR=\"$(FVWM_CONFDIR)\"
 
+## run "make install FORWARD_COMPAT_NAME=false" to disable creating symlinks
+## run "make install FORWARD_COMPAT_NAME=true" to disable them with no warning
+FORWARD_COMPAT_NAME =
+
+## Create compatibility symlinks if available, see INSTALL.fvwm
+
+install-exec-local:
+	@$(FORWARD_COMPAT_NAME) rm -f $(bindir)/fvwm || true
+	@$(FORWARD_COMPAT_NAME) $(LN_S) fvwm2 $(bindir)/fvwm || \
+		echo "Warning: $(bindir)/fvwm symlink was not created"
+
+install-data-local:
+	@$(FORWARD_COMPAT_NAME) rm -f $(mandir)/man1/fvwm.1 || true
+	@$(FORWARD_COMPAT_NAME) $(LN_S) fvwm2.1 $(mandir)/man1/fvwm.1 || \
+		echo "Warning: $(mandir)/man1/fvwm.1 symlink was not created"

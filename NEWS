@@ -5,6 +5,9 @@ Changes in stable release 2.4.8 (not released yet)
 * Remember the icon position when an icon is moved
   non-interactively.
 
+* Setup "fvwm" name symlinks for the executable and the man page
+  when installing, see INSTALL.fvwm.
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at
