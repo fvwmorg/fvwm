@@ -3,6 +3,10 @@
 	* fvwm/stack.c (RaiseOrLowerWindow):
 	(__restack_window):
 	(mark_transient_subtree):
+	(must_move_transients):
+	(is_on_top_of_layer_ignore_rom):
+	handle restacking trees of transient windows; still does not work too
+	well if a window has multiple transients at the same time
 
 	* fvwm/stack.c (restack_windows):
 	(new_layer):

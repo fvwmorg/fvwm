@@ -19,19 +19,19 @@ Changes in stable release 2.4.10 (not released yet)
 
 * Fixed key bindings on window corners.
 
-* Fixed StackTransientParent style without RaiseTransient or
-  LowerTransient on the transient_for window.
+* Fixed FvwmTaskBar i18n font loading
 
-* StackTransientParent works only on transient_for window if it is
-  on the same layer.
+* Fixed StackTransientParent style without RaiseTransient or
+  LowerTransient on the parent window.
+
+* StackTransientParent works only on parent window if it is on the
+  same layer.
 
 * Fixed handling of window group hint with the (De)Iconify
   command.
 
-* No more flickering transients overlapping their transient_for
-  window are lowered.
-
-* Fixed FvwmTaskBar i18n font loading
+* No more flickering when a transient overlapping its parent window
+  is lowered.
 
 -------------------------------------------------------------------
 

@@ -47,10 +47,8 @@ static void ResyncFvwmStackRing(void);
 #endif
 static void ResyncXStackingOrder(void);
 static void BroadcastRestack(FvwmWindow *s1, FvwmWindow *s2);
-#if 1
 static int collect_transients_recursive(
   FvwmWindow *t, FvwmWindow *list_head, int layer, Bool do_lower);
-#endif
 
 #define DEBUG_STACK_RING 1
 #ifdef DEBUG_STACK_RING
@@ -381,10 +379,8 @@ static void raise_over_unmanaged(FvwmWindow *t)
 
 
 static Bool must_move_transients(
-  FvwmWindow *t, Bool do_lower, Bool *found_transient)
+  FvwmWindow *t, Bool do_lower)
 {
-  *found_transient = False;
-
   if (IS_ICONIFIED(t))
   {
     return False;
@@ -396,17 +392,13 @@ static Bool must_move_transients(
     Bool scanning_above_window = True;
     FvwmWindow *q;
 
-    for (q = Scr.FvwmRoot.stack_next; q != &Scr.FvwmRoot; q = q->stack_next)
+    for (q = Scr.FvwmRoot.stack_next;
+	 q != &Scr.FvwmRoot && t->layer <= q->layer; q = q->stack_next)
     {
       if (t->layer < q->layer)
       {
 	/* We're not interested in higher layers. */
 	continue;
-      }
-      if (t->layer > q->layer)
-      {
-	/* We are at the end of this layer. Stop scanning windows. */
-	break;
       }
       else if (t == q)
       {
@@ -415,22 +407,12 @@ static Bool must_move_transients(
       }
       else if (IS_TRANSIENT(q) && (q->transientfor == t->w))
       {
-	/* found a transient */
-	*found_transient = True;
-
-        /* transients are not allowed below main in the same layer */
-        if ( !scanning_above_window )
-        {
-          return True;
-        }
+	return True;
       }
-      else if ((scanning_above_window && !do_lower) ||
-	       (*found_transient && do_lower))
+      else if (scanning_above_window && !do_lower)
       {
 	/* raise: The window is not raised, so itself and all transients will
 	 * be raised. */
-	/* lower: There is a transient above some other window, so we have to
-	 * lower. */
 	return True;
       }
     }
@@ -509,11 +491,7 @@ static void restack_windows(
 static Bool __restack_window(
   FvwmWindow *t, Bool do_lower, Bool do_restack_transients, Bool is_new_window)
 {
-#if 0
-  FvwmWindow *s, *r, *t2, *next, tmp_r;
-#else
   FvwmWindow *s, *r, tmp_r;
-#endif
   int count;
   int test_layer;
 
@@ -528,35 +506,12 @@ static Bool __restack_window(
     /* collect the transients in a temp list */
     tmp_r.stack_prev = &tmp_r;
     tmp_r.stack_next = &tmp_r;
-#if 0
-    for (t2 = Scr.FvwmRoot.stack_next; t2 != &Scr.FvwmRoot; t2 = next)
-    {
-      next = t2->stack_next;
-      if ((IS_TRANSIENT(t2)) && (t2->transientfor == t->w) &&
-	  (t2->layer == t->layer) && !IS_ICONIFIED(t2))
-      {
-	/* t2 is a transient to lower */
-	count++;
-	count += get_visible_icon_window_count(t2);
-
-	/* unplug it */
-	remove_window_from_stack_ring(t2);
-	/* put it above tmp_r */
-	add_window_to_stack_ring_after(t2, tmp_r.stack_prev);
-      }
-    }
-    if (tmp_r.stack_next == &tmp_r)
-    {
-      do_restack_transients = False;
-    }
-#else
     count = collect_transients_recursive(t, &tmp_r, t->layer, do_lower);
     if (count == 0)
     {
       do_restack_transients = False;
     }
     count++;
-#endif
   }
 
   test_layer = t->layer;
@@ -610,8 +565,6 @@ static void RaiseOrLowerWindow(
 {
   FvwmWindow *t2;
   Bool do_move_transients;
-  Bool found_transient;
-  Bool no_movement;
 
   /* Do not raise this window after command execution (see HandleButtonPress()).
    */
@@ -647,7 +600,6 @@ static void RaiseOrLowerWindow(
 	  {
 	    break;
 	  }
-	  /*!!!prevent loops*/
 	  RaiseOrLowerWindow(t2, do_lower, True, False);
           if ((!do_lower && DO_RAISE_TRANSIENT(t2)) ||
               (do_lower && DO_LOWER_TRANSIENT(t2))  )
@@ -662,38 +614,16 @@ static void RaiseOrLowerWindow(
 
   if (is_new_window)
   {
-    no_movement = False;
     do_move_transients = False;
   }
   else
   {
-#if 0
-    do_move_transients = must_move_transients(t, do_lower, &found_transient);
-
-    /* must_move_transients() believes that main should always be below
-     * its transients. Therefore if it finds a transient but does not wish
-     * move it, this means main and its superior transients are already
-     * in the correct position at the top or bottom of the layer - depending
-     * on do_lower. */
-    no_movement = found_transient && !do_move_transients;
-#else
-    /*!!!optimize*/
-    no_movement = False;
-    do_move_transients = must_move_transients(t, do_lower, &found_transient);
-    do_move_transients =
-	    ((do_move_transients || found_transient) &&
-	     ((!do_lower && DO_RAISE_TRANSIENT(t)) ||
-              (do_lower && DO_LOWER_TRANSIENT(t))));
-#endif
+    do_move_transients = must_move_transients(t, do_lower);
   }
-
-  if (!no_movement)
+  if (__restack_window(
+	t, do_lower, do_move_transients, is_new_window) == True)
   {
-    if (__restack_window(
-	  t, do_lower, do_move_transients, is_new_window) == True)
-    {
-      return;
-    }
+    return;
   }
 
   if (!do_lower)
@@ -706,7 +636,6 @@ static void RaiseOrLowerWindow(
     {
       raise_over_unmanaged(t);
     }
-
 
     /*
      * The following is a hack to raise X windows over native windows
@@ -1152,9 +1081,6 @@ void mark_transient_subtree(
   }
   /* now loop over the windows and mark the ones we need to move */
   SET_IN_TRANSIENT_SUBTREE(t, 1);
-#if 1
-  (int)(t->pscratch) = 0;
-#endif
   is_finished = False;
   while (!is_finished)
   {
@@ -1191,9 +1117,6 @@ void mark_transient_subtree(
 	{
 	  /* have to move this one too */
 	  SET_IN_TRANSIENT_SUBTREE(s, 1);
-#if 1
-	  (int)(s->pscratch) = (int)(r->pscratch) + 1;
-#endif
 	  /* need another scan through the list */
 	  is_finished = False;
 	  continue;
@@ -1237,7 +1160,6 @@ static int collect_transients_recursive(
     FvwmWindow *tmp;
 
     tmp = s->stack_next;
-    /*!!!reorder transients by transient level*/
     if (IS_IN_TRANSIENT_SUBTREE(s))
     {
       remove_window_from_stack_ring(s);
@@ -1339,6 +1261,10 @@ static Bool is_on_top_of_layer_ignore_rom(FvwmWindow *fw)
     /* stack ring members are no longer valid */
     return False;
   }
+  if (DO_RAISE_TRANSIENT(fw))
+  {
+    mark_transient_subtree(fw, fw->layer, MARK_RAISE, True, False);
+  }
   for (t = fw->stack_prev; t != &Scr.FvwmRoot; t = t->stack_prev)
   {
     if (t->layer > fw->layer)
@@ -1354,9 +1280,7 @@ static Bool is_on_top_of_layer_ignore_rom(FvwmWindow *fw)
      * windows, but on top of its layer, it would be considered on top. */
     if (Scr.bo.RaiseOverUnmanaged || overlap(fw, t))
     {
-      /*!!!check for recursive transients too*/
-      if (!IS_TRANSIENT(t) || t->transientfor != fw->w ||
-	  !DO_RAISE_TRANSIENT(fw))
+      if (!DO_RAISE_TRANSIENT(fw) || (!IS_IN_TRANSIENT_SUBTREE(t) && t != fw))
       {
 	ontop = False;
 	break;
