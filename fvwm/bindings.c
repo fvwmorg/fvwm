@@ -278,10 +278,6 @@ int ParseBinding(
 	  }
 	}
       }
-      if (nr_left_buttons)
-	*nr_left_buttons = 0;
-      if (nr_right_buttons)
-	*nr_right_buttons = 0;
       update_nr_buttons(bcontext, nr_left_buttons, nr_right_buttons, True);
     }
   }
