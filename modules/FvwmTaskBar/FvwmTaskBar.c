@@ -1366,6 +1366,12 @@ void LoopOnEvents(void)
       break;
 
     case Expose:
+      memcpy(&Event2, &Event, sizeof(Event));
+      /* eat up excess Expose events. */
+      while (XCheckTypedWindowEvent(dpy, win, Expose, &Event2))
+      {
+	memcpy(&Event, &Event2, sizeof(Event));
+      }
       if (Event.xexpose.count == 0)
       {
 	if (Event.xexpose.window == Tip.win)
@@ -1471,27 +1477,6 @@ void LoopOnEvents(void)
       }
       if (Event.xconfigure.height != win_height) {
 	AdjustWindow(Event.xconfigure.width, Event.xconfigure.height);
-	if (AutoHide && !win_is_shaded)
-	{
-	  if (win_y > Midline)
-	  {
-	    win_y = screen_g.height - VISIBLE_PIXELS() +
-	      win_title_height*win_has_bottom_title;
-	  }
-	  else
-	  {
-	    win_y = VISIBLE_PIXELS() + win_title_height*win_has_bottom_title
-	      - win_height;
-	  }
-	  win_y += screen_g.y;
-	  XSync(dpy,0);
-	  XMoveWindow(dpy, win, win_x, win_y);
-	  XSync(dpy,0);
-	  hide_taskbar_alarm = False;
-	  WindowState = -1;
-	}
-	else if (AutoStick)
-	  WarpTaskBar(win_y, 1);
 	redraw = 1;
       }
       /* useful because of dynamic style change */
@@ -1500,8 +1485,6 @@ void LoopOnEvents(void)
 	PurgeConfigEvents();
 	break;
       }
-      else if (AutoHide)
-	break;
       else if (Event.xconfigure.x != win_x || Event.xconfigure.y != win_y)
       {
 	if (AutoStick)
