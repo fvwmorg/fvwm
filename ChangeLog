@@ -1,3 +1,9 @@
+Thu May 27 07:38:11 1999  DanEspen  <dje@blue>
+
+	* NEWS: Updated news for 2.2.2 release.
+
+	* fvwm/complex.c (expand): Applied patch from Brad for empty args.
+
 1999-05-10  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
 
 	* configure.in: set version to 2.2.2.

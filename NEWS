@@ -1,6 +1,31 @@
-Changes in official release 2.2.1 (February 1999)
+Changes in official release 2.2.2 (May 1999)
+
+* New "Emulate"  command  for independent  control of the  move/resize
+* feedback window.
+
+* EdgeThickness command can be issued at any time.
+
+* Pan frames not created when not needed.
+
+* Pan frames reach corners.
+
+* Fixed window wandering on restart, recapture.
 
 * International characters are accepted as input in FvwmForm.
+
+* Fix bug in window shading that left one row of pixels visible.
+
+* Fix to FvwmTaskbar so that  it won't loop  when  there are too  many
+* buttons.
+
+* Fix positioning bug on overlapping menus.
+
+* Fix M4 command problem, Problem Reports 201 and 246.
+
+* Fixed bug when calling a function without all args supplied.
+
+* Miscellaneous bug fixes,  see ChangeLog for details.
+
 
 Changes in official release 2.2 (February 1999)
 
