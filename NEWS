@@ -32,6 +32,13 @@ Changes in stable release 2.4.5 (not released yet)
 
 * Fixed a configure problem with libstroke-0.5.1.
 
+* New style BackingStoreWindowDefault which is the default
+  now. Fvwm no longer disables backing store on windows by
+  default.
+
+* Fixed bug that sometimes caused unnecessary redraws when a style
+  was changed.
+
 Changes in stable release 2.4.4 (16-Dec-2001)
 
 * Minor title drawing fixes.

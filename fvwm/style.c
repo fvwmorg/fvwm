@@ -978,16 +978,23 @@ void CMD_Style(F_CMD_ARGS)
         else if (StrEquals(token, "BackingStore"))
         {
           found = True;
-	  ptmpstyle->flags.use_backing_store = 1;
-	  ptmpstyle->flag_mask.use_backing_store = 1;
-	  ptmpstyle->change_mask.use_backing_store = 1;
+	  ptmpstyle->flags.use_backing_store = BACKINGSTORE_ON;
+	  ptmpstyle->flag_mask.use_backing_store = BACKINGSTORE_MASK;
+	  ptmpstyle->change_mask.use_backing_store = BACKINGSTORE_MASK;
         }
         else if (StrEquals(token, "BackingStoreOff"))
         {
           found = True;
-	  ptmpstyle->flags.use_backing_store = 0;
-	  ptmpstyle->flag_mask.use_backing_store = 1;
-	  ptmpstyle->change_mask.use_backing_store = 1;
+	  ptmpstyle->flags.use_backing_store = BACKINGSTORE_OFF;
+	  ptmpstyle->flag_mask.use_backing_store = BACKINGSTORE_MASK;
+	  ptmpstyle->change_mask.use_backing_store = BACKINGSTORE_MASK;
+        }
+        else if (StrEquals(token, "BackingStoreWindowDefault"))
+        {
+          found = True;
+	  ptmpstyle->flags.use_backing_store = BACKINGSTORE_DEFAULT;
+	  ptmpstyle->flag_mask.use_backing_store = BACKINGSTORE_MASK;
+	  ptmpstyle->change_mask.use_backing_store = BACKINGSTORE_MASK;
         }
 	else if (StrEquals(token, "BorderColorset"))
 	{
@@ -2747,7 +2754,7 @@ void check_window_style_change(
 
   if (IS_STYLE_DELETED(t))
   {
-    /* updfate all styles */
+    /* update all styles */
     memset(flags, 0xff, sizeof(*flags));
     SET_STYLE_DELETED(t, 0);
     return;
@@ -2885,7 +2892,6 @@ void check_window_style_change(
     flags->do_update_icon = True;
     flags->do_update_modules_flags = True;
   }
-
 
   /*
    *   has_icon_boxes

@@ -371,7 +371,11 @@ typedef struct
   unsigned has_condition_mask : 1;
 #endif
   unsigned is_button_disabled : NUMBER_OF_BUTTONS;
-  unsigned use_backing_store : 1;
+#define BACKINGSTORE_DEFAULT 0
+#define BACKINGSTORE_ON      1
+#define BACKINGSTORE_OFF     2
+#define BACKINGSTORE_MASK  0x3
+  unsigned use_backing_store : 2;
   unsigned use_parent_relative : 1;
   unsigned use_colorset : 1;
   unsigned use_colorset_hi : 1;
@@ -540,6 +544,8 @@ typedef struct FvwmWindow
 #define FM_LOCALLY_ACTIVE  2
 #define FM_GLOBALLY_ACTIVE 3
   unsigned char focus_model;
+
+  unsigned char initial_backing_store;
 
   void *pscratch;             /* multi purpose scratch pointer */
 } FvwmWindow;
