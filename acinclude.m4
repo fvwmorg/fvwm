@@ -128,8 +128,8 @@ AC_DEFUN(smr_SWITCH, [
     AC_ARG_ENABLE(
         $1,
         ifelse($3, on,
-            [  --disable-[$1]substr([             ], len([$1])) disable [$2]],
-            [  --enable-[$1] substr([             ], len([$1])) enable [$2]]),
+            [  --disable-[$1]m4_substr([             ], m4_len([$1])) disable [$2]],
+            [  --enable-[$1] m4_substr([             ], m4_len([$1])) enable [$2]]),
         [ if test "$enableval" = yes; then
             AC_MSG_RESULT(yes)
             ifelse($4, , , [AC_DEFINE($4)])

@@ -1,3 +1,12 @@
+2003-05-30  Mikhael Goikhman  <migo@homemail.com>
+
+	* fvwm/builtins.c:
+	* fvwm/fvwm2.1:
+	SetEnv with only one parameter is ignored now
+
+	* acinclude.m4:
+	cause configure print good usage with autoconf >= 2.53
+
 2003-05-29  Mikhael Goikhman  <migo@homemail.com>
 
 	* fvwm/virtual.c (CMD_GotoDeskAndPage):
