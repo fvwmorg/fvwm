@@ -2666,6 +2666,8 @@ void CMD_Resize(F_CMD_ARGS)
       }
       fForceRedraw = False;
       done = True;
+      break;
+
     default:
       break;
     }
