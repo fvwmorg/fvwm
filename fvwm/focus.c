@@ -622,20 +622,29 @@ void focus_grab_buttons(FvwmWindow *tmp_win, Bool is_focused)
     return;
   }
   accepts_input_focus = do_accept_input_focus(tmp_win);
-  if ((HAS_SLOPPY_FOCUS(tmp_win) || HAS_MOUSE_FOCUS(tmp_win) ||
-       HAS_NEVER_FOCUS(tmp_win)) &&
-      DO_RAISE_MOUSE_FOCUS_CLICK(tmp_win) &&
-      (!is_focused || !is_on_top_of_layer(tmp_win)))
+  if (HAS_SLOPPY_FOCUS(tmp_win) || HAS_MOUSE_FOCUS(tmp_win) ||
+       HAS_NEVER_FOCUS(tmp_win))
   {
-    grab_buttons = ((1 << NUMBER_OF_MOUSE_BUTTONS) - 1);
-    do_grab_window = True;
+    if (DO_RAISE_MOUSE_FOCUS_CLICK(tmp_win) &&
+        (!is_focused || !is_on_top_of_layer(tmp_win)))
+    {
+      grab_buttons = ((1 << NUMBER_OF_MOUSE_BUTTONS) - 1);
+      do_grab_window = True;
+    }
   }
-  else if (HAS_CLICK_FOCUS(tmp_win) &&
-	   (!is_focused || !is_on_top_of_layer(tmp_win)) &&
-	   (!DO_NOT_RAISE_CLICK_FOCUS_CLICK(tmp_win) || accepts_input_focus))
+  else if (HAS_CLICK_FOCUS(tmp_win))
   {
-    grab_buttons = ((1 << NUMBER_OF_MOUSE_BUTTONS) - 1);
-    do_grab_window = True;
+    if (is_focused && !is_on_top_of_layer(tmp_win) &&
+        DO_NOT_RAISE_CLICK_FOCUS_CLICK(tmp_win) && accepts_input_focus)
+    {
+      /* don't grab */
+    }
+    else if ((!is_focused || !is_on_top_of_layer(tmp_win)) &&
+             (!DO_NOT_RAISE_CLICK_FOCUS_CLICK(tmp_win) || accepts_input_focus))
+    {
+      grab_buttons = ((1 << NUMBER_OF_MOUSE_BUTTONS) - 1);
+      do_grab_window = True;
+    }
   }
 
 #if 0

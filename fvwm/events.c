@@ -1690,9 +1690,16 @@ void HandleButtonPress(void)
   /* click to focus stuff goes here */
   if((Tmp_win)&&(HAS_CLICK_FOCUS(Tmp_win))&&(Tmp_win != Scr.Ungrabbed))
   {
+    unsigned was_already_focused;
+
     if (Tmp_win != get_focus_window())
     {
       SetFocusWindow(Tmp_win, 1);
+      was_already_focused = 0;
+    }
+    else
+    {
+      was_already_focused = 1;
     }
     /* RBW - 12/09/.1999- I'm not sure we need to check both cases, but
        I'll leave this as is for now.  */
@@ -1714,8 +1721,8 @@ void HandleButtonPress(void)
        * scheduled to be raised after the binding is executed. Functions that
        * modify the stacking order will reset this flag. */
       SET_SCHEDULED_FOR_RAISE(Tmp_win, 1);
-      do_regrab_buttons = True;
     }
+    do_regrab_buttons = True;
 
     Context = GetContext(Tmp_win, &Event, &PressedW);
     if (!IS_ICONIFIED(Tmp_win) && Context == C_WINDOW)
@@ -1725,21 +1732,21 @@ void HandleButtonPress(void)
 	RaiseWindow(Tmp_win);
 	SET_SCHEDULED_FOR_RAISE(Tmp_win, 0);
       }
-      if (do_regrab_buttons)
-	focus_grab_buttons(Tmp_win, (Tmp_win == get_focus_window()));
+      focus_grab_buttons(Tmp_win, (Tmp_win == get_focus_window()));
       XSync(dpy,0);
       /* Pass click event to just clicked to focus window? Do not swallow the
-       * click if the window didn't accept the focus. */
+       * click if the window didn't accept the focus. Also, pass the click if
+       * the window was already focused. */
       if (!DO_NOT_PASS_CLICK_FOCUS_CLICK(Tmp_win) ||
-	  get_focus_window() != Tmp_win)
+	  get_focus_window() != Tmp_win || was_already_focused)
       {
         /* fall through and pass the click to the app later. */
       }
       else /* don't pass click to just focused window */
       {
 	XAllowEvents(dpy,AsyncPointer,CurrentTime);
+        UngrabEm(GRAB_PASSIVE);
       }
-      UngrabEm(GRAB_PASSIVE);
     }
     if (!IS_ICONIFIED(Tmp_win))
     {

@@ -44,6 +44,11 @@ Changes in stable release 2.4.8 (not released yet)
 * fvwm-menu-headlines: updated the site data, added a configurable
   timeout on socket reading (20 sec) to avoid fvwm hanging.
 
+* Fixed a problem with ClickToFocus + ClickToFocusRaisesOff and
+  windows that are below others.
+
+* Fixed the ClickToFocusPassesClick style.
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at

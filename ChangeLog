@@ -1,3 +1,10 @@
+2002-06-03  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/focus.c (focus_grab_buttons):
+	* fvwm/events.c (HandleButtonPress):
+	fixed problem w/ ClickToFocus + ClickToFocusRaisesOff
+	fixed problem w/ ClickToFocus + ClickToFocusPassesClick
+
 2002-06-02  Mikhael Goikhman  <migo@homemail.com>
 
 	* INSTALL.fvwm:
