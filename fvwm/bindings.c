@@ -39,7 +39,7 @@ static int mods_unused = MODS_UNUSED_DEFAULT;
 
 
 static void update_nr_buttons(
-  int contexts, int *nr_left_buttons, int *nr_right_buttons)
+  int contexts, int *nr_left_buttons, int *nr_right_buttons, Bool do_set)
 {
   int i;
   int l = (nr_left_buttons) ? *nr_left_buttons : 0;
@@ -50,10 +50,9 @@ static void update_nr_buttons(
     /* check for nr_left_buttons */
     for (i = 0; i < NUMBER_OF_BUTTONS; i += 2)
     {
-      if ((contexts & (C_L1 << i)) && *nr_left_buttons <= i / 2)
+      if ((contexts & (C_L1 << i)) &&
+	  (do_set || *nr_left_buttons <= i / 2))
       {
-	Scr.flags.do_need_window_update = 1;
-	Scr.flags.has_nr_buttons_changed = 1;
 	*nr_left_buttons = i / 2 + 1;
       }
     }
@@ -63,10 +62,9 @@ static void update_nr_buttons(
     /* check for nr_right_buttons */
     for (i = 1; i < NUMBER_OF_BUTTONS; i += 2)
     {
-      if ((contexts & (C_L1 << i)) && *nr_right_buttons <= i / 2)
+      if ((contexts & (C_L1 << i)) &&
+	  (do_set || *nr_right_buttons <= i / 2))
       {
-	Scr.flags.do_need_window_update = 1;
-	Scr.flags.has_nr_buttons_changed = 1;
 	*nr_right_buttons = i / 2 + 1;
       }
     }
@@ -284,7 +282,7 @@ int ParseBinding(
 	*nr_left_buttons = 0;
       if (nr_right_buttons)
 	*nr_right_buttons = 0;
-      update_nr_buttons(bcontext, nr_left_buttons, nr_right_buttons);
+      update_nr_buttons(bcontext, nr_left_buttons, nr_right_buttons, True);
     }
   }
 
@@ -292,7 +290,7 @@ int ParseBinding(
   if (is_unbind_request)
     return 0;
 
-  update_nr_buttons(context, nr_left_buttons, nr_right_buttons);
+  update_nr_buttons(context, nr_left_buttons, nr_right_buttons, False);
 
   if((modifier & AnyModifier)&&(modifier&(~AnyModifier)))
   {

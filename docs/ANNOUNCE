@@ -81,3 +81,6 @@ Bug fixes:
 
 * Fixed a possible crash when a window was recaptured and the
   focus could not be transfered to another window.
+
+* Fixed a performance problem with large numbers of mouse binding
+  commands.
