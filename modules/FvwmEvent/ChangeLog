@@ -1,3 +1,8 @@
+1999-04-27  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
+
+	* FvwmEvent.1: fixed incorrect statement about calling rsynth.
+	(revision 1.1 -> revision 1.2 merge)
+
 1999-03-12  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
 
 	* Parse.c, Parse.h: removed files from distribution.
