@@ -313,6 +313,15 @@ static char *function_vars[] =
   "w.width",
   "w.height",
   "screen",
+  "desk.n",
+  "w.id",
+  "w.name",
+  "w.iconname",
+  "w.class",
+  "w.resource",
+  "version.num",
+  "version.info",
+  "version.line",
   NULL
 };
 
@@ -329,6 +338,7 @@ static int expand_extended_var(
   Pixel pixel = 0;
   int val = -12345678;
   Bool is_numeric = False;
+  const char *string = NULL;
 
   /* allow partial matches for *.cs variables */
   switch ((i = GetTokenIndex(var_name, function_vars, -1, &rest)))
@@ -453,29 +463,76 @@ static int expand_extended_var(
     is_numeric = True;
     val = Scr.screen;
     break;
+  case 17:
+    /* desk.n */
+    is_numeric = True;
+    val = Scr.CurrentDesk;
+    break;
+  case 18:
+    /* w.id */
+    if (tmp_win)
+    {
+      sprintf(target, "0x%x", (unsigned int)tmp_win->w);
+      string = target;
+    }
+    break;
+  case 19:
+    /* w.name */
+    if (tmp_win)
+    {
+      string = tmp_win->name;
+    }
+    break;
+  case 20:
+    /* w.iconname */
+    if (tmp_win)
+    {
+      string = tmp_win->icon_name;
+    }
+    break;
+  case 21:
+    /* w.class */
+    if (tmp_win)
+    {
+      string = tmp_win->class.res_class;
+    }
+    break;
+  case 22:
+    /* w.resource */
+    if (tmp_win)
+    {
+      string = tmp_win->class.res_name;
+    }
+    break;
+  case 23:
+    /* version.num */
+    string = VERSION;
+    break;
+  case 24:
+    /* version.info */
+    string = "";
+    break;
+  case 25:
+    /* version.line */
+    string = Fvwm_VersionInfo;
+    break;
   default:
     /* unknown variable - try to find it in the environment */
-    s = getenv(var_name);
-    if (s)
-    {
-      if (output)
-      {
-	strcpy(output, s);
-      }
-      return strlen(s);
-    }
-    else
-    {
-      return 0;
-    }
+    string = getenv(var_name);
   }
   if (is_numeric)
   {
     sprintf(target, "%d", val);
     return strlen(target);
   }
-
-  return 0;
+  else
+  {
+    if (output && string)
+    {
+      strcpy(output, string);
+    }
+    return string ? strlen(string) : 0;
+  }
 }
 
 static char *expand(

@@ -21,6 +21,12 @@ Changes in stable release 2.4.16 (not released yet)
 * Fixed displaying iconified windows without an icon in
   FvwmIconMan.
 
+* All single letter variables are deprecated now; new variables:
+
+    $[w.id], $[w.name], $[w.iconname], $[w.class], $[w.resource],
+    $[desk.n], $[version.num], $[version.info], $[version.line],
+    $[desk.pagesx], $[desk.pagesy]
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)
