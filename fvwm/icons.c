@@ -1335,12 +1335,14 @@ void DeIconify(FvwmWindow *tmp_win)
 
   /* AS dje  RaiseWindow(tmp_win); */
 
-  mark_transient_subtree(tmp_win, MARK_ALL_LAYERS, MARK_ALL, False, True);
   if (tmp_win == sf)
   {
     /* take away the focus before mapping */
     DeleteFocus(0);
   }
+  /* Note: DeleteFocus may delete the flags set by mark_transient_subtree(),
+   * so do it later. */
+  mark_transient_subtree(tmp_win, MARK_ALL_LAYERS, MARK_ALL, False, True);
   /* now de-iconify transients */
   for (t = Scr.FvwmRoot.next; t != NULL; t = t->next)
   {
@@ -1498,6 +1500,9 @@ void Iconify(FvwmWindow *tmp_win, int def_x, int def_y)
   if (sf && IS_IN_TRANSIENT_SUBTREE(sf))
   {
     restore_focus_after_unmap(sf, True);
+    /* restore_focus_after_unmap() destorys the flags set by
+     * mark_transient_subtree(), so we have to unfortunately call it again. */
+    mark_transient_subtree(tmp_win, MARK_ALL_LAYERS, MARK_ALL, False, True);
   }
   /* iconify transients first */
   for (t = Scr.FvwmRoot.next; t != NULL; t = t->next)
