@@ -1,5 +1,8 @@
 2002-02-07  Dominik Vogt  <dominik.vogt@gmx.de>
 
+	* fvwm/module_interface.c (PositiveWrite):
+	fixed core dump when a module died in the select of PositiveWrite()
+
 	* fvwm/icons.c (GetXPMFile):
 	suppress unnecessary error message for xmb icons
 

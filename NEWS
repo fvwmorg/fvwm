@@ -9,6 +9,9 @@ Changes in stable release 2.4.6 (not released yet)
 
 * Fixed a minor colour update bug in the pager.
 
+* Fixed an fvwm crash when a module died at the wron moment;
+  specifically a transient FvwmPager of FvwmIconMan.
+
 Changes in stable release 2.4.5 (27-Jan-2002)
 
 * Fixed minor problems in popping sub menus up and down.

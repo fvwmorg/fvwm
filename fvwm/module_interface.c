@@ -1366,18 +1366,32 @@ void PositiveWrite(int module, unsigned long *ptr, int size)
       if (rc <= 0 || read(channel, &targetWindow, sizeof(targetWindow))
            != sizeof(targetWindow))
       {
+        char *name;
+
+        if (pipeName[module] != NULL)
+        {
+#ifndef WITHOUT_KILLMODULE_ALIAS_SUPPORT
+          if (pipeAlias[module] != NULL)
+          {
+            name = CatString3(pipeName[module], " ", pipeAlias[module]);
+          }
+          else
+#endif
+          {
+            name = pipeName[module];
+          }
+        }
+        else
+        {
+          name = "(null)";
+        }
+
         /* Doh! Something has gone wrong - get rid of the offender!! */
         fvwm_msg(ERR, "PositiveWrite",
                  "Failed to read descriptor from '%s':\n"
                  "- data available=%c\n"
                  "- terminate signal=%c\n",
-#ifndef WITHOUT_KILLMODULE_ALIAS_SUPPORT
-                 pipeAlias[module]
-                   ? CatString3(pipeName[module], " ", pipeAlias[module])
-                   : pipeName[module],
-#else
-                 pipeName[module],
-#endif
+                 name,
                  (FD_ISSET(channel, &readSet) ? 'Y' : 'N'),
                  isTerminated ? 'Y' : 'N');
         KillModule(module);
