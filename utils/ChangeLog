@@ -1,3 +1,8 @@
+2002-05-03  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwmrc_convert.1:
+	fixed typos in the man page
+
 2002-02-07  Mikhael Goikhman  <migo@homemail.com>
 
 	* Makefile.am:

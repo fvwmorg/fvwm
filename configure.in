@@ -202,8 +202,8 @@ AC_SUBST(Xinerama_CFLAGS)
 
 
 dnl ********* xinerama-emulation
-smr_SWITCH(xinerama-emulation, Xinerama emulation on one screen, off,
-           USE_XINERAMA_EMULATION)
+smr_SWITCH(xinerama-emulation, Xinerama emulation on one screen (useful for developers only),
+           off, USE_XINERAMA_EMULATION)
 if test "$enable_xinerama_emulation" = yes; then
   with_xinerama_emulation=yes
 else
