@@ -5,8 +5,8 @@ Changes in stable release 2.4.8 (not released yet)
 * Remember the icon position when an icon is moved
   non-interactively.
 
-* Setup "fvwm" name symlinks for the executable and the man page
-  when installing, see INSTALL.fvwm.
+* Setup "fvwm" and "fvwm-root" name symlinks for the executable and
+  the man page when installing, see INSTALL.fvwm.
 
 * Fixed another problem with the DeskOnly option and sticky icons
   in FvwmTaskBar.

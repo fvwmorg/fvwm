@@ -220,6 +220,8 @@ smr_CHECK_LIB(xpm, Xpm, for coloured or shaped icons,
     XpmReadFileToXpmImage, X11/xpm.h,
     [$X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS], $X_CFLAGS)
 
+# non empty value (true or false) means disable symlinks
+XPMROOT_NEW_NAME_SYMLINKS=true
 if test "$xpm_LIBS"; then
   dnl Check for proper version of Xpm -- from XEmacs 21.x configure.in
   problem_xpm=""
@@ -256,6 +258,7 @@ if test "$xpm_LIBS"; then
     FVWMBANNER=FvwmBanner AC_SUBST(FVWMBANNER)
     XPMROOT=xpmroot AC_SUBST(XPMROOT)
     FVWMSCRIPT=FvwmScript AC_SUBST(FVWMSCRIPT)
+    XPMROOT_NEW_NAME_SYMLINKS=
   else
     xpm_LIBS=
     xpm_CFLAGS=
@@ -263,6 +266,7 @@ if test "$xpm_LIBS"; then
 fi
 AC_SUBST(xpm_LIBS)
 AC_SUBST(xpm_CFLAGS)
+AC_SUBST(XPMROOT_NEW_NAME_SYMLINKS)
 
 
 dnl ********* rplay

@@ -1,3 +1,11 @@
+2002-06-02  Mikhael Goikhman  <migo@homemail.com>
+
+	* INSTALL.fvwm:
+	* NEWS:
+	* configure.in:
+	* fvwm/Makefile.am:
+	setup symlinks for fvwm-root just like for fvwm
+
 2002-05-31  olicha  <olivier.chapuis@free.fr>
 
 	* NEWS:

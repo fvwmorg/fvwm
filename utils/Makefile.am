@@ -54,3 +54,19 @@ fvwmbug: fvwmbug.sh
 	    fvwmbug.sh > $@
 
 CLEANFILES = $(bin_SCRIPTS) $(bin_PROGRAMS)
+
+## run "make install NEW_NAME_SYMLINKS=false" to disable creating symlinks
+## run "make install NEW_NAME_SYMLINKS=true" to disable them with no warning
+NEW_NAME_SYMLINKS = $(XPMROOT_NEW_NAME_SYMLINKS)
+
+## Create compatibility symlinks if available, see INSTALL.fvwm
+
+install-exec-local:
+	@$(NEW_NAME_SYMLINKS) rm -f $(bindir)/fvwm-root || true
+	@$(NEW_NAME_SYMLINKS) $(LN_S) xpmroot $(bindir)/fvwm-root || \
+		echo "Warning: $(bindir)/fvwm-root symlink was not created"
+
+install-data-local:
+	@$(NEW_NAME_SYMLINKS) rm -f $(mandir)/man1/fvwm-root.1 || true
+	@$(NEW_NAME_SYMLINKS) $(LN_S) xpmroot.1 $(mandir)/man1/fvwm-root.1 || \
+		echo "Warning: $(mandir)/man1/fvwm-root.1 symlink was not created"

@@ -12,13 +12,14 @@ New!
 We are in the process of moving from the fvwm2 executable name to the
 fvwm name.  This completes the process that was started in 2.1.0.
 
-In this 2.4.8+ release we setup symbolic links from fvwm to fvwm2 for
-the executable and the man page.  In the 2.5.x series it is vice versa,
-the main name is fvwm, but fvwm2 symlink is supported for some time.
+In this 2.4.8+ release we setup symbolic links from fvwm to fvwm2 and
+from fvwm-root to xpmroot for the executables and the man pages.
+In the 2.5.x it is vice versa, the main names are fvwm and fvwm-root,
+but fvwm2 and xpmroot symlinks are supported for some time.
 
-To install fvwm2 executable without 2 additional symlinks, specify:
+To disable these 4 symlinks, i.e. install only fvwm2 names, specify:
 
-  % make install FORWARD_COMPAT_NAME=false
+  % make install NEW_NAME_SYMLINKS=false
 
 
 Important Note!
