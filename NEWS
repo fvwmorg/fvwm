@@ -52,6 +52,9 @@ Changes in stable release 2.4.9 (not released yet)
 * Applications using Mwm hints can now enforce that a window can
   not be moved.
 
+* Fixed negative arguments of WarpToWindow when used on an
+  unmanaged window.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.8 (11-Jun-2002)
