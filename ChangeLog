@@ -1,5 +1,9 @@
 1999-02-26  Hippo
 
+        * fvwm/virtual.c: EdgeThickness command can be used at any time to alter
+        the panframe windows. Panframe windows unmapped when paging to the end
+        page and wrapping is disabled.  Panframe windows go right into the corners.
+
 	* fvwm/placement.c: fixed wandering on restart/recapture caused by
 	old_bw being ignored.
 
