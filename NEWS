@@ -20,6 +20,9 @@ Changes in stable release 2.4.17 (not released yet)
   windows that request a specific position are still placed on the
   given page.
 
+* Fixed sending M_NEW_PAGE packets to the modules if the page did
+  not change.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.16 (30-May-2003)

@@ -442,6 +442,7 @@ void FocusOn(FvwmWindow *t, Bool FocusByMouse, char *action)
     }
     dx = (cx + Scr.Vx)/Scr.MyDisplayWidth*Scr.MyDisplayWidth;
     dy = (cy +Scr.Vy)/Scr.MyDisplayHeight*Scr.MyDisplayHeight;
+/*!!!*/fprintf(stderr, "f1: mv\n");
     MoveViewport(dx,dy,True);
 
     /* If the window is still not visible, make it visible! */
