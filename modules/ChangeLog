@@ -1,3 +1,24 @@
+2002-04-22  Mikhael Goikhman  <migo@homemail.com>
+
+	* FvwmIconMan/ConfigFvwmIconMan:
+	* FvwmIconMan/FvwmIconMan.1:
+	* FvwmIconMan/readconfig.c (read_next_cmd):
+	* FvwmTheme/FvwmTheme.1:
+	implemented a new FvwmIconMan syntax that uses white spaces instead
+	of asterisks, not to be different from other modules
+
+	* FvwmIconMan/xmanager.c:
+	removed ## from preprocessor's line win->##field to make gcc happy
+
+	* FvwmConsole/FvwmConsole.c:
+	* FvwmConsole/FvwmConsole.h:
+	* FvwmConsole/FvwmConsoleC.c:
+	* FvwmConsole/FvwmConsoleC.pl.1:
+	* FvwmConsole/FvwmConsoleC.pl.in:
+	* FvwmConsole/getline.c:
+	use $FVWM_USERDIR not $HOME for FvwmConsole history and socket files,
+	make these file names more readable, increase history from 50 to 100
+
 2002-04-05  Mikhael Goikhman  <migo@homemail.com>
 
 	* FvwmTheme/FvwmTheme.1:
