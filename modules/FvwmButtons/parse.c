@@ -796,11 +796,18 @@ static void ParseButton(button_info **uberb,char *s)
     {
       Bool is_swallow = False;
 
+      if (*s == ',')
+      {
+	      s++;
+	      s = trimleft(s);
+	      continue;
+      }
       if((*s>='0' && *s<='9') || *s=='+' || *s=='-')
       {
 	char *geom;
 	int x,y,flags;
 	unsigned int w,h;
+
 	geom=seekright(&s);
 	if (geom)
 	{
@@ -828,8 +835,6 @@ static void ParseButton(button_info **uberb,char *s)
 	s = trimleft(s);
 	continue;
       }
-      if(*s==',' && s++)
-	s = trimleft(s);
       switch(GetTokenIndex(s,opts,-1,&s))
       {
       case 0: /* Back */

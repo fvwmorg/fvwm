@@ -11,6 +11,10 @@ Fixed a transparency problem in FvwmButtons.
 * Initial drawing and final undrawing of wire frame no longer
   toggles the pixel in the top left corner of the screen.
 
+* Fixed parsing of button geometries in FvwmButtons when the
+  geometry specificaiton appeared after another option with a comma
+  at the end.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.15 (24-Jan-2003)

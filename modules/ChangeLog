@@ -1,3 +1,8 @@
+2003-03-12  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* FvwmButtons/parse.c (ParseButton):
+	fixed parsing a button geometry option after a comma
+
 2003-03-02  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* FvwmButtons/FvwmButtons.c (Loop):
