@@ -1,3 +1,8 @@
+1999-03-17  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
+
+	* INSTALL.fvwm: add note about include directories for optional
+	libraries. 
+
 1999-03-16  Dominik Vogt  <dominik_vogt@hp.com>
 
 	* fvwm/menus.c (DoMenusOverlap): Use real numbers for the width
