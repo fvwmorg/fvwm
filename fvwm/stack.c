@@ -441,20 +441,18 @@ static void restack_windows(
 
   if (count <= 0)
   {
-    FvwmWindow *prev;
-
-    for (t = r, prev = NULL; prev != s; prev = t, t = t->stack_next)
+    for (count = 0, t = r->stack_next; t != s; t = t->stack_next)
     {
       count++;
       count += get_visible_icon_window_count(t);
     }
   }
   /* restack the windows between r and s */
-  wins = (Window*) safemalloc (count * sizeof (Window));
+  wins = (Window*) safemalloc ((count + 3) * sizeof (Window));
   i = 0;
   for (t = r->stack_next; t != s; t = t->stack_next)
   {
-    if (i >= count)
+    if (i > count)
     {
       fvwm_msg (ERR, "restack_windows", "more transients than expected");
       break;
@@ -469,16 +467,16 @@ static void restack_windows(
     }
   }
 
-  changes.sibling = (do_lower) ? r->frame : s->frame;
-  if (changes.sibling != None)
+  changes.sibling = r->frame;
+  if (changes.sibling == None)
   {
     changes.stack_mode = (do_lower) ? Below : Above;
-    flags = CWSibling|CWStackMode;
+    flags = CWStackMode;
   }
   else
   {
-    changes.stack_mode = (do_lower) ? Above : Below;
-    flags = CWStackMode;
+    changes.stack_mode = Below;
+    flags = CWStackMode | CWSibling;
   }
   XConfigureWindow (dpy, r->stack_next->frame, flags, &changes);
   XRestackWindows (dpy, wins, count);
@@ -561,9 +559,7 @@ static Bool __restack_window(
   /* detach t, so it doesn't make trouble in the loops */
   remove_window_from_stack_ring(t);
 
-  count = 1;
-  count += get_visible_icon_window_count(t);
-
+  count = 0;
   if (do_restack_transients)
   {
     /* collect the transients in a temp list */
@@ -574,8 +570,8 @@ static Bool __restack_window(
     {
       do_restack_transients = False;
     }
-    count++;
   }
+  count += 1 + get_visible_icon_window_count(t);
 
   test_layer = t->layer;
   if (do_lower)

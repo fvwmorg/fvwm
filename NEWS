@@ -10,6 +10,10 @@ Changes in stable release 2.4.13 (not released yet)
 * The Current, All, Pick, ThisWindow and PointerWindow commands
   imply the CirculateHitShaded condition.
 
+* Fixed a problem stacking iconified transients.
+
+* No more flickering when raising transients.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.12 (10-Oct-2002)
