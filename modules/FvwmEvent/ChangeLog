@@ -1,3 +1,7 @@
+1999-06-23  Dominik Vogt  <dominik_vogt@gmx.de>
+
+	* FvwmEvent.c (events): fixed list of events (core dump)
+
 1999-04-27  Steven Michael ROBBINS  <stever@jeff.cs.mcgill.ca>
 
 	* FvwmEvent.1: fixed incorrect statement about calling rsynth.
@@ -10,7 +14,7 @@
 
 1999-02-28  Matthias Clasen  <clasen@mathematik.uni-freiburg.de>
 
-	* Makefile.am (FvwmEvent_SOURCES): Remove Parse.c and Parse.h, 
+	* Makefile.am (FvwmEvent_SOURCES): Remove Parse.c and Parse.h,
 	use the corresponding functions from libs/ModParse.c.
 
 1999-01-08  Paul D. Smith  <psmith@gnu.org>

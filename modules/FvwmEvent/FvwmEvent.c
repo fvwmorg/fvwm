@@ -177,6 +177,8 @@ char	*events[MAX_MESSAGES+MAX_BUILTIN] =
 	"mini_icon",
 	"windowshade",
 	"dewindowshade",
+	"locksonsend",
+	"sendconfig",
 /* add builtins here */
 	"startup",
 	"shutdown",
