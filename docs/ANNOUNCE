@@ -1,7 +1,7 @@
 Fvwm-2.4.14 is a bug fixing release for all earlier 2.4.x
 versions.  It hopefully fixes the remaining stacking problems that
-appeared in 2.4.9 and.  Furthermore, the Key command works again
-as it used to before 2.4.13.
+appeared in 2.4.9.  Furthermore, the Key command works again as it
+used to before 2.4.13.
 
 Who needs it?
 -------------
