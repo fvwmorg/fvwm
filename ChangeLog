@@ -1,3 +1,9 @@
+2001-02-03  Dominik Vogt  <dominik.vogt@gmx.de>
+
+	* fvwm/read.c (ReadSubFunc):
+	fixed a core dump when using read or the -f option with an abosulute
+	path
+
 2001-01-19  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* fvwm/read.c (ReadSubFunc):

@@ -93,36 +93,41 @@ static void ReadSubFunc(XEvent *eventp,Window junk,FvwmWindow *tmp_win,
 
   if (piperead)
     fd = popen(filename,"r");
+  else if (ofilename[0] != '/')
+  {
+    /* find the home directory to look in */
+    Home = getenv("HOME");
+    if (Home != NULL)
+    {
+      home_file = safemalloc(strlen(Home) + strlen(ofilename)+3);
+      strcpy(home_file,Home);
+      strcat(home_file,"/");
+      strcat(home_file,ofilename);
+      filename = home_file;
+      fd = fopen(filename,"r");
+    }
+    else
+    {
+      fd = 0;
+    }
+    if (fd == 0)
+    {
+      if((filename != NULL)&&(filename!= ofilename))
+	free(filename);
+      /* find the home directory to look in */
+      Home = FVWM_CONFIGDIR;
+      home_file = safemalloc(strlen(Home) + strlen(ofilename)+3);
+      strcpy(home_file,Home);
+      strcat(home_file,"/");
+      strcat(home_file,ofilename);
+      filename = home_file;
+      fd = fopen(filename,"r");
+    }
+  }
   else
   {
-    if (ofilename[0] != '/')
-      {
-	/* find the home directory to look in */
-	Home = getenv("HOME");
-	if (Home != NULL) {
-	  home_file = safemalloc(strlen(Home) + strlen(ofilename)+3);
-	  strcpy(home_file,Home);
-	  strcat(home_file,"/");
-	  strcat(home_file,ofilename);
-	  filename = home_file;
-	  fd = fopen(filename,"r");
-        } else {
-          fd = 0;
-        }
-	if (fd == 0)
-	  {
-	    if((filename != NULL)&&(filename!= ofilename))
-	      free(filename);
-	    /* find the home directory to look in */
-	    Home = FVWM_CONFIGDIR;
-	    home_file = safemalloc(strlen(Home) + strlen(ofilename)+3);
-	    strcpy(home_file,Home);
-	    strcat(home_file,"/");
-	    strcat(home_file,ofilename);
-	    filename = home_file;
-	    fd = fopen(filename,"r");
-	  }
-      }
+    /* open file with absolute path */
+    fd = fopen(filename,"r");
   }
 
   if(fd == NULL)

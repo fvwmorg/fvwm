@@ -1,5 +1,8 @@
 Changes in official release 2.2.5 (not released yet)
 
+* Fixed a core dump when using the read command or the -f option with an
+  absolute path to a config file.
+
 * Security fix related to .fvwm2rc being searched in the current directory
   when $HOME is not set.
 
