@@ -7,6 +7,11 @@
 	* acinclude.m4:
 	cause configure print good usage with autoconf >= 2.53
 
+	* fvwm/fvwm2.1:
+	* docs/fvwm.lsm.in:
+	* NEWS:
+	updated dates for the 2.4.16 release
+
 2003-05-29  Mikhael Goikhman  <migo@homemail.com>
 
 	* fvwm/virtual.c (CMD_GotoDeskAndPage):
