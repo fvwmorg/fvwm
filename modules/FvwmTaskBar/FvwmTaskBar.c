@@ -244,7 +244,7 @@ static int ErrorHandler(Display*, XErrorEvent*);
 static Bool change_colorset(int cset, Bool force);
 int IsItemIndexIconSuppressed(List *list, int i);
 
-static void CopyStringWithQuotes(char **dest, const char *src)
+void CopyStringWithQuotes(char **dest, const char *src)
 {
 	while (src && src[0] == ' ')
 	{

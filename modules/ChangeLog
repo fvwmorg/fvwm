@@ -2,6 +2,7 @@
 
 	* FvwmPager/FvwmPager.c (ParseOptions):
 	* FvwmTaskBar/FvwmTaskBar.c (ParseConfigLine):
+	* FvwmTaskBar/Goodies.c (GoodiesParseConfig):
 	* FvwmButtons/parse.c (ParseConfigLine):
 	fixed double quotes in *Font configuration options;
 	the current solution is adding CopyStringWithQuotes()
