@@ -1,3 +1,8 @@
+2002-03-08  Dan Espen  <dane@mk.telcordia.com>
+
+	* FvwmForm/FvwmForm.c (PutDataInForm): Update buffer length when
+	data read into form by readdata.  Fixes core.
+
 2002-02-06  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* FvwmPager/FvwmPager.c (list_focus):
