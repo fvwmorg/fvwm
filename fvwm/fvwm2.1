@@ -6899,6 +6899,29 @@ PipeRead 'for i in $HOME/*; \\
   do echo "+ $i Exec xterm -e vi $i"; done'
 .EE
 
+Note: The
+.B PipeRead
+changes the pointer to a watch cursor by default during
+execution.  However, some commands, for example xwd, need to take
+control of the pointer themselves and do not work.  To disable the
+watch cursor, use the command prior to
+.B PipeRead
+.EX
+BusyCursor Read off
+.EE
+
+The
+.B PipeRead
+command executes synchronously.  If you want to
+.B Exec
+something, but need the command to run sunchronously,
+you might do something like:
+.EX
+PipeRead 'command 1>&2'
+.EE
+The redirection causes any output from the program to go to stderr
+instead of being read as a sequence of commands by fvwm.
+
 .TP
 .BI "Read " filename " [" quiet "]"
 Causes fvwm to read commands from the file named

@@ -1,5 +1,8 @@
 Changes in stable release 2.4.10 (not released yet)
 
+* The commands Maximize, Resize and ResizeMove can be used on icons
+  as it was in 2.2.x.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.9 (11-Aug-2002)

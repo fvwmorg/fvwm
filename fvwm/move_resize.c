@@ -597,7 +597,7 @@ void CMD_ResizeMove(F_CMD_ARGS)
 
   if (DeferExecution(eventp,&w,&tmp_win,&context, CRS_RESIZE, ButtonPress))
     return;
-  if (tmp_win == NULL || IS_ICONIFIED(tmp_win))
+  if (tmp_win == NULL)
     return;
   if (IS_FIXED(tmp_win))
     return;
@@ -2253,7 +2253,7 @@ void CMD_Resize(F_CMD_ARGS)
   bad_window = False;
   if (DeferExecution(eventp,&w,&tmp_win,&context, CRS_RESIZE, ButtonPress))
     return;
-  if (tmp_win == NULL || IS_ICONIFIED(tmp_win))
+  if (tmp_win == NULL)
     return;
 
   ResizeWindow = tmp_win->frame;
@@ -3221,7 +3221,7 @@ void CMD_Maximize(F_CMD_ARGS)
 
   if (DeferExecution(eventp,&w,&tmp_win,&context, CRS_SELECT,ButtonRelease))
     return;
-  if (tmp_win == NULL || IS_ICONIFIED(tmp_win))
+  if (tmp_win == NULL)
     return;
 
   if (check_if_function_allowed(F_MAXIMIZE,tmp_win,True,NULL) == 0)
