@@ -962,6 +962,14 @@ void list_new_desk(unsigned long *body)
     XClearWindow(dpy, Desks[0].w);
     XClearWindow(dpy, Desks[0].title_w);
   } /* if (fAlwaysCurrentDesk && oldDesk != Scr.CurrentDesk) */
+  else if (!fAlwaysCurrentDesk)
+  {
+    int i;
+
+    i = Scr.CurrentDesk - oldDesk;
+    XStoreName(dpy, Scr.Pager_w, Desks[i].label);
+    XSetIconName(dpy, Scr.Pager_w, Desks[i].label);
+  }
 
   MovePage(True);
   DrawGrid(oldDesk - desk1,1);

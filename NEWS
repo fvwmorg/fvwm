@@ -20,6 +20,9 @@ Changes in stable release 2.4.8 (not released yet)
 
 * Fixed a crash on a config with a new 2.5.x Colorset command.
 
+* Always display the current desk number in the FvwmPager window
+  title.
+
 Changes in stable release 2.4.7 (11-Apr-2002)
 
 * Fixed parsing of WindowList with conditions and a position at
