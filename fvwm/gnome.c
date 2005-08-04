@@ -876,8 +876,9 @@ CMD_GnomeShowDesks(F_CMD_ARGS)
 int
 GNOME_ProcessClientMessage(FvwmWindow *fwin, XEvent *ev)
 {
-  int x, y;
   Atom a;
+  long p0 = 0;
+  long p1 = 0;
 
   if (fwin != NULL  && DO_IGNORE_GNOME_HINTS(fwin))
     return 0;
@@ -885,24 +886,40 @@ GNOME_ProcessClientMessage(FvwmWindow *fwin, XEvent *ev)
   if (ev->xclient.message_type == a)
   {
     /* convert to integer grid */
-    x = ev->xclient.data.l[0] * Scr.MyDisplayWidth;
-    y = ev->xclient.data.l[1] * Scr.MyDisplayHeight;
+    p0 = ev->xclient.data.l[0] * Scr.MyDisplayWidth;
+    p1 = ev->xclient.data.l[1] * Scr.MyDisplayHeight;
+    if (p0 < 0 || p0 > 0x7fffffff || p1 < 0 || p1 > 0x7fffffff)
+    {
+      return 0;
+    }
+    MoveViewport(p0, p1, 1);
 
-    MoveViewport(x, y, 1);
     return 1;
   }
 
   a = XInternAtom(dpy, XA_WIN_WORKSPACE, False);
   if (ev->xclient.message_type == a)
   {
-    goto_desk(ev->xclient.data.l[0]);
+    p0 = ev->xclient.data.l[0];
+    if (p0 < 0 || p0 > 0x7fffffff)
+    {
+      return 0;
+    }
+    goto_desk(p0);
+
     return 1;
   }
 
   a = XInternAtom(dpy, XA_WIN_LAYER, False);
   if (ev->xclient.message_type == a && fwin)
   {
-    new_layer(fwin, ev->xclient.data.l[0]);
+    p0 = ev->xclient.data.l[0];
+    if (p0 < 0 || p0 > 0x7fffffff)
+    {
+      return 0;
+    }
+    new_layer(fwin, p0);
+
     return 1;
   }
 

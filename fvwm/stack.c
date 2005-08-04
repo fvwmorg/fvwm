@@ -1324,6 +1324,10 @@ void new_layer(FvwmWindow *tmp_win, int layer)
   int count;
   Bool do_lower;
 
+  if (layer < 0)
+  {
+    layer = 0;
+  }
   tmp_win = get_transientfor_top_fvwmwindow(tmp_win);
   if (layer == tmp_win->layer)
     return;
