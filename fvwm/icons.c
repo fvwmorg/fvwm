@@ -1223,12 +1223,15 @@ static void GetXPMFile(FvwmWindow *tmp_win)
  ****************************************************************************/
 void GetIconWindow(FvwmWindow *tmp_win)
 {
+  unsigned int w;
+  unsigned int h;
+  unsigned int bw;
+
   /* We are guaranteed that wmhints is non-null when calling this
    * routine */
   if (XGetGeometry(
 	dpy, tmp_win->wmhints->icon_window, &JunkRoot, &JunkX, &JunkY,
-	(unsigned int *)&tmp_win->icon_p_width,
-	(unsigned int *)&tmp_win->icon_p_height, &JunkBW, &JunkDepth) == 0)
+	&w, &h, &bw, &JunkDepth) == 0)
   {
     fvwm_msg(ERR,"GetIconWindow", "Window '%s' has a bad icon window!"
 	     " Ignoring icon window.",
@@ -1238,8 +1241,9 @@ void GetIconWindow(FvwmWindow *tmp_win)
     tmp_win->wmhints->flags &= ~IconWindowHint;
     return;
   }
-  tmp_win->icon_p_width += JunkBW<<1;
-  tmp_win->icon_p_height += JunkBW<<1;
+  tmp_win->icon_border_width = bw;
+  tmp_win->icon_p_width = w + 2 * bw;
+  tmp_win->icon_p_height = h + 2 * bw;
   /*
    * Now make the new window the icon window for this window,
    * and set it up to work as such (select for key presses

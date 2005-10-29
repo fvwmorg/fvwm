@@ -2364,17 +2364,14 @@ void HandleConfigureRequest(void)
 
       if (cre->value_mask & CWBorderWidth)
       {
-	      bw = cre->border_width;
+	      Tmp_win->icon_border_width = cre->border_width;
       }
-      else
-      {
-	      bw = 0;
-      }
+      bw = Tmp_win->icon_border_width;
       if ((cre->value_mask & (CWWidth | CWHeight)) ==
 	  (CWWidth | CWHeight))
       {
-	Tmp_win->icon_p_height = cre->height+ cre->border_width +
-	  cre->border_width;
+	Tmp_win->icon_p_height = cre->height + 2 * bw;
+	Tmp_win->icon_p_width = cre->width + 2 * bw;
       }
     }
     else if((Tmp_win)&&((Tmp_win->icon_w == cre->window)))

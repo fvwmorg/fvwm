@@ -9,6 +9,8 @@ Changes in stable release 2.4.20 (not released yet)
 
 * Reject some invalid GNOME hints.
 
+* Fixed a loop when xterm changes its "active icon" size.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.19 (30-Sep-2004)
