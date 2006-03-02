@@ -11,6 +11,9 @@ Changes in stable release 2.4.20 (not released yet)
 
 * Fixed a loop when xterm changes its "active icon" size.
 
+* The configure script can now cope with four-part version numbers
+  when detecting some libraries.
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.19 (30-Sep-2004)

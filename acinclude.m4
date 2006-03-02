@@ -363,11 +363,11 @@ AC_ARG_ENABLE(gtktest, [  --disable-gtktest       do not try to compile and run 
     GTK_CFLAGS=`$GTK_CONFIG $gtk_config_args --cflags`
     GTK_LIBS=`$GTK_CONFIG $gtk_config_args --libs`
     gtk_config_major_version=`$GTK_CONFIG $gtk_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+           sed 's/^[[^0-9.]]*\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*$/\1/'`
     gtk_config_minor_version=`$GTK_CONFIG $gtk_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+           sed 's/^[[^0-9.]]*\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*$/\2/'`
     gtk_config_micro_version=`$GTK_CONFIG $gtk_config_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+           sed 's/^[[^0-9.]]*\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*$/\3/'`
     if test "x$enable_gtktest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
@@ -557,9 +557,9 @@ AC_ARG_ENABLE(imlibtest, [  --disable-imlibtest     do not try to compile and ru
     IMLIB_LIBS=`$IMLIBCONF $imlibconf_args --libs`
 
     imlib_major_version=`$IMLIBCONF $imlib_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+           sed 's/^[[^0-9.]]*\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*$/\1/'`
     imlib_minor_version=`$IMLIBCONF $imlib_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+           sed 's/^[[^0-9.]]*\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*$/\2/'`
     if test "x$enable_imlibtest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
@@ -696,9 +696,9 @@ AC_ARG_ENABLE(imlibtest, [  --disable-imlibtest     do not try to compile and ru
     GDK_IMLIB_LIBS=`$IMLIBCONF $imlibconf_args --libs-gdk`
 
     imlib_major_version=`$IMLIBCONF $imlib_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+           sed 's/^[[^0-9.]]*\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*$/\1/'`
     imlib_minor_version=`$IMLIBCONF $imlib_args --version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+           sed 's/^[[^0-9.]]*\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*$/\2/'`
     if test "x$enable_imlibtest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
