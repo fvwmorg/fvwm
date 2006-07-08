@@ -18,7 +18,7 @@
 int  s;    /* socket handle */
 FILE *sp;
 char *name;  /* name of this program at executing time */
-char *getline();
+char *get_line();
 
 
 /******************************************/
@@ -90,7 +90,7 @@ int main ( int argc, char *argv[]) {
 	/* loop of get user's command and send it to server */
 	while( 1 ) {
 
-	  cmd = getline();
+	  cmd = get_line();
 	  if (cmd == NULL) {
 		break;
 	  }

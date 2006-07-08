@@ -255,9 +255,9 @@ if test "$xpm_LIBS"; then
 
   if test "$with_xpm" = yes; then
     AC_DEFINE(XPM)
-    FVWMBANNER=FvwmBanner AC_SUBST(FVWMBANNER)
-    XPMROOT=xpmroot AC_SUBST(XPMROOT)
-    FVWMSCRIPT=FvwmScript AC_SUBST(FVWMSCRIPT)
+    FVWMBANNER="FvwmBanner$EXEEXT" AC_SUBST(FVWMBANNER)
+    XPMROOT="xpmroot$EXEEXT" AC_SUBST(XPMROOT)
+    FVWMSCRIPT="FvwmScript$EXEEXT" AC_SUBST(FVWMSCRIPT)
     XPMROOT_NEW_NAME_SYMLINKS=
   else
     xpm_LIBS=
@@ -501,7 +501,7 @@ AC_ARG_ENABLE(
 	enable_gtktest="$enableval", enable_gtktest=yes)
 if test x"$enable_gtktest" = xyes; then
 	AM_PATH_GTK(1.1.0,[
-		FVWMGTK=FvwmGtk AC_SUBST(FVWMGTK)
+		FVWMGTK="FvwmGtk$EXEEXT" AC_SUBST(FVWMGTK)
 		MANFVWMGTK=FvwmGtk.1 AC_SUBST(MANFVWMGTK)
 		FVWMGTKDEBUG=FvwmGtkDebug AC_SUBST(FVWMGTKDEBUG)
 		MANFVWMGTKDEBUG=FvwmGtkDebug.1 AC_SUBST(MANFVWMGTKDEBUG)

@@ -2,6 +2,12 @@
 
 Changes in stable release 2.4.20 (not released yet)
 
+* The configure script now correctly appends executable file
+  extensions to conditionally built binaries. Fixes building on
+  Cygwin.
+
+* FvwmConsole no longer conflicts with getline of Cygwin's stdio.
+
 * Fixed parsing of For loops in FvwmScript.
 
 * Fixed a possible endless loop when de-iconifying a transient

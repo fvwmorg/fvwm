@@ -1,3 +1,10 @@
+2006-07-08  Viktor Griph  <griph@dd.chalmers.se>
+
+	* FvwmConsole/FvwmConsoleC.c (main): 
+	* FvwmConsole/getline.c: 
+	Renamed getline function to get_line to fix compability with
+	Cygwin's stdio.
+
 2004-10-03  Dominik Vogt  <dominik.vogt@gmx.de>
 
 	* FvwmScript/Instructions.c (Loop):
