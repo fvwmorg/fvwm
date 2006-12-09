@@ -6,7 +6,7 @@ noinst_LIBRARIES = libfvwm.a
 libfvwm_a_SOURCES = ClientMsg.h Colorset.h Grab.h Module.h Parse.h Picture.h \
 	Strings.h defaults.h envvar.h fvwmlib.h fvwmsignal.h lang-strings.h \
 	FScreen.h FShape.c FShape.h fvwmrect.h \
-	safemalloc.h vpacket.h wild.h \
+	safemalloc.h vpacket.h wild.h fvwm_sys_stat.h \
 	Graphics.c Parse.c Picture.c Bindings.c Colorset.c Event.c envvar.c \
 	ColorUtils.c XResource.c Module.c WinMagic.c Target.c System.c \
 	FScreen.c \
