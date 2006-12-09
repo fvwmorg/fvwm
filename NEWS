@@ -20,6 +20,11 @@ Changes in stable release 2.4.20 (not released yet)
 * The configure script can now cope with four-part version numbers
   when detecting some libraries.
 
+* Security fixes in
+
+     fvwm-menu-directory. (CVE-2006-5969)
+     FvwmCommand
+
 -------------------------------------------------------------------
 
 Changes in stable release 2.4.19 (30-Sep-2004)

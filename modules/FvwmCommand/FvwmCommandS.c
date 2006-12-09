@@ -30,7 +30,6 @@
 #include "libs/fvwmsignal.h"
 
 #define MYNAME   "FvwmCommandS"
-#define MAXHOSTNAME 32
 
 static int Fd[2]; /* pipes to fvwm */
 static int FfdC; /* command fifo file discriptors */
@@ -41,7 +40,6 @@ static char *FfdC_name, *FfdM_name; /* fifo names */
 
 static ino_t FfdC_ino, FfdM_ino; /* fifo inode numbers */
 
-static char hostname[MAXHOSTNAME];
 
 int open_fifos(const char *f_stem);
 void close_fifos(void);
@@ -165,28 +163,10 @@ void server (char *name)
 
   if (name == NULL)
   {
-    char *dpy_name;
-
-    /* default name */
-    dpy_name = getenv("DISPLAY");
-    if (!dpy_name)
-      dpy_name = ":0";
-    if (strncmp(dpy_name, "unix:", 5) == 0)
-      dpy_name += 4;
-    f_stem = safemalloc(11 + strlen(F_NAME) + MAXHOSTNAME + strlen(dpy_name));
-    if ((stat("/var/tmp", &stat_buf) == 0) && (stat_buf.st_mode & S_IFDIR))
-      strcpy (f_stem, "/var/tmp/");
-    else
-      strcpy (f_stem, "/tmp/");
-    strcat(f_stem, F_NAME);
-
-    /* Make it unique */
-    if (!dpy_name[0] || ':' == dpy_name[0])
-    {
-      gethostname(hostname, MAXHOSTNAME);
-      strcat(f_stem, hostname);  /* Put hostname before dpy if not there */
-    }
-    strcat(f_stem, dpy_name);
+     if ((f_stem = fifos_get_default_name()) == NULL)
+     {
+	exit(-1);
+     }
   }
   else
   {
@@ -405,7 +385,7 @@ int open_fifos(const char *f_stem)
   strcat(FfdM_name, "M");
 
   /* check to see if another FvwmCommandS is running by trying to talk to it */
-  FfdC = open(FfdC_name, O_RDWR | O_NONBLOCK);
+  FfdC = open(FfdC_name, O_RDWR | O_NONBLOCK | O_NOFOLLOW);
   /* remove the fifo's if they exist */
   unlink(FfdM_name);
   unlink(FfdC_name);
@@ -431,12 +411,12 @@ int open_fifos(const char *f_stem)
     return -1;
   }
 
-  if ((FfdM = open(FfdM_name, O_RDWR | O_NONBLOCK)) < 0)
+  if ((FfdM = open(FfdM_name, O_RDWR | O_NONBLOCK | O_NOFOLLOW)) < 0)
   {
     err_msg("opening message fifo");
     return -1;
   }
-  if ((FfdC = open(FfdC_name, O_RDWR | O_NONBLOCK)) < 0)
+  if ((FfdC = open(FfdC_name, O_RDWR | O_NONBLOCK | O_NOFOLLOW)) < 0)
   {
     err_msg("opening command fifo");
     return -1;

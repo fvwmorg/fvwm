@@ -470,7 +470,7 @@ AC_FUNC_ALLOCA
 AC_FUNC_STRFTIME
 AC_CHECK_FUNCS(gettimeofday mkfifo putenv setvbuf socket waitpid)
 AC_CHECK_FUNCS(strdup strstr strtol memmove memcpy strchr sysconf uname div)
-AC_CHECK_FUNCS(sigaction siginterrupt getpwuid)
+AC_CHECK_FUNCS(sigaction siginterrupt getpwuid lstat)
 
 pds_CHECK_TYPE(sig_atomic_t, int, [#include <signal.h>])
 

@@ -240,3 +240,15 @@
 #endif
 
 #include "libs/defaults.h"
+
+#ifndef O_NOFOLLOW
+#  define O_NOFOLLOW 0
+#endif
+
+#ifdef HAVE_LSTAT
+#  define DO_USE_LSTAT 1
+#  define fvwm_lstat(x,y) lstat(x,y)
+#else
+#  define DO_USE_LSTAT 0
+#  define fvwm_lstat(x,y) -1
+#endif
