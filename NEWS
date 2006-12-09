@@ -1,6 +1,6 @@
 -------------------------------------------------------------------
 
-Changes in stable release 2.4.20 (not released yet)
+Changes in stable release 2.4.20 (6-Dec-2006)
 
 * The configure script now correctly appends executable file
   extensions to conditionally built binaries. Fixes building on

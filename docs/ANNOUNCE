@@ -1,14 +1,13 @@
-fvwm-2.4.19 maintenance release for all earlier 2.4.x versions.
-It contains a number of minor fixes.
+fvwm-2.4.20 maintenance release for all earlier 2.4.x versions.
+It contains a number of minor fixes and one important security fix.
 
 This release is available at the home page: http://www.fvwm.org/.
 
 Who needs to upgrade?
 ---------------------
 
-Because of the security issues with fvwm-2.3.4 to fvwm-2.4.17, it
-is strongly recommended to upgrade from fvwm-2.4.17 or
-earlier. Upgrading from 2.4.18 is optional.
+Because of the security issues with fvwm-2.3.4 to fvwm-2.4.19, it
+is strongly recommended to upgrade to fvwm-2.4.19.
 
 System administrators are encouraged to install this version to
 grant their users access to the latest stable version.
@@ -16,33 +15,25 @@ grant their users access to the latest stable version.
 Bug Fixes:
 ----------
 
-* Fixed BackingStore style option.
+* The configure script now correctly appends executable file
+  extensions to conditionally built binaries. Fixes building on
+  Cygwin.
 
-* Fixed MoveToDesk commend with a single argument.
+* FvwmConsole no longer conflicts with getline of Cygwin's stdio.
 
-* Allow whitespace in menu names.
+* Fixed parsing of For loops in FvwmScript.
 
-* Fixed a hang when restarting FvwmCommand or FvwmConsole.
+* Fixed a possible endless loop when de-iconifying a transient
+  window.
 
-* A double click no longer occurs when two different mouse
-  buttons are pressed.
+* Reject some invalid GNOME hints.
 
-* Fixed a relief drawing problem in FvwmWinList.
+* Fixed a loop when xterm changes its "active icon" size.
 
-* Fixed traveling windows on restart if a window used non NorthWest
-  gravity and changed that before the restart.
+* The configure script can now cope with four-part version numbers
+  when detecting some libraries.
 
-* Fixed installation of FvwmGtk.1 for debian (with DESTDIR set).
+* Security fixes in
 
-* The clock in FvwmTaskBar is redrawn immediately when its colour
-  changes.
-
-* The option CurrentGlobalPageAnyDesk was accidentally named
-  CurrentGlobbalPageAnyDesk before.
-
-* Fixed a problem with fvwm startup and shutdown when the pointer
-  was grabbed by another application.
-
-* Fixed parsing of the Pointer option to the Move command.
-
-* Fixed handling of MWM hints on 64 bit machines.
+     fvwm-menu-directory. (CVE-2006-5969)
+     FvwmCommand

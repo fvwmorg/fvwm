@@ -1,5 +1,9 @@
 2006-12-09  Viktor Griph  <griph@dd.chalmers.se>
 
+	* NEWS:
+	* fvwm/fvwm2.1:
+	updated for 2.4.20
+
 	* libs/fvwm_sys_stat.h:
 	* configure.in:
 	* acconfig.h:
