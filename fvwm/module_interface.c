@@ -320,6 +320,7 @@ static fmodule *do_execute_module(
 	if (action == NULL)
 	{
 		free(args);
+		free_module(module);
 
 		return NULL;
 	}
@@ -337,6 +338,7 @@ static fmodule *do_execute_module(
 	if (!cptr)
 	{
 		free(args);
+		free_module(module);
 
 		return NULL;
 	}
@@ -358,6 +360,7 @@ static fmodule *do_execute_module(
 		}
 		free(args);
 		free(cptr);
+		free_module(module);
 
 		return NULL;
 	}
@@ -388,6 +391,7 @@ static fmodule *do_execute_module(
 		free(arg1);
 		free(cptr);
 		free(args);
+		free_module(module);
 
 		return NULL;
 	}
@@ -400,6 +404,7 @@ static fmodule *do_execute_module(
 		close(fvwm_to_app[0]);
 		close(fvwm_to_app[1]);
 		free(args);
+		free_module(module);
 
 		return NULL;
 	}

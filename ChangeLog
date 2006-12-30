@@ -6,6 +6,9 @@
 	renamed struct module member "pipeName" and "pipeAlias" to "name"
 	and "alias"
 
+	* fvwm/module_interface.c (do_execute_module):
+	fixed possible memory leak
+
 2006-12-30  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
 	* fvwm/events.c (My_XNextEvent):
