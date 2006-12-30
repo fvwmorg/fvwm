@@ -1,5 +1,11 @@
 2006-12-30  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
+	* fvwm/module_interface.c (module_insert):
+	(module_free):
+	(KillModule):
+	(ClosePipes):
+	append modules at end of list
+
 	* fvwm/events.c (My_XNextEvent):
 	fixed core
 

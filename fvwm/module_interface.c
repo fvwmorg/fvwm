@@ -64,6 +64,7 @@
 
 /* the linked list dummy header */
 static fmodule *module_list;
+static fmodule *module_list_last;
 
 typedef struct
 {
@@ -119,8 +120,15 @@ static fmodule *module_alloc(void)
 
 static inline void module_insert(fmodule *module)
 {
-	module->next = module_list;
-	module_list = module;
+	if (module_list_last == NULL)
+	{
+		module_list = module;
+	}
+	else
+	{
+		module_list_last->next = module;
+	}
+	module_list_last = module;
 
 	return;
 }
@@ -234,6 +242,7 @@ void initModules(void)
 	DBUG("initModules", "initializing the module list header");
 	/* the list is empty */
 	module_list = NULL;
+	module_list_last = NULL;
 	/* fixme! don't use fdsets for this stuff */
 	FD_ZERO(&init_fdset);
 
@@ -244,14 +253,13 @@ void ClosePipes(void)
 {
 	fmodule *module;
 
-	while (module_list != NULL)
+	for (module = module_list; module != NULL; module = module->next)
 	{
-		/* remove the module from the list*/
-		module = module_list;
-		module_list = module->next;
-		/* terminate it */
 		module_free(module);
 	}
+	module_list = NULL;
+	module_list_last = NULL;
+
 	return;
 }
 
@@ -285,7 +293,6 @@ static fmodule *do_execute_module(
 
 		return NULL;
 	}
-	module_insert(module);
 
 	args = (char **)safemalloc(7 * sizeof(char *));
 
@@ -380,6 +387,7 @@ static fmodule *do_execute_module(
 		return NULL;
 	}
 
+	module_insert(module);
 	module->pipeName = stripcpy(cptr);
 	free(cptr);
 	sprintf(arg2, "%d", app_to_fvwm[1]);
@@ -901,6 +909,10 @@ void KillModule(fmodule *module)
 	{
 		DBUG("KillModule", "Removing from module list");
 		module_list = module->next;
+		if (module == module_list_last)
+		{
+			module_list_last = NULL;
+		}
 	}
 	else
 	{
@@ -923,6 +935,10 @@ void KillModule(fmodule *module)
 		{
 			DBUG("KillModule", "Removing from module list");
 			parent->next = module->next;
+			if (module == module_list_last)
+			{
+				module_list_last = parent;
+			}
 		}
 		else
 		{
