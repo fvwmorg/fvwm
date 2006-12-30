@@ -3968,7 +3968,7 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 		for (; module != NULL; module = module_get_next(module))
 		{
 /* fixme - shouldn't use fdsets for this */
-			if (FD_ISSET((int)module, &init_fdset))
+			if (FD_ISSET(module->slot, &init_fdset))
 			{
 				break;
 			}
