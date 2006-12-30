@@ -91,7 +91,8 @@ void ModuleConfig(char *action)
 	/* save for config request */
 	new_entry = AddToModList(action);
 	/* look at all possible pipes */
-	for (module=module_list.next;module!=NULL;module=module->next)
+	module = module_get_next(NULL);
+	for (; module != NULL; module = module_get_next(module))
 	{
 		if (IS_MESSAGE_SELECTED(module, M_SENDCONFIG))
 		{
@@ -355,7 +356,7 @@ void CMD_Send_ConfigInfo(F_CMD_ARGS)
 	char *match;
 	/* get length once for efficiency */
 	int match_len = 0;
-	fmodule *mod = (fmodule*)(exc->m.module);
+	fmodule *mod = exc->m.module;
 
 	send_desktop_geometry(mod);
 	/* send ImagePath and ColorLimit first */

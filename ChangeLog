@@ -1,5 +1,17 @@
 2006-12-30  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
+	* fvwm/module_interface.c (KillModule):
+	* fvwm/events.c (My_XNextEvent):
+	* fvwm/execcontext.h:
+	* fvwm/modconf.c (CMD_Send_ConfigInfo):
+	(ModuleConfig):
+	* fvwm/stack.c (BroadcastRestack):
+	cleanup
+
+	* fvwm/module_interface.c (module_get_next):
+	* fvwm/module_interface.h:
+	new function
+
 	* fvwm/modconf.c (ModuleConfig):
 	(SendConfigToModule):
 	(send_xinerama_state):

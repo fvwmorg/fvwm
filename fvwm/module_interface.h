@@ -30,9 +30,6 @@ typedef struct fmodule
 	struct fmodule *next;
 } fmodule;
 
-/* module linked list header (first, dummy element) */
-extern fmodule module_list;
-
 /*
  * I needed sendconfig off  to  identify open  pipes that want  config
  * info messages while active.
@@ -71,6 +68,7 @@ extern fmodule module_list;
  * send a copy of the command in an M_CONFIG_INFO command.
  */
 
+fmodule *module_get_next(fmodule *prev);
 void initModules(void);
 Bool HandleModuleInput(Window w, fmodule *module, char *expect, Bool queue);
 void KillModule(fmodule *module);

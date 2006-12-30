@@ -63,7 +63,7 @@
 #endif
 
 /* the linked list dummy header */
-fmodule module_list;
+static fmodule *module_list;
 
 typedef struct
 {
@@ -128,8 +128,7 @@ void initModules(void)
 {
 	DBUG("initModules", "initializing the module list header");
 	/* the list is empty */
-	module_list.next=NULL; 
-
+	module_list = NULL;
 	/* fixme! don't use fdsets for this stuff */
 	FD_ZERO(&init_fdset);
 
@@ -140,11 +139,11 @@ void ClosePipes(void)
 {
 	fmodule *module;
 
-	while (module_list.next!=NULL)
+	while (module_list != NULL)
 	{
 		/* remove the module from the list*/
-		module = module_list.next;
-		module_list.next = module->next;
+		module = module_list;
+		module_list = module->next;
 		/* terminate it */
 		FreeModule(module);
 	}
@@ -268,8 +267,8 @@ static fmodule *do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_onl
 	DBUG("executeModule", "creating the module record\n");
 	/* all ok, create the space and insert into the list */
 	module = (fmodule *)safemalloc(sizeof(fmodule));
-	module->next = module_list.next;
-	module_list.next=module;
+	module->next = module_list;
+	module_list=module;
 
 	module->pipeAlias = NULL;
 	module->pipeName = stripcpy(cptr);
@@ -821,40 +820,51 @@ void FreeModule(fmodule *module)
 
 void KillModule(fmodule *module)
 {
-	fmodule *parent, *current;
-
-	if (module==NULL)
+	if (module == NULL)
 	{
 		return;
 	}
-
-	/* find it*/
-	for (current=module_list.next, parent=&module_list;
-			current!=NULL;
-			current=current->next, parent=parent->next)
+	if (module == module_list)
 	{
-		if (current==module)
-			break;
-	}
-
-	/* remove from the list */
-	if (parent->next==NULL)
-	{
-		fvwm_msg(ERR, "killModule",
-				"Tryed to kill a not listed module!");
-		return;
+		DBUG("KillModule", "Removing from module list");
+		module_list = module->next;
 	}
 	else
 	{
-		DBUG("KillModule", "Removing from module list");
-		parent->next = module->next;
-	}
+		fmodule *parent;
+		fmodule *current;
 
+		/* find it*/
+		for (
+			current = module_list->next, parent = module_list;
+			current != NULL;
+			parent = current, current = current->next)
+		{
+			if (current == module)
+			{
+				break;
+			}
+		}
+		/* remove from the list */
+		if (current != NULL)
+		{
+			DBUG("KillModule", "Removing from module list");
+			parent->next = module->next;
+		}
+		else
+		{
+			fvwm_msg(
+				ERR, "killModule",
+				"Tried to kill a not listed module!");
+
+			return;
+		}
+	}
 	/* free it */
 	FreeModule(module);
-
 /* fixme - don't use fdsets for this stuff */
-	if (fFvwmInStartup) {
+	if (fFvwmInStartup)
+	{
 		/* remove from list of command line modules */
 		DBUG("KillModule", "ending command line module");
 		FD_CLR((int)module, &init_fdset);
@@ -871,7 +881,7 @@ static void KillModuleByName(char *name, char *alias)
 	{
 		return;
 	}
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		if (module->pipeName != NULL &&
 		 		matchWildcards(name,module->pipeName) &&
@@ -1063,7 +1073,7 @@ BroadcastPacket(unsigned long event_type, unsigned long num_datum, ...)
 	va_start(ap,num_datum);
 	make_vpacket(body, event_type, num_datum, ap);
 	va_end(ap);
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		PositiveWrite(
 			module, body,
@@ -1103,7 +1113,7 @@ static void BroadcastNewPacket(unsigned long event_type,
 	va_start(ap,num_datum);
 	plen = make_new_vpacket(body, event_type, num_datum, ap);
 	va_end(ap);
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		PositiveWrite(module, (void *) &body, plen);
 	}
@@ -1289,7 +1299,7 @@ BroadcastName(unsigned long event_type,
 		return;
 	}
 	body = make_named_packet(&l, event_type, name, 3, data1, data2, data3);
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		PositiveWrite(module, body, l*sizeof(unsigned long));
 	}
@@ -1397,7 +1407,7 @@ BroadcastFvwmPicture(
 	body = make_named_packet(
 		&l, event_type, name, 9, data1, data2, data3, data4, data5,
 		data6, data7, data8, data9);
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		PositiveWrite(module, body, l*sizeof(unsigned long));
 	}
@@ -1415,7 +1425,7 @@ void BroadcastColorset(int n)
 	char *buf;
 
 	buf = DumpColorset(n, &Colorset[n]);
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		SendName(module, M_CONFIG_INFO, 0, 0, 0, buf);
 	}
@@ -1431,7 +1441,7 @@ void BroadcastPropertyChange(unsigned long argument, unsigned long data1,
 {
 	fmodule *module;
 
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		SendName(module, MX_PROPERTY_CHANGE, argument, data1, data2,
 				string);
@@ -1447,7 +1457,7 @@ void BroadcastConfigInfoString(char *string)
 {
 	fmodule *module;
 
-for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		SendName(module, M_CONFIG_INFO, 0, 0, 0, string);
 	}
@@ -1518,7 +1528,7 @@ void CMD_SendToModule(F_CMD_ARGS)
 		data2 = 0;
 	}
 
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		if ((module->pipeName != NULL &&
 				 matchWildcards(name,module->pipeName))
@@ -1845,7 +1855,7 @@ void FlushAllMessageQueues(void)
 {
 	fmodule *module;
 
-	for (module=module_list.next;module!=NULL;module=module->next)
+	for (module=module_list;module!=NULL;module=module->next)
 	{
 		FlushMessageQueue(module->next);
 	}
@@ -2120,25 +2130,29 @@ char *skipModuleAliasToken(const char *string)
 	return NULL;
 #undef is_valid_first_alias_char
 #undef is_valid_alias_char
-
 }
 
 int countModules()
 {
 	int i=0;
 	fmodule *module;
-	for (module=module_list.next;module!=NULL;module=module->next)
+
+	for (module=module_list;module!=NULL;module=module->next)
+	{
 		i++;
+	}
+
 	return i;
 }
 
-/*
- * returns a pointer to the next module in the list
- * useful to hide the module structure
- */
-/*
-fmodule *getNext(fmodule *module)
+fmodule *module_get_next(fmodule *prev)
 {
-		return module->next;
+	if (prev == NULL)
+	{
+		return module_list;
+	}
+	else
+	{
+		return prev->next;
+	}
 }
-*/

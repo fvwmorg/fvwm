@@ -1079,10 +1079,11 @@ static void BroadcastRestack(FvwmWindow *s1, FvwmWindow *s2)
 			*(bp++) = FW_W_FRAME(fw);
 			*(bp++) = (unsigned long)fw;
 		}
-		for (module=module_list.next;module!=NULL;module=module->next)
+		module = module_get_next(NULL);
+		for (; module != NULL; module = module_get_next(module))
 		{
-			PositiveWrite(module, body,
-						 length*sizeof(unsigned long));
+			PositiveWrite(
+				module, body, length*sizeof(unsigned long));
 		}
 		free(body);
 	}

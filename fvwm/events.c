@@ -3964,7 +3964,8 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 	/* check for termination of all startup modules */
 	if (fFvwmInStartup)
 	{
-		for (module=module_list.next;module!=NULL;module=module->next)
+		module = module_get_next(NULL);
+		for (; module != NULL; module = module_get_next(module))
 		{
 /* fixme - shouldn't use fdsets for this */
 			if (FD_ISSET((int)module, &init_fdset))
@@ -3972,14 +3973,17 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 				break;
 			}
 		}
-		if (module == NULL || module->next == NULL) /* last module */
+		if (module == NULL || module_get_next(module) == NULL)
 		{
-			DBUG("My_XNextEvent", "Starting up after command"
-			     " lines modules");
-			timeoutP = NULL; /* set an infinite timeout to stop
-					  * ticking */
-			StartupStuff(); /* This may cause X requests to be sent
-					 * */
+			/* last module */
+			DBUG(
+				"My_XNextEvent",
+				"Starting up after command lines modules");
+			/* set an infinite timeout to stop ticking */
+			timeoutP = NULL;
+			/* This may cause X requests to be sent */
+			StartupStuff();
+
 			return 0; /* so return without select()ing */
 		}
 	}
@@ -4037,10 +4041,11 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 			FD_SET(sm_fd, &in_fdset);
 		}
 
-		for (module=module_list.next;module!=NULL;module=module->next)
+		module = module_get_next(NULL);
+		for (; module != NULL; module = module_get_next(module))
 		{
 			/* should we really do this test? */
-			if (module->readPipe>=0)
+			if (module->readPipe >= 0)
 			{
 				FD_SET(module->readPipe, &in_fdset);
 			}
@@ -4068,9 +4073,12 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 	if (num_fd > 0)
 	{
 		/* Check for module input. */
-		for (module=module_list.next;module!=NULL;module=module->next)
+		module = module_get_next(NULL);
+		for (; module != NULL; module = module_get_next(module))
 		{
-			if (FD_ISSET(module->readPipe, &in_fdset))
+			if (
+				module->readPipe >= 0 &&
+				FD_ISSET(module->readPipe, &in_fdset))
 			{
 				if (read(module->readPipe, &targetWindow,
 					 sizeof(Window)) > 0)
@@ -4090,7 +4098,9 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 					KillModule(module);
 				}
 			}
-			if (FD_ISSET(module->writePipe, &out_fdset))
+			if (
+				module->writePipe >= 0 &&
+				FD_ISSET(module->writePipe, &out_fdset))
 			{
 				DBUG("My_XNextEvent",
 				     "calling FlushMessageQueue");
