@@ -48,10 +48,6 @@ typedef struct
 struct fmodule;
 typedef struct
 {
-	/*
-	 * using a void pointer allows us to not include module_interface.h
-	 * here, although it then requires the use of typecasting
-	 */
 	struct fmodule *module;
 } module_context_t;
 
