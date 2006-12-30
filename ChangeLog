@@ -1,6 +1,55 @@
 2006-12-30  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
+
+	* fvwm/module_interface.c (ExecuteModuleCommand):
+	(PositiveWrite):
+	(KillModuleByName):
+	(BroadcastPacket):
+	(BroadcastNewPacket):
+	(BroadcastName):
+	(BroadcastFvwmPicture):
+	(BroadcastColorset):
+	(BroadcastPropertyChange):
+	(BroadcastConfigInfoString):
+	(CMD_SendToModule):
+	(FlushAllMessageQueues):
+	(countModules):
+	(CMD_set_mask):
+	(CMD_set_sync_mask):
+	(CMD_set_nograb_mask):
+	cleanup
+	(skipModuleAliasToken):
+	use MAX_MODULE_ALIAS_LEN
+
 	* fvwm/module_interface.c (KillModule):
+	(do_execute_module):
+	(module_alloc):
+	added a "slot" member to the module struct to fix the init_fdset hack
+	for now
+
+	* libs/defaults.h (MAX_NUM_MODULES):
+	(MAX_MODULE_ALIAS_LEN):
+	new config values
+
+	* fvwm/module_interface.c (do_execute_module):
+	rewrote module struct initialization
+	(HandleModuleInput):
+	use %p to print module address, don't cast it to int
+
+	* fvwm/module_interface.c (ClosePipes):
+	(KillModule):
+	use free_module
+	(msg_mask_set):
+	(module_insert):
+	(module_alloc):
+	new functions()
+
+	* fvwm/module_interface.c (FreeModule):
+	(module_free):
+	renamed function
+
+	* fvwm/module_interface.c (KillModule):
+	(FreeModule):
 	* fvwm/events.c (My_XNextEvent):
 	* fvwm/execcontext.h:
 	* fvwm/modconf.c (CMD_Send_ConfigInfo):

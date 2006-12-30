@@ -18,6 +18,7 @@ typedef struct msg_masks_t
 /* module linked list record*/
 typedef struct fmodule
 {
+	int slot;
 	int readPipe;
 	int writePipe;
 	fqueue pipeQueue;
@@ -26,7 +27,6 @@ typedef struct fmodule
 	msg_masks_t SyncMask;
 	char *pipeName;
 	char *pipeAlias;
-
 	struct fmodule *next;
 } fmodule;
 
@@ -75,24 +75,30 @@ void KillModule(fmodule *module);
 void ClosePipes(void);
 void BroadcastPacket(unsigned long event_type, unsigned long num_datum, ...);
 void BroadcastConfig(unsigned long event_type, const FvwmWindow *t);
-void BroadcastName(unsigned long event_type, unsigned long data1,
-		   unsigned long data2, unsigned long data3, const char *name);
+void BroadcastName(
+	unsigned long event_type, unsigned long data1,
+	unsigned long data2, unsigned long data3, const char *name);
 void BroadcastWindowIconNames(FvwmWindow *t, Bool window, Bool icon);
-void BroadcastFvwmPicture(unsigned long event_type,
-			  unsigned long data1, unsigned long data2,
-			  unsigned long data3, FvwmPicture *picture, char *name);
-void BroadcastPropertyChange(unsigned long argument, unsigned long data1,
-			     unsigned long data2, char *string);
+void BroadcastFvwmPicture(
+	unsigned long event_type,
+	unsigned long data1, unsigned long data2,
+	unsigned long data3, FvwmPicture *picture, char *name);
+void BroadcastPropertyChange(
+	unsigned long argument, unsigned long data1,
+	unsigned long data2, char *string);
 void BroadcastColorset(int n);
 void BroadcastConfigInfoString(char *string);
 void broadcast_xinerama_state(void);
 void broadcast_ignore_modifiers(void);
 
-void SendPacket(fmodule *module, unsigned long event_type,
-		unsigned long num_datum, ...);
-void SendConfig(fmodule *module, unsigned long event_type, const FvwmWindow *t);
-void SendName(fmodule *module, unsigned long event_type, unsigned long data1,
-	      unsigned long data2, unsigned long data3, const char *name);
+void SendPacket(
+	fmodule *module, unsigned long event_type, unsigned long num_datum,
+	...);
+void SendConfig(
+	fmodule *module, unsigned long event_type, const FvwmWindow *t);
+void SendName(
+	fmodule *module, unsigned long event_type, unsigned long data1,
+	unsigned long data2, unsigned long data3, const char *name);
 void FlushAllMessageQueues(void);
 void FlushMessageQueue(fmodule *module);
 void ExecuteCommandQueue(void);
