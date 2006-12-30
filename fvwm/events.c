@@ -158,6 +158,7 @@ static PFEH EventHandlerJumpTable[LASTEvent];
 
 int last_event_type = 0;
 Window PressedW = None;
+/* fixme - don't use fdsets for this! */
 fd_set init_fdset;
 
 /* ---------------------------- local functions ---------------------------- */
@@ -3918,7 +3919,7 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 	fd_set in_fdset, out_fdset;
 	Window targetWindow;
 	int num_fd;
-	int i;
+	fmodule *module;
 	static struct timeval timeout;
 	static struct timeval *timeoutP = &timeout;
 
@@ -3963,17 +3964,18 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 	/* check for termination of all startup modules */
 	if (fFvwmInStartup)
 	{
-		for (i=0;i<npipes;i++)
+		for (module=module_list.next;module!=NULL;module=module->next)
 		{
-			if (FD_ISSET(i, &init_fdset))
+/* fixme - shouldn't use fdsets for this */
+			if (FD_ISSET((int)module, &init_fdset))
 			{
 				break;
 			}
 		}
-		if (i == npipes || writePipes[i+1] == 0)
+		if (module == NULL || module->next == NULL) /* last module */
 		{
 			DBUG("My_XNextEvent", "Starting up after command"
-			     " lines modules\n");
+			     " lines modules");
 			timeoutP = NULL; /* set an infinite timeout to stop
 					  * ticking */
 			StartupStuff(); /* This may cause X requests to be sent
@@ -4035,15 +4037,16 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 			FD_SET(sm_fd, &in_fdset);
 		}
 
-		for (i=0; i<npipes; i++)
+		for (module=module_list.next;module!=NULL;module=module->next)
 		{
-			if (readPipes[i]>=0)
+			/* should we really do this test? */
+			if (module->readPipe>=0)
 			{
-				FD_SET(readPipes[i], &in_fdset);
+				FD_SET(module->readPipe, &in_fdset);
 			}
-			if (!FQUEUE_IS_EMPTY(&pipeQueue[i]))
+			if (!FQUEUE_IS_EMPTY(&(module->pipeQueue)))
 			{
-				FD_SET(writePipes[i], &out_fdset);
+				FD_SET(module->writePipe, &out_fdset);
 			}
 		}
 
@@ -4065,12 +4068,11 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 	if (num_fd > 0)
 	{
 		/* Check for module input. */
-		for (i=0; i<npipes; i++)
+		for (module=module_list.next;module!=NULL;module=module->next)
 		{
-			if ((readPipes[i] >= 0) &&
-			    FD_ISSET(readPipes[i], &in_fdset))
+			if (FD_ISSET(module->readPipe, &in_fdset))
 			{
-				if (read(readPipes[i], &targetWindow,
+				if (read(module->readPipe, &targetWindow,
 					 sizeof(Window)) > 0)
 				{
 					DBUG("My_XNextEvent",
@@ -4078,21 +4080,21 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 					/* Add one module message to the queue
 					 */
 					HandleModuleInput(
-						targetWindow, i, NULL, True);
+						targetWindow, module,
+						NULL, True);
 				}
 				else
 				{
 					DBUG("My_XNextEvent",
 					     "calling KillModule");
-					KillModule(i);
+					KillModule(module);
 				}
 			}
-			if ((writePipes[i] >= 0) &&
-			    FD_ISSET(writePipes[i], &out_fdset))
+			if (FD_ISSET(module->writePipe, &out_fdset))
 			{
 				DBUG("My_XNextEvent",
 				     "calling FlushMessageQueue");
-				FlushMessageQueue(i);
+				FlushMessageQueue(module);
 			}
 		}
 

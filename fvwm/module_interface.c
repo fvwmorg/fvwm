@@ -62,12 +62,8 @@
 #  define O_NONBLOCK  O_NDELAY
 #endif
 
-int npipes;
-int *readPipes;
-int *writePipes;
-static int *pipeOn;
-char **pipeName;
-char **pipeAlias;  /* as given in: Module FvwmPager MyAlias */
+/* the linked list dummy header */
+fmodule module_list;
 
 typedef struct
 {
@@ -76,17 +72,14 @@ typedef struct
 	int done;
 } mqueue_object_type;
 
-msg_masks_t *PipeMask;
-static msg_masks_t *SyncMask;
-static msg_masks_t *NoGrabMask;
-fqueue *pipeQueue;
-
 static const unsigned long dummy = 0;
 
+/* fixme - don't use fdsets for this! */
 extern fd_set init_fdset;
 
-static void DeleteMessageQueueBuff(int module);
-static void AddToCommandQueue(Window w, int module, char * command);
+static void DeleteMessageQueueBuff(fmodule *module);
+static void AddToCommandQueue(Window w, fmodule *module, char * command);
+static void FreeModule(fmodule *module);
 
 /*
  * Sets the mask to the specific value.  If M_EXTENDED_MSG is set in mask, the
@@ -107,20 +100,20 @@ static void set_message_mask(msg_masks_t *mask, unsigned long msg)
 	return;
 }
 
-static char *get_pipe_name(int module)
+static char *get_pipe_name(fmodule *module)
 {
 	char *name="";
 
-	if (pipeName[module] != NULL)
+	if (module->pipeName != NULL)
 	{
-		if (pipeAlias[module] != NULL)
+		if (module->pipeAlias != NULL)
 		{
 			name = CatString3(
-				pipeName[module], " ", pipeAlias[module]);
+				module->pipeName, " ", module->pipeAlias);
 		}
 		else
 		{
-			name = pipeName[module];
+			name = module->pipeName;
 		}
 	}
 	else
@@ -133,37 +126,11 @@ static char *get_pipe_name(int module)
 
 void initModules(void)
 {
-	int i;
+	DBUG("initModules", "initializing the module list header");
+	/* the list is empty */
+	module_list.next=NULL; 
 
-	npipes = GetFdWidth();
-
-	writePipes = (int *)safemalloc(sizeof(int)*npipes);
-	readPipes = (int *)safemalloc(sizeof(int)*npipes);
-	pipeOn = (int *)safemalloc(sizeof(int)*npipes);
-	PipeMask = (msg_masks_t *)safemalloc(sizeof(msg_masks_t)*npipes);
-	SyncMask = (msg_masks_t *)safemalloc(sizeof(msg_masks_t)*npipes);
-	NoGrabMask = (msg_masks_t *)safemalloc(
-		sizeof(msg_masks_t)*npipes);
-	pipeName = (char **)safemalloc(sizeof(char *)*npipes);
-	pipeAlias = (char **)safemalloc(sizeof(char *)*npipes);
-	pipeQueue = (fqueue *)safemalloc(sizeof(fqueue)*npipes);
-
-	for (i=0; i < npipes; i++)
-	{
-		writePipes[i]= -1;
-		readPipes[i]= -1;
-		pipeOn[i] = -1;
-		PipeMask[i].m1 = DEFAULT_MASK;
-		PipeMask[i].m2 = DEFAULT_XMASK;
-		SyncMask[i].m1 = 0;
-		SyncMask[i].m2 = 0;
-		NoGrabMask[i].m1 = 0;
-		NoGrabMask[i].m2 = 0;
-		fqueue_init(&pipeQueue[i]);
-		pipeName[i] = NULL;
-		pipeAlias[i] = NULL;
-	}
-	DBUG("initModules", "Zeroing init module array\n");
+	/* fixme! don't use fdsets for this stuff */
 	FD_ZERO(&init_fdset);
 
 	return;
@@ -171,43 +138,23 @@ void initModules(void)
 
 void ClosePipes(void)
 {
-	int i;
-	for (i=0; i<npipes; ++i)
-	{
-		if (writePipes[i] >= 0)
-		{
-			close(writePipes[i]);
-			writePipes[i] = -1;
-		}
-		if (readPipes[i] >= 0)
-		{
-			close(readPipes[i]);
-			readPipes[i] = -1;
-		}
-		if (pipeName[i] != NULL)
-		{
-			free(pipeName[i]);
-			pipeName[i] = 0;
-		}
-		if (pipeAlias[i] != NULL)
-		{
-			free(pipeAlias[i]);
-			pipeAlias[i] = NULL;
-		}
-		while (!FQUEUE_IS_EMPTY(&pipeQueue[i]))
-		{
-			DeleteMessageQueueBuff(i);
-		}
-	}
+	fmodule *module;
 
+	while (module_list.next!=NULL)
+	{
+		/* remove the module from the list*/
+		module = module_list.next;
+		module_list.next = module->next;
+		/* terminate it */
+		FreeModule(module);
+	}
 	return;
 }
 
-static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
+static fmodule *do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 {
 	int fvwm_to_app[2], app_to_fvwm[2];
 	int i, val, nargs = 0;
-	int ret_pipe;
 	char *cptr;
 	char **args;
 	char *arg1 = NULL;
@@ -219,6 +166,7 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 	extern char *ModulePath;
 	Window win;
 	FvwmWindow * const fw = exc->w.fw;
+	fmodule *module;
 
 	args = (char **)safemalloc(7 * sizeof(char *));
 
@@ -229,7 +177,7 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 	if (action == NULL)
 	{
 		free(args);
-		return -1;
+		return NULL;
 	}
 
 	if (fw)
@@ -245,7 +193,7 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 	if (!cptr)
 	{
 		free(args);
-		return -1;
+		return NULL;
 	}
 
 	arg1 = searchPath(ModulePath, cptr, EXECUTABLE_EXTENSION, X_OK);
@@ -265,7 +213,7 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 		}
 		free(args);
 		free(cptr);
-		return -1;
+		return NULL;
 	}
 
 #ifdef REMOVE_EXECUTABLE_EXTENSION
@@ -280,21 +228,14 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 	}
 #endif
 
-	/* Look for an available pipe slot */
-	i = 0;
-	while (i < npipes && (writePipes[i] >=0 || readPipes[i] >= 0))
-	{
-		i++;
-	}
-	if (i>=npipes)
+	/* hum.. should we also check for too many accessories?
 	{
 		fvwm_msg(ERR, "executeModule", "Too many Accessories!");
 		free(arg1);
 		free(cptr);
 		free(args);
 		return -1;
-	}
-	ret_pipe = i;
+	}*/
 
 	/* I want one-ended pipes, so I open two two-ended pipes,
 	 * and close one end of each. I need one ended pipes so that
@@ -310,7 +251,7 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 		free(arg1);
 		free(cptr);
 		free(args);
-		return -1;
+		return NULL;
 	}
 	if (pipe(app_to_fvwm)!=0)
 	{
@@ -321,10 +262,17 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 		close(fvwm_to_app[0]);
 		close(fvwm_to_app[1]);
 		free(args);
-		return -1;
+		return NULL;
 	}
 
-	pipeName[i] = stripcpy(cptr);
+	DBUG("executeModule", "creating the module record\n");
+	/* all ok, create the space and insert into the list */
+	module = (fmodule *)safemalloc(sizeof(fmodule));
+	module->next = module_list.next;
+	module_list.next=module;
+
+	module->pipeAlias = NULL;
+	module->pipeName = stripcpy(cptr);
 	free(cptr);
 	sprintf(arg2, "%d", app_to_fvwm[1]);
 	sprintf(arg3, "%d", fvwm_to_app[0]);
@@ -345,12 +293,12 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 		args = (char **)saferealloc(
 			(void *)args, (nargs + 2) * sizeof(char *));
 		args[nargs] = token;
-		if (pipeAlias[i] == NULL)
+		if (module->pipeAlias == NULL)
 		{
 			const char *ptr = skipModuleAliasToken(args[nargs]);
 			if (ptr && *ptr == '\0')
 			{
-				pipeAlias[i] = stripcpy(args[nargs]);
+				module->pipeAlias = stripcpy(args[nargs]);
 			}
 		}
 	}
@@ -370,41 +318,42 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 		close(fvwm_to_app[0]);
 
 		/* add these pipes to fvwm's active pipe list */
-		writePipes[i] = fvwm_to_app[1];
-		readPipes[i] = app_to_fvwm[0];
-		pipeOn[i] = -1;
-		PipeMask[i].m1 = DEFAULT_MASK;
-		PipeMask[i].m2 = DEFAULT_XMASK;
-		SyncMask[i].m1 = 0;
-		SyncMask[i].m2 = 0;
-		NoGrabMask[i].m1 = 0;
-		NoGrabMask[i].m2 = 0;
+		module->writePipe = fvwm_to_app[1];
+		module->readPipe = app_to_fvwm[0];
+		module->PipeMask.m1 = DEFAULT_MASK;
+		module->PipeMask.m2 = DEFAULT_XMASK;
+		module->SyncMask.m1 = 0;
+		module->SyncMask.m2 = 0;
+		module->NoGrabMask.m1 = 0;
+		module->NoGrabMask.m2 = 0;
 		free(arg1);
-		fqueue_init(&pipeQueue[i]);
+		fqueue_init(&(module->pipeQueue));
+/* fixme!!! don't use fdsets for this stuff */
 		if (DoingCommandLine)
 		{
 			/* add to the list of command line modules */
 			DBUG("executeModule", "starting commandline module\n");
-			FD_SET(i, &init_fdset);
+			FD_SET((int)module, &init_fdset);
 		}
+/* end of fixme*/
 
 		/* make the PositiveWrite pipe non-blocking. Don't want to jam
 		 * up fvwm because of an uncooperative module */
-		if (writePipes[i] >= 0)
+		if (module->writePipe >= 0)
 		{
-			fcntl(writePipes[i], F_SETFL, O_NONBLOCK);
+			fcntl(module->writePipe, F_SETFL, O_NONBLOCK);
 		}
 		/* Mark the pipes close-on exec so other programs
 		 * won`t inherit them */
-		if (fcntl(readPipes[i], F_SETFD, 1) == -1)
+		if (fcntl(module->readPipe, F_SETFD, 1) == -1)
 		{
 			fvwm_msg(
 				ERR, "executeModule",
 				"module close-on-exec failed");
 		}
 		if (
-			writePipes[i] >= 0 &&
-			fcntl(writePipes[i], F_SETFD, 1) == -1)
+			module->writePipe >= 0 &&
+			fcntl(module->writePipe, F_SETFD, 1) == -1)
 		{
 			fvwm_msg(
 				ERR, "executeModule",
@@ -471,14 +420,14 @@ static int do_execute_module(F_CMD_ARGS, Bool desperate, Bool do_listen_only)
 			}
 		}
 		free(args);
-		return -1;
+		return NULL;
 	}
 	free(args);
 
-	return ret_pipe;
+	return module;
 }
 
-int executeModuleDesperate(F_CMD_ARGS)
+fmodule *executeModuleDesperate(F_CMD_ARGS)
 {
 	return do_execute_module(F_PASS_ARGS, True, False);
 }
@@ -503,7 +452,7 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 	char *next;
 	char *token;
 	char *expect = ModuleFinishedStartupResponse;
-	int pipe_slot;
+	fmodule *module;
 	fd_set in_fdset;
 	fd_set out_fdset;
 	Window targetWindow;
@@ -551,8 +500,8 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 		return;
 	}
 
-	pipe_slot = do_execute_module(F_PASS_ARGS, False, False);
-	if (pipe_slot == -1)
+	module = do_execute_module(F_PASS_ARGS, False, False);
+	if (module == NULL)
 	{
 		/* executing the module failed, just return */
 		return;
@@ -581,13 +530,13 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 		{
 			FD_ZERO(&in_fdset);
 			FD_ZERO(&out_fdset);
-			if (readPipes[pipe_slot] >= 0)
+			if (module->readPipe >= 0)
 			{
-				FD_SET(readPipes[pipe_slot], &in_fdset);
+				FD_SET(module->readPipe, &in_fdset);
 			}
-			if (!FQUEUE_IS_EMPTY(&pipeQueue[pipe_slot]))
+			if (!FQUEUE_IS_EMPTY(&(module->pipeQueue)))
 			{
-				FD_SET(writePipes[pipe_slot], &out_fdset);
+				FD_SET(module->writePipe, &out_fdset);
 			}
 
 			timeout.tv_sec = 0;
@@ -604,15 +553,15 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 
 		if (num_fd > 0)
 		{
-			if ((readPipes[pipe_slot] >= 0) &&
-			    FD_ISSET(readPipes[pipe_slot], &in_fdset))
+			if ((module->readPipe >= 0) &&
+			    FD_ISSET(module->readPipe, &in_fdset))
 			{
 				/* Check for module input. */
-				if (read(readPipes[pipe_slot], &targetWindow,
+				if (read(module->readPipe, &targetWindow,
 					 sizeof(Window)) > 0)
 				{
 					if (HandleModuleInput(
-						    targetWindow, pipe_slot,
+						    targetWindow, module,
 						    expect, False))
 					{
 						/* we got the message we were
@@ -622,15 +571,15 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 				}
 				else
 				{
-					KillModule(pipe_slot);
+					KillModule(module);
 					done = True;
 				}
 			}
 
-			if ((writePipes[pipe_slot] >= 0) &&
-			    FD_ISSET(writePipes[pipe_slot], &out_fdset))
+			if ((module->writePipe >= 0) &&
+			    FD_ISSET(module->writePipe, &out_fdset))
 			{
-				FlushMessageQueue(pipe_slot);
+				FlushMessageQueue(module);
 			}
 		}
 
@@ -685,7 +634,7 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 }
 
 /* run the command as if it cames from a button press or release */
-static void ExecuteModuleCommand(Window w, int module, char *text)
+static void ExecuteModuleCommand(Window w, fmodule *module, char *text)
 {
 	XEvent e;
 	const exec_context_t *exc;
@@ -738,10 +687,10 @@ static void ExecuteModuleCommand(Window w, int module, char *text)
 	flags = (w == None) ? 0 : FUNC_DONT_DEFER;
 	ecc.w.wcontext = GetContext(NULL, ecc.w.fw, &e, &w);
 	ecc.x.etrigger = &e;
-	ecc.m.modnum = module;
+	ecc.m.module = (void*)module;
 	exc = exc_create_context(
 		&ecc, ECC_TYPE | ECC_ETRIGGER | ECC_FW | ECC_W | ECC_WCONTEXT |
-		ECC_MODNUM);
+		ECC_MODULE);
 	execute_function(NULL, exc, text, 0);
 	exc_destroy_context(exc);
 
@@ -750,32 +699,33 @@ static void ExecuteModuleCommand(Window w, int module, char *text)
 
 /* read input from a module and either execute it or queue it
  * returns True and does NOP if the module input matches the expect string */
-Bool HandleModuleInput(Window w, int module, char *expect, Bool queue)
+Bool HandleModuleInput(Window w, fmodule *module, char *expect, Bool queue)
 {
 	char text[MAX_MODULE_INPUT_TEXT_LEN];
 	unsigned long size;
 	unsigned long cont;
 	int n;
-	int channel = readPipes[module];
 
 	/* Already read a (possibly NULL) window id from the pipe,
 	 * Now read an fvwm bultin command line */
-	n = read(channel, &size, sizeof(size));
+	n = read(module->readPipe, &size, sizeof(size));
 	if (n < sizeof(size))
 	{
+		/* fixme - module number  */
 		fvwm_msg(
 			ERR, "HandleModuleInput",
 			"Fail to read (Module: %i, read: %i, size: %i)",
-			module, n, (int)sizeof(size));
+			(int)module, n, (int)sizeof(size));
 		KillModule(module);
 		return False;
 	}
 
 	if (size > sizeof(text))
 	{
+		/* fixme - module number */
 		fvwm_msg(ERR, "HandleModuleInput",
 			 "Module(%i) command is too big (%ld), limit is %d",
-			 module, size, (int)sizeof(text));
+			 (int)module, size, (int)sizeof(text));
 		/* The rest of the output from this module is going to be
 		 * scrambled so let's kill it rather than risk interpreting
 		 * garbage */
@@ -783,25 +733,25 @@ Bool HandleModuleInput(Window w, int module, char *expect, Bool queue)
 		return False;
 	}
 
-	pipeOn[module] = 1;
-
-	n = read(channel, text, size);
+	n = read(module->readPipe, text, size);
 	if (n < size)
 	{
+		/* fixme - module number */
 		fvwm_msg(
 			ERR, "HandleModuleInput",
 			"Fail to read command (Module: %i, read: %i, size:"
-			" %ld)", module, n, size);
+			" %ld)", (int)module, n, size);
 		KillModule(module);
 		return False;
 	}
 	text[n] = '\0';
-	n = read(channel, &cont, sizeof(cont));
+	n = read(module->readPipe, &cont, sizeof(cont));
 	if (n < sizeof(cont))
 	{
+		/* fixme - module number */
 		fvwm_msg(ERR, "HandleModuleInput",
 			 "Module %i, Size Problems (read: %d, size: %d)",
-			 module, n, (int)sizeof(cont));
+			 (int)module, n, (int)sizeof(cont));
 		KillModule(module);
 		return False;
 	}
@@ -837,37 +787,77 @@ RETSIGTYPE DeadPipe(int sig)
 	SIGNAL_RETURN;
 }
 
-void KillModule(int channel)
+/* closes the pipes and frees every data associated with a module record */
+void FreeModule(fmodule *module)
 {
-	if (readPipes[channel] >= 0)
+	if (module==NULL)
 	{
-		close(readPipes[channel]);
-		readPipes[channel] = -1;
+		return;
 	}
-	if (writePipes[channel] >= 0)
+	if (module->writePipe >= 0)
 	{
-		close(writePipes[channel]);
-		writePipes[channel] = -1;
+		close(module->writePipe);
 	}
-	pipeOn[channel] = -1;
-	while (!FQUEUE_IS_EMPTY(&pipeQueue[channel]))
+	if (module->readPipe >= 0)
 	{
-		DeleteMessageQueueBuff(channel);
+		close(module->readPipe);
 	}
-	if (pipeName[channel] != NULL)
+	if (module->pipeName != NULL)
 	{
-		free(pipeName[channel]);
-		pipeName[channel] = NULL;
+		free(module->pipeName);
 	}
-	if (pipeAlias[channel] != NULL)
+	if (module->pipeAlias != NULL)
 	{
-		free(pipeAlias[channel]);
-		pipeAlias[channel] = NULL;
+		free(module->pipeAlias);
 	}
+	while (!FQUEUE_IS_EMPTY(&(module->pipeQueue)))
+	{
+		DeleteMessageQueueBuff(module);
+	}
+
+	free(module);
+	return;
+}
+
+void KillModule(fmodule *module)
+{
+	fmodule *parent, *current;
+
+	if (module==NULL)
+	{
+		return;
+	}
+
+	/* find it*/
+	for (current=module_list.next, parent=&module_list;
+			current!=NULL;
+			current=current->next, parent=parent->next)
+	{
+		if (current==module)
+			break;
+	}
+
+	/* remove from the list */
+	if (parent->next==NULL)
+	{
+		fvwm_msg(ERR, "killModule",
+				"Tryed to kill a not listed module!");
+		return;
+	}
+	else
+	{
+		DBUG("KillModule", "Removing from module list");
+		parent->next = module->next;
+	}
+
+	/* free it */
+	FreeModule(module);
+
+/* fixme - don't use fdsets for this stuff */
 	if (fFvwmInStartup) {
 		/* remove from list of command line modules */
-		DBUG("killModule", "ending command line module\n");
-		FD_CLR(channel, &init_fdset);
+		DBUG("KillModule", "ending command line module");
+		FD_CLR((int)module, &init_fdset);
 	}
 
 	return;
@@ -875,22 +865,21 @@ void KillModule(int channel)
 
 static void KillModuleByName(char *name, char *alias)
 {
-	int i = 0;
+	fmodule *module;
 
 	if (name == NULL)
 	{
 		return;
 	}
-
-	while (i<npipes)
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		if (pipeName[i] != NULL && matchWildcards(name,pipeName[i]) &&
-		    (!alias || (pipeAlias[i] &&
-				matchWildcards(alias, pipeAlias[i]))))
+		if (module->pipeName != NULL &&
+		 		matchWildcards(name,module->pipeName) &&
+		 		(!alias || (module->pipeAlias &&
+				matchWildcards(alias, module->pipeAlias))))
 		{
-			KillModule(i);
+			KillModule(module);
 		}
-		i++;
 	}
 
 	return;
@@ -898,18 +887,18 @@ static void KillModuleByName(char *name, char *alias)
 
 void CMD_KillModule(F_CMD_ARGS)
 {
-	char *module;
+	char *name;
 	char *alias = NULL;
 
-	action = GetNextToken(action,&module);
-	if (!module)
+	action = GetNextToken(action,&name);
+	if (!name)
 	{
 		return;
 	}
 
 	GetNextToken(action, &alias);
-	KillModuleByName(module, alias);
-	free(module);
+	KillModuleByName(name, alias);
+	free(name);
 	if (alias)
 	{
 		free(alias);
@@ -1049,7 +1038,7 @@ make_new_vpacket(unsigned char *body, unsigned long event_type,
 
 
 void
-SendPacket(int module, unsigned long event_type, unsigned long num_datum, ...)
+SendPacket(fmodule *module, unsigned long event_type, unsigned long num_datum, ...)
 {
 	unsigned long body[FvwmPacketMaxSize];
 	va_list ap;
@@ -1069,15 +1058,15 @@ BroadcastPacket(unsigned long event_type, unsigned long num_datum, ...)
 {
 	unsigned long body[FvwmPacketMaxSize];
 	va_list ap;
-	int i;
+	fmodule *module;
 
 	va_start(ap,num_datum);
 	make_vpacket(body, event_type, num_datum, ap);
 	va_end(ap);
-	for (i=0; i<npipes; i++)
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
 		PositiveWrite(
-			i, body,
+			module, body,
 			(num_datum+FvwmPacketHeaderSize)*sizeof(body[0]));
 	}
 
@@ -1088,7 +1077,7 @@ BroadcastPacket(unsigned long event_type, unsigned long num_datum, ...)
 /*
    RBW - 04/16/1999 - new style packet senders for GSFR --
 */
-static void SendNewPacket(int module, unsigned long event_type,
+static void SendNewPacket(fmodule *module, unsigned long event_type,
 			  unsigned long num_datum, ...)
 {
 	unsigned char body[FvwmPacketMaxSize_byte];
@@ -1108,15 +1097,15 @@ static void BroadcastNewPacket(unsigned long event_type,
 {
 	unsigned char body[FvwmPacketMaxSize_byte];
 	va_list ap;
-	int i;
+	fmodule *module;
 	unsigned long plen;
 
 	va_start(ap,num_datum);
 	plen = make_new_vpacket(body, event_type, num_datum, ap);
 	va_end(ap);
-	for (i=0; i<npipes; i++)
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		PositiveWrite(i, (void *) &body, plen);
+		PositiveWrite(module, (void *) &body, plen);
 	}
 
 	return;
@@ -1215,7 +1204,7 @@ action_flags *__get_allowed_actions(const FvwmWindow *fw)
 		(unsigned long)(sizeof(action_flags)),  \
 		__get_allowed_actions((*(_fw)))
 
-void SendConfig(int module, unsigned long event_type, const FvwmWindow *t)
+void SendConfig(fmodule *module, unsigned long event_type, const FvwmWindow *t)
 {
 	const FvwmWindow **t1 = &t;
 
@@ -1268,7 +1257,7 @@ make_named_packet(
 }
 
 void
-SendName(int module, unsigned long event_type,
+SendName(fmodule *module, unsigned long event_type,
 	 unsigned long data1,unsigned long data2, unsigned long data3,
 	 const char *name)
 {
@@ -1292,16 +1281,17 @@ BroadcastName(unsigned long event_type,
 	      const char *name)
 {
 	unsigned long *body;
-	int i, l;
+	int l;
+	fmodule *module;
 
 	if (name == NULL)
 	{
 		return;
 	}
 	body = make_named_packet(&l, event_type, name, 3, data1, data2, data3);
-	for (i=0; i < npipes; i++)
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		PositiveWrite(i, body, l*sizeof(unsigned long));
+		PositiveWrite(module, body, l*sizeof(unsigned long));
 	}
 	free(body);
 
@@ -1335,7 +1325,7 @@ BroadcastWindowIconNames(FvwmWindow *fw, Bool window, Bool icon)
 
 void
 SendFvwmPicture(
-	int module, unsigned long event_type, unsigned long data1,
+	fmodule *module, unsigned long event_type, unsigned long data1,
 	unsigned long data2, unsigned long data3, FvwmPicture *picture,
 	char *name)
 {
@@ -1379,7 +1369,8 @@ BroadcastFvwmPicture(
 {
 	unsigned long *body;
 	unsigned long data4, data5, data6, data7, data8, data9;
-	int i, l;
+	int l;
+	fmodule *module;
 
 	if (!FMiniIconsSupported)
 	{
@@ -1406,9 +1397,9 @@ BroadcastFvwmPicture(
 	body = make_named_packet(
 		&l, event_type, name, 9, data1, data2, data3, data4, data5,
 		data6, data7, data8, data9);
-	for (i=0; i < npipes; i++)
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		PositiveWrite(i, body, l*sizeof(unsigned long));
+		PositiveWrite(module, body, l*sizeof(unsigned long));
 	}
 	free(body);
 
@@ -1420,17 +1411,13 @@ BroadcastFvwmPicture(
  */
 void BroadcastColorset(int n)
 {
-	int i;
+	fmodule *module;
 	char *buf;
 
 	buf = DumpColorset(n, &Colorset[n]);
-	for (i=0; i < npipes; i++)
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		/* just a quick check to save us lots of overhead */
-		if (pipeOn[i] >= 0)
-		{
-			SendName(i, M_CONFIG_INFO, 0, 0, 0, buf);
-		}
+		SendName(module, M_CONFIG_INFO, 0, 0, 0, buf);
 	}
 
 	return;
@@ -1442,17 +1429,12 @@ void BroadcastColorset(int n)
 void BroadcastPropertyChange(unsigned long argument, unsigned long data1,
 			     unsigned long data2, char *string)
 {
-	int i;
+	fmodule *module;
 
-	for (i = 0; i < npipes; i++)
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		/* just a quick check to save us lots of overhead */
-		if (pipeOn[i] >= 0)
-		{
-			SendName(
-				i, MX_PROPERTY_CHANGE, argument, data1, data2,
+		SendName(module, MX_PROPERTY_CHANGE, argument, data1, data2,
 				string);
-		}
 	}
 
 	return;
@@ -1463,15 +1445,11 @@ void BroadcastPropertyChange(unsigned long argument, unsigned long data1,
  */
 void BroadcastConfigInfoString(char *string)
 {
-	int i;
+	fmodule *module;
 
-	for (i = 0; i < npipes; i++)
+for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		/* just a quick check to save us lots of overhead */
-		if (pipeOn[i] >= 0)
-		{
-			SendName(i, M_CONFIG_INFO, 0, 0, 0, string);
-		}
+		SendName(module, M_CONFIG_INFO, 0, 0, 0, string);
 	}
 
 	return;
@@ -1508,9 +1486,9 @@ void broadcast_ignore_modifiers(void)
 */
 void CMD_SendToModule(F_CMD_ARGS)
 {
-	char *module,*str;
+	char *name,*str;
 	unsigned long data0, data1, data2;
-	int i;
+	fmodule *module;
 	FvwmWindow * const fw = exc->w.fw;
 
 	/* FIXME: Without this, popup menus can't be implemented properly in
@@ -1520,8 +1498,8 @@ void CMD_SendToModule(F_CMD_ARGS)
 	{
 		return;
 	}
-	str = GetNextToken(action, &module);
-	if (!module)
+	str = GetNextToken(action, &name);
+	if (!name)
 	{
 		return;
 	}
@@ -1539,17 +1517,20 @@ void CMD_SendToModule(F_CMD_ARGS)
 		data1 = 0;
 		data2 = 0;
 	}
-	for (i=0;i<npipes;i++)
+
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		if ((pipeName[i] != NULL && matchWildcards(module,pipeName[i]))
-		    || (pipeAlias[i] && matchWildcards(module, pipeAlias[i])))
+		if ((module->pipeName != NULL &&
+				 matchWildcards(name,module->pipeName))
+		    || (module->pipeAlias &&
+				 matchWildcards(name, module->pipeAlias)))
 		{
-			SendName(i,M_STRING,data0,data1,data2,str);
-			FlushMessageQueue(i);
+			SendName(module,M_STRING,data0,data1,data2,str);
+			FlushMessageQueue(module);
 		}
 	}
 
-	free(module);
+	free(name);
 
 	return;
 }
@@ -1560,10 +1541,10 @@ void CMD_SendToModule(F_CMD_ARGS)
 void CMD_Send_Reply(F_CMD_ARGS)
 {
 	unsigned long data0, data1, data2;
-	int module = exc->m.modnum;
+	fmodule *module = (fmodule*)(exc->m.module);
 	FvwmWindow * const fw = exc->w.fw;
 
-	if (module < 0)
+	if (module == NULL)
 	{
 		return;
 	}
@@ -1597,7 +1578,7 @@ void CMD_Send_Reply(F_CMD_ARGS)
    want to inline.  dje 9/4/98 */
 extern int myxgrabcount;                /* defined in libs/Grab.c */
 extern char *ModuleUnlock;              /* defined in libs/Module.c */
-void PositiveWrite(int module, unsigned long *ptr, int size)
+void PositiveWrite(fmodule *module, unsigned long *ptr, int size)
 {
 	extern int moduleTimeout;
 	msg_masks_t mask;
@@ -1606,15 +1587,11 @@ void PositiveWrite(int module, unsigned long *ptr, int size)
 	{
 		return;
 	}
-	if (pipeOn[module] < 0)
+	if (module->writePipe == -1)
 	{
 		return;
 	}
-	if (writePipes[module] == -1)
-	{
-		return;
-	}
-	if (!IS_MESSAGE_IN_MASK(&PipeMask[module], ptr[1]))
+	if (!IS_MESSAGE_IN_MASK(&(module->PipeMask), ptr[1]))
 	{
 		return;
 	}
@@ -1623,8 +1600,8 @@ void PositiveWrite(int module, unsigned long *ptr, int size)
 	/* would be better to send RecaptureStart and RecaptureEnd messages. */
 	/* If module is lock on send for iconify message and it's an
 	 * iconify event and server grabbed, then return */
-	mask.m1 = (NoGrabMask[module].m1 & SyncMask[module].m1);
-	mask.m2 = (NoGrabMask[module].m2 & SyncMask[module].m2);
+	mask.m1 = (module->NoGrabMask.m1 & module->SyncMask.m1);
+	mask.m2 = (module->NoGrabMask.m2 & module->SyncMask.m2);
 	if (IS_MESSAGE_IN_MASK(&mask, ptr[1]) && myxgrabcount != 0)
 	{
 		return;
@@ -1646,7 +1623,7 @@ void PositiveWrite(int module, unsigned long *ptr, int size)
 		c->done = 0;
 		c->data = (unsigned long *)(c + 1);
 		memcpy((void*)c->data, (const void*)ptr, size);
-			fqueue_add_at_end(&pipeQueue[module], c);
+			fqueue_add_at_end(&(module->pipeQueue), c);
 	}
 
 	/* dje, from afterstep, for FvwmAnimate, allows modules to sync with
@@ -1659,16 +1636,16 @@ void PositiveWrite(int module, unsigned long *ptr, int size)
 	/* dv (06-Jul-2002): added the !myxgrabcount again.  Deadlocks *do*
 	 * happen without it.  There must be another way to fix
 	 * M_DESTROY_WINDOW handling in FvwmEvent. */
-	/*if (IS_MESSAGE_IN_MASK(&SyncMask[module], ptr[1]))*/
-	if (IS_MESSAGE_IN_MASK(&SyncMask[module], ptr[1]) && !myxgrabcount)
+	/*if (IS_MESSAGE_IN_MASK(&(module->SyncMask), ptr[1]))*/
+	if (IS_MESSAGE_IN_MASK(&(module->SyncMask), ptr[1]) && !myxgrabcount)
 	{
 		Window targetWindow;
 		fd_set readSet;
+		int channel = module->readPipe;
 		struct timeval timeout;
-		int channel = readPipes[module];
 
 		FlushMessageQueue(module);
-		if (readPipes[module] < 0)
+		if (module->readPipe < 0)
 		{
 			/* Module has died, break out */
 			return;
@@ -1696,9 +1673,10 @@ void PositiveWrite(int module, unsigned long *ptr, int size)
 				 * descriptor, with a timeout (fvwmSelect <= 0)
 				 * or read() returning wrong size is bad news
 				 */
+/* why channel + 1 ?? */
 				rc = fvwmSelect(
-					channel + 1, &readSet, NULL, NULL,
-					&timeout);
+					channel + 1, &readSet,
+					NULL, NULL, &timeout);
 				/* retry if select() failed with EINTR */
 			} while (rc < 0 && !isTerminated && (errno == EINTR));
 
@@ -1756,15 +1734,15 @@ void PositiveWrite(int module, unsigned long *ptr, int size)
 }
 
 
-static void DeleteMessageQueueBuff(int module)
+static void DeleteMessageQueueBuff(fmodule *module)
 {
 	mqueue_object_type *obj;
 
-	if (fqueue_get_first(&pipeQueue[module], (void **)&obj) == 1)
+	if (fqueue_get_first(&(module->pipeQueue), (void **)&obj) == 1)
 	{
 		/* remove from queue */
 		fqueue_remove_or_operate_from_front(
-			&pipeQueue[module], NULL, NULL, NULL, NULL);
+			&(module->pipeQueue), NULL, NULL, NULL, NULL);
 		/* we don't need to free the obj->data here because it's in the
 		 * same malloced block as the obj itself. */
 		free(obj);
@@ -1773,24 +1751,24 @@ static void DeleteMessageQueueBuff(int module)
 	return;
 }
 
-void FlushMessageQueue(int module)
+void FlushMessageQueue(fmodule *module)
 {
 	extern int moduleTimeout;
 	mqueue_object_type *obj;
 	char *dptr;
 	int a;
 
-	if (pipeOn[module] <= 0)
+	if (module == NULL)
 	{
 		return;
 	}
 
-	while (fqueue_get_first(&pipeQueue[module], (void **)&obj) == 1)
+	while (fqueue_get_first(&(module->pipeQueue), (void **)&obj) == 1)
 	{
 		dptr = (char *)obj->data;
 		while (obj->done < obj->size)
 		{
-			a = write(writePipes[module], &dptr[obj->done],
+			a = write(module->writePipe, &dptr[obj->done],
 				  obj->size - obj->done);
 			if (a >=0)
 			{
@@ -1806,7 +1784,7 @@ void FlushMessageQueue(int module)
 			{
 				fd_set writeSet;
 				struct timeval timeout;
-				int channel = writePipes[module];
+				int channel = module->writePipe;
 				int rc = 0;
 
 				do
@@ -1865,16 +1843,12 @@ void FlushMessageQueue(int module)
 
 void FlushAllMessageQueues(void)
 {
-	int i;
+	fmodule *module;
 
-	for (i = 0; i < npipes; i++)
+	for (module=module_list.next;module!=NULL;module=module->next)
 	{
-		if (writePipes[i] >= 0)
-		{
-			FlushMessageQueue(i);
-		}
+		FlushMessageQueue(module->next);
 	}
-
 	return;
 }
 
@@ -1882,7 +1856,7 @@ void FlushAllMessageQueues(void)
 typedef struct
 {
 	Window window;
-	int module;
+	fmodule *module;
 	char *command;
 } cqueue_object_type;
 
@@ -1895,7 +1869,7 @@ static fqueue cqueue = FQUEUE_INIT;
  *
  */
 
-static void AddToCommandQueue(Window window, int module, char *command)
+static void AddToCommandQueue(Window window, fmodule *module, char *command)
 {
 	cqueue_object_type *newqo;
 
@@ -1948,9 +1922,9 @@ void ExecuteCommandQueue(void)
 void CMD_Send_WindowList(F_CMD_ARGS)
 {
 	FvwmWindow *t;
-	int mod = exc->m.modnum;
+	fmodule *mod = (fmodule*)(exc->m.module);
 
-	if (mod < 0)
+	if (mod == NULL)
 	{
 		return;
 	}
@@ -2068,8 +2042,9 @@ void CMD_Send_WindowList(F_CMD_ARGS)
 void CMD_set_mask(F_CMD_ARGS)
 {
 	unsigned long val;
+	fmodule* module;
 
-	if (exc->m.modnum < 0)
+	if (exc->m.module == NULL)
 	{
 		return;
 	}
@@ -2077,7 +2052,8 @@ void CMD_set_mask(F_CMD_ARGS)
 	{
 		val = 0;
 	}
-	set_message_mask(&PipeMask[exc->m.modnum], (unsigned long)val);
+	module=(fmodule*)(exc->m.module);
+	set_message_mask(&(module->PipeMask), (unsigned long)val);
 
 	return;
 }
@@ -2085,8 +2061,9 @@ void CMD_set_mask(F_CMD_ARGS)
 void CMD_set_sync_mask(F_CMD_ARGS)
 {
 	unsigned long val;
+	fmodule* module;
 
-	if (exc->m.modnum < 0)
+	if (exc->m.module == NULL)
 	{
 		return;
 	}
@@ -2094,7 +2071,8 @@ void CMD_set_sync_mask(F_CMD_ARGS)
 	{
 		val = 0;
 	}
-	set_message_mask(&SyncMask[exc->m.modnum], (unsigned long)val);
+	module = (fmodule*)(exc->m.module);
+	set_message_mask(&(module->SyncMask), (unsigned long)val);
 
 	return;
 }
@@ -2102,8 +2080,9 @@ void CMD_set_sync_mask(F_CMD_ARGS)
 void CMD_set_nograb_mask(F_CMD_ARGS)
 {
 	unsigned long val;
+	fmodule* module;
 
-	if (exc->m.modnum < 0)
+	if (exc->m.module == NULL)
 	{
 		return;
 	}
@@ -2111,7 +2090,8 @@ void CMD_set_nograb_mask(F_CMD_ARGS)
 	{
 		val = 0;
 	}
-	set_message_mask(&NoGrabMask[exc->m.modnum], (unsigned long)val);
+	module=(fmodule*) exc->m.module;
+	set_message_mask(&(module->NoGrabMask), (unsigned long)val);
 
 	return;
 }
@@ -2140,4 +2120,25 @@ char *skipModuleAliasToken(const char *string)
 	return NULL;
 #undef is_valid_first_alias_char
 #undef is_valid_alias_char
+
 }
+
+int countModules()
+{
+	int i=0;
+	fmodule *module;
+	for (module=module_list.next;module!=NULL;module=module->next)
+		i++;
+	return i;
+}
+
+/*
+ * returns a pointer to the next module in the list
+ * useful to hide the module structure
+ */
+/*
+fmodule *getNext(fmodule *module)
+{
+		return module->next;
+}
+*/

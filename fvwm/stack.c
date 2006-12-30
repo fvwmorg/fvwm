@@ -1019,6 +1019,7 @@ static void BroadcastRestack(FvwmWindow *s1, FvwmWindow *s2)
 	int num;
 	int i;
 	int n;
+	fmodule *module;
 	unsigned long *body, *bp, length;
 	unsigned long max_wins_per_packet;
 
@@ -1078,9 +1079,10 @@ static void BroadcastRestack(FvwmWindow *s1, FvwmWindow *s2)
 			*(bp++) = FW_W_FRAME(fw);
 			*(bp++) = (unsigned long)fw;
 		}
-		for (i = 0; i < npipes; i++)
+		for (module=module_list.next;module!=NULL;module=module->next)
 		{
-			PositiveWrite(i, body, length*sizeof(unsigned long));
+			PositiveWrite(module, body,
+						 length*sizeof(unsigned long));
 		}
 		free(body);
 	}

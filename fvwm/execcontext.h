@@ -47,7 +47,11 @@ typedef struct
 
 typedef struct
 {
-	int modnum;
+	/*
+	 * using a void pointer allows us to not include module_interface.h
+	 * here, although it then requires the use of typecasting
+	 */
+	void *module;
 } module_context_t;
 
 typedef struct
@@ -67,7 +71,7 @@ typedef enum
 	ECC_FW = 0x4,
 	ECC_W = 0x8,
 	ECC_WCONTEXT = 0x10,
-	ECC_MODNUM = 0x20
+	ECC_MODULE = 0x20
 } exec_context_change_mask_t;
 
 typedef struct
