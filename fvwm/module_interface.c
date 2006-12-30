@@ -107,8 +107,8 @@ static fmodule *module_alloc(void)
 	msg_mask_set(&module->PipeMask, DEFAULT_MASK, DEFAULT_MASK);
 	msg_mask_set(&module->NoGrabMask, 0, 0);
 	msg_mask_set(&module->SyncMask, 0, 0);
-	module->pipeName = NULL;
-	module->pipeAlias = NULL;
+	module->name = NULL;
+	module->alias = NULL;
 	module->next = NULL;
 
 	return module;
@@ -182,13 +182,13 @@ static void module_free(fmodule *module)
 	{
 		close(module->readPipe);
 	}
-	if (module->pipeName != NULL)
+	if (module->name != NULL)
 	{
-		free(module->pipeName);
+		free(module->name);
 	}
-	if (module->pipeAlias != NULL)
+	if (module->alias != NULL)
 	{
-		free(module->pipeAlias);
+		free(module->alias);
 	}
 	while (!FQUEUE_IS_EMPTY(&(module->pipeQueue)))
 	{
@@ -234,16 +234,16 @@ static char *get_pipe_name(fmodule *module)
 {
 	char *name="";
 
-	if (module->pipeName != NULL)
+	if (module->name != NULL)
 	{
-		if (module->pipeAlias != NULL)
+		if (module->alias != NULL)
 		{
 			name = CatString3(
-				module->pipeName, " ", module->pipeAlias);
+				module->name, " ", module->alias);
 		}
 		else
 		{
-			name = module->pipeName;
+			name = module->name;
 		}
 	}
 	else
@@ -405,7 +405,7 @@ static fmodule *do_execute_module(
 	}
 
 	module_insert(module);
-	module->pipeName = stripcpy(cptr);
+	module->name = stripcpy(cptr);
 	free(cptr);
 	sprintf(arg2, "%d", app_to_fvwm[1]);
 	sprintf(arg3, "%d", fvwm_to_app[0]);
@@ -426,13 +426,13 @@ static fmodule *do_execute_module(
 		args = (char **)saferealloc(
 			(void *)args, (nargs + 2) * sizeof(char *));
 		args[nargs] = token;
-		if (module->pipeAlias == NULL)
+		if (module->alias == NULL)
 		{
 			const char *ptr = skipModuleAliasToken(args[nargs]);
 
 			if (ptr && *ptr == '\0')
 			{
-				module->pipeAlias = stripcpy(args[nargs]);
+				module->alias = stripcpy(args[nargs]);
 			}
 		}
 	}
@@ -938,11 +938,11 @@ static void KillModuleByName(char *name, char *alias)
 	for (; module != NULL; module = module_get_next(module))
 	{
 		if (
-			module->pipeName != NULL &&
-			matchWildcards(name, module->pipeName) &&
+			module->name != NULL &&
+			matchWildcards(name, module->name) &&
 			(!alias || (
-				 module->pipeAlias &&
-				 matchWildcards(alias, module->pipeAlias))))
+				 module->alias &&
+				 matchWildcards(alias, module->alias))))
 		{
 			KillModule(module);
 		}
@@ -1593,10 +1593,10 @@ void CMD_SendToModule(F_CMD_ARGS)
 	for (; module != NULL; module = module_get_next(module))
 	{
 		if (
-			(module->pipeName != NULL &&
-			 matchWildcards(name,module->pipeName)) ||
-			(module->pipeAlias &&
-			 matchWildcards(name, module->pipeAlias)))
+			(module->name != NULL &&
+			 matchWildcards(name,module->name)) ||
+			(module->alias &&
+			 matchWildcards(name, module->alias)))
 		{
 			SendName(module,M_STRING,data0,data1,data2,str);
 			FlushMessageQueue(module);

@@ -28,8 +28,8 @@ typedef struct fmodule
 	msg_masks_t PipeMask;
 	msg_masks_t NoGrabMask;
 	msg_masks_t SyncMask;
-	char *pipeName;
-	char *pipeAlias;
+	char *name;
+	char *alias;
 	struct fmodule *next;
 } fmodule;
 

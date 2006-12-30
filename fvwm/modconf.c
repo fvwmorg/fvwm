@@ -97,10 +97,10 @@ void ModuleConfig(char *action)
 		if (IS_MESSAGE_SELECTED(module, M_SENDCONFIG))
 		{
 			/* module wants config cmds */
-			char *name = module->pipeName;
-			if (module->pipeAlias)
+			char *name = module->name;
+			if (module->alias)
 			{
-				name = module->pipeAlias;
+				name = module->alias;
 			}
 			SendConfigToModule(
 				module, new_entry, CatString2("*", name), 0);
