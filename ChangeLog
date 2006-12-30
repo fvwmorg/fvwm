@@ -1,3 +1,9 @@
+2006-12-30  Renato Caldas  <seventhguardian@gmail.com>
+
+	* fvwm/module_interface.c (module_remove):
+	(KillModule):
+	moved module remotion code to module_remove()
+
 2006-12-30  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
 	* fvwm/module_interface.c (module_insert):

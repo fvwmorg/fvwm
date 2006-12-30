@@ -62,7 +62,7 @@
 #  define O_NONBLOCK  O_NDELAY
 #endif
 
-/* the linked list dummy header */
+/* the linked list pointers to the first and last modules */
 static fmodule *module_list;
 static fmodule *module_list_last;
 
@@ -132,6 +132,59 @@ static inline void module_insert(fmodule *module)
 
 	return;
 }
+
+static inline void module_remove(fmodule *module)
+{
+	if (module == NULL)
+	{
+		return;
+	}
+	if (module == module_list)
+	{
+		DBUG("module_remove", "Removing from module list");
+		module_list = module->next;
+		if (module == module_list_last)
+		{
+			module_list_last = NULL;
+		}
+	}
+	else
+	{
+		fmodule *parent;
+		fmodule *current;
+
+		/* find it*/
+		for (
+			current = module_list->next, parent = module_list;
+			current != NULL;
+			parent = current, current = current->next)
+		{
+			if (current == module)
+			{
+				break;
+			}
+		}
+		/* remove from the list */
+		if (current != NULL)
+		{
+			DBUG("module_remove", "Removing from module list");
+			parent->next = module->next;
+			if (module == module_list_last)
+			{
+				module_list_last = parent;
+			}
+		}
+		else
+		{
+			fvwm_msg(
+				ERR, "module_remove",
+				"Tried to remove a not listed module!");
+
+			return;
+		}
+	}
+}
+
 
 /* closes the pipes and frees every data associated with a module record */
 static void module_free(fmodule *module)
@@ -253,6 +306,10 @@ void ClosePipes(void)
 {
 	fmodule *module;
 
+	/*
+	 * this improves speed, but having a single remotion routine should
+	 * help in mainainability.. replace by module_remove calls?
+	 */
 	for (module = module_list; module != NULL; module = module->next)
 	{
 		module_free(module);
@@ -901,54 +958,8 @@ RETSIGTYPE DeadPipe(int sig)
 
 void KillModule(fmodule *module)
 {
-	if (module == NULL)
-	{
-		return;
-	}
-	if (module == module_list)
-	{
-		DBUG("KillModule", "Removing from module list");
-		module_list = module->next;
-		if (module == module_list_last)
-		{
-			module_list_last = NULL;
-		}
-	}
-	else
-	{
-		fmodule *parent;
-		fmodule *current;
-
-		/* find it*/
-		for (
-			current = module_list->next, parent = module_list;
-			current != NULL;
-			parent = current, current = current->next)
-		{
-			if (current == module)
-			{
-				break;
-			}
-		}
-		/* remove from the list */
-		if (current != NULL)
-		{
-			DBUG("KillModule", "Removing from module list");
-			parent->next = module->next;
-			if (module == module_list_last)
-			{
-				module_list_last = parent;
-			}
-		}
-		else
-		{
-			fvwm_msg(
-				ERR, "killModule",
-				"Tried to kill a not listed module!");
-
-			return;
-		}
-	}
+	/* remove from the list */
+	module_remove(module);
 	/* free it */
 	module_free(module);
 /* fixme - don't use fdsets for this stuff */
