@@ -100,7 +100,7 @@ static fmodule *module_alloc(void)
 	}
 	num_modules++;
 	module = (fmodule *)safemalloc(sizeof(fmodule));
-	module->is_cmdline_module = 0;
+	module->flags.is_cmdline_module = 0;
 	module->readPipe = -1;
 	module->writePipe = -1;
 	fqueue_init(&module->pipeQueue);
@@ -461,7 +461,7 @@ static fmodule *do_execute_module(
 		{
 			/* add to the list of command line modules */
 			DBUG("executeModule", "starting commandline module\n");
-			module->is_cmdline_module = 1;
+			module->flags.is_cmdline_module = 1;
 		}
 
 		/* make the PositiveWrite pipe non-blocking. Don't want to jam
@@ -920,7 +920,7 @@ void KillModule(fmodule *module)
 	{
 		/* remove from list of command line modules */
 		DBUG("KillModule", "ending command line module");
-		module->is_cmdline_module = 0;
+		module->flags.is_cmdline_module = 0;
 	}
 
 	return;

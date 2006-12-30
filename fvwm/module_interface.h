@@ -18,7 +18,10 @@ typedef struct msg_masks_t
 /* module linked list record*/
 typedef struct fmodule
 {
-	int is_cmdline_module;
+	struct
+	{
+		unsigned is_cmdline_module;
+	} flags;
 	int readPipe;
 	int writePipe;
 	fqueue pipeQueue;

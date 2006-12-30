@@ -3965,7 +3965,7 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 		module = module_get_next(NULL);
 		for (; module != NULL; module = module_get_next(module))
 		{
-			if (module->is_cmdline_module)
+			if (module->flags.is_cmdline_module == 1)
 			{
 				break;
 			}
