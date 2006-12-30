@@ -3973,7 +3973,7 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 				break;
 			}
 		}
-		if (module == NULL || module_get_next(module) == NULL)
+		if (module == NULL)
 		{
 			/* last module */
 			DBUG(
