@@ -64,7 +64,6 @@
 
 /* the linked list pointers to the first and last modules */
 static fmodule *module_list;
-static fmodule *module_list_last;
 
 typedef struct
 {
@@ -75,13 +74,10 @@ typedef struct
 
 static const unsigned long dummy = 0;
 
-/* fixme - don't use fdsets for this! */
-extern fd_set init_fdset;
-
 static void DeleteMessageQueueBuff(fmodule *module);
 static void AddToCommandQueue(Window w, fmodule *module, char * command);
 
-static int next_slot = 0;
+static int num_modules = 0;
 
 static inline void msg_mask_set(
 	msg_masks_t *msg_mask, unsigned long m1, unsigned long m2)
@@ -96,15 +92,15 @@ static fmodule *module_alloc(void)
 {
 	fmodule *module;
 
-	if (next_slot >= MAX_NUM_MODULES)
+	if (num_modules >= MAX_NUM_MODULES)
 	{
 		/* maximum number of modules exceeded */
 
 		return NULL;
 	}
+	num_modules++;
 	module = (fmodule *)safemalloc(sizeof(fmodule));
-	module->slot = next_slot;
-	next_slot++;
+	module->is_cmdline_module = 0;
 	module->readPipe = -1;
 	module->writePipe = -1;
 	fqueue_init(&module->pipeQueue);
@@ -120,15 +116,8 @@ static fmodule *module_alloc(void)
 
 static inline void module_insert(fmodule *module)
 {
-	if (module_list_last == NULL)
-	{
-		module_list = module;
-	}
-	else
-	{
-		module_list_last->next = module;
-	}
-	module_list_last = module;
+	module->next = module_list;
+	module_list = module;
 
 	return;
 }
@@ -143,10 +132,6 @@ static inline void module_remove(fmodule *module)
 	{
 		DBUG("module_remove", "Removing from module list");
 		module_list = module->next;
-		if (module == module_list_last)
-		{
-			module_list_last = NULL;
-		}
 	}
 	else
 	{
@@ -169,10 +154,6 @@ static inline void module_remove(fmodule *module)
 		{
 			DBUG("module_remove", "Removing from module list");
 			parent->next = module->next;
-			if (module == module_list_last)
-			{
-				module_list_last = parent;
-			}
 		}
 		else
 		{
@@ -213,24 +194,7 @@ static void module_free(fmodule *module)
 	{
 		DeleteMessageQueueBuff(module);
 	}
-	next_slot--;
-	if (module->slot < next_slot)
-	{
-		fmodule *m;
-
-		/* more than one module and the dying module is not the one
-		 * with the highest slot; find the module with the highest slot
-		 * and assign the slot of the dying module to it. */
-		m = module_get_next(NULL);
-		for (; m != NULL; m = module_get_next(m))
-		{
-			if (m->slot == next_slot)
-			{
-				m->slot = module->slot;
-				break;
-			}
-		}
-	}
+	num_modules--;
 	free(module);
 
 	return;
@@ -295,9 +259,6 @@ void initModules(void)
 	DBUG("initModules", "initializing the module list header");
 	/* the list is empty */
 	module_list = NULL;
-	module_list_last = NULL;
-	/* fixme! don't use fdsets for this stuff */
-	FD_ZERO(&init_fdset);
 
 	return;
 }
@@ -315,7 +276,6 @@ void ClosePipes(void)
 		module_free(module);
 	}
 	module_list = NULL;
-	module_list_last = NULL;
 
 	return;
 }
@@ -497,14 +457,12 @@ static fmodule *do_execute_module(
 		module->readPipe = app_to_fvwm[0];
 		msg_mask_set(&module->PipeMask, DEFAULT_MASK, DEFAULT_MASK);
 		free(arg1);
-/* fixme!!! don't use fdsets for this stuff */
 		if (DoingCommandLine)
 		{
 			/* add to the list of command line modules */
 			DBUG("executeModule", "starting commandline module\n");
-			FD_SET(module->slot, &init_fdset);
+			module->is_cmdline_module = 1;
 		}
-/* end of fixme*/
 
 		/* make the PositiveWrite pipe non-blocking. Don't want to jam
 		 * up fvwm because of an uncooperative module */
@@ -880,7 +838,6 @@ Bool HandleModuleInput(Window w, fmodule *module, char *expect, Bool queue)
 	n = read(module->readPipe, &size, sizeof(size));
 	if (n < sizeof(size))
 	{
-		/* fixme - module number  */
 		fvwm_msg(
 			ERR, "HandleModuleInput",
 			"Fail to read (Module: %p, read: %i, size: %i)",
@@ -891,7 +848,6 @@ Bool HandleModuleInput(Window w, fmodule *module, char *expect, Bool queue)
 
 	if (size > sizeof(text))
 	{
-		/* fixme - module number */
 		fvwm_msg(ERR, "HandleModuleInput",
 			 "Module(%p) command is too big (%ld), limit is %d",
 			 module, size, (int)sizeof(text));
@@ -905,7 +861,6 @@ Bool HandleModuleInput(Window w, fmodule *module, char *expect, Bool queue)
 	n = read(module->readPipe, text, size);
 	if (n < size)
 	{
-		/* fixme - module number */
 		fvwm_msg(
 			ERR, "HandleModuleInput",
 			"Fail to read command (Module: %p, read: %i, size:"
@@ -917,7 +872,6 @@ Bool HandleModuleInput(Window w, fmodule *module, char *expect, Bool queue)
 	n = read(module->readPipe, &cont, sizeof(cont));
 	if (n < sizeof(cont))
 	{
-		/* fixme - module number */
 		fvwm_msg(ERR, "HandleModuleInput",
 			 "Module %p, Size Problems (read: %d, size: %d)",
 			 module, n, (int)sizeof(cont));
@@ -962,12 +916,11 @@ void KillModule(fmodule *module)
 	module_remove(module);
 	/* free it */
 	module_free(module);
-/* fixme - don't use fdsets for this stuff */
 	if (fFvwmInStartup)
 	{
 		/* remove from list of command line modules */
 		DBUG("KillModule", "ending command line module");
-		FD_CLR(module->slot, &init_fdset);
+		module->is_cmdline_module = 0;
 	}
 
 	return;
@@ -2242,5 +2195,5 @@ char *skipModuleAliasToken(const char *string)
 
 int countModules(void)
 {
-	return next_slot;
+	return num_modules;
 }

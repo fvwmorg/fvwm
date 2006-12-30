@@ -158,8 +158,6 @@ static PFEH EventHandlerJumpTable[LASTEvent];
 
 int last_event_type = 0;
 Window PressedW = None;
-/* fixme - don't use fdsets for this! */
-fd_set init_fdset;
 
 /* ---------------------------- local functions ---------------------------- */
 
@@ -3967,8 +3965,7 @@ int My_XNextEvent(Display *dpy, XEvent *event)
 		module = module_get_next(NULL);
 		for (; module != NULL; module = module_get_next(module))
 		{
-/* fixme - shouldn't use fdsets for this */
-			if (FD_ISSET(module->slot, &init_fdset))
+			if (module->is_cmdline_module)
 			{
 				break;
 			}
