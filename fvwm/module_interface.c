@@ -552,6 +552,9 @@ static fmodule *do_execute_module(
 			}
 		}
 		free(args);
+		module_remove(module);
+		module_free(module);
+
 		return NULL;
 	}
 	free(args);
