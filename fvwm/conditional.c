@@ -38,6 +38,7 @@
 #include "fvwm.h"
 #include "externs.h"
 #include "execcontext.h"
+#include "cmdparser.h"
 #include "functions.h"
 #include "conditional.h"
 #include "misc.h"
@@ -210,7 +211,7 @@ static void circulate_cmd(
 		ecc.w.wcontext = new_context;
 		exc2 = exc_clone_context(
 			exc, &ecc, ECC_FW | ECC_W | ECC_WCONTEXT);
-		execute_function(cond_rc, exc2, restofline, flags);
+		execute_function(cond_rc, exc2, restofline, pc, flags);
 		exc_destroy_context(exc2);
 	}
 
@@ -249,7 +250,7 @@ static void select_cmd(F_CMD_ARGS)
 			cond_rc->rc = COND_RC_OK;
 		}
 		execute_function_override_wcontext(
-			cond_rc, exc, restofline, 0, C_WINDOW);
+			cond_rc, exc, restofline, pc, 0, C_WINDOW);
 	}
 	else if (cond_rc != NULL)
 	{
@@ -1401,7 +1402,7 @@ static void direction_cmd(F_CMD_ARGS, Bool is_scan)
 			cond_rc->rc = COND_RC_OK;
 		}
 		execute_function_override_window(
-			cond_rc, exc, restofline, 0, fw_best);
+			cond_rc, exc, restofline, pc, 0, fw_best);
 	}
 	else if (cond_rc != NULL)
 	{
@@ -1644,7 +1645,7 @@ void CMD_All(F_CMD_ARGS)
 		for (i = num-1; i >= 0; i--)
 		{
 			execute_function_override_window(
-				cond_rc, exc, restofline, 0, g[i]);
+				cond_rc, exc, restofline, pc, 0, g[i]);
 		}
 	}
 	else
@@ -1652,7 +1653,7 @@ void CMD_All(F_CMD_ARGS)
 		for (i = 0; i < num; i++)
 		{
 			execute_function_override_window(
-				cond_rc, exc, restofline, 0, g[i]);
+				cond_rc, exc, restofline, pc, 0, g[i]);
 		}
 	}
 	if (cond_rc != NULL && cond_rc->rc != COND_RC_BREAK)
@@ -1772,7 +1773,7 @@ void CMD_WindowId(F_CMD_ARGS)
 					cond_rc->rc = COND_RC_OK;
 				}
 				execute_function_override_window(
-					cond_rc, exc, action, 0, t);
+					cond_rc, exc, action, pc, 0, t);
 			}
 			else if (cond_rc != NULL)
 			{
@@ -1815,7 +1816,7 @@ void CMD_WindowId(F_CMD_ARGS)
 					exc, &ecc,
 					ECC_FW | ECC_W | ECC_WCONTEXT);
 				execute_function(
-					cond_rc, exc2, action,
+					cond_rc, exc2, action, pc,
 					FUNC_IS_UNMANAGED);
 				exc_destroy_context(exc2);
 			}
@@ -1853,7 +1854,7 @@ void CMD_TestRc(F_CMD_ARGS)
 	{
 		/* execute the command in root window context; overwrite the
 		 * return code with the return code of the command */
-		execute_function(cond_rc, exc, rest, 0);
+		execute_function(cond_rc, exc, rest, pc, 0);
 	}
 
 	return;
@@ -1879,7 +1880,7 @@ void CMD_Break(F_CMD_ARGS)
 
 void CMD_NoWindow(F_CMD_ARGS)
 {
-	execute_function_override_window(cond_rc, exc, action, 0, NULL);
+	execute_function_override_window(cond_rc, exc, action, pc, 0, NULL);
 
 	return;
 }
@@ -2299,7 +2300,7 @@ void CMD_Test(F_CMD_ARGS)
 	}
 	if (!error && match)
 	{
-		execute_function(cond_rc, exc, restofline, 0);
+		execute_function(cond_rc, exc, restofline, pc, 0);
 	}
 	if (cond_rc != NULL)
 	{

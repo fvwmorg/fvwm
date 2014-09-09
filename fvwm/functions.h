@@ -69,18 +69,16 @@ typedef struct
 
 /* ---------------------------- interface functions ------------------------ */
 
+/* needs to be called before any command line can be executed */
+void functions_init(void);
 void find_func_t(
 	char *action, short *func_t, FUNC_FLAGS_TYPE *flags);
 Bool functions_is_complex_function(
 	const char *function_name);
-void execute_function(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
-	FUNC_FLAGS_TYPE exec_flags);
+void execute_function(F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags);
 void execute_function_override_wcontext(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
-	FUNC_FLAGS_TYPE exec_flags, int wcontext);
+	F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags, int wcontext);
 void execute_function_override_window(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
-	FUNC_FLAGS_TYPE exec_flags, FvwmWindow *fw);
+	F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags, FvwmWindow *fw);
 
 #endif /* FUNCTIONS_H */

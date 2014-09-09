@@ -28,6 +28,7 @@
 #include "fvwm.h"
 #include "externs.h"
 #include "execcontext.h"
+#include "cmdparser.h"
 #include "functions.h"
 #include "misc.h"
 #include "screen.h"
@@ -97,7 +98,7 @@ int ewmh_DesktopGeometry(
 		return -1;
 	}
 	sprintf(action, "DesktopSize %ld %ld", width, height);
-	execute_function_override_window(NULL, NULL, action, 0, NULL);
+	execute_function_override_window(NULL, NULL, action, NULL, 0, NULL);
 
 	return -1;
 }
@@ -168,7 +169,7 @@ int ewmh_ActiveWindow(
 		return 0;
 	}
 	execute_function_override_window(
-		NULL, NULL, "EWMHActivateWindowFunc", 0, fw);
+		NULL, NULL, "EWMHActivateWindowFunc", NULL, 0, fw);
 
 	return 0;
 }
@@ -184,7 +185,7 @@ int ewmh_CloseWindow(
 	{
 		return 0;
 	}
-	execute_function_override_window(NULL, NULL, "Close", 0, fw);
+	execute_function_override_window(NULL, NULL, "Close", NULL, 0, fw);
 
 	return 0;
 }
@@ -289,7 +290,7 @@ int ewmh_WMDesktop(
 		if (d == (unsigned long)-2 || d == (unsigned long)-1)
 		{
 			execute_function_override_window(
-				NULL, NULL, "Stick on", 0, fw);
+				NULL, NULL, "Stick on", NULL, 0, fw);
 		}
 		else if (d > 0)
 		{
@@ -297,7 +298,7 @@ int ewmh_WMDesktop(
 			    IS_STICKY_ACROSS_DESKS(fw))
 			{
 				execute_function_override_window(
-					NULL, NULL, "Stick off", 0, fw);
+					NULL, NULL, "Stick off", NULL, 0, fw);
 			}
 			if (fw->Desk != d)
 			{
@@ -450,18 +451,18 @@ int ewmh_MoveResize(
 	if (!move)
 	{
 		sprintf(cmd, "WarpToWindow %i %i",x_warp,y_warp);
-		execute_function_override_window(NULL, NULL, cmd, 0, fw);
+		execute_function_override_window(NULL, NULL, cmd, NULL, 0, fw);
 	}
 
 	if (move)
 	{
 		execute_function_override_window(
-			NULL, NULL, "Move", 0, fw);
+			NULL, NULL, "Move", NULL, 0, fw);
 	}
 	else
 	{
 		execute_function_override_window(
-			NULL, NULL, "Resize", 0, fw);
+			NULL, NULL, "Resize", NULL, 0, fw);
 	}
 
 	return 0;
@@ -560,7 +561,7 @@ int ewmh_WMState(
 			}
 			sprintf(cmd,"Maximize on %i %i", max_horiz, max_vert);
 		}
-		execute_function_override_window(NULL, NULL, cmd, 0, fw);
+		execute_function_override_window(NULL, NULL, cmd, NULL, 0, fw);
 	}
 	return 0;
 }
@@ -630,7 +631,7 @@ int ewmh_WMStateFullScreen(
 			/* unmaximize will restore is_ewmh_fullscreen,
 			 * layer and apply_decor_change */
 			execute_function_override_window(
-				NULL, NULL, "Maximize off", 0, fw);
+				NULL, NULL, "Maximize off", NULL, 0, fw);
 		}
 		if ((IS_EWMH_FULLSCREEN(fw) &&
 		     !DO_EWMH_USE_STACKING_HINTS(fw)) ||
@@ -640,7 +641,7 @@ int ewmh_WMStateFullScreen(
 			/* On: if not raised by a layer cmd raise
 			 * Off: if lowered by a layer cmd raise */
 			execute_function_override_window(
-				NULL, NULL, "Raise", 0, fw);
+				NULL, NULL, "Raise", NULL, 0, fw);
 		}
 	}
 
@@ -722,7 +723,7 @@ int ewmh_WMStateHidden(
 			/* deiconify */
 			sprintf(cmd, "Iconify off");
 		}
-		execute_function_override_window(NULL, NULL, cmd, 0, fw);
+		execute_function_override_window(NULL, NULL, cmd, NULL, 0, fw);
 	}
 	return 0;
 }
@@ -1047,7 +1048,7 @@ int ewmh_WMStateShaded(
 			 cmd_arg == NET_WM_STATE_ADD))
 		{
 			execute_function_override_window(
-				NULL, NULL, "Windowshade on", 0, fw);
+				NULL, NULL, "Windowshade on", NULL, 0, fw);
 		}
 		else if (
 			IS_SHADED(fw) &&
@@ -1055,7 +1056,7 @@ int ewmh_WMStateShaded(
 			 cmd_arg == NET_WM_STATE_REMOVE))
 		{
 			execute_function_override_window(
-				NULL, NULL, "Windowshade off", 0, fw);
+				NULL, NULL, "Windowshade off", NULL, 0, fw);
 		}
 	}
 	return 0;
@@ -1447,7 +1448,7 @@ int ewmh_WMStateSticky(
 		    bool_arg == NET_WM_STATE_ADD)
 		{
 			execute_function_override_window(
-				NULL, NULL, "Stick on", 0, fw);
+				NULL, NULL, "Stick on", NULL, 0, fw);
 		}
 		else if ((IS_STICKY_ACROSS_PAGES(fw) ||
 			  IS_STICKY_ACROSS_DESKS(fw)) &&
@@ -1455,7 +1456,7 @@ int ewmh_WMStateSticky(
 			  bool_arg == NET_WM_STATE_REMOVE))
 		{
 			execute_function_override_window(
-				NULL, NULL, "Stick off", 1, fw);
+				NULL, NULL, "Stick on", NULL, 1, fw);
 		}
 	}
 	return 0;

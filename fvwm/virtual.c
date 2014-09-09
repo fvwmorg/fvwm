@@ -45,6 +45,7 @@
 #include "geometry.h"
 #include "icons.h"
 #include "stack.h"
+#include "cmdparser.h"
 #include "functions.h"
 
 /* ---------------------------- local definitions -------------------------- */
@@ -2016,13 +2017,13 @@ void CMD_EdgeResistance(F_CMD_ARGS)
 			" obsolete. Please use the following commands"
 			" instead:\n%s\n%s\n%s\n", cmd, stylecmd, stylecmd2);
 		execute_function(
-			cond_rc, exc, cmd,
+			cond_rc, exc, cmd, pc,
 			FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
 		execute_function(
-			cond_rc, exc, stylecmd,
+			cond_rc, exc, stylecmd, pc,
 			FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
 		execute_function(
-			cond_rc, exc, stylecmd2,
+			cond_rc, exc, stylecmd2, pc,
 			FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
 	}
 	else

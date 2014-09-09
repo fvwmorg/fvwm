@@ -65,6 +65,7 @@
 #include "update.h"
 #include "stack.h"
 #include "move_resize.h"
+#include "cmdparser.h"
 #include "functions.h"
 #include "style.h"
 
@@ -3037,7 +3038,7 @@ void CMD_SnapAttraction(F_CMD_ARGS)
 		"The command SnapAttraction is obsolete. Please use the"
 		" following command instead:\n\n%s", cmd);
 	execute_function(
-		cond_rc, exc, cmd,
+		cond_rc, exc, cmd, pc,
 		FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
 	free(cmd);
 
@@ -3058,7 +3059,7 @@ void CMD_SnapGrid(F_CMD_ARGS)
 		"The command SnapGrid is obsolete. Please use the following"
 		" command instead:\n\n%s", cmd);
 	execute_function(
-		cond_rc, exc, cmd,
+		cond_rc, exc, cmd, pc,
 		FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
 	free(cmd);
 
@@ -4608,7 +4609,7 @@ static void MaximizeWidth(
 }
 
 static void unmaximize_fvwm_window(
-	FvwmWindow *fw)
+	FvwmWindow *fw, cmdparser_context_t *pc)
 {
 	rectangle new_g;
 
@@ -4661,15 +4662,16 @@ static void unmaximize_fvwm_window(
 
 	if (fw->fullscreen.is_shaded)
 	{
+		/*!!!pc*/
 		execute_function_override_window(
-			NULL, NULL, "WindowShade on", 0, fw);
+			NULL, NULL, "WindowShade on", NULL, 0, fw);
 
 		fw->fullscreen.is_shaded = 0;
 	}
 
 	if (fw->fullscreen.is_iconified) {
 		execute_function_override_window(
-			NULL, NULL, "Iconify on", 0, fw);
+			NULL, NULL, "Iconify on", pc, 0, fw);
 		fw->fullscreen.is_iconified = 0;
 	}
 
@@ -4947,11 +4949,11 @@ void CMD_Maximize(F_CMD_ARGS)
 	if (do_forget == True)
 	{
 		fw->g.normal = fw->g.max;
-		unmaximize_fvwm_window(fw);
+		unmaximize_fvwm_window(fw, pc);
 	}
 	else if (IS_MAXIMIZED(fw) && !do_force_maximize)
 	{
-		unmaximize_fvwm_window(fw);
+		unmaximize_fvwm_window(fw, pc);
 	}
 	else /* maximize */
 	{

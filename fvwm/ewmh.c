@@ -60,6 +60,7 @@
 #include "libs/FScreen.h"
 #include "fvwm.h"
 #include "execcontext.h"
+#include "cmdparser.h"
 #include "functions.h"
 #include "commands.h"
 #include "misc.h"
@@ -1971,7 +1972,7 @@ void EWMH_fullscreen(FvwmWindow *fw)
 	{
 		fw->fullscreen.is_iconified = 1;
 		execute_function_override_window(
-			NULL, NULL, "Iconify off", 0, fw);
+			NULL, NULL, "Iconify off", NULL, 0, fw);
 	}
 	if (IS_SHADED(fw))
 	{
@@ -1980,7 +1981,7 @@ void EWMH_fullscreen(FvwmWindow *fw)
 		fw->fullscreen.is_shaded = 1;
 		fw->shade_anim_steps = 0;
 		execute_function_override_window(
-			NULL, NULL, "WindowShade off", 0, fw);
+			NULL, NULL, "WindowShade off", NULL, 0, fw);
 		fw->shade_anim_steps = sas;
 	}
 	SET_EWMH_FULLSCREEN(fw,True);
@@ -2014,7 +2015,7 @@ void EWMH_fullscreen(FvwmWindow *fw)
 	if (cmd[0] != 0)
 	{
 		SET_DISABLE_CONSTRAIN_SIZE_FULLSCREEN(fw, 1);
-		execute_function_override_window(NULL, NULL, cmd, 0, fw);
+		execute_function_override_window(NULL, NULL, cmd, NULL, 0, fw);
 		SET_DISABLE_CONSTRAIN_SIZE_FULLSCREEN(fw, 0);
 	}
 

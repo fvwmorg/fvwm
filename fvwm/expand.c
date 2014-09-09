@@ -28,7 +28,9 @@
 #include "fvwm.h"
 #include "externs.h"
 #include "cursor.h"
+#include "cmdparser.h"
 #include "functions.h"
+#include "expand.h"
 #include "misc.h"
 #include "move_resize.h"
 #include "screen.h"
@@ -1000,7 +1002,7 @@ GOT_STRING:
 /* ---------------------------- interface functions ------------------------ */
 
 char *expand_vars(
-	char *input, char *arguments[], Bool addto, Bool ismod,
+	char *input, cmdparser_context_t *pc, Bool addto, Bool ismod,
 	cond_rc_t *cond_rc, const exec_context_t *exc)
 {
 	int l, i, l2, n, k, j, m;
@@ -1073,12 +1075,11 @@ char *expand_vars(
 					if (name_has_dollar)
 					{
 						var = expand_vars(
-							var, arguments, addto,
-							ismod, cond_rc, exc);
+							var, pc, addto, ismod,
+							cond_rc, exc);
 					}
 					xlen = expand_args_extended(
-						var, arguments ? arguments[0] :
-						NULL, NULL);
+						var, pc->pos_args[0], NULL);
 					if (xlen < 0)
 					{
 						xlen = expand_vars_extended(
@@ -1116,9 +1117,9 @@ char *expand_vars(
 				{
 					n = input[i + 1] - '0' + 1;
 				}
-				if (arguments[n] != NULL)
+				if (pc->pos_args[n] != NULL)
 				{
-					l2 += strlen(arguments[n]) - 2;
+					l2 += strlen(pc->pos_args[n]) - 2;
 					i++;
 				}
 				break;
@@ -1252,13 +1253,11 @@ char *expand_vars(
 					if (name_has_dollar)
 					{
 						var = expand_vars(
-							var, arguments,	addto,
-							ismod, cond_rc,	exc);
+							var, pc, addto, ismod,
+							cond_rc, exc);
 					}
 					xlen = expand_args_extended(
-						var, arguments ?
-						arguments[0] : NULL,
-						&out[j]);
+						var, pc->pos_args[0], &out[j]);
 					if (xlen < 0)
 					{
 						xlen = expand_vars_extended(
@@ -1310,11 +1309,11 @@ char *expand_vars(
 				{
 					n = input[i + 1] - '0' + 1;
 				}
-				if (arguments[n] != NULL)
+				if (pc->pos_args[n] != NULL)
 				{
-					for (k = 0; arguments[n][k]; k++)
+					for (k = 0; pc->pos_args[n][k]; k++)
 					{
-						out[j++] = arguments[n][k];
+						out[j++] = pc->pos_args[n][k];
 					}
 					i++;
 				}

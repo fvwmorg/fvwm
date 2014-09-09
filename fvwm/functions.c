@@ -43,6 +43,8 @@
 #include "externs.h"
 #include "cursor.h"
 #include "execcontext.h"
+#include "cmdparser.h"
+#include "cmdparser_old.h"
 #include "functions.h"
 #include "commands.h"
 #include "functable.h"
@@ -99,10 +101,15 @@ typedef enum
 /* ---------------------------- forward declarations ----------------------- */
 
 static void execute_complex_function(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
-	Bool *desperate, Bool has_ref_window_moved);
+	F_CMD_ARGS, Bool *desperate, Bool has_ref_window_moved);
 
 /* ---------------------------- local variables ---------------------------- */
+
+/* Temporary instance of the hooks functions used in this file.  The goal is
+ * to remove all parsing and expansion from functions.c and move it into a
+ * separate, replaceable file.  */
+
+static const cmdparser_hooks_t *cmdparser_hooks = NULL;
 
 /* ---------------------------- exported variables (globals) --------------- */
 
@@ -308,7 +315,7 @@ static int func_comp(const void *a, const void *b)
 	return (strcmp((char *)a, ((func_t *)b)->keyword));
 }
 
-static const func_t *find_builtin_function(char *func)
+static const func_t *find_builtin_function(const char *func)
 {
 	static int nfuncs = 0;
 	func_t *ret_func;
@@ -349,71 +356,65 @@ static const func_t *find_builtin_function(char *func)
 	return ret_func;
 }
 
-static void __execute_function(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
+static void __execute_command_line(
+	cond_rc_t *cond_rc, const exec_context_t *exc, char *xaction,
+	cmdparser_context_t *caller_pc,
 	FUNC_FLAGS_TYPE exec_flags, char *args[], Bool has_ref_window_moved)
 {
-	static int func_depth = 0;
+	cmdparser_context_t pc;
 	cond_rc_t *func_rc = NULL;
 	cond_rc_t dummy_rc;
 	Window w;
-	int j;
-	char *function;
-	char *taction;
-	char *trash;
-	char *trash2;
+	char *err_cline;
+	const char *err_func;
 	char *expaction = NULL;
-	char *arguments[11];
 	const func_t *bif;
-	Bool set_silent;
-	Bool must_free_string = False;
-	Bool must_free_function = False;
-	Bool do_keep_rc = False;
+	int set_silent;
+	int do_keep_rc = 0;
 	/* needed to be able to avoid resize to use moved windows for base */
 	extern Window PressedW;
 	Window dummy_w;
+	int rc;
 
-	if (!action)
+	set_silent = 0;
+	/* generate a parsing context; this *must* be destroyed before
+	 * returning */
+	rc = cmdparser_hooks->create_context(&pc, caller_pc, xaction, args);
+	if (rc != 0)
 	{
-		return;
+		goto fn_exit;
 	}
-	/* ignore whitespace at the beginning of all config lines */
-	action = SkipSpaces(action, NULL, 0);
-	if (!action || action[0] == 0)
+	rc = cmdparser_hooks->handle_line_start(&pc);
+	if (rc != 0)
 	{
-		/* impossibly short command */
-		return;
-	}
-	if (action[0] == '#')
-	{
-		/* a comment */
-		return;
+		goto fn_exit;
 	}
 
-	func_depth++;
-	if (func_depth > MAX_FUNCTION_DEPTH)
 	{
-		fvwm_msg(
-			ERR, "__execute_function",
-			"Function '%s' called with a depth of %i, "
-			"stopping function execution!",
-			action, func_depth);
-		func_depth--;
-		return;
-	}
-	if (args)
-	{
-		for (j = 0; j < 11; j++)
+		cmdparser_prefix_flags_t flags;
+
+		flags = cmdparser_hooks->handle_line_prefix(&pc);
+		if (flags & CP_PREFIX_MINUS)
 		{
-			arguments[j] = args[j];
+			exec_flags |= FUNC_DONT_EXPAND_COMMAND;
 		}
-	}
-	else
-	{
-		for (j = 0; j < 11; j++)
+		if (flags & CP_PREFIX_SILENT)
 		{
-			arguments[j] = NULL;
+			if (scr_flags.are_functions_silent == 0)
+			{
+				set_silent = 1;
+				scr_flags.are_functions_silent = 1;
+			}
 		}
+		if (flags & CP_PREFIX_KEEPRC)
+		{
+			do_keep_rc = 1;
+		}
+		if (pc.cline == NULL)
+		{
+			goto fn_exit;
+		}
+		err_cline = pc.cline;
 	}
 
 	if (exc->w.fw == NULL || IS_EWMH_DESKTOP(FW_W(exc->w.fw)))
@@ -451,50 +452,7 @@ static void __execute_function(
 			w = FW_W(exc->w.fw);
 		}
 	}
-
-	set_silent = False;
-	if (action[0] == '-')
-	{
-		exec_flags |= FUNC_DONT_EXPAND_COMMAND;
-		action++;
-	}
-
-	taction = action;
-	/* parse prefixes */
-	trash = PeekToken(taction, &trash2);
-	while (trash)
-	{
-		if (StrEquals(trash, PRE_SILENT))
-		{
-			if (Scr.flags.are_functions_silent == 0)
-			{
-				set_silent = 1;
-				Scr.flags.are_functions_silent = 1;
-			}
-			taction = trash2;
-			trash = PeekToken(taction, &trash2);
-		}
-		else if (StrEquals(trash, PRE_KEEPRC))
-		{
-			do_keep_rc = True;
-			taction = trash2;
-			trash = PeekToken(taction, &trash2);
-		}
-		else
-		{
-			break;
-		}
-	}
-	if (taction == NULL)
-	{
-		if (set_silent)
-		{
-			Scr.flags.are_functions_silent = 0;
-		}
-		func_depth--;
-		return;
-	}
-	if (cond_rc == NULL || do_keep_rc == True)
+	if (cond_rc == NULL || do_keep_rc == 1)
 	{
 		condrc_init(&dummy_rc);
 		func_rc = &dummy_rc;
@@ -503,42 +461,20 @@ static void __execute_function(
 	{
 		func_rc = cond_rc;
 	}
+	{
+		const char *func;
 
-	GetNextToken(taction, &function);
-	if (function)
-	{
-		char *tmp = function;
-		function = expand_vars(
-			function, arguments, False, False, func_rc, exc);
-		free(tmp);
-	}
-	if (function && function[0] != '*')
-	{
-#if 1
-		/* DV: with this piece of code it is impossible to have a
-		 * complex function with embedded whitespace that begins with a
-		 * builtin function name, e.g. a function "echo hello". */
-		/* DV: ... and without it some of the complex functions will
-		 * fail */
-		char *tmp = function;
-
-		while (*tmp && !isspace(*tmp))
+		func = cmdparser_hooks->parse_command_name(&pc, func_rc, exc);
+		if (func != NULL)
 		{
-			tmp++;
+			bif = find_builtin_function(func);
+			err_func = func;
 		}
-		*tmp = 0;
-#endif
-		bif = find_builtin_function(function);
-		must_free_function = True;
-	}
-	else
-	{
-		bif = NULL;
-		if (function)
+		else
 		{
-			free(function);
+			bif = NULL;
+			err_func = "";
 		}
-		function = "";
 	}
 
 	if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor &&
@@ -547,28 +483,29 @@ static void __execute_function(
 		fvwm_msg(
 			ERR, "__execute_function",
 			"Command can not be added to a decor; executing"
-			" command now: '%s'", action);
+			" command now: '%s'", err_cline);
 	}
 
 	if (!(exec_flags & FUNC_DONT_EXPAND_COMMAND))
 	{
-		expaction = expand_vars(
-			taction, arguments, (bif) ?
-			!!(bif->flags & FUNC_ADD_TO) :
-			False, (taction[0] == '*'), func_rc, exc);
-		if (func_depth <= 1)
+		expaction = cmdparser_hooks->expand_command_line(
+			&pc, (bif) ? !!(bif->flags & FUNC_ADD_TO) : False,
+			func_rc, exc);
+		if (pc.call_depth <= 1)
 		{
-			must_free_string = set_repeat_data(
-				expaction, REPEAT_COMMAND, bif);
-		}
-		else
-		{
-			must_free_string = True;
+			int did_store_string;
+
+			did_store_string = set_repeat_data(
+				pc.expline, REPEAT_COMMAND, bif);
+			if (did_store_string == 1)
+			{
+				cmdparser_hooks->release_expanded_line(&pc);
+			}
 		}
 	}
 	else
 	{
-		expaction = taction;
+		expaction = pc.cline;
 	}
 
 #ifdef FVWM_COMMAND_LOG
@@ -578,7 +515,7 @@ static void __execute_function(
 	/* Note: the module config command, "*" can not be handled by the
 	 * regular command table because there is no required white space after
 	 * the asterisk. */
-	if (expaction[0] == '*')
+	if (cmdparser_hooks->is_module_config(&pc) == 1)
 	{
 		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
 		{
@@ -604,7 +541,7 @@ static void __execute_function(
 		if (bif && bif->func_t != F_FUNCTION)
 		{
 			char *runaction;
-			Bool rc = False;
+			int rc = 0;
 
 			runaction = SkipNTokens(expaction, 1);
 			if ((bif->flags & FUNC_NEEDS_WINDOW) &&
@@ -622,9 +559,9 @@ static void __execute_function(
 			{
 				/* no context window and not allowed to defer,
 				 * skip command */
-				rc = True;
+				rc = 1;
 			}
-			if (rc == False)
+			if (rc == 0)
 			{
 				exc2 = exc_clone_context(exc, &ecc, mask);
 				if (has_ref_window_moved &&
@@ -637,19 +574,21 @@ static void __execute_function(
 				{
 					dummy_w = PressedW;
 					PressedW = None;
-					bif->action(func_rc, exc2, runaction);
+					bif->action(
+						func_rc, exc2, runaction, &pc);
 					PressedW = dummy_w;
 				}
 				else
 				{
-					bif->action(func_rc, exc2, runaction);
+					bif->action(
+						func_rc, exc2, runaction, &pc);
 				}
 				exc_destroy_context(exc2);
 			}
 		}
 		else
 		{
-			Bool desperate = 1;
+			int desperate = 1;
 			char *runaction;
 
 			if (bif)
@@ -663,41 +602,34 @@ static void __execute_function(
 			}
 			exc2 = exc_clone_context(exc, &ecc, mask);
 			execute_complex_function(
-				func_rc, exc2, runaction, &desperate,
+				func_rc, exc2, runaction, &pc, &desperate,
 				has_ref_window_moved);
 			if (!bif && desperate)
 			{
 				if (executeModuleDesperate(
-					    func_rc, exc, runaction) == NULL &&
-				    *function != 0 && !set_silent)
+					    func_rc, exc, runaction, &pc) ==
+				    NULL && *err_func != 0 && !set_silent)
 				{
 					fvwm_msg(
 						ERR, "__execute_function",
 						"No such command '%s'",
-						function);
+						err_func);
 				}
 			}
 			exc_destroy_context(exc2);
 		}
 	}
 
-	if (set_silent)
-	{
-		Scr.flags.are_functions_silent = 0;
-	}
-	if (cond_rc != NULL)
+  fn_exit:
+	if (func_rc != NULL && cond_rc != NULL)
 	{
 		cond_rc->break_levels = func_rc->break_levels;
 	}
-	if (must_free_string)
+	if (set_silent)
 	{
-		free(expaction);
+		scr_flags.are_functions_silent = 0;
 	}
-	if (must_free_function)
-	{
-		free(function);
-	}
-	func_depth--;
+	cmdparser_hooks->destroy_context(&pc);
 
 	return;
 }
@@ -817,7 +749,8 @@ static cfunc_action_t CheckActionType(
 
 static void __run_complex_function_items(
 	cond_rc_t *cond_rc, char cond, FvwmFunction *func,
-	const exec_context_t *exc, char *args[], Bool has_ref_window_moved)
+	const exec_context_t *exc, cmdparser_context_t *caller_pc,
+	char *args[], Bool has_ref_window_moved)
 {
 	char c;
 	FunctionItem *fi;
@@ -841,9 +774,9 @@ static void __run_complex_function_items(
 		}
 		if (c == cond)
 		{
-			__execute_function(
-				cond_rc, exc, fi->action, FUNC_DONT_DEFER,
-				args, has_ref_window_moved);
+			__execute_command_line(
+				cond_rc, exc, fi->action, caller_pc,
+				FUNC_DONT_DEFER, args, has_ref_window_moved);
 			if (!has_ref_window_moved && PressedW &&
 			    XTranslateCoordinates(
 				  dpy, PressedW , Scr.Root, 0, 0, &x, &y,
@@ -884,8 +817,7 @@ static void __cf_cleanup(
 }
 
 static void execute_complex_function(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
-	Bool *desperate, Bool has_ref_window_moved)
+	F_CMD_ARGS, Bool *desperate, Bool has_ref_window_moved)
 {
 	cond_rc_t tmp_rc;
 	cfunc_action_t type = CF_MOTION;
@@ -1033,7 +965,7 @@ static void execute_complex_function(
 	}
 	exc2 = exc_clone_context(exc, &ecc, mask);
 	__run_complex_function_items(
-		cond_rc, CF_IMMEDIATE, func, exc2, arguments,
+		cond_rc, CF_IMMEDIATE, func, exc2, pc, arguments,
 		has_ref_window_moved);
 	exc_destroy_context(exc2);
 	for (fi = func->first_item;
@@ -1176,7 +1108,8 @@ static void execute_complex_function(
 	mask |= ECC_ETRIGGER | ECC_W;
 	exc2 = exc_clone_context(exc, &ecc, mask);
 	__run_complex_function_items(
-		cond_rc, type, func, exc2, arguments, has_ref_window_moved);
+		cond_rc, type, func, exc2, pc, arguments,
+		has_ref_window_moved);
 	exc_destroy_context(exc2);
 	/* This is the right place to ungrab the pointer (see comment above).
 	 */
@@ -1265,6 +1198,13 @@ static void DestroyFunction(FvwmFunction *func)
 
 /* ---------------------------- interface functions ------------------------ */
 
+void functions_init(void)
+{
+	cmdparser_hooks = cmdparser_old_get_hooks();
+
+	return;
+}
+
 Bool functions_is_complex_function(const char *function_name)
 {
 	if (find_complex_function(function_name) != NULL)
@@ -1275,33 +1215,29 @@ Bool functions_is_complex_function(const char *function_name)
 	return False;
 }
 
-void execute_function(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
-	FUNC_FLAGS_TYPE exec_flags)
+void execute_function(F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags)
 {
-	__execute_function(cond_rc, exc, action, exec_flags, NULL, False);
+	__execute_command_line(F_PASS_ARGS, exec_flags, NULL, False);
 
 	return;
 }
 
 void execute_function_override_wcontext(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
-	FUNC_FLAGS_TYPE exec_flags, int wcontext)
+	F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags, int wcontext)
 {
 	const exec_context_t *exc2;
 	exec_context_changes_t ecc;
 
 	ecc.w.wcontext = wcontext;
 	exc2 = exc_clone_context(exc, &ecc, ECC_WCONTEXT);
-	execute_function(cond_rc, exc2, action, exec_flags);
+	execute_function(F_PASS_ARGS_WITH_EXC(exc2), exec_flags);
 	exc_destroy_context(exc2);
 
 	return;
 }
 
 void execute_function_override_window(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
-	FUNC_FLAGS_TYPE exec_flags, FvwmWindow *fw)
+	F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags, FvwmWindow *fw)
 {
 	const exec_context_t *exc2;
 	exec_context_changes_t ecc;
@@ -1329,7 +1265,7 @@ void execute_function_override_window(
 		exc2 = exc_create_context(
 			&ecc, ECC_TYPE | ECC_FW | ECC_W | ECC_WCONTEXT);
 	}
-	execute_function(cond_rc, exc2, action, exec_flags);
+	execute_function(F_PASS_ARGS_WITH_EXC(exc2), exec_flags);
 	exc_destroy_context(exc2);
 
 	return;

@@ -2615,7 +2615,8 @@ FvwmWindow *AddWindow(
 			SET_STICKY_ACROSS_PAGES(fw, 0);
 			SET_STICKY_ACROSS_DESKS(fw, 0);
 			handle_stick(
-				NULL, exc2, "", stick_page, stick_desk, 1, 0);
+				NULL, exc2, "", NULL, stick_page, stick_desk,
+				1, 0);
 			exc_destroy_context(exc2);
 		}
 	}
@@ -2646,7 +2647,7 @@ FvwmWindow *AddWindow(
 		ecc.w.wcontext = C_WINDOW;
 		exc2 = exc_clone_context(
 			exc, &ecc, ECC_ETRIGGER | ECC_FW | ECC_WCONTEXT);
-		CMD_Resize(NULL, exc2, "");
+		CMD_Resize(NULL, exc2, "", NULL);
 		exc_destroy_context(exc2);
 	}
 
@@ -2715,7 +2716,7 @@ FvwmWindow *AddWindow(
 			     EWMH_STATE_HAS_HINT) ? 100 : 0;
 			sprintf(cmd,"Maximize on %i %i", h, v);
 			execute_function_override_window(
-				NULL, NULL, cmd, 0, fw);
+				NULL, NULL, cmd, NULL, 0, fw);
 		}
 	}
 	if (HAS_EWMH_INIT_FULLSCREEN_STATE(fw) == EWMH_STATE_HAS_HINT)

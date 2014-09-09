@@ -42,6 +42,7 @@
 #include "libs/fvwmrect.h"
 #include "window_flags.h"
 #include "condrc.h"
+#include "cmdparser.h"
 
 /* ---------------------------- global definitions ------------------------- */
 
@@ -59,8 +60,9 @@
 
 /* Macro for args passed to fvwm commands... */
 #define F_CMD_ARGS \
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action
-#define F_PASS_ARGS cond_rc, exc, action
+	cond_rc_t *cond_rc, const exec_context_t *exc, char *action, cmdparser_context_t *pc
+#define F_PASS_ARGS cond_rc, exc, action, pc
+#define F_PASS_ARGS_WITH_EXC(new_exc) cond_rc, (new_exc), action, pc
 #define FUNC_FLAGS_TYPE unsigned char
 
 /* access macros */

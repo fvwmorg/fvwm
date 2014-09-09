@@ -23,6 +23,7 @@
 #include "fvwm.h"
 #include "externs.h"
 #include "cursor.h"
+#include "cmdparser.h"
 #include "functions.h"
 #include "repeat.h"
 #include "libs/Parse.h"
@@ -162,7 +163,7 @@ void CMD_Repeat(F_CMD_ARGS)
 	default:
 		action = last.command_line;
 		execute_function(
-			cond_rc, exc, action, FUNC_DONT_EXPAND_COMMAND);
+			cond_rc, exc, action, pc, FUNC_DONT_EXPAND_COMMAND);
 		break;
 	}
 	repeat_depth--;
