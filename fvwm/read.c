@@ -37,6 +37,7 @@
 #include "fvwm.h"
 #include "externs.h"
 #include "cursor.h"
+#include "cmdparser.h"
 #include "functions.h"
 #include "events.h"
 #include "misc.h"
@@ -121,7 +122,8 @@ const char *get_current_read_dir(void)
  * Read and execute each line from stream.
  */
 void run_command_stream(
-	cond_rc_t *cond_rc, FILE *f, const exec_context_t *exc)
+	cond_rc_t *cond_rc, FILE *f, const exec_context_t *exc,
+	cmdparser_context_t *pc)
 {
 	char *tline;
 	char line[1024];
@@ -152,7 +154,7 @@ void run_command_stream(
 		{
 			tline[l - 1] = '\0';
 		}
-		execute_function(cond_rc, exc, tline, 0);
+		execute_function(cond_rc, exc, tline, pc, 0);
 		tline = fgets(line, (sizeof line) - 1, f);
 	}
 
@@ -201,7 +203,7 @@ static int parse_filename(
  * Returns 0 if file not found
  **/
 int run_command_file(
-	char *filename, const exec_context_t *exc)
+	char *filename, const exec_context_t *exc, cmdparser_context_t *pc)
 {
 	char *full_filename;
 	FILE* f = NULL;
@@ -255,7 +257,7 @@ int run_command_file(
 	{
 		return 0;
 	}
-	run_command_stream(NULL, f, exc);
+	run_command_stream(NULL, f, exc, pc);
 	fclose(f);
 	pop_read_file();
 
@@ -319,7 +321,7 @@ void CMD_Read(F_CMD_ARGS)
 		return;
 	}
 	cursor_control(True);
-	if (!run_command_file(filename, exc))
+	if (!run_command_file(filename, exc, pc))
 	{
 		if (!read_quietly)
 		{
@@ -388,7 +390,7 @@ void CMD_PipeRead(F_CMD_ARGS)
 	}
 	free(command);
 
-	run_command_stream(cond_rc,f, exc);
+	run_command_stream(cond_rc,f, exc, pc);
 	pclose(f);
 	cursor_control(False);
 

@@ -35,6 +35,7 @@
 #include "libs/Parse.h"
 #include "libs/Strings.h"
 #include "fvwm.h"
+#include "cmdparser.h"
 #include "functions.h"
 #include "repeat.h"
 #include "misc.h"
@@ -122,7 +123,7 @@ static void menu_func(F_CMD_ARGS, Bool fStaysUp)
 	do_menu(&mp, &mret);
 	if (mret.rc == MENU_DOUBLE_CLICKED && action)
 	{
-		execute_function(cond_rc, exc2, action, 0);
+		execute_function(cond_rc, exc2, action, pc, 0);
 	}
 	if (ret_action != NULL)
 	{

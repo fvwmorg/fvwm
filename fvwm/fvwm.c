@@ -559,7 +559,7 @@ void Done(int restart, char *command)
 		ecc.type = restart ? EXCT_TORESTART : EXCT_QUIT;
 		ecc.w.wcontext = C_ROOT;
 		exc = exc_create_context(&ecc, ECC_TYPE | ECC_WCONTEXT);
-		execute_function(NULL, exc, action, 0);
+		execute_function(NULL, exc, action, NULL, 0);
 		exc_destroy_context(exc);
 		free(action);
 	}
@@ -1445,7 +1445,7 @@ static void SetRCDefaults(void)
 		exc = exc_create_context(&ecc, ECC_TYPE | ECC_WCONTEXT);
 		cmd = CatString3(
 			defaults[i][0], defaults[i][1], defaults[i][2]);
-		execute_function(NULL, exc, cmd, 0);
+		execute_function(NULL, exc, cmd, NULL, 0);
 		exc_destroy_context(exc);
 	}
 #undef RC_DEFAULTS_COMPLETE
@@ -1559,7 +1559,7 @@ void StartupStuff(void)
 	{
 		char *action = "Function " start_func_name;
 
-		execute_function(NULL, exc, action, 0);
+		execute_function(NULL, exc, action, NULL, 0);
 	}
 
 	/* migo (03-Jul-1999): execute [Session]{Init|Restart}Function */
@@ -1569,7 +1569,7 @@ void StartupStuff(void)
 		char *action = safestrdup(
 			CatString2("Function ", init_func_name));
 
-		execute_function(NULL, exc, action, 0);
+		execute_function(NULL, exc, action, NULL, 0);
 		free(action);
 	}
 	/* see comment above */
@@ -1774,6 +1774,7 @@ int main(int argc, char **argv)
 
 	DBUG("main", "Entered, about to parse args");
 
+	functions_init();
 	fvwmlib_init_max_fd();
 	/* Tell the FEvent module an event type that is not used by fvwm. */
 	fev_init_invalid_event_type(KeymapNotify);
@@ -2499,7 +2500,8 @@ int main(int argc, char **argv)
 		for (i = 0; i < num_config_commands; i++)
 		{
 			DoingCommandLine = True;
-			execute_function(NULL, exc, config_commands[i], 0);
+			execute_function(
+				NULL, exc, config_commands[i], NULL, 0);
 			free(config_commands[i]);
 		}
 		DoingCommandLine = False;
