@@ -315,7 +315,7 @@ static int func_comp(const void *a, const void *b)
 	return (strcmp((char *)a, ((func_t *)b)->keyword));
 }
 
-static const func_t *find_builtin_function(char *func)
+static const func_t *find_builtin_function(const char *func)
 {
 	static int nfuncs = 0;
 	func_t *ret_func;
@@ -366,8 +366,7 @@ static void __execute_command_line(
 	cond_rc_t dummy_rc;
 	Window w;
 	char *err_cline;
-	char *err_func;
-	char *taction;
+	const char *err_func;
 	char *expaction = NULL;
 	const func_t *bif;
 	int set_silent;
@@ -376,8 +375,6 @@ static void __execute_command_line(
 	extern Window PressedW;
 	Window dummy_w;
 	int rc;
-	void *pointers_to_free[3];
-	int num_pointers_to_free = 0;
 
 	set_silent = 0;
 	/* generate a parsing context; this *must* be destroyed before
@@ -391,6 +388,33 @@ static void __execute_command_line(
 	if (rc != 0)
 	{
 		goto fn_exit;
+	}
+
+	{
+		cmdparser_prefix_flags_t flags;
+
+		flags = cmdparser_hooks->handle_line_prefix(&pc);
+		if (flags & CP_PREFIX_MINUS)
+		{
+			exec_flags |= FUNC_DONT_EXPAND_COMMAND;
+		}
+		if (flags & CP_PREFIX_SILENT)
+		{
+			if (scr_flags.are_functions_silent == 0)
+			{
+				set_silent = 1;
+				scr_flags.are_functions_silent = 1;
+			}
+		}
+		if (flags & CP_PREFIX_KEEPRC)
+		{
+			do_keep_rc = 1;
+		}
+		if (pc.cline == NULL)
+		{
+			goto fn_exit;
+		}
+		err_cline = pc.cline;
 	}
 
 	if (exc->w.fw == NULL || IS_EWMH_DESKTOP(FW_W(exc->w.fw)))
@@ -437,76 +461,20 @@ static void __execute_command_line(
 	{
 		func_rc = cond_rc;
 	}
-
 	{
-		cmdparser_prefix_flags_t flags;
+		const char *func;
 
-		flags = cmdparser_hooks->handle_line_prefix(&pc);
-		if (flags & CP_PREFIX_MINUS)
+		func = cmdparser_hooks->parse_command_name(&pc, func_rc, exc);
+		if (func != NULL)
 		{
-			exec_flags |= FUNC_DONT_EXPAND_COMMAND;
-		}
-		if (flags & CP_PREFIX_SILENT)
-		{
-			if (Scr.flags.are_functions_silent == 0)
-			{
-				set_silent = 1;
-				Scr.flags.are_functions_silent = 1;
-			}
-		}
-		if (flags & CP_PREFIX_KEEPRC)
-		{
-			do_keep_rc = 1;
-		}
-		if (pc.cline == NULL)
-		{
-			goto fn_exit;
-		}
-		err_cline = pc.cline;
-#if 1 /*!!!just for not until action can be removed completely */
-		taction = pc.cline;
-#endif
-	}
-
-	{
-		char *function;
-
-		GetNextToken(taction, &function);
-		if (function)
-		{
-			char *tmp = function;
-
-			function = expand_vars(
-				function, &pc, False, False, func_rc, exc);
-			free(tmp);
-			pointers_to_free[num_pointers_to_free] = function;
-			num_pointers_to_free++;
-		}
-		if (function && function[0] != '*')
-		{
-#if 1
-			/* DV: with this piece of code it is impossible to
-			 * have a complex function with embedded whitespace
-			 * that begins with a builtin function name, e.g. a
-			 * function "echo hello". */
-			/* DV: ... and without it some of the complex
-			 * functions will fail */
-			char *tmp = function;
-
-			while (*tmp && !isspace(*tmp))
-			{
-				tmp++;
-			}
-			*tmp = 0;
-#endif
-			bif = find_builtin_function(function);
+			bif = find_builtin_function(func);
+			err_func = func;
 		}
 		else
 		{
 			bif = NULL;
-			function = "";
+			err_func = "";
 		}
-		err_func = function;
 	}
 
 #ifdef USEDECOR
@@ -522,32 +490,24 @@ static void __execute_command_line(
 
 	if (!(exec_flags & FUNC_DONT_EXPAND_COMMAND))
 	{
-		expaction = expand_vars(
-			taction, &pc,
-			(bif) ? !!(bif->flags & FUNC_ADD_TO) : False,
-			(taction[0] == '*'), func_rc, exc);
-		pointers_to_free[num_pointers_to_free] = expaction;
-		num_pointers_to_free++;
+		expaction = cmdparser_hooks->expand_command_line(
+			&pc, (bif) ? !!(bif->flags & FUNC_ADD_TO) : False,
+			func_rc, exc);
 		if (pc.call_depth <= 1)
 		{
 			int did_store_string;
 
 			did_store_string = set_repeat_data(
-				expaction, REPEAT_COMMAND, bif);
+				pc.expline, REPEAT_COMMAND, bif);
 			if (did_store_string == 1)
 			{
-				num_pointers_to_free--;
+				cmdparser_hooks->release_expanded_line(&pc);
 			}
-		}
-		else
-		{
-			pointers_to_free[num_pointers_to_free] = expaction;
-			num_pointers_to_free++;
 		}
 	}
 	else
 	{
-		expaction = taction;
+		expaction = pc.cline;
 	}
 
 #ifdef FVWM_COMMAND_LOG
@@ -557,7 +517,7 @@ static void __execute_command_line(
 	/* Note: the module config command, "*" can not be handled by the
 	 * regular command table because there is no required white space after
 	 * the asterisk. */
-	if (expaction[0] == '*')
+	if (cmdparser_hooks->is_module_config(&pc) == 1)
 	{
 #ifdef USEDECOR
 		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
@@ -671,17 +631,6 @@ static void __execute_command_line(
 	if (set_silent)
 	{
 		scr_flags.are_functions_silent = 0;
-	}
-	{
-		int i;
-
-		for (i = 0; i < num_pointers_to_free; i++)
-		{
-			if (pointers_to_free[i] != NULL)
-			{
-				free(pointers_to_free[i]);
-			}
-		}
 	}
 	cmdparser_hooks->destroy_context(&pc);
 

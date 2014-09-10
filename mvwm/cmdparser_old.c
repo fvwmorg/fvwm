@@ -26,6 +26,8 @@
 #include "cmdparser_old.h"
 #include "mvwm.h"
 #include "misc.h"
+#include "execcontext.h"
+#include "expand.h"
 
 #define func_t int
 #include "functable.h"
@@ -100,7 +102,14 @@ static void ocp_destroy_context(cmdparser_context_t *c)
 	{
 		return;
 	}
-	/*!!!free stuff*/
+	if (c->command != NULL)
+	{
+		free(c->command);
+	}
+	if (c->expline != NULL && c->do_free_expline == 1)
+	{
+		free(c->expline);
+	}
 	c->is_created = 0;
 
 	return;
@@ -169,6 +178,64 @@ static cmdparser_prefix_flags_t ocp_handle_line_prefix(cmdparser_context_t *c)
 	return flags;
 }
 
+static int ocp_is_module_config(cmdparser_context_t *c)
+{
+	return (c->command != NULL && *c->command == '*') ? 1 : 0;
+}
+
+static const char *ocp_parse_command_name(
+	cmdparser_context_t *c, void *func_rc, const void *exc)
+{
+	GetNextToken(c->cline, &c->command);
+	if (c->command != NULL)
+	{
+		char *tmp = c->command;
+
+		c->command = expand_vars(
+			c->command, c, False, False, func_rc, exc);
+		free(tmp);
+	}
+	if (c->command && ocp_is_module_config(c) == 0)
+	{
+#if 1
+		/* DV: with this piece of code it is impossible to have a
+		 * complex function with embedded whitespace that begins with a
+		 * builtin function name, e.g. a function "echo hello". */
+		/* DV: ... and without it some of the complex functions will
+		 * fail */
+		char *tmp = c->command;
+
+		while (*tmp && !isspace(*tmp))
+		{
+			tmp++;
+		}
+		*tmp = 0;
+#endif
+		return c->command;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+static char *ocp_expand_command_line(
+	cmdparser_context_t *c, int is_addto, void *func_rc, const void *exc)
+{
+	c->expline = expand_vars(
+		c->cline, c, is_addto, ocp_is_module_config(c), func_rc, exc);
+	c->do_free_expline = 1;
+
+	return c->expline;
+}
+
+static void ocp_release_expanded_line(cmdparser_context_t *c)
+{
+	c->do_free_expline = 0;
+
+	return;
+}
+
 /* ---------------------------- local variables ---------------------------- */
 
 static cmdparser_hooks_t old_parser_hooks =
@@ -176,6 +243,10 @@ static cmdparser_hooks_t old_parser_hooks =
 	ocp_create_context,
 	ocp_handle_line_start,
 	ocp_handle_line_prefix,
+	ocp_parse_command_name,
+	ocp_is_module_config,
+	ocp_expand_command_line,
+	ocp_release_expanded_line,
 	ocp_destroy_context
 };
 

@@ -32,6 +32,11 @@ typedef struct
 	char *line;
 	/* the current command line */
 	char *cline;
+	/* the expanded command line */
+	char *expline;
+	int do_free_expline : 1;
+	/* the command name */
+	char *command;
 	/* current function nesting depth */
 	int call_depth;
 	/* an array of positional arguments; the first array element contains
@@ -67,6 +72,20 @@ typedef struct
 	 * command line.  The prefixes are stripped.  */
 	cmdparser_prefix_flags_t (*handle_line_prefix)(
 		cmdparser_context_t *context);
+	/* parses and returns the command name or returns a NULL pointer if not
+	 * possible */
+	const char *(*parse_command_name)(
+		cmdparser_context_t *context, void *func_rc, const void *exc);
+	/* returns 1 if the stored command is a module configuration command
+	 * and 0 otherwise */
+	int (*is_module_config)(cmdparser_context_t *context);
+	/* returns the expanded command line */
+	char *(*expand_command_line)(
+		cmdparser_context_t *context, int is_addto, void *func_rc,
+		const void *exc);
+	/* Release the expline field from the context structure and return it.
+	 * It is then the responsibility of the caller to free() it. */
+	void (*release_expanded_line)(cmdparser_context_t *context);
 	void (*destroy_context)(cmdparser_context_t *context);
 } cmdparser_hooks_t;
 
