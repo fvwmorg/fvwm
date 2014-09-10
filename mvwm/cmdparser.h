@@ -40,9 +40,4 @@ typedef struct
 	void (*destroy_context)(cmdparser_context_t *context);
 } cmdparser_hooks_t;
 
-/* ---------------------------- interface functions ------------------------ */
-
-/* return the hooks structure of the new parser */
-const cmdparser_hooks_t *cmdparser_new_get_hooks(void);
-
-#endif /* FUNCTIONS_H */
+#endif /* CMDPARSER_H */

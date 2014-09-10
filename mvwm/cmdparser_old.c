@@ -23,6 +23,7 @@
 #include <assert.h>
 
 #include "cmdparser.h"
+#include "cmdparser_old.h"
 #include "mvwm.h"
 #include "misc.h"
 
@@ -44,7 +45,7 @@
 
 /* ---------------------------- local functions ---------------------------- */
 
-static int ncp_create_context(
+static int ocp_create_context(
 	cmdparser_context_t *dest_c, cmdparser_context_t *caller_c, char *line)
 {
 	/* allocate the necessary resources */
@@ -57,7 +58,7 @@ static int ncp_create_context(
 		if (dest_c->call_depth > MAX_FUNCTION_DEPTH)
 		{
 			mvwm_msg(
-				ERR, "ncp_create_context",
+				ERR, "ocp_create_context",
 				"Function '%s' called with a depth of %i, "
 				"stopping function execution!",
 				line, dest_c->call_depth);
@@ -75,7 +76,7 @@ static int ncp_create_context(
 	return 0;
 }
 
-static void ncp_destroy_context(cmdparser_context_t *c)
+static void ocp_destroy_context(cmdparser_context_t *c)
 {
 	/* free the resources allocated in the create function */
 	if (c->is_created == 0)
@@ -88,7 +89,7 @@ static void ncp_destroy_context(cmdparser_context_t *c)
 	return;
 }
 
-static int ncp_handle_line_start(cmdparser_context_t *c)
+static int ocp_handle_line_start(cmdparser_context_t *c)
 {
 	/*!!! remove assertion later*/
 	assert(c->cline == NULL);
@@ -115,17 +116,17 @@ static int ncp_handle_line_start(cmdparser_context_t *c)
 
 /* ---------------------------- local variables ---------------------------- */
 
-static cmdparser_hooks_t new_parser_hooks =
+static cmdparser_hooks_t old_parser_hooks =
 {
-	ncp_create_context,
-	ncp_handle_line_start,
-	ncp_destroy_context
+	ocp_create_context,
+	ocp_handle_line_start,
+	ocp_destroy_context
 };
 
 /* ---------------------------- interface functions ------------------------ */
 
-/* return the hooks structure of the new parser */
-const cmdparser_hooks_t *cmdparser_new_get_hooks(void)
+/* return the hooks structure of the old parser */
+const cmdparser_hooks_t *cmdparser_old_get_hooks(void)
 {
-	return &new_parser_hooks;
+	return &old_parser_hooks;
 }

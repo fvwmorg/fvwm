@@ -44,6 +44,7 @@
 #include "cursor.h"
 #include "execcontext.h"
 #include "cmdparser.h"
+#include "cmdparser_old.h"
 #include "functions.h"
 #include "commands.h"
 #include "functable.h"
@@ -1271,7 +1272,7 @@ static void DestroyFunction(FvwmFunction *func)
 
 void functions_init(void)
 {
-	cmdparser_hooks = cmdparser_new_get_hooks();
+	cmdparser_hooks = cmdparser_old_get_hooks();
 
 	return;
 }
