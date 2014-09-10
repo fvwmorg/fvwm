@@ -356,8 +356,8 @@ static const func_t *find_builtin_function(char *func)
 	return ret_func;
 }
 
-static void __execute_function(
-	cond_rc_t *cond_rc, const exec_context_t *exc, char *action,
+static void __execute_command_line(
+	cond_rc_t *cond_rc, const exec_context_t *exc, char *xaction,
 	cmdparser_context_t *caller_pc,
 	FUNC_FLAGS_TYPE exec_flags, char *args[], Bool has_ref_window_moved)
 {
@@ -365,26 +365,24 @@ static void __execute_function(
 	cond_rc_t *func_rc = NULL;
 	cond_rc_t dummy_rc;
 	Window w;
-	int j;
-	char *function;
+	char *err_cline;
+	char *err_func;
 	char *taction;
-	char *trash;
-	char *trash2;
 	char *expaction = NULL;
-	char *arguments[11];
 	const func_t *bif;
-	Bool set_silent;
-	Bool must_free_string = False;
-	Bool must_free_function = False;
-	Bool do_keep_rc = False;
+	int set_silent;
+	int do_keep_rc = 0;
 	/* needed to be able to avoid resize to use moved windows for base */
 	extern Window PressedW;
 	Window dummy_w;
 	int rc;
+	void *pointers_to_free[3];
+	int num_pointers_to_free = 0;
 
+	set_silent = 0;
 	/* generate a parsing context; this *must* be destroyed before
 	 * returning */
-	rc = cmdparser_hooks->create_context(&pc, caller_pc, action);
+	rc = cmdparser_hooks->create_context(&pc, caller_pc, xaction, args);
 	if (rc != 0)
 	{
 		goto fn_exit;
@@ -393,24 +391,6 @@ static void __execute_function(
 	if (rc != 0)
 	{
 		goto fn_exit;
-	}
-#if 1 /*!!!just for not until action can be removed completely */
-	action = pc.cline;
-#endif
-
-	if (args)
-	{
-		for (j = 0; j < 11; j++)
-		{
-			arguments[j] = args[j];
-		}
-	}
-	else
-	{
-		for (j = 0; j < 11; j++)
-		{
-			arguments[j] = NULL;
-		}
 	}
 
 	if (exc->w.fw == NULL || IS_EWMH_DESKTOP(FW_W(exc->w.fw)))
@@ -448,49 +428,7 @@ static void __execute_function(
 			w = FW_W(exc->w.fw);
 		}
 	}
-
-	set_silent = False;
-	if (action[0] == '-')
-	{
-		exec_flags |= FUNC_DONT_EXPAND_COMMAND;
-		action++;
-	}
-
-	taction = action;
-	/* parse prefixes */
-	trash = PeekToken(taction, &trash2);
-	while (trash)
-	{
-		if (StrEquals(trash, PRE_SILENT))
-		{
-			if (Scr.flags.are_functions_silent == 0)
-			{
-				set_silent = 1;
-				Scr.flags.are_functions_silent = 1;
-			}
-			taction = trash2;
-			trash = PeekToken(taction, &trash2);
-		}
-		else if (StrEquals(trash, PRE_KEEPRC))
-		{
-			do_keep_rc = True;
-			taction = trash2;
-			trash = PeekToken(taction, &trash2);
-		}
-		else
-		{
-			break;
-		}
-	}
-	if (taction == NULL)
-	{
-		if (set_silent)
-		{
-			Scr.flags.are_functions_silent = 0;
-		}
-		goto fn_exit;
-	}
-	if (cond_rc == NULL || do_keep_rc == True)
+	if (cond_rc == NULL || do_keep_rc == 1)
 	{
 		condrc_init(&dummy_rc);
 		func_rc = &dummy_rc;
@@ -500,41 +438,75 @@ static void __execute_function(
 		func_rc = cond_rc;
 	}
 
-	GetNextToken(taction, &function);
-	if (function)
 	{
-		char *tmp = function;
-		function = expand_vars(
-			function, arguments, False, False, func_rc, exc);
-		free(tmp);
-	}
-	if (function && function[0] != '*')
-	{
-#if 1
-		/* DV: with this piece of code it is impossible to have a
-		 * complex function with embedded whitespace that begins with a
-		 * builtin function name, e.g. a function "echo hello". */
-		/* DV: ... and without it some of the complex functions will
-		 * fail */
-		char *tmp = function;
+		cmdparser_prefix_flags_t flags;
 
-		while (*tmp && !isspace(*tmp))
+		flags = cmdparser_hooks->handle_line_prefix(&pc);
+		if (flags & CP_PREFIX_MINUS)
 		{
-			tmp++;
+			exec_flags |= FUNC_DONT_EXPAND_COMMAND;
 		}
-		*tmp = 0;
+		if (flags & CP_PREFIX_SILENT)
+		{
+			if (Scr.flags.are_functions_silent == 0)
+			{
+				set_silent = 1;
+				Scr.flags.are_functions_silent = 1;
+			}
+		}
+		if (flags & CP_PREFIX_KEEPRC)
+		{
+			do_keep_rc = 1;
+		}
+		if (pc.cline == NULL)
+		{
+			goto fn_exit;
+		}
+		err_cline = pc.cline;
+#if 1 /*!!!just for not until action can be removed completely */
+		taction = pc.cline;
 #endif
-		bif = find_builtin_function(function);
-		must_free_function = True;
 	}
-	else
+
 	{
-		bif = NULL;
+		char *function;
+
+		GetNextToken(taction, &function);
 		if (function)
 		{
-			free(function);
+			char *tmp = function;
+
+			function = expand_vars(
+				function, &pc, False, False, func_rc, exc);
+			free(tmp);
+			pointers_to_free[num_pointers_to_free] = function;
+			num_pointers_to_free++;
 		}
-		function = "";
+		if (function && function[0] != '*')
+		{
+#if 1
+			/* DV: with this piece of code it is impossible to
+			 * have a complex function with embedded whitespace
+			 * that begins with a builtin function name, e.g. a
+			 * function "echo hello". */
+			/* DV: ... and without it some of the complex
+			 * functions will fail */
+			char *tmp = function;
+
+			while (*tmp && !isspace(*tmp))
+			{
+				tmp++;
+			}
+			*tmp = 0;
+#endif
+			bif = find_builtin_function(function);
+		}
+		else
+		{
+			bif = NULL;
+			function = "";
+		}
+		err_func = function;
 	}
 
 #ifdef USEDECOR
@@ -544,24 +516,33 @@ static void __execute_function(
 		fvwm_msg(
 			ERR, "__execute_function",
 			"Command can not be added to a decor; executing"
-			" command now: '%s'", action);
+			" command now: '%s'", err_cline);
 	}
 #endif
 
 	if (!(exec_flags & FUNC_DONT_EXPAND_COMMAND))
 	{
 		expaction = expand_vars(
-			taction, arguments, (bif) ?
-			!!(bif->flags & FUNC_ADD_TO) :
-			False, (taction[0] == '*'), func_rc, exc);
+			taction, &pc,
+			(bif) ? !!(bif->flags & FUNC_ADD_TO) : False,
+			(taction[0] == '*'), func_rc, exc);
+		pointers_to_free[num_pointers_to_free] = expaction;
+		num_pointers_to_free++;
 		if (pc.call_depth <= 1)
 		{
-			must_free_string = set_repeat_data(
+			int did_store_string;
+
+			did_store_string = set_repeat_data(
 				expaction, REPEAT_COMMAND, bif);
+			if (did_store_string == 1)
+			{
+				num_pointers_to_free--;
+			}
 		}
 		else
 		{
-			must_free_string = True;
+			pointers_to_free[num_pointers_to_free] = expaction;
+			num_pointers_to_free++;
 		}
 	}
 	else
@@ -603,7 +584,7 @@ static void __execute_function(
 		if (bif && bif->func_t != F_FUNCTION)
 		{
 			char *runaction;
-			Bool rc = False;
+			int rc = 0;
 
 			runaction = SkipNTokens(expaction, 1);
 			if ((bif->flags & FUNC_NEEDS_WINDOW) &&
@@ -621,9 +602,9 @@ static void __execute_function(
 			{
 				/* no context window and not allowed to defer,
 				 * skip command */
-				rc = True;
+				rc = 1;
 			}
-			if (rc == False)
+			if (rc == 0)
 			{
 				exc2 = exc_clone_context(exc, &ecc, mask);
 				if (has_ref_window_moved &&
@@ -650,7 +631,7 @@ static void __execute_function(
 		}
 		else
 		{
-			Bool desperate = 1;
+			int desperate = 1;
 			char *runaction;
 
 			if (bif)
@@ -670,37 +651,38 @@ static void __execute_function(
 			{
 				if (executeModuleDesperate(
 					    func_rc, exc, runaction, &pc) ==
-				    NULL &&
-				    *function != 0 && !set_silent)
+				    NULL && *err_func != 0 && !set_silent)
 				{
 					fvwm_msg(
 						ERR, "__execute_function",
 						"No such command '%s'",
-						function);
+						err_func);
 				}
 			}
 			exc_destroy_context(exc2);
 		}
 	}
 
-	if (set_silent)
-	{
-		Scr.flags.are_functions_silent = 0;
-	}
-	if (cond_rc != NULL)
+  fn_exit:
+	if (func_rc != NULL && cond_rc != NULL)
 	{
 		cond_rc->break_levels = func_rc->break_levels;
 	}
-	if (must_free_string)
+	if (set_silent)
 	{
-		free(expaction);
+		scr_flags.are_functions_silent = 0;
 	}
-	if (must_free_function)
 	{
-		free(function);
-	}
+		int i;
 
-  fn_exit:
+		for (i = 0; i < num_pointers_to_free; i++)
+		{
+			if (pointers_to_free[i] != NULL)
+			{
+				free(pointers_to_free[i]);
+			}
+		}
+	}
 	cmdparser_hooks->destroy_context(&pc);
 
 	return;
