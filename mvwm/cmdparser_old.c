@@ -320,6 +320,14 @@ static void ocp_release_expanded_line(cmdparser_context_t *c)
 	return;
 }
 
+static char *ocp_find_something_to_execute(
+	cmdparser_context_t *context, cmdparser_execute_type_t *ret_type)
+{
+#if 1 /*!!!*/
+	return NULL;
+#endif
+}
+
 /* ---------------------------- local variables ---------------------------- */
 
 static cmdparser_hooks_t old_parser_hooks =
@@ -331,6 +339,7 @@ static cmdparser_hooks_t old_parser_hooks =
 	ocp_is_module_config,
 	ocp_expand_command_line,
 	ocp_release_expanded_line,
+	ocp_find_something_to_execute,
 	ocp_destroy_context,
 	ocp_debug
 };

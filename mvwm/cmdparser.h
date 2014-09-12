@@ -13,6 +13,7 @@
 
 /* ---------------------------- type definitions --------------------------- */
 
+/* Enum for all the possible prefixes. */
 typedef enum
 {
 	CP_PREFIX_NONE = 0,
@@ -20,6 +21,16 @@ typedef enum
 	CP_PREFIX_SILENT = 0x2,
 	CP_PREFIX_KEEPRC = 0x4
 } cmdparser_prefix_flags_t;
+
+/* Enum for types of things to execute. */
+typedef enum
+{
+	CP_EXECTYPE_BUILTIN_FUNCTION,
+	CP_EXECTYPE_COMPLEX_FUNCTION,
+	CP_EXECTYPE_MODULE,
+	CP_EXECTYPE_MODULECONFIG,
+	CP_EXECTYPE_UNKNOWN
+} cmdparser_execute_type_t;
 
 /* move this to the implementation file and use void* instead??? */
 
@@ -86,7 +97,13 @@ typedef struct
 	/* Release the expline field from the context structure and return it.
 	 * It is then the responsibility of the caller to free() it. */
 	void (*release_expanded_line)(cmdparser_context_t *context);
+	/*!!!*/
+	char *(*find_something_to_execute)(
+		cmdparser_context_t *context,
+		cmdparser_execute_type_t *ret_type);
+	/* Release the context initialised with create_context(). */
 	void (*destroy_context)(cmdparser_context_t *context);
+	/* Print the contents of the context. */
 	void (*debug)(cmdparser_context_t *context, const char *msg);
 } cmdparser_hooks_t;
 
