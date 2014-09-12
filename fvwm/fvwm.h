@@ -63,7 +63,6 @@
 	cond_rc_t *cond_rc, const exec_context_t *exc, char *action, cmdparser_context_t *pc
 #define F_PASS_ARGS cond_rc, exc, action, pc
 #define F_PASS_ARGS_WITH_EXC(new_exc) cond_rc, (new_exc), action, pc
-#define FUNC_FLAGS_TYPE unsigned char
 
 /* access macros */
 #define FW_W_FRAME(fw)        ((fw)->wins.frame)

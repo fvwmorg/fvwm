@@ -87,7 +87,7 @@ const func_t func_table[] =
 	/* - Operate on all windows matching the given condition */
 
 	CMD_ENT("animatedmove", CMD_AnimatedMove, F_ANIMATED_MOVE,
-		FUNC_NEEDS_WINDOW, CRS_MOVE),
+		FUNC_NEEDS_WINDOW | FUNC_IS_MOVE_TYPE, CRS_MOVE),
 	/* - Like Move, but uses animation to move windows */
 
 	CMD_ENT("any", CMD_Any, F_ANY, 0, 0),
@@ -390,7 +390,7 @@ const func_t func_table[] =
 	/* - Bind or unbind a mouse button press to an fvwm action */
 
 	CMD_ENT("move", CMD_Move, F_MOVE,
-		FUNC_NEEDS_WINDOW, CRS_MOVE),
+		FUNC_NEEDS_WINDOW | FUNC_IS_MOVE_TYPE, CRS_MOVE),
 	/* - Move a window */
 
 	CMD_ENT("movethreshold", CMD_MoveThreshold, F_MOVE_THRESHOLD, 0, 0),
@@ -495,19 +495,20 @@ const func_t func_table[] =
 	/* - Repeat (very unreliably) the last command, don't use */
 
 	CMD_ENT("resize", CMD_Resize, F_RESIZE,
-		FUNC_NEEDS_WINDOW, CRS_RESIZE),
+		FUNC_NEEDS_WINDOW | FUNC_IS_MOVE_TYPE, CRS_RESIZE),
 	/* - Cause a window to be resized */
 
 	CMD_ENT("resizemaximize", CMD_ResizeMaximize, F_RESIZE_MAXIMIZE,
-		FUNC_NEEDS_WINDOW, CRS_RESIZE),
+		FUNC_NEEDS_WINDOW | FUNC_IS_MOVE_TYPE, CRS_RESIZE),
 	/* - Resize a window and mark window as maximized */
 
 	CMD_ENT("resizemove", CMD_ResizeMove, F_RESIZEMOVE,
-		FUNC_NEEDS_WINDOW, CRS_RESIZE),
+		FUNC_NEEDS_WINDOW | FUNC_IS_MOVE_TYPE, CRS_RESIZE),
 	/* - Resize and move in one operation */
 
 	CMD_ENT("resizemovemaximize", CMD_ResizeMoveMaximize,
-		F_RESIZEMOVE_MAXIMIZE, FUNC_NEEDS_WINDOW, CRS_RESIZE),
+		F_RESIZEMOVE_MAXIMIZE, FUNC_NEEDS_WINDOW | FUNC_IS_MOVE_TYPE,
+		CRS_RESIZE),
 	/* - Resize and move in one operation and mark maximized */
 
 	CMD_ENT("restacktransients", CMD_RestackTransients, F_RESTACKTRANSIENTS,
