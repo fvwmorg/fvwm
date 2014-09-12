@@ -15,6 +15,22 @@
 
 /* ---------------------------- type definitions --------------------------- */
 
+typedef unsigned int func_flags_t;
+
+/* used for parsing commands*/
+typedef struct
+{
+	char *keyword;
+#ifdef __STDC__
+	void (*action)(F_CMD_ARGS);
+#else
+	void (*action)();
+#endif
+	short func_c;
+	func_flags_t flags;
+	int cursor;
+} func_t;
+
 /* ---------------------------- exported variables (globals) --------------- */
 
 extern const func_t func_table[];

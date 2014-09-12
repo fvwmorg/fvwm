@@ -30,11 +30,9 @@
 #include "mvwm.h"
 #include "misc.h"
 #include "execcontext.h"
+#include "conditional.h"
 #include "expand.h"
-
-#define func_t int
 #include "functable.h"
-#undef func_t
 
 /* ---------------------------- local definitions -------------------------- */
 

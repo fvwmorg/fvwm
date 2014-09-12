@@ -6,6 +6,8 @@
 /* ---------------------------- included header files ---------------------- */
 
 #include "execcontext.h"
+#include "functable.h"
+#include "functable_complex.h"
 
 /* ---------------------------- global definitions ------------------------- */
 
@@ -53,22 +55,6 @@ typedef enum
 
 /* ---------------------------- type definitions --------------------------- */
 
-typedef unsigned int func_flags_t;
-
-/* used for parsing commands*/
-typedef struct
-{
-	char *keyword;
-#ifdef __STDC__
-	void (*action)(F_CMD_ARGS);
-#else
-	void (*action)();
-#endif
-	short func_t;
-	func_flags_t flags;
-	int cursor;
-} func_t;
-
 /* ---------------------------- exported variables (globals) --------------- */
 
 /* ---------------------------- interface functions ------------------------ */
@@ -76,8 +62,6 @@ typedef struct
 /* needs to be called before any command line can be executed */
 void functions_init(void);
 void find_func_t(char *action, short *func_t, func_flags_t *flags);
-Bool functions_is_complex_function(
-	const char *function_name);
 void execute_function(F_CMD_ARGS, func_flags_t exec_flags);
 void execute_function_override_wcontext(
 	F_CMD_ARGS, func_flags_t exec_flags, int wcontext);

@@ -67,37 +67,6 @@
 
 /* ---------------------------- local types -------------------------------- */
 
-typedef struct FunctionItem
-{
-	struct FvwmFunction *func;       /* the function this item is in */
-	struct FunctionItem *next_item;  /* next function item */
-	char condition;                  /* the character string displayed on
-					  * left*/
-	char *action;                    /* action to be performed */
-	short type;                      /* type of built in function */
-	func_flags_t flags;
-} FunctionItem;
-
-typedef struct FvwmFunction
-{
-	struct FvwmFunction *next_func;  /* next in list of root menus */
-	FunctionItem *first_item;        /* first item in function */
-	FunctionItem *last_item;         /* last item in function */
-	char *name;                      /* function name */
-	int use_depth;
-} FvwmFunction;
-
-/* Types of events for the FUNCTION builtin */
-typedef enum
-{
-	CF_IMMEDIATE =      'i',
-	CF_MOTION =         'm',
-	CF_HOLD =           'h',
-	CF_CLICK =          'c',
-	CF_DOUBLE_CLICK =   'd',
-	CF_TIMEOUT =        '-'
-} cfunc_action_t;
-
 /* ---------------------------- forward declarations ----------------------- */
 
 static void execute_complex_function(
@@ -517,7 +486,7 @@ cmdparser_hooks->debug(&pc, "!!!J");
 		ecc.w.fw = exc->w.fw;
 		ecc.w.w = w;
 		ecc.w.wcontext = exc->w.wcontext;
-		if (bif && bif->func_t != F_FUNCTION)
+		if (bif && bif->func_c != F_FUNCTION)
 		{
 			char *runaction;
 			int rc = 0;
@@ -1107,82 +1076,6 @@ static void execute_complex_function(
 	return;
 }
 
-/*
- * create a new FvwmFunction
- */
-static FvwmFunction *NewFvwmFunction(const char *name)
-{
-	FvwmFunction *tmp;
-
-	tmp = (FvwmFunction *)safemalloc(sizeof(FvwmFunction));
-	tmp->next_func = Scr.functions;
-	tmp->first_item = NULL;
-	tmp->last_item = NULL;
-	tmp->name = stripcpy(name);
-	tmp->use_depth = 0;
-	Scr.functions = tmp;
-
-	return tmp;
-}
-
-static void DestroyFunction(FvwmFunction *func)
-{
-	FunctionItem *fi,*tmp2;
-	FvwmFunction *tmp, *prev;
-
-	if (func == NULL)
-	{
-		return;
-	}
-
-	tmp = Scr.functions;
-	prev = NULL;
-	while (tmp && tmp != func)
-	{
-		prev = tmp;
-		tmp = tmp->next_func;
-	}
-	if (tmp != func)
-	{
-		return;
-	}
-
-	if (func->use_depth != 0)
-	{
-		fvwm_msg(
-			ERR,"DestroyFunction",
-			"Function %s is in use (depth %d)", func->name,
-			func->use_depth);
-		return;
-	}
-
-	if (prev == NULL)
-	{
-		Scr.functions = func->next_func;
-	}
-	else
-	{
-		prev->next_func = func->next_func;
-	}
-
-	free(func->name);
-
-	fi = func->first_item;
-	while (fi != NULL)
-	{
-		tmp2 = fi->next_item;
-		if (fi->action != NULL)
-		{
-			free(fi->action);
-		}
-		free(fi);
-		fi = tmp2;
-	}
-	free(func);
-
-	return;
-}
-
 /* ---------------------------- interface functions ------------------------ */
 
 void functions_init(void)
@@ -1258,7 +1151,7 @@ void execute_function_override_window(
 	return;
 }
 
-void find_func_t(char *action, short *func_t, func_flags_t *flags)
+void find_func_t(char *action, short *ret_func_c, func_flags_t *flags)
 {
 	int j, len = 0;
 	char *endtok = action;
@@ -1282,9 +1175,9 @@ void find_func_t(char *action, short *func_t, func_flags_t *flags)
 			{
 				matched=True;
 				/* found key word */
-				if (func_t)
+				if (ret_func_c)
 				{
-					*func_t = func_table[j].func_t;
+					*ret_func_c = func_table[j].func_c;
 				}
 				if (flags)
 				{
@@ -1299,9 +1192,9 @@ void find_func_t(char *action, short *func_t, func_flags_t *flags)
 		}
 		/* No clue what the function is. Just return "BEEP" */
 	}
-	if (func_t)
+	if (ret_func_c)
 	{
-		*func_t = F_BEEP;
+		*ret_func_c = F_BEEP;
 	}
 	if (flags)
 	{
