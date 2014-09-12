@@ -193,36 +193,70 @@ static int ocp_handle_line_start(cmdparser_context_t *c)
 static cmdparser_prefix_flags_t ocp_handle_line_prefix(cmdparser_context_t *c)
 {
 	cmdparser_prefix_flags_t flags;
-	char *taction;
-	char *trash;
-	char *trash2;
+	char *token;
+	char *restofline;
 
+	if (OCP_DEBUG)
+	{
+		fprintf(stderr, "%s: '%s'\n", __func__, c->cline);
+	}
 	flags = CP_PREFIX_NONE;
 	if (c->cline[0] == '-')
 	{
 		c->cline++;
 		flags |= CP_PREFIX_MINUS;
+		if (OCP_DEBUG)
+		{
+			fprintf(stderr, "minus -> '%s'\n", c->cline);
+		}
 	}
-	taction = c->cline;
-	trash = PeekToken(taction, &trash2);
-	while (trash != NULL)
+	token = PeekToken(c->cline, &restofline);
+	if (OCP_DEBUG)
 	{
-		if (StrEquals(trash, PRE_SILENT))
+		fprintf(
+			stderr, "cl '%s', tok '%s', rl '%s'\n", c->cline,
+			token, restofline);
+	}
+	while (token != NULL)
+	{
+		if (OCP_DEBUG)
+		{
+			fprintf(stderr, "loop: token '%s'\n", token);
+		}
+		if (StrEquals(token, PRE_SILENT))
 		{
 			flags |= CP_PREFIX_SILENT;
-			taction = trash2;
-			trash = PeekToken(taction, &trash2);
+			c->cline = restofline;
+			token = PeekToken(c->cline, &restofline);
+			if (OCP_DEBUG)
+			{
+				fprintf(
+					stderr,
+					"-> silent: cl '%s', tok '%s'\n",
+					c->cline, token);
+			}
 		}
-		else if (StrEquals(trash, PRE_KEEPRC))
+		else if (StrEquals(token, PRE_KEEPRC))
 		{
 			flags |= CP_PREFIX_KEEPRC;
-			taction = trash2;
-			trash = PeekToken(taction, &trash2);
+			c->cline = restofline;
+			token = PeekToken(c->cline, &restofline);
+			if (OCP_DEBUG)
+			{
+				fprintf(
+					stderr,
+					"-> keeprc: cl '%s', tok '%s'\n",
+					c->cline, token);
+			}
 		}
 		else
 		{
 			break;
 		}
+	}
+	if (OCP_DEBUG)
+	{
+		fprintf(stderr, "done: flags 0x%x\n", flags);
 	}
 
 	return flags;

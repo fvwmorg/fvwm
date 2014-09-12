@@ -399,12 +399,19 @@ cmdparser_hooks->debug(&pc, "!!!B");
 		cmdparser_prefix_flags_t flags;
 
 		flags = cmdparser_hooks->handle_line_prefix(&pc);
+cmdparser_hooks->debug(&pc, "!!!BA");
 		if (flags & CP_PREFIX_MINUS)
 		{
+#if 1 /*!!!*/
+fprintf(stderr, "!!!do not expand\n");
+#endif
 			exec_flags |= FUNC_DONT_EXPAND_COMMAND;
 		}
 		if (flags & CP_PREFIX_SILENT)
 		{
+#if 1 /*!!!*/
+fprintf(stderr, "!!!is silent\n");
+#endif
 			if (scr_flags.are_functions_silent == 0)
 			{
 				set_silent = 1;
@@ -413,6 +420,9 @@ cmdparser_hooks->debug(&pc, "!!!B");
 		}
 		if (flags & CP_PREFIX_KEEPRC)
 		{
+#if 1 /*!!!*/
+fprintf(stderr, "!!!do keeprc\n");
+#endif
 			do_keep_rc = 1;
 		}
 		if (pc.cline == NULL)
@@ -560,6 +570,7 @@ cmdparser_hooks->debug(&pc, "!!!J");
 			int rc = 0;
 
 			runaction = SkipNTokens(expaction, 1);
+fprintf(stderr, "!!!runaction: '%s'\n", runaction);
 			if ((bif->flags & FUNC_NEEDS_WINDOW) &&
 			    !(exec_flags & FUNC_DONT_DEFER))
 			{
@@ -567,21 +578,27 @@ cmdparser_hooks->debug(&pc, "!!!J");
 					&ecc, &mask, bif->cursor,
 					exc->x.elast->type,
 					(bif->flags & FUNC_ALLOW_UNMANAGED));
+#if 1 /*!!!*/
+fprintf(stderr, "!!!deferred: %d\n", rc);
+#endif
 			}
 			else if ((bif->flags & FUNC_NEEDS_WINDOW) &&
 				 !__context_has_window(
 					 exc,
 					 bif->flags & FUNC_ALLOW_UNMANAGED))
 			{
+#if 1 /*!!!*/
+fprintf(stderr, "!!!skip no-defer\n");
+#endif
 				/* no context window and not allowed to defer,
 				 * skip command */
 				rc = 1;
 			}
-fprintf(stderr, "!!!runaction: '%s'\n", runaction);
 			if (rc == 0)
 			{
 				exc2 = exc_clone_context(exc, &ecc, mask);
 				if (has_ref_window_moved &&
+				    /*!!!move that logic to a func flag*/
 				    (bif->func_t == F_ANIMATED_MOVE ||
 				     bif->func_t == F_MOVE ||
 				     bif->func_t == F_RESIZE ||
@@ -589,6 +606,9 @@ fprintf(stderr, "!!!runaction: '%s'\n", runaction);
 				     bif->func_t == F_RESIZE_MAXIMIZE ||
 				     bif->func_t == F_RESIZEMOVE_MAXIMIZE))
 				{
+#if 1 /*!!!*/
+fprintf(stderr, "!!!erase PressedW and execute '%s'\n", bif->keyword);
+#endif
 					dummy_w = PressedW;
 					PressedW = None;
 					bif->action(
@@ -597,6 +617,9 @@ fprintf(stderr, "!!!runaction: '%s'\n", runaction);
 				}
 				else
 				{
+#if 1 /*!!!*/
+fprintf(stderr, "!!!execute '%s'\n", bif->keyword);
+#endif
 					bif->action(
 						func_rc, exc2, runaction, &pc);
 				}
