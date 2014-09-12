@@ -21,4 +21,6 @@ extern const func_t func_table[];
 
 /* ---------------------------- interface functions ------------------------ */
 
+const func_t *find_builtin_function(const char *func);
+
 #endif /* FUNCTABLE_H */

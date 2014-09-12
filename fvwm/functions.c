@@ -307,55 +307,6 @@ static Bool DeferExecution(
 	return False;
 }
 
-/*
-** do binary search on func list
-*/
-static int func_comp(const void *a, const void *b)
-{
-	return (strcmp((char *)a, ((func_t *)b)->keyword));
-}
-
-static const func_t *find_builtin_function(const char *func)
-{
-	static int nfuncs = 0;
-	func_t *ret_func;
-	char *temp;
-	char *s;
-
-	if (!func || func[0] == 0)
-	{
-		return NULL;
-	}
-
-	/* since a lot of lines in a typical rc are probably menu/func
-	 * continues: */
-	if (func[0]=='+' || (func[0] == ' ' && func[1] == '+'))
-	{
-		return &(func_table[0]);
-	}
-
-	temp = safestrdup(func);
-	for (s = temp; *s != 0; s++)
-	{
-		if (isupper(*s))
-		{
-			*s = tolower(*s);
-		}
-	}
-	if (nfuncs == 0)
-	{
-		for ( ; (func_table[nfuncs]).action != NULL; nfuncs++)
-		{
-			/* nothing to do here */
-		}
-	}
-	ret_func = (func_t *)bsearch(
-		temp, func_table, nfuncs, sizeof(func_t), func_comp);
-	free(temp);
-
-	return ret_func;
-}
-
 static void __execute_command_line(
 	cond_rc_t *cond_rc, const exec_context_t *exc, char *xaction,
 	cmdparser_context_t *caller_pc,
