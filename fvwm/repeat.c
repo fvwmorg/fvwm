@@ -87,6 +87,9 @@ FvwmWindow *repeat_last_fvwm_window = NULL;
  * from within this function have depth 2 and higher, this may be applicable
  * to future enhancements like menus).
  *
+ * Returns True if the caller needs to free the string himself and False if
+ * the repeat module will take care of freeing the string.
+ *
  * TODO: [finish and update description]
  */
 Bool set_repeat_data(void *data, repeat_t type, const func_t *builtin)

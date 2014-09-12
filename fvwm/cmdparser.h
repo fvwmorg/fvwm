@@ -7,12 +7,14 @@
 
 /* ---------------------------- global definitions ------------------------- */
 
+/* $0 through to $9 */
 #define CMDPARSER_NUM_POS_ARGS 10
 
 /* ---------------------------- global macros ------------------------------ */
 
 /* ---------------------------- type definitions --------------------------- */
 
+/* Enum for all the possible prefixes. */
 typedef enum
 {
 	CP_PREFIX_NONE = 0,
@@ -21,73 +23,41 @@ typedef enum
 	CP_PREFIX_KEEPRC = 0x4
 } cmdparser_prefix_flags_t;
 
+/* Enum for types of things to execute. */
+typedef enum
+{
+	CP_EXECTYPE_UNKNOWN = 0,
+	CP_EXECTYPE_BUILTIN_FUNCTION,
+	CP_EXECTYPE_COMPLEX_FUNCTION,
+	CP_EXECTYPE_COMPLEX_FUNCTION_DOES_NOT_EXIST,
+	CP_EXECTYPE_MODULECONFIG
+} cmdparser_execute_type_t;
+
 /* move this to the implementation file and use void* instead??? */
 
 typedef struct
 {
 	/* !!!note: need to define which bits in here may be accessed by the
 	 * user and which are internal */
-	char is_created : 1;
+	unsigned char is_created : 1;
 	/* the original command line */
 	char *line;
 	/* the current command line */
 	char *cline;
 	/* the expanded command line */
 	char *expline;
-	int do_free_expline : 1;
+	unsigned char do_free_expline : 1;
 	/* the command name */
 	char *command;
+	/* name of the complex function if present */
+	char *complex_function_name;
 	/* current function nesting depth */
 	int call_depth;
 	/* an array of positional arguments; the first array element contains
 	 * a string with all positional arguments, the remaining ten array
 	 * elements contain the first ten positional arguments.  Any of this
 	 * may be NULL pointers */
-	char *pos_args[CMDPARSER_NUM_POS_ARGS];
+	char *pos_args[CMDPARSER_NUM_POS_ARGS + 1];
 } cmdparser_context_t;
-
-typedef struct
-{
-	/* in general, functions in this structure that return int return
-	 *    0: success
-	 *  > 0: unsuccessful but not an error condition
-	 *  < 0: unsuccessful, error
-	 */
-	int (*create_context)(
-		/* context structure to initialise */
-		cmdparser_context_t *dest_context,
-		/* context structure of the caller or NULL */
-		cmdparser_context_t *caller_context,
-		/* input command line */
-		char *line,
-		/* an array of positional arguments or NULL; the first array
-		 * element contains a string with all positional arguments,
-		 * the remaining ten array elements contain the first ten
-		 * positional arguments, up to the first NULL pointer; may be
-		 * NULL if not present */
-		char *pos_args[]
-		);
-	int (*handle_line_start)(cmdparser_context_t *context);
-	/* Returns a set of or'ed flags of which prefixes are present on the
-	 * command line.  The prefixes are stripped.  */
-	cmdparser_prefix_flags_t (*handle_line_prefix)(
-		cmdparser_context_t *context);
-	/* parses and returns the command name or returns a NULL pointer if not
-	 * possible */
-	const char *(*parse_command_name)(
-		cmdparser_context_t *context, void *func_rc, const void *exc);
-	/* returns 1 if the stored command is a module configuration command
-	 * and 0 otherwise */
-	int (*is_module_config)(cmdparser_context_t *context);
-	/* returns the expanded command line */
-	char *(*expand_command_line)(
-		cmdparser_context_t *context, int is_addto, void *func_rc,
-		const void *exc);
-	/* Release the expline field from the context structure and return it.
-	 * It is then the responsibility of the caller to free() it. */
-	void (*release_expanded_line)(cmdparser_context_t *context);
-	void (*destroy_context)(cmdparser_context_t *context);
-	void (*debug)(cmdparser_context_t *context, const char *msg);
-} cmdparser_hooks_t;
 
 #endif /* CMDPARSER_H */

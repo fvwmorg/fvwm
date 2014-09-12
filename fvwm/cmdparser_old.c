@@ -20,25 +20,24 @@
 #include "libs/defaults.h"
 #include "libs/Parse.h"
 
-#if 1 /*!!!*/
 #include <assert.h>
-#endif
 #include <stdio.h>
 
-#include "cmdparser.h"
-#include "cmdparser_old.h"
 #include "fvwm.h"
-#include "misc.h"
 #include "execcontext.h"
-#include "expand.h"
-
-#define func_t int
+#include "conditional.h"
 #include "functable.h"
-#undef func_t
+#include "commands.h"
+#include "functable_complex.h"
+#include "cmdparser.h"
+#include "cmdparser_hooks.h"
+#include "cmdparser_old.h"
+#include "misc.h"
+#include "expand.h"
 
 /* ---------------------------- local definitions -------------------------- */
 
-#if 1 /*!!!*/
+#if 0 /*!!!*/
 #define OCP_DEBUG 1
 #else
 #define OCP_DEBUG 0
@@ -69,7 +68,7 @@ static void ocp_debug(cmdparser_context_t *c, const char *msg)
 		return;
 	}
 	fprintf(stderr, "%s: %p: %s\n", __func__, c, (msg != NULL) ? msg : "");
-	if (c->is_created == 0)
+	if (!c->is_created)
 	{
 		fprintf(stderr, "  not created\n");
 		return;
@@ -82,7 +81,10 @@ static void ocp_debug(cmdparser_context_t *c, const char *msg)
 		c->do_free_expline, c->expline ? c->expline : "(nil)");
 	fprintf(
 		stderr, "  command  : '%s'\n",
-		c->command ? c->command: "(nil)");
+		c->command ? c->command : "(nil)");
+	fprintf(
+		stderr, "  complexf : '%s'\n",
+		c->complex_function_name ? c->complex_function_name : "(nil)");
 	if (c->pos_args == NULL)
 	{
 		return;
@@ -148,7 +150,7 @@ static int ocp_create_context(
 static void ocp_destroy_context(cmdparser_context_t *c)
 {
 	/* free the resources allocated in the create function */
-	if (c->is_created == 0)
+	if (!c->is_created)
 	{
 		return;
 	}
@@ -156,7 +158,7 @@ static void ocp_destroy_context(cmdparser_context_t *c)
 	{
 		free(c->command);
 	}
-	if (c->expline != NULL && c->do_free_expline == 1)
+	if (c->expline != NULL && c->do_free_expline)
 	{
 		free(c->expline);
 	}
@@ -279,7 +281,7 @@ static const char *ocp_parse_command_name(
 			c->command, c, False, False, func_rc, exc);
 		free(tmp);
 	}
-	if (c->command && ocp_is_module_config(c) == 0)
+	if (c->command && !ocp_is_module_config(c))
 	{
 #if 1
 		/* DV: with this piece of code it is impossible to have a
@@ -303,14 +305,15 @@ static const char *ocp_parse_command_name(
 	}
 }
 
-static char *ocp_expand_command_line(
+static void ocp_expand_command_line(
 	cmdparser_context_t *c, int is_addto, void *func_rc, const void *exc)
 {
 	c->expline = expand_vars(
 		c->cline, c, is_addto, ocp_is_module_config(c), func_rc, exc);
+	c->cline = c->expline;
 	c->do_free_expline = 1;
 
-	return c->expline;
+	return;
 }
 
 static void ocp_release_expanded_line(cmdparser_context_t *c)
@@ -318,6 +321,81 @@ static void ocp_release_expanded_line(cmdparser_context_t *c)
 	c->do_free_expline = 0;
 
 	return;
+}
+
+static cmdparser_execute_type_t ocp_find_something_to_execute(
+	cmdparser_context_t *c, const func_t **ret_builtin,
+	FvwmFunction **ret_complex_function)
+{
+	int is_function_builtin;
+
+	*ret_complex_function = NULL;
+	/* Note: the module config command, "*" can not be handled by the
+	 * regular command table because there is no required white space after
+	 * the asterisk. */
+	if (ocp_is_module_config(c))
+	{
+		/*!!!strip asterisk??? */
+		return CP_EXECTYPE_MODULECONFIG;
+	}
+	if (*ret_builtin == NULL)
+	{
+		/* in a new parser we would look for a builtin function here,
+		 * but in the old parser this has already been done */
+	}
+	is_function_builtin = 0;
+	if (*ret_builtin != NULL)
+	{
+		if ((*ret_builtin)->func_c == F_FUNCTION)
+		{
+			c->cline = SkipNTokens(c->cline, 1);
+			if (OCP_DEBUG)
+			{
+				fprintf(stderr, "func cline '%s'\n", c->cline);
+			}
+			free(c->command);
+			c->command = NULL;
+			is_function_builtin = 1;
+			*ret_builtin = NULL;
+		}
+		else
+		{
+			c->cline = SkipNTokens(c->cline, 1);
+			return CP_EXECTYPE_BUILTIN_FUNCTION;
+		}
+	}
+#if 1 /*!!!*/
+	assert(*ret_builtin == NULL);
+#endif
+	do
+	{
+		char *complex_function_name;
+		char *rest_of_line;
+
+		/* find_complex_function expects a token, not just a quoted
+		 * string */
+		complex_function_name = PeekToken(c->cline, &rest_of_line);
+		if (complex_function_name == NULL)
+		{
+			break;
+		}
+		*ret_complex_function =
+			find_complex_function(complex_function_name);
+		if (*ret_complex_function != NULL)
+		{
+			c->cline = rest_of_line;
+			c->complex_function_name = complex_function_name;
+			return CP_EXECTYPE_COMPLEX_FUNCTION;
+		}
+		if (is_function_builtin)
+		{
+			c->cline = rest_of_line;
+			c->complex_function_name = complex_function_name;
+			return CP_EXECTYPE_COMPLEX_FUNCTION_DOES_NOT_EXIST;
+		}
+	} while (0);
+
+	return CP_EXECTYPE_UNKNOWN;
 }
 
 /* ---------------------------- local variables ---------------------------- */
@@ -331,6 +409,7 @@ static cmdparser_hooks_t old_parser_hooks =
 	ocp_is_module_config,
 	ocp_expand_command_line,
 	ocp_release_expanded_line,
+	ocp_find_something_to_execute,
 	ocp_destroy_context,
 	ocp_debug
 };

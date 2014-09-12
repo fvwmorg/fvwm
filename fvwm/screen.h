@@ -322,6 +322,55 @@ typedef struct DesktopsInfo
 	struct DesktopsInfo *next;
 } DesktopsInfo;
 
+struct bug_opts
+{
+	unsigned do_debug_cr_motion_method : 1;
+	unsigned do_disable_configure_notify : 1;
+	unsigned do_display_new_window_names : 1;
+	unsigned do_enable_ewmh_iconic_state_workaround : 1;
+	unsigned do_enable_flickering_qt_dialogs_workaround : 1;
+	unsigned do_enable_qt_drag_n_drop_workaround : 1;
+	unsigned do_explain_window_placement : 1;
+	unsigned do_install_root_cmap : 1;
+	unsigned do_raise_over_unmanaged : 1;
+	unsigned is_modality_evil : 1;
+	unsigned is_raise_hack_needed : 1;
+};
+
+struct global_style_opts
+{
+	unsigned do_emulate_mwm : 1;
+	unsigned do_emulate_win : 1;
+	unsigned do_hide_position_window : 1;
+	unsigned do_hide_resize_window : 1;
+	unsigned use_active_down_buttons : 1;
+	unsigned use_inactive_buttons : 1;
+	unsigned use_inactive_down_buttons : 1;
+};
+
+struct screen_flags
+{
+	unsigned are_functions_silent : 1;
+	unsigned are_windows_captured : 1;
+	unsigned do_edge_wrap_x : 1;
+	unsigned do_edge_wrap_y : 1;
+	unsigned do_need_style_list_update : 1;
+	unsigned do_need_window_update : 1;
+	unsigned do_save_under : 1;
+	unsigned has_default_color_changed : 1;
+	unsigned has_default_font_changed : 1;
+	unsigned has_mouse_binding_changed : 1;
+	unsigned has_nr_buttons_changed : 1;
+	unsigned has_xinerama_state_changed : 1;
+	unsigned is_executing_complex_function : 1;
+	unsigned is_executing_menu_function : 1;
+	unsigned is_map_desk_in_progress : 1;
+	unsigned is_pointer_on_this_screen : 1;
+	unsigned is_single_screen : 1;
+	unsigned is_window_scheduled_for_destroy : 1;
+	unsigned is_wire_frame_displayed : 1;
+};
+
 typedef struct ScreenInfo
 {
 	unsigned long screen;

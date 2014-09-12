@@ -29,6 +29,9 @@
 #include "config.h"
 
 #include <stdio.h>
+#if 1 /*!!!*/
+#include <assert.h>
+#endif
 
 #include <X11/keysym.h>
 
@@ -43,11 +46,13 @@
 #include "externs.h"
 #include "cursor.h"
 #include "execcontext.h"
+#include "functable.h"
+#include "functable_complex.h"
 #include "cmdparser.h"
+#include "cmdparser_hooks.h"
 #include "cmdparser_old.h"
 #include "functions.h"
 #include "commands.h"
-#include "functable.h"
 #include "events.h"
 #include "modconf.h"
 #include "module_list.h"
@@ -67,41 +72,11 @@
 
 /* ---------------------------- local types -------------------------------- */
 
-typedef struct FunctionItem
-{
-	struct FvwmFunction *func;       /* the function this item is in */
-	struct FunctionItem *next_item;  /* next function item */
-	char condition;                  /* the character string displayed on
-					  * left*/
-	char *action;                    /* action to be performed */
-	short type;                      /* type of built in function */
-	FUNC_FLAGS_TYPE flags;
-} FunctionItem;
-
-typedef struct FvwmFunction
-{
-	struct FvwmFunction *next_func;  /* next in list of root menus */
-	FunctionItem *first_item;        /* first item in function */
-	FunctionItem *last_item;         /* last item in function */
-	char *name;                      /* function name */
-	int use_depth;
-} FvwmFunction;
-
-/* Types of events for the FUNCTION builtin */
-typedef enum
-{
-	CF_IMMEDIATE =      'i',
-	CF_MOTION =         'm',
-	CF_HOLD =           'h',
-	CF_CLICK =          'c',
-	CF_DOUBLE_CLICK =   'd',
-	CF_TIMEOUT =        '-'
-} cfunc_action_t;
-
 /* ---------------------------- forward declarations ----------------------- */
 
 static void execute_complex_function(
-	F_CMD_ARGS, Bool *desperate, Bool has_ref_window_moved);
+	cond_rc_t *cond_rc, const exec_context_t *exc, cmdparser_context_t *pc,
+	FvwmFunction *func, Bool has_ref_window_moved);
 
 /* ---------------------------- local variables ---------------------------- */
 
@@ -307,59 +282,10 @@ static Bool DeferExecution(
 	return False;
 }
 
-/*
-** do binary search on func list
-*/
-static int func_comp(const void *a, const void *b)
-{
-	return (strcmp((char *)a, ((func_t *)b)->keyword));
-}
-
-static const func_t *find_builtin_function(const char *func)
-{
-	static int nfuncs = 0;
-	func_t *ret_func;
-	char *temp;
-	char *s;
-
-	if (!func || func[0] == 0)
-	{
-		return NULL;
-	}
-
-	/* since a lot of lines in a typical rc are probably menu/func
-	 * continues: */
-	if (func[0]=='+' || (func[0] == ' ' && func[1] == '+'))
-	{
-		return &(func_table[0]);
-	}
-
-	temp = safestrdup(func);
-	for (s = temp; *s != 0; s++)
-	{
-		if (isupper(*s))
-		{
-			*s = tolower(*s);
-		}
-	}
-	if (nfuncs == 0)
-	{
-		for ( ; (func_table[nfuncs]).action != NULL; nfuncs++)
-		{
-			/* nothing to do here */
-		}
-	}
-	ret_func = (func_t *)bsearch(
-		temp, func_table, nfuncs, sizeof(func_t), func_comp);
-	free(temp);
-
-	return ret_func;
-}
-
 static void __execute_command_line(
 	cond_rc_t *cond_rc, const exec_context_t *exc, char *xaction,
 	cmdparser_context_t *caller_pc,
-	FUNC_FLAGS_TYPE exec_flags, char *args[], Bool has_ref_window_moved)
+	func_flags_t exec_flags, char *args[], Bool has_ref_window_moved)
 {
 	cmdparser_context_t pc;
 	cond_rc_t *func_rc = NULL;
@@ -367,8 +293,9 @@ static void __execute_command_line(
 	Window w;
 	char *err_cline;
 	const char *err_func;
-	char *expaction = NULL;
-	const func_t *bif;
+	cmdparser_execute_type_t exec_type;
+	const func_t *bif = NULL;
+	FvwmFunction *complex_function;
 	int set_silent;
 	int do_keep_rc = 0;
 	/* needed to be able to avoid resize to use moved windows for base */
@@ -468,7 +395,7 @@ cmdparser_hooks->debug(&pc, "!!!C");
 			w = FW_W(exc->w.fw);
 		}
 	}
-	if (cond_rc == NULL || do_keep_rc == 1)
+	if (cond_rc == NULL || do_keep_rc)
 	{
 		condrc_init(&dummy_rc);
 		func_rc = &dummy_rc;
@@ -506,158 +433,150 @@ cmdparser_hooks->debug(&pc, "!!!E");
 
 	if (!(exec_flags & FUNC_DONT_EXPAND_COMMAND))
 	{
-		expaction = cmdparser_hooks->expand_command_line(
+		cmdparser_hooks->expand_command_line(
 			&pc, (bif) ? !!(bif->flags & FUNC_ADD_TO) : False,
 			func_rc, exc);
 cmdparser_hooks->debug(&pc, "!!!F");
 		if (pc.call_depth <= 1)
 		{
-			int did_store_string;
+			Bool do_free_string_ourselves;
 
-			did_store_string = set_repeat_data(
+			do_free_string_ourselves = set_repeat_data(
 				pc.expline, REPEAT_COMMAND, bif);
-			if (did_store_string == 1)
+			if (do_free_string_ourselves == False)
 			{
 				cmdparser_hooks->release_expanded_line(&pc);
 cmdparser_hooks->debug(&pc, "!!!G");
 			}
 		}
 	}
-	else
-	{
-cmdparser_hooks->debug(&pc, "!!!H");
-		expaction = pc.cline;
-	}
 #if 1 /*!!!*/
-fprintf(stderr, "!!!expcation: '%s'\n", expaction);
+fprintf(stderr, "!!!pc.cline: '%s'\n", pc.cline);
 #endif
-
 #ifdef FVWM_COMMAND_LOG
-	fvwm_msg(INFO, "LOG", "%c: %s", (char)exc->type, expaction);
+	fvwm_msg(INFO, "LOG", "%c: %s", (char)exc->type, pc.cline);
 #endif
 
-	/* Note: the module config command, "*" can not be handled by the
-	 * regular command table because there is no required white space after
-	 * the asterisk. */
-	if (cmdparser_hooks->is_module_config(&pc) == 1)
+	exec_type = cmdparser_hooks->find_something_to_execute(
+		&pc, &bif, &complex_function);
+cmdparser_hooks->debug(&pc, "!!!H");
+fprintf(stderr, "!!!exec_type %d\n", exec_type);
+	switch (exec_type)
 	{
-cmdparser_hooks->debug(&pc, "!!!I");
-		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
-		{
-			fvwm_msg(
-				WARN, "__execute_function",
-				"Command can not be added to a decor;"
-				" executing command now: '%s'", expaction);
-		}
-
-		/* process a module config command */
-		ModuleConfig(expaction);
-	}
-	else
+	case CP_EXECTYPE_BUILTIN_FUNCTION:
 	{
 		const exec_context_t *exc2;
 		exec_context_changes_t ecc;
 		exec_context_change_mask_t mask;
 
 cmdparser_hooks->debug(&pc, "!!!J");
+#if 1 /*!!!*/
+		assert(bif && bif->func_c != F_FUNCTION);
+#endif
+#if 1 /*!!!*/
+fprintf(stderr, "!!!pc.cline: '%s'\n", pc.cline);
+#endif
+		if (
+			(bif->flags & FUNC_NEEDS_WINDOW) &&
+			!(exec_flags & FUNC_DONT_DEFER))
+		{
+			int rc;
+
+			rc = DeferExecution(
+				&ecc, &mask, bif->cursor, exc->x.elast->type,
+				(bif->flags & FUNC_ALLOW_UNMANAGED));
+			if (rc != 0)
+			{
+				break;
+			}
+#if 1 /*!!!*/
+fprintf(stderr, "!!!deferred: %d\n", rc);
+#endif
+		}
+		else if (
+			(bif->flags & FUNC_NEEDS_WINDOW) &&
+			!__context_has_window(
+				exc, bif->flags & FUNC_ALLOW_UNMANAGED))
+		{
+#if 1 /*!!!*/
+fprintf(stderr, "!!!skip no-defer\n");
+#endif
+			/* no context window and not allowed to defer,
+			 * skip command */
+			break;
+		}
 		mask = (w != exc->w.w) ? ECC_W : 0;
 		ecc.w.fw = exc->w.fw;
 		ecc.w.w = w;
 		ecc.w.wcontext = exc->w.wcontext;
-		if (bif && bif->func_t != F_FUNCTION)
+		exc2 = exc_clone_context(exc, &ecc, mask);
+		dummy_w = PressedW;
+		if (
+			has_ref_window_moved &&
+			(bif->flags & FUNC_IS_MOVE_TYPE))
 		{
-			char *runaction;
-			int rc = 0;
-
-			runaction = SkipNTokens(expaction, 1);
-fprintf(stderr, "!!!runaction: '%s'\n", runaction);
-			if ((bif->flags & FUNC_NEEDS_WINDOW) &&
-			    !(exec_flags & FUNC_DONT_DEFER))
-			{
-				rc = DeferExecution(
-					&ecc, &mask, bif->cursor,
-					exc->x.elast->type,
-					(bif->flags & FUNC_ALLOW_UNMANAGED));
 #if 1 /*!!!*/
-fprintf(stderr, "!!!deferred: %d\n", rc);
+fprintf(stderr, "!!!erase PressedW\n");
 #endif
-			}
-			else if ((bif->flags & FUNC_NEEDS_WINDOW) &&
-				 !__context_has_window(
-					 exc,
-					 bif->flags & FUNC_ALLOW_UNMANAGED))
-			{
-#if 1 /*!!!*/
-fprintf(stderr, "!!!skip no-defer\n");
-#endif
-				/* no context window and not allowed to defer,
-				 * skip command */
-				rc = 1;
-			}
-			if (rc == 0)
-			{
-				exc2 = exc_clone_context(exc, &ecc, mask);
-				if (has_ref_window_moved &&
-				    /*!!!move that logic to a func flag*/
-				    (bif->func_t == F_ANIMATED_MOVE ||
-				     bif->func_t == F_MOVE ||
-				     bif->func_t == F_RESIZE ||
-				     bif->func_t == F_RESIZEMOVE ||
-				     bif->func_t == F_RESIZE_MAXIMIZE ||
-				     bif->func_t == F_RESIZEMOVE_MAXIMIZE))
-				{
-#if 1 /*!!!*/
-fprintf(stderr, "!!!erase PressedW and execute '%s'\n", bif->keyword);
-#endif
-					dummy_w = PressedW;
-					PressedW = None;
-					bif->action(
-						func_rc, exc2, runaction, &pc);
-					PressedW = dummy_w;
-				}
-				else
-				{
+			PressedW = None;
+		}
 #if 1 /*!!!*/
 fprintf(stderr, "!!!execute '%s'\n", bif->keyword);
 #endif
-					bif->action(
-						func_rc, exc2, runaction, &pc);
-				}
-				exc_destroy_context(exc2);
-			}
-		}
-		else
-		{
-			int desperate = 1;
-			char *runaction;
+		bif->action(func_rc, exc2, pc.cline, &pc);
+		PressedW = dummy_w;
+		exc_destroy_context(exc2);
+		break;
+	}
+	case CP_EXECTYPE_COMPLEX_FUNCTION:
+	{
+		const exec_context_t *exc2;
+		exec_context_changes_t ecc;
+		exec_context_change_mask_t mask;
 
-			if (bif)
-			{
-				/* strip "function" command */
-				runaction = SkipNTokens(expaction, 1);
-			}
-			else
-			{
-				runaction = expaction;
-			}
-			exc2 = exc_clone_context(exc, &ecc, mask);
-			execute_complex_function(
-				func_rc, exc2, runaction, &pc, &desperate,
-				has_ref_window_moved);
-			if (!bif && desperate)
-			{
-				if (executeModuleDesperate(
-					    func_rc, exc, runaction, &pc) ==
-				    NULL && *err_func != 0 && !set_silent)
-				{
-					fvwm_msg(
-						ERR, "__execute_function",
-						"No such command '%s'",
-						err_func);
-				}
-			}
-			exc_destroy_context(exc2);
+		mask = (w != exc->w.w) ? ECC_W : 0;
+		ecc.w.fw = exc->w.fw;
+		ecc.w.w = w;
+		ecc.w.wcontext = exc->w.wcontext;
+		exc2 = exc_clone_context(exc, &ecc, mask);
+		execute_complex_function(
+			func_rc, exc2, &pc, complex_function,
+			has_ref_window_moved);
+		exc_destroy_context(exc2);
+		break;
+	}
+	case CP_EXECTYPE_COMPLEX_FUNCTION_DOES_NOT_EXIST:
+		fvwm_msg(
+			ERR, "ComplexFunction", "No such function %s",
+			pc.complex_function_name);
+		break;
+	case CP_EXECTYPE_MODULECONFIG:
+		/* Note: the module config command, "*" can not be handled by
+		 * the regular command table because there is no required
+		 * white space after the asterisk. */
+		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
+		{
+			fvwm_msg(
+				WARN, "__execute_command_line",
+				"Command can not be added to a decor;"
+				" executing command now: '%s'", pc.expline);
 		}
+		/* process a module config command */
+		ModuleConfig(pc.expline);
+		goto fn_exit;
+	case CP_EXECTYPE_UNKNOWN:
+		if (executeModuleDesperate(func_rc, exc, pc.cline, &pc) ==
+		    NULL && *err_func != 0 && !set_silent)
+		{
+			fvwm_msg(
+				ERR, "__execute_command_line",
+				"No such command '%s'", err_func);
+		}
+		break;
+#if 1 /*!!!*/
+	default:
+		assert(!"bad exec_type");
+#endif
 	}
 
   fn_exit:
@@ -672,32 +591,6 @@ fprintf(stderr, "!!!execute '%s'\n", bif->keyword);
 	cmdparser_hooks->destroy_context(&pc);
 
 	return;
-}
-
-/* find_complex_function expects a token as the input. Make sure you have used
- * GetNextToken before passing a function name to remove quotes */
-static FvwmFunction *find_complex_function(const char *function_name)
-{
-	FvwmFunction *func;
-
-	if (function_name == NULL || *function_name == 0)
-	{
-		return NULL;
-	}
-	func = Scr.functions;
-	while (func != NULL)
-	{
-		if (func->name != NULL)
-		{
-			if (strcasecmp(function_name, func->name) == 0)
-			{
-				return func;
-			}
-		}
-		func = func->next_func;
-	}
-
-	return NULL;
 }
 
 /*
@@ -841,7 +734,7 @@ static void __cf_cleanup(
 	{
 		Scr.flags.is_executing_complex_function = 0;
 	}
-	for (i = 0; i < 11; i++)
+	for (i = 0; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
 	{
 		if (arguments[i] != NULL)
 		{
@@ -857,7 +750,8 @@ static void __cf_cleanup(
 }
 
 static void execute_complex_function(
-	F_CMD_ARGS, Bool *desperate, Bool has_ref_window_moved)
+	cond_rc_t *cond_rc, const exec_context_t *exc, cmdparser_context_t *pc,
+	FvwmFunction *func, Bool has_ref_window_moved)
 {
 	cond_rc_t tmp_rc;
 	cfunc_action_t type = CF_MOTION;
@@ -870,11 +764,9 @@ static void execute_complex_function(
 	Bool ImmediateNeedsTarget = False;
 	int do_allow_unmanaged = FUNC_ALLOW_UNMANAGED;
 	int do_allow_unmanaged_immediate = FUNC_ALLOW_UNMANAGED;
-	char *arguments[11], *taction;
-	char *func_name;
+	char *arguments[CMDPARSER_NUM_POS_ARGS + 1], *taction;
 	int x, y ,i;
 	XEvent d;
-	FvwmFunction *func;
 	static int depth = 0;
 	const exec_context_t *exc2;
 	exec_context_changes_t ecc;
@@ -883,6 +775,9 @@ static void execute_complex_function(
 	int button;
 	XEvent *te;
 
+#if 1 /*!!!*/
+	assert(func != NULL);
+#endif
 	if (cond_rc == NULL)
 	{
 		condrc_init(&tmp_rc);
@@ -894,30 +789,13 @@ static void execute_complex_function(
 	ecc.w.fw = exc->w.fw;
 	ecc.w.w = exc->w.w;
 	ecc.w.wcontext = exc->w.wcontext;
-	/* find_complex_function expects a token, not just a quoted string */
-	func_name = PeekToken(action, &taction);
-	if (!func_name)
-	{
-		return;
-	}
-	func = find_complex_function(func_name);
-	if (func == NULL)
-	{
-		if (*desperate == 0)
-		{
-			fvwm_msg(
-				ERR, "ComplexFunction", "No such function %s",
-				action);
-		}
-		return;
-	}
 	if (!depth)
 	{
 		Scr.flags.is_executing_complex_function = 1;
 	}
 	depth++;
-	*desperate = 0;
 	/* duplicate the whole argument list for use as '$*' */
+	taction = pc->cline;
 	if (taction)
 	{
 		arguments[0] = safestrdup(taction);
@@ -932,14 +810,14 @@ static void execute_complex_function(
 			}
 		}
 		/* Get the argument list */
-		for (i = 1; i < 11; i++)
+		for (i = 1; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
 		{
 			taction = GetNextToken(taction, &arguments[i]);
 		}
 	}
 	else
 	{
-		for (i = 0; i < 11; i++)
+		for (i = 0; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
 		{
 			arguments[i] = NULL;
 		}
@@ -999,7 +877,7 @@ static void execute_complex_function(
 		fvwm_msg(
 			ERR,
 			"ComplexFunction", "Grab failed in function %s,"
-			" unable to execute immediate action", action);
+			" unable to execute immediate action", func->name);
 		__cf_cleanup(&depth, arguments, cond_rc);
 		return;
 	}
@@ -1160,82 +1038,6 @@ static void execute_complex_function(
 	return;
 }
 
-/*
- * create a new FvwmFunction
- */
-static FvwmFunction *NewFvwmFunction(const char *name)
-{
-	FvwmFunction *tmp;
-
-	tmp = (FvwmFunction *)safemalloc(sizeof(FvwmFunction));
-	tmp->next_func = Scr.functions;
-	tmp->first_item = NULL;
-	tmp->last_item = NULL;
-	tmp->name = stripcpy(name);
-	tmp->use_depth = 0;
-	Scr.functions = tmp;
-
-	return tmp;
-}
-
-static void DestroyFunction(FvwmFunction *func)
-{
-	FunctionItem *fi,*tmp2;
-	FvwmFunction *tmp, *prev;
-
-	if (func == NULL)
-	{
-		return;
-	}
-
-	tmp = Scr.functions;
-	prev = NULL;
-	while (tmp && tmp != func)
-	{
-		prev = tmp;
-		tmp = tmp->next_func;
-	}
-	if (tmp != func)
-	{
-		return;
-	}
-
-	if (func->use_depth != 0)
-	{
-		fvwm_msg(
-			ERR,"DestroyFunction",
-			"Function %s is in use (depth %d)", func->name,
-			func->use_depth);
-		return;
-	}
-
-	if (prev == NULL)
-	{
-		Scr.functions = func->next_func;
-	}
-	else
-	{
-		prev->next_func = func->next_func;
-	}
-
-	free(func->name);
-
-	fi = func->first_item;
-	while (fi != NULL)
-	{
-		tmp2 = fi->next_item;
-		if (fi->action != NULL)
-		{
-			free(fi->action);
-		}
-		free(fi);
-		fi = tmp2;
-	}
-	free(func);
-
-	return;
-}
-
 /* ---------------------------- interface functions ------------------------ */
 
 void functions_init(void)
@@ -1245,17 +1047,7 @@ void functions_init(void)
 	return;
 }
 
-Bool functions_is_complex_function(const char *function_name)
-{
-	if (find_complex_function(function_name) != NULL)
-	{
-		return True;
-	}
-
-	return False;
-}
-
-void execute_function(F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags)
+void execute_function(F_CMD_ARGS, func_flags_t exec_flags)
 {
 	__execute_command_line(F_PASS_ARGS, exec_flags, NULL, False);
 
@@ -1263,7 +1055,7 @@ void execute_function(F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags)
 }
 
 void execute_function_override_wcontext(
-	F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags, int wcontext)
+	F_CMD_ARGS, func_flags_t exec_flags, int wcontext)
 {
 	const exec_context_t *exc2;
 	exec_context_changes_t ecc;
@@ -1277,7 +1069,7 @@ void execute_function_override_wcontext(
 }
 
 void execute_function_override_window(
-	F_CMD_ARGS, FUNC_FLAGS_TYPE exec_flags, FvwmWindow *fw)
+	F_CMD_ARGS, func_flags_t exec_flags, FvwmWindow *fw)
 {
 	const exec_context_t *exc2;
 	exec_context_changes_t ecc;
@@ -1311,7 +1103,7 @@ void execute_function_override_window(
 	return;
 }
 
-void find_func_t(char *action, short *func_t, unsigned char *flags)
+void find_func_t(char *action, short *ret_func_c, func_flags_t *flags)
 {
 	int j, len = 0;
 	char *endtok = action;
@@ -1335,9 +1127,9 @@ void find_func_t(char *action, short *func_t, unsigned char *flags)
 			{
 				matched=True;
 				/* found key word */
-				if (func_t)
+				if (ret_func_c)
 				{
-					*func_t = func_table[j].func_t;
+					*ret_func_c = func_table[j].func_c;
 				}
 				if (flags)
 				{
@@ -1352,9 +1144,9 @@ void find_func_t(char *action, short *func_t, unsigned char *flags)
 		}
 		/* No clue what the function is. Just return "BEEP" */
 	}
-	if (func_t)
+	if (ret_func_c)
 	{
-		*func_t = F_BEEP;
+		*ret_func_c = F_BEEP;
 	}
 	if (flags)
 	{
