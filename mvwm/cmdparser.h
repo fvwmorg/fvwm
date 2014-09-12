@@ -87,6 +87,7 @@ typedef struct
 	 * It is then the responsibility of the caller to free() it. */
 	void (*release_expanded_line)(cmdparser_context_t *context);
 	void (*destroy_context)(cmdparser_context_t *context);
+	void (*debug)(cmdparser_context_t *context, const char *msg);
 } cmdparser_hooks_t;
 
 #endif /* CMDPARSER_H */

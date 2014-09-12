@@ -376,6 +376,9 @@ static void __execute_command_line(
 	Window dummy_w;
 	int rc;
 
+#if 1 /*!!!*/
+	fprintf(stderr, "%s: cpc %p, xaction '%s'\n", __func__, caller_pc, xaction);
+#endif
 	set_silent = 0;
 	/* generate a parsing context; this *must* be destroyed before
 	 * returning */
@@ -384,11 +387,13 @@ static void __execute_command_line(
 	{
 		goto fn_exit;
 	}
+cmdparser_hooks->debug(&pc, "!!!A");
 	rc = cmdparser_hooks->handle_line_start(&pc);
 	if (rc != 0)
 	{
 		goto fn_exit;
 	}
+cmdparser_hooks->debug(&pc, "!!!B");
 
 	{
 		cmdparser_prefix_flags_t flags;
@@ -416,6 +421,7 @@ static void __execute_command_line(
 		}
 		err_cline = pc.cline;
 	}
+cmdparser_hooks->debug(&pc, "!!!C");
 
 	if (exc->w.fw == NULL || IS_EWMH_DESKTOP(FW_W(exc->w.fw)))
 	{
@@ -467,11 +473,13 @@ static void __execute_command_line(
 		func = cmdparser_hooks->parse_command_name(&pc, func_rc, exc);
 		if (func != NULL)
 		{
+cmdparser_hooks->debug(&pc, "!!!D");
 			bif = find_builtin_function(func);
 			err_func = func;
 		}
 		else
 		{
+cmdparser_hooks->debug(&pc, "!!!E");
 			bif = NULL;
 			err_func = "";
 		}
@@ -493,6 +501,7 @@ static void __execute_command_line(
 		expaction = cmdparser_hooks->expand_command_line(
 			&pc, (bif) ? !!(bif->flags & FUNC_ADD_TO) : False,
 			func_rc, exc);
+cmdparser_hooks->debug(&pc, "!!!F");
 		if (pc.call_depth <= 1)
 		{
 			int did_store_string;
@@ -502,13 +511,18 @@ static void __execute_command_line(
 			if (did_store_string == 1)
 			{
 				cmdparser_hooks->release_expanded_line(&pc);
+cmdparser_hooks->debug(&pc, "!!!G");
 			}
 		}
 	}
 	else
 	{
+cmdparser_hooks->debug(&pc, "!!!H");
 		expaction = pc.cline;
 	}
+#if 1 /*!!!*/
+fprintf(stderr, "!!!expcation: '%s'\n", expaction);
+#endif
 
 #ifdef FVWM_COMMAND_LOG
 	fvwm_msg(INFO, "LOG", "%c: %s", (char)exc->type, expaction);
@@ -519,7 +533,7 @@ static void __execute_command_line(
 	 * the asterisk. */
 	if (cmdparser_hooks->is_module_config(&pc) == 1)
 	{
-#ifdef USEDECOR
+cmdparser_hooks->debug(&pc, "!!!I");
 		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
 		{
 			fvwm_msg(
@@ -537,6 +551,7 @@ static void __execute_command_line(
 		exec_context_changes_t ecc;
 		exec_context_change_mask_t mask;
 
+cmdparser_hooks->debug(&pc, "!!!J");
 		mask = (w != exc->w.w) ? ECC_W : 0;
 		ecc.w.fw = exc->w.fw;
 		ecc.w.w = w;
@@ -564,6 +579,7 @@ static void __execute_command_line(
 				 * skip command */
 				rc = 1;
 			}
+fprintf(stderr, "!!!runaction: '%s'\n", runaction);
 			if (rc == 0)
 			{
 				exc2 = exc_clone_context(exc, &ecc, mask);

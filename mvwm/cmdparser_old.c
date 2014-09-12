@@ -20,7 +20,10 @@
 #include "libs/defaults.h"
 #include "libs/Parse.h"
 
+#if 1 /*!!!*/
 #include <assert.h>
+#endif
+#include <stdio.h>
 
 #include "cmdparser.h"
 #include "cmdparser_old.h"
@@ -34,6 +37,12 @@
 #undef func_t
 
 /* ---------------------------- local definitions -------------------------- */
+
+#if 1 /*!!!*/
+#define OCP_DEBUG 1
+#else
+#define OCP_DEBUG 0
+#endif
 
 /* ---------------------------- local macros ------------------------------- */
 
@@ -50,6 +59,47 @@
 /* ---------------------------- exported variables (globals) --------------- */
 
 /* ---------------------------- local functions ---------------------------- */
+
+static void ocp_debug(cmdparser_context_t *c, const char *msg)
+{
+	int i;
+
+	if (!OCP_DEBUG)
+	{
+		return;
+	}
+	fprintf(stderr, "%s: %p: %s\n", __func__, c, (msg != NULL) ? msg : "");
+	if (c->is_created == 0)
+	{
+		fprintf(stderr, "  not created\n");
+		return;
+	}
+	fprintf(stderr, "  depth    : %d\n", c->call_depth);
+	fprintf(stderr, "  orig line: '%s'\n", c->line ? c->line : "(nil)");
+	fprintf(stderr, "  curr line: '%s'\n", c->cline ? c->cline : "(nil)");
+	fprintf(
+		stderr, "  exp  line: (do_free = %d) '%s'\n",
+		c->do_free_expline, c->expline ? c->expline : "(nil)");
+	fprintf(
+		stderr, "  command  : '%s'\n",
+		c->command ? c->command: "(nil)");
+	if (c->pos_args == NULL)
+	{
+		return;
+	}
+	fprintf(
+		stderr, "  all args : '%s'\n",
+		c->pos_args[0] ? c->pos_args[0]: "(nil)");
+	fprintf(stderr, "  pos args :");
+	for (i = 1; i < CMDPARSER_NUM_POS_ARGS && c->pos_args[i] != NULL; i++)
+	{
+		fprintf(stderr, " %d:'%s'", i,
+			c->pos_args[i] ? c->pos_args[i]: "(nil)");
+	}
+	fprintf(stderr, "\n");
+
+	return;
+}
 
 static int ocp_create_context(
 	cmdparser_context_t *dest_c, cmdparser_context_t *caller_c, char *line,
@@ -86,7 +136,7 @@ static int ocp_create_context(
 			i < CMDPARSER_NUM_POS_ARGS + 1 && pos_args[i] != NULL;
 			i++)
 		{
-			dest_c->pos_args[i - 1] = pos_args[i];
+			dest_c->pos_args[i] = pos_args[i];
 		}
 	}
 	/*!!!allocate stuff*/
@@ -247,7 +297,8 @@ static cmdparser_hooks_t old_parser_hooks =
 	ocp_is_module_config,
 	ocp_expand_command_line,
 	ocp_release_expanded_line,
-	ocp_destroy_context
+	ocp_destroy_context,
+	ocp_debug
 };
 
 /* ---------------------------- interface functions ------------------------ */
