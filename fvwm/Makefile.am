@@ -19,7 +19,7 @@ fvwm_SOURCES = \
 	placement.h read.h repeat.h execcontext.h schedule.h screen.h \
 	session.h stack.h style.h update.h virtual.h window_flags.h frame.h \
 	infostore.h \
-	cmdparser.h cmdparser_old.h functable_complex.h \
+	cmdparser.h cmdparser_hooks.h cmdparser_old.h functable_complex.h \
 	\
 	menus.c style.c borders.c events.c move_resize.c builtins.c \
 	add_window.c icons.c fvwm.c frame.c placement.c virtual.c \

@@ -43,11 +43,13 @@
 #include "externs.h"
 #include "cursor.h"
 #include "execcontext.h"
+#include "functable.h"
+#include "functable_complex.h"
 #include "cmdparser.h"
+#include "cmdparser_hooks.h"
 #include "cmdparser_old.h"
 #include "functions.h"
 #include "commands.h"
-#include "functable.h"
 #include "events.h"
 #include "modconf.h"
 #include "module_list.h"
@@ -288,7 +290,13 @@ static void __execute_command_line(
 	char *err_cline;
 	const char *err_func;
 	char *expaction = NULL;
+#if 0 /*!!!*/
+	cmdparser_execute_type_t exec_type;
+#endif
 	const func_t *bif;
+#if 0 /*!!!*/
+	MvwmFunction *complex_function;
+#endif
 	int set_silent;
 	int do_keep_rc = 0;
 	/* needed to be able to avoid resize to use moved windows for base */
@@ -458,12 +466,42 @@ fprintf(stderr, "!!!expcation: '%s'\n", expaction);
 	fvwm_msg(INFO, "LOG", "%c: %s", (char)exc->type, expaction);
 #endif
 
+#if 0 /*!!!*/
+	exec_type = cmdparser_hooks->find_something_to_execute(
+		&pc, &bif, &complex_function);
+	switch (exec_type)
+	{
+	case CP_EXECTYPE_BUILTIN_FUNCTION:
+		/*!!!*/
+		break;
+	case CP_EXECTYPE_COMPLEX_FUNCTION:
+		/*!!!*/
+		break;
+	case CP_EXECTYPE_MODULECONFIG:
+		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
+		{
+			mvwm_msg(
+				WARN, "__execute_command_line",
+				"Command can not be added to a decor;"
+				" executing command now: '%s'", expaction);
+		}
+		/* process a module config command */
+		ModuleConfig(expaction);
+		goto fn_exit;
+	case CP_EXECTYPE_MODULE:
+		/*!!!*/
+		break;
+	case CP_EXECTYPE_UNKNOWN:
+		/*!!!*/
+		break;
+	}
+#endif
 	/* Note: the module config command, "*" can not be handled by the
 	 * regular command table because there is no required white space after
 	 * the asterisk. */
 	if (cmdparser_hooks->is_module_config(&pc))
 	{
-cmdparser_hooks->debug(&pc, "!!!I");
+
 		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
 		{
 			fvwm_msg(

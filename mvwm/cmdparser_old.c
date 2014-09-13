@@ -25,18 +25,20 @@
 #endif
 #include <stdio.h>
 
-#include "cmdparser.h"
-#include "cmdparser_old.h"
 #include "mvwm.h"
-#include "misc.h"
 #include "execcontext.h"
 #include "conditional.h"
-#include "expand.h"
 #include "functable.h"
+#include "functable_complex.h"
+#include "cmdparser.h"
+#include "cmdparser_hooks.h"
+#include "cmdparser_old.h"
+#include "misc.h"
+#include "expand.h"
 
 /* ---------------------------- local definitions -------------------------- */
 
-#if 1 /*!!!*/
+#if 0 /*!!!*/
 #define OCP_DEBUG 1
 #else
 #define OCP_DEBUG 0
@@ -318,11 +320,21 @@ static void ocp_release_expanded_line(cmdparser_context_t *c)
 	return;
 }
 
-static char *ocp_find_something_to_execute(
-	cmdparser_context_t *context, cmdparser_execute_type_t *ret_type)
+static cmdparser_execute_type_t ocp_find_something_to_execute(
+	cmdparser_context_t *c, const func_t **ret_builtin,
+	MvwmFunction **ret_complex_function)
 {
+	/* Note: the module config command, "*" can not be handled by the
+	 * regular command table because there is no required white space after
+	 * the asterisk. */
+	if (ocp_is_module_config(c) == 1)
+	{
+		/*!!!strip asterisk??? */
+		return CP_EXECTYPE_MODULECONFIG;
+	}
+
 #if 1 /*!!!*/
-	return NULL;
+	return CP_EXECTYPE_UNKNOWN;
 #endif
 }
 
