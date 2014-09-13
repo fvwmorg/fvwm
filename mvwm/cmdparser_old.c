@@ -67,7 +67,7 @@ static void ocp_debug(cmdparser_context_t *c, const char *msg)
 		return;
 	}
 	fprintf(stderr, "%s: %p: %s\n", __func__, c, (msg != NULL) ? msg : "");
-	if (c->is_created == 0)
+	if (!c->is_created)
 	{
 		fprintf(stderr, "  not created\n");
 		return;
@@ -146,7 +146,7 @@ static int ocp_create_context(
 static void ocp_destroy_context(cmdparser_context_t *c)
 {
 	/* free the resources allocated in the create function */
-	if (c->is_created == 0)
+	if (!c->is_created)
 	{
 		return;
 	}
@@ -154,7 +154,7 @@ static void ocp_destroy_context(cmdparser_context_t *c)
 	{
 		free(c->command);
 	}
-	if (c->expline != NULL && c->do_free_expline == 1)
+	if (c->expline != NULL && c->do_free_expline)
 	{
 		free(c->expline);
 	}
@@ -277,7 +277,7 @@ static const char *ocp_parse_command_name(
 			c->command, c, False, False, func_rc, exc);
 		free(tmp);
 	}
-	if (c->command && ocp_is_module_config(c) == 0)
+	if (c->command && !ocp_is_module_config(c))
 	{
 #if 1
 		/* DV: with this piece of code it is impossible to have a

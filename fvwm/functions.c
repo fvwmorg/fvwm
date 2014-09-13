@@ -388,7 +388,7 @@ cmdparser_hooks->debug(&pc, "!!!C");
 			w = FW_W(exc->w.fw);
 		}
 	}
-	if (cond_rc == NULL || do_keep_rc == 1)
+	if (cond_rc == NULL || do_keep_rc)
 	{
 		condrc_init(&dummy_rc);
 		func_rc = &dummy_rc;
@@ -434,11 +434,11 @@ cmdparser_hooks->debug(&pc, "!!!E");
 cmdparser_hooks->debug(&pc, "!!!F");
 		if (pc.call_depth <= 1)
 		{
-			int did_store_string;
+			Bool do_free_string_ourselves;
 
-			did_store_string = set_repeat_data(
+			do_free_string_ourselves = set_repeat_data(
 				pc.expline, REPEAT_COMMAND, bif);
-			if (did_store_string == 1)
+			if (do_free_string_ourselves == False)
 			{
 				cmdparser_hooks->release_expanded_line(&pc);
 cmdparser_hooks->debug(&pc, "!!!G");
@@ -461,7 +461,7 @@ fprintf(stderr, "!!!expcation: '%s'\n", expaction);
 	/* Note: the module config command, "*" can not be handled by the
 	 * regular command table because there is no required white space after
 	 * the asterisk. */
-	if (cmdparser_hooks->is_module_config(&pc) == 1)
+	if (cmdparser_hooks->is_module_config(&pc))
 	{
 cmdparser_hooks->debug(&pc, "!!!I");
 		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
