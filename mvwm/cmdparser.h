@@ -25,11 +25,11 @@ typedef enum
 /* Enum for types of things to execute. */
 typedef enum
 {
+	CP_EXECTYPE_UNKNOWN = 0,
 	CP_EXECTYPE_BUILTIN_FUNCTION,
 	CP_EXECTYPE_COMPLEX_FUNCTION,
-	CP_EXECTYPE_MODULECONFIG,
-	CP_EXECTYPE_MODULE,
-	CP_EXECTYPE_UNKNOWN
+	CP_EXECTYPE_COMPLEX_FUNCTION_DOES_NOT_EXIST,
+	CP_EXECTYPE_MODULECONFIG
 } cmdparser_execute_type_t;
 
 /* move this to the implementation file and use void* instead??? */
@@ -48,6 +48,8 @@ typedef struct
 	unsigned char do_free_expline : 1;
 	/* the command name */
 	char *command;
+	/* name of the complex function if present */
+	char *complex_function_name;
 	/* current function nesting depth */
 	int call_depth;
 	/* an array of positional arguments; the first array element contains

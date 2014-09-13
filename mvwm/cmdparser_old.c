@@ -20,15 +20,14 @@
 #include "libs/defaults.h"
 #include "libs/Parse.h"
 
-#if 1 /*!!!*/
 #include <assert.h>
-#endif
 #include <stdio.h>
 
 #include "mvwm.h"
 #include "execcontext.h"
 #include "conditional.h"
 #include "functable.h"
+#include "commands.h"
 #include "functable_complex.h"
 #include "cmdparser.h"
 #include "cmdparser_hooks.h"
@@ -82,7 +81,10 @@ static void ocp_debug(cmdparser_context_t *c, const char *msg)
 		c->do_free_expline, c->expline ? c->expline : "(nil)");
 	fprintf(
 		stderr, "  command  : '%s'\n",
-		c->command ? c->command: "(nil)");
+		c->command ? c->command : "(nil)");
+	fprintf(
+		stderr, "  complexf : '%s'\n",
+		c->complex_function_name ? c->complex_function_name : "(nil)");
 	if (c->pos_args == NULL)
 	{
 		return;
@@ -303,14 +305,15 @@ static const char *ocp_parse_command_name(
 	}
 }
 
-static char *ocp_expand_command_line(
+static void ocp_expand_command_line(
 	cmdparser_context_t *c, int is_addto, void *func_rc, const void *exc)
 {
 	c->expline = expand_vars(
 		c->cline, c, is_addto, ocp_is_module_config(c), func_rc, exc);
+	c->cline = c->expline;
 	c->do_free_expline = 1;
 
-	return c->expline;
+	return;
 }
 
 static void ocp_release_expanded_line(cmdparser_context_t *c)
@@ -324,18 +327,75 @@ static cmdparser_execute_type_t ocp_find_something_to_execute(
 	cmdparser_context_t *c, const func_t **ret_builtin,
 	MvwmFunction **ret_complex_function)
 {
+	int is_function_builtin;
+
+	*ret_complex_function = NULL;
 	/* Note: the module config command, "*" can not be handled by the
 	 * regular command table because there is no required white space after
 	 * the asterisk. */
-	if (ocp_is_module_config(c) == 1)
+	if (ocp_is_module_config(c))
 	{
 		/*!!!strip asterisk??? */
 		return CP_EXECTYPE_MODULECONFIG;
 	}
-
+	if (*ret_builtin == NULL)
+	{
+		/* in a new parser we would look for a builtin function here,
+		 * but in the old parser this has already been done */
+	}
+	is_function_builtin = 0;
+	if (*ret_builtin != NULL)
+	{
+		if ((*ret_builtin)->func_c == F_FUNCTION)
+		{
+			c->cline = SkipNTokens(c->cline, 1);
+			if (OCP_DEBUG)
+			{
+				fprintf(stderr, "func cline '%s'\n", c->cline);
+			}
+			free(c->command);
+			c->command = NULL;
+			is_function_builtin = 1;
+			*ret_builtin = NULL;
+		}
+		else
+		{
+			c->cline = SkipNTokens(c->cline, 1);
+			return CP_EXECTYPE_BUILTIN_FUNCTION;
+		}
+	}
 #if 1 /*!!!*/
-	return CP_EXECTYPE_UNKNOWN;
+	assert(*ret_builtin == NULL);
 #endif
+	do
+	{
+		char *complex_function_name;
+		char *rest_of_line;
+
+		/* find_complex_function expects a token, not just a quoted
+		 * string */
+		complex_function_name = PeekToken(c->cline, &rest_of_line);
+		if (complex_function_name == NULL)
+		{
+			break;
+		}
+		*ret_complex_function =
+			find_complex_function(complex_function_name);
+		if (*ret_complex_function != NULL)
+		{
+			c->cline = rest_of_line;
+			c->complex_function_name = complex_function_name;
+			return CP_EXECTYPE_COMPLEX_FUNCTION;
+		}
+		if (is_function_builtin)
+		{
+			c->cline = rest_of_line;
+			c->complex_function_name = complex_function_name;
+			return CP_EXECTYPE_COMPLEX_FUNCTION_DOES_NOT_EXIST;
+		}
+	} while (0);
+
+	return CP_EXECTYPE_UNKNOWN;
 }
 
 /* ---------------------------- local variables ---------------------------- */

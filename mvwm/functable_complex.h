@@ -48,6 +48,7 @@ typedef enum
 
 MvwmFunction *NewMvwmFunction(const char *name);
 void DestroyFunction(MvwmFunction *func);
+MvwmFunction *find_complex_function(const char *function_name);
 Bool functions_is_complex_function(const char *function_name);
 
 #endif /* FUNCTABLE_COMPLEX_H */

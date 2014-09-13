@@ -44,19 +44,21 @@ typedef struct
 	/* returns 1 if the stored command is a module configuration command
 	 * and 0 otherwise */
 	int (*is_module_config)(cmdparser_context_t *context);
-	/* returns the expanded command line */
-	char *(*expand_command_line)(
+	/* expandeds the command line */
+	void (*expand_command_line)(
 		cmdparser_context_t *context, int is_addto, void *func_rc,
 		const void *exc);
 	/* Release the expline field from the context structure and return it.
 	 * It is then the responsibility of the caller to free() it. */
 	void (*release_expanded_line)(cmdparser_context_t *context);
-	/* Tries to find a builtin function, a complex function, a module
-	 * config line or a module command to execute and returns the type
-	 * found or CP_EXECTYPE_UNKNOWN if none of the above was identified.
-	 * For a builtin or a complex funtion the pointer to the description is
+	/* Tries to find a builtin function, a complex function or a module
+	 * config line to execute and returns the type found or
+	 * CP_EXECTYPE_UNKNOWN if none of the above was identified.  For a
+	 * builtin or a complex funtion the pointer to the description is
 	 * returned in *ret_builtin or *ret_complex_function.  Consumes the
-	 * the "Module" or the "Function" command form the input. */
+	 * the "Module" or the "Function" command form the input.  Dos not
+	 * consider builtin functions if *ret_builtin is != NULL when the
+	 * function is called.  */
 	cmdparser_execute_type_t (*find_something_to_execute)(
 		cmdparser_context_t *context,
 		const func_t **ret_builtin,

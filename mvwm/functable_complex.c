@@ -148,3 +148,12 @@ MvwmFunction *find_complex_function(const char *function_name)
 	return NULL;
 }
 
+Bool functions_is_complex_function(const char *function_name)
+{
+	if (find_complex_function(function_name) != NULL)
+	{
+		return True;
+	}
+
+	return False;
+}
