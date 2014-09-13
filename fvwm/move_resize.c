@@ -3044,9 +3044,7 @@ void CMD_SnapAttraction(F_CMD_ARGS)
 		OLD, "CMD_SnapAttraction",
 		"The command SnapAttraction is obsolete. Please use the"
 		" following command instead:\n\n%s", cmd);
-	execute_function(
-		cond_rc, exc, cmd, pc,
-		FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
+	execute_function(cond_rc, exc, cmd, pc, FUNC_DONT_EXPAND_COMMAND);
 	free(cmd);
 
 	return;
@@ -3065,9 +3063,7 @@ void CMD_SnapGrid(F_CMD_ARGS)
 		OLD, "CMD_SnapGrid",
 		"The command SnapGrid is obsolete. Please use the following"
 		" command instead:\n\n%s", cmd);
-	execute_function(
-		cond_rc, exc, cmd, pc,
-		FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
+	execute_function(cond_rc, exc, cmd, pc, FUNC_DONT_EXPAND_COMMAND);
 	free(cmd);
 
 	return;
