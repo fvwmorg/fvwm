@@ -414,7 +414,7 @@ const func_t func_table[] =
 	CMD_ENT("none", CMD_None, F_NONE, 0, 0),
 	/* - Perform command if no window matches conditions */
 
-	CMD_ENT("nop", CMD_Nop, F_NOP, 0, 0),
+	CMD_ENT("nop", CMD_Nop, F_NOP, FUNC_DONT_REPEAT, 0),
 	/* - Do nothing (used internally) */
 
 	CMD_ENT("nowindow", CMD_NoWindow, F_NOP, 0, 0),
@@ -491,6 +491,9 @@ const func_t func_table[] =
 		FUNC_NEEDS_WINDOW, CRS_SELECT),
 	/* - Cause one window to redraw itself */
 
+	CMD_ENT(PRE_REPEAT, CMD_Repeat, F_REPEAT, FUNC_DONT_REPEAT, 0),
+	/* - Repeat (very unreliably) the last command, don't use */
+
 	CMD_ENT("resize", CMD_Resize, F_RESIZE,
 		FUNC_NEEDS_WINDOW | FUNC_IS_MOVE_TYPE, CRS_RESIZE),
 	/* - Cause a window to be resized */
@@ -531,27 +534,31 @@ const func_t func_table[] =
 	CMD_ENT("scroll", CMD_Scroll, F_SCROLL, 0, 0),
 	/* - Scroll the desktop viewport */
 
-	CMD_ENT("send_configinfo", CMD_Send_ConfigInfo, F_CONFIG_LIST, 0, 0),
+	CMD_ENT("send_configinfo", CMD_Send_ConfigInfo, F_CONFIG_LIST,
+		FUNC_DONT_REPEAT, 0),
 	/* - Internal, used for module communication */
 
-	CMD_ENT("send_reply", CMD_Send_Reply, F_SEND_REPLY, 0, 0),
+	CMD_ENT("send_reply", CMD_Send_Reply, F_SEND_REPLY,
+		FUNC_DONT_REPEAT, 0),
 	/* - Internal, used for module communication */
 
 	CMD_ENT("send_windowlist", CMD_Send_WindowList, F_SEND_WINDOW_LIST,
-		0, 0),
+		FUNC_DONT_REPEAT, 0),
 	/* - Internal, used for module communication */
 
-	CMD_ENT("sendtomodule", CMD_SendToModule, F_SEND_STRING, 0, 0),
+	CMD_ENT("sendtomodule", CMD_SendToModule, F_SEND_STRING,
+		FUNC_DONT_REPEAT, 0),
 	/* - Send a string (action) to a module */
 
-	CMD_ENT("set_mask", CMD_set_mask, F_SET_MASK, 0, 0),
+	CMD_ENT("set_mask", CMD_set_mask, F_SET_MASK, FUNC_DONT_REPEAT, 0),
 	/* - Internal, used for module communication */
 
 	CMD_ENT("set_nograb_mask", CMD_set_nograb_mask, F_SET_NOGRAB_MASK,
-		0, 0),
+		FUNC_DONT_REPEAT, 0),
 	/* - Internal, used for module communication */
 
-	CMD_ENT("set_sync_mask", CMD_set_sync_mask, F_SET_SYNC_MASK, 0, 0),
+	CMD_ENT("set_sync_mask", CMD_set_sync_mask, F_SET_SYNC_MASK,
+		FUNC_DONT_REPEAT, 0),
 	/* - Internal, used for module communication */
 
 	CMD_ENT("setanimation", CMD_SetAnimation, F_SET_ANIMATION, 0, 0),

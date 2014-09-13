@@ -58,6 +58,7 @@
 #include "module_list.h"
 #include "misc.h"
 #include "screen.h"
+#include "repeat.h"
 #include "expand.h"
 #include "menus.h"
 
@@ -438,6 +439,18 @@ cmdparser_hooks->debug(&pc, "!!!E");
 			&pc, (bif) ? !!(bif->flags & FUNC_ADD_TO) : False,
 			func_rc, exc);
 cmdparser_hooks->debug(&pc, "!!!F");
+		if (pc.call_depth <= 1)
+		{
+			Bool do_free_string_ourselves;
+
+			do_free_string_ourselves = set_repeat_data(
+				pc.expline, REPEAT_COMMAND, bif);
+			if (do_free_string_ourselves == False)
+			{
+				cmdparser_hooks->release_expanded_line(&pc);
+cmdparser_hooks->debug(&pc, "!!!G");
+			}
+		}
 	}
 #if 1 /*!!!*/
 fprintf(stderr, "!!!pc.cline: '%s'\n", pc.cline);

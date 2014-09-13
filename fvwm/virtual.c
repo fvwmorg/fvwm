@@ -2028,11 +2028,14 @@ void CMD_EdgeResistance(F_CMD_ARGS)
 			" obsolete. Please use the following commands"
 			" instead:\n%s\n%s\n%s\n", cmd, stylecmd, stylecmd2);
 		execute_function(
-			cond_rc, exc, cmd, pc, FUNC_DONT_EXPAND_COMMAND);
+			cond_rc, exc, cmd, pc,
+			FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
 		execute_function(
-			cond_rc, exc, stylecmd, pc, FUNC_DONT_EXPAND_COMMAND);
+			cond_rc, exc, stylecmd, pc,
+			FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
 		execute_function(
-			cond_rc, exc, stylecmd2, pc, FUNC_DONT_EXPAND_COMMAND);
+			cond_rc, exc, stylecmd2, pc,
+			FUNC_DONT_REPEAT | FUNC_DONT_EXPAND_COMMAND);
 	}
 	else
 	{

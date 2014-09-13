@@ -16,7 +16,7 @@ fvwm_SOURCES = \
 	gnome.h icccm2.h icons.h menubindings.h menudim.h menugeometry.h \
 	menuitem.h menuroot.h menuparameters.h menus.h menustyle.h misc.h \
 	modconf.h module_interface.h module_list.h move_resize.h \
-	placement.h read.h execcontext.h schedule.h screen.h \
+	placement.h read.h repeat.h execcontext.h schedule.h screen.h \
 	session.h stack.h style.h update.h virtual.h window_flags.h frame.h \
 	infostore.h \
 	cmdparser.h cmdparser_hooks.h cmdparser_old.h functable_complex.h \
@@ -28,7 +28,7 @@ fvwm_SOURCES = \
 	windowlist.c functable.c menuitem.c expand.c module_interface.c \
 	menubindings.c decorations.c ewmh_icons.c update.c bindings.c misc.c \
 	cursor.c colormaps.c modconf.c  ewmh_conf.c read.c schedule.c \
-	menucmd.c ewmh_names.c icccm2.c windowshade.c focus_policy.c \
+	menucmd.c ewmh_names.c icccm2.c windowshade.c focus_policy.c repeat.c \
 	execcontext.c menugeometry.c menudim.c condrc.c infostore.c \
 	cmdparser_old.c functable_complex.c
 

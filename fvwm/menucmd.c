@@ -37,6 +37,7 @@
 #include "fvwm.h"
 #include "cmdparser.h"
 #include "functions.h"
+#include "repeat.h"
 #include "misc.h"
 #include "move_resize.h"
 #include "screen.h"
@@ -98,6 +99,12 @@ static void menu_func(F_CMD_ARGS, Bool fStaysUp)
 			free(menu_name);
 		}
 		return;
+	}
+	if (menu_name &&
+	    set_repeat_data(
+		    menu_name, (fStaysUp) ? REPEAT_MENU : REPEAT_POPUP,NULL))
+	{
+		free(menu_name);
 	}
 
 	memset(&mp, 0, sizeof(mp));
