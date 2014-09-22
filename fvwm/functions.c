@@ -736,7 +736,7 @@ static void __cf_cleanup(
 	{
 		Scr.flags.is_executing_complex_function = 0;
 	}
-	for (i = 0; i < 11; i++)
+	for (i = 0; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
 	{
 		if (arguments[i] != NULL)
 		{
@@ -766,7 +766,7 @@ static void execute_complex_function(
 	Bool ImmediateNeedsTarget = False;
 	int do_allow_unmanaged = FUNC_ALLOW_UNMANAGED;
 	int do_allow_unmanaged_immediate = FUNC_ALLOW_UNMANAGED;
-	char *arguments[11], *taction;
+	char *arguments[CMDPARSER_NUM_POS_ARGS + 1], *taction;
 	int x, y ,i;
 	XEvent d;
 	static int depth = 0;
@@ -812,14 +812,14 @@ static void execute_complex_function(
 			}
 		}
 		/* Get the argument list */
-		for (i = 1; i < 11; i++)
+		for (i = 1; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
 		{
 			taction = GetNextToken(taction, &arguments[i]);
 		}
 	}
 	else
 	{
-		for (i = 0; i < 11; i++)
+		for (i = 0; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
 		{
 			arguments[i] = NULL;
 		}

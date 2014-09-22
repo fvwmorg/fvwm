@@ -7,6 +7,7 @@
 
 /* ---------------------------- global definitions ------------------------- */
 
+/* $0 through to $9 */
 #define CMDPARSER_NUM_POS_ARGS 10
 
 /* ---------------------------- global macros ------------------------------ */
@@ -56,7 +57,7 @@ typedef struct
 	 * a string with all positional arguments, the remaining ten array
 	 * elements contain the first ten positional arguments.  Any of this
 	 * may be NULL pointers */
-	char *pos_args[CMDPARSER_NUM_POS_ARGS];
+	char *pos_args[CMDPARSER_NUM_POS_ARGS + 1];
 } cmdparser_context_t;
 
 #endif /* CMDPARSER_H */
