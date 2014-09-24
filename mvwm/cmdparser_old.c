@@ -85,18 +85,20 @@ static void ocp_debug(cmdparser_context_t *c, const char *msg)
 	fprintf(
 		stderr, "  complexf : '%s'\n",
 		c->complex_function_name ? c->complex_function_name : "(nil)");
-	if (c->pos_args == NULL)
+	if (c->all_pos_args_string == NULL)
 	{
 		return;
 	}
 	fprintf(
 		stderr, "  all args : '%s'\n",
-		c->pos_args[0] ? c->pos_args[0]: "(nil)");
+		c->all_pos_args_string ? c->all_pos_args_string: "(nil)");
 	fprintf(stderr, "  pos args :");
-	for (i = 1; i < CMDPARSER_NUM_POS_ARGS && c->pos_args[i] != NULL; i++)
+	for (
+		i = 0; i < CMDPARSER_NUM_POS_ARGS &&
+			c->pos_arg_tokens[i] != NULL; i++)
 	{
 		fprintf(stderr, " %d:'%s'", i,
-			c->pos_args[i] ? c->pos_args[i]: "(nil)");
+			c->pos_arg_tokens[i] ? c->pos_arg_tokens[i]: "(nil)");
 	}
 	fprintf(stderr, "\n");
 
@@ -105,7 +107,7 @@ static void ocp_debug(cmdparser_context_t *c, const char *msg)
 
 static int ocp_create_context(
 	cmdparser_context_t *dest_c, cmdparser_context_t *caller_c, char *line,
-	char *pos_args[])
+	char *all_pos_args_string, char *pos_arg_tokens[])
 {
 	/* allocate the necessary resources */
 	memset(dest_c, 0, sizeof(*dest_c));
@@ -128,17 +130,16 @@ static int ocp_create_context(
 	{
 		dest_c->call_depth = 1;
 	}
-	if (pos_args != NULL)
+	if (all_pos_args_string != NULL)
 	{
 		int i;
 
-		dest_c->pos_args[0] = pos_args[0];
+		dest_c->all_pos_args_string = all_pos_args_string;
 		for (
-			i = 1;
-			i < CMDPARSER_NUM_POS_ARGS + 1 && pos_args[i] != NULL;
-			i++)
+			i = 0; i < CMDPARSER_NUM_POS_ARGS &&
+				pos_arg_tokens[i] != NULL; i++)
 		{
-			dest_c->pos_args[i] = pos_args[i];
+			dest_c->pos_arg_tokens[i] = pos_arg_tokens[i];
 		}
 	}
 	/*!!!allocate stuff*/

@@ -53,11 +53,13 @@ typedef struct
 	char *complex_function_name;
 	/* current function nesting depth */
 	int call_depth;
-	/* an array of positional arguments; the first array element contains
-	 * a string with all positional arguments, the remaining ten array
-	 * elements contain the first ten positional arguments.  Any of this
-	 * may be NULL pointers */
-	char *pos_args[CMDPARSER_NUM_POS_ARGS + 1];
+	/* A string with all positional arguments of a complex function.  May
+	 * be NULL if not in the context of a complex function. */
+	char *all_pos_args_string;
+	/* An array of the first CMDPARSER_NUM_POS_ARGS positional arguments up
+	 * to and excluding the first NULL pointer. Must (not) all be NULL if
+	 * all_pos_args_string is (not) NULL. */
+	char *pos_arg_tokens[CMDPARSER_NUM_POS_ARGS];
 } cmdparser_context_t;
 
 #endif /* CMDPARSER_H */
