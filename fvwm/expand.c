@@ -1079,7 +1079,8 @@ char *expand_vars(
 							cond_rc, exc);
 					}
 					xlen = expand_args_extended(
-						var, pc->pos_args[0], NULL);
+						var, pc->all_pos_args_string,
+						NULL);
 					if (xlen < 0)
 					{
 						xlen = expand_vars_extended(
@@ -1109,20 +1110,26 @@ char *expand_vars(
 			case '8':
 			case '9':
 			case '*':
+			{
+				char *s;
+
 				if (input[i + 1] == '*')
 				{
-					n = 0;
+					s = pc->all_pos_args_string;
 				}
 				else
 				{
-					n = input[i + 1] - '0' + 1;
+					n = input[i + 1] - '0';
+					s = pc->pos_arg_tokens[n];
 				}
-				if (pc->pos_args[n] != NULL)
+				n = input[i + 1] - '0';
+				if (s != NULL)
 				{
-					l2 += strlen(pc->pos_args[n]) - 2;
+					l2 += strlen(s) - 2;
 					i++;
 				}
 				break;
+			}
 			case '.':
 				string = get_current_read_dir();
 				break;
@@ -1257,7 +1264,8 @@ char *expand_vars(
 							cond_rc, exc);
 					}
 					xlen = expand_args_extended(
-						var, pc->pos_args[0], &out[j]);
+						var, pc->all_pos_args_string,
+						&out[j]);
 					if (xlen < 0)
 					{
 						xlen = expand_vars_extended(
@@ -1301,19 +1309,23 @@ char *expand_vars(
 			case '8':
 			case '9':
 			case '*':
+			{
+				char *s;
+
 				if (input[i + 1] == '*')
 				{
-					n = 0;
+					s = pc->all_pos_args_string;
 				}
 				else
 				{
-					n = input[i + 1] - '0' + 1;
+					n = input[i + 1] - '0';
+					s = pc->pos_arg_tokens[n];
 				}
-				if (pc->pos_args[n] != NULL)
+				if (s != NULL)
 				{
-					for (k = 0; pc->pos_args[n][k]; k++)
+					for (k = 0; s[k]; k++)
 					{
-						out[j++] = pc->pos_args[n][k];
+						out[j++] = s[k];
 					}
 					i++;
 				}
@@ -1326,6 +1338,7 @@ char *expand_vars(
 					i++;
 				}
 				break;
+			}
 			case '.':
 				string = get_current_read_dir();
 				is_string = True;

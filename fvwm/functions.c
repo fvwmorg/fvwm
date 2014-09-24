@@ -285,7 +285,8 @@ static Bool DeferExecution(
 static void __execute_command_line(
 	cond_rc_t *cond_rc, const exec_context_t *exc, char *xaction,
 	cmdparser_context_t *caller_pc,
-	func_flags_t exec_flags, char *args[], Bool has_ref_window_moved)
+	func_flags_t exec_flags, char *all_pos_args_string,
+	char *pos_arg_tokens[], Bool has_ref_window_moved)
 {
 	cmdparser_context_t pc;
 	cond_rc_t *func_rc = NULL;
@@ -294,7 +295,7 @@ static void __execute_command_line(
 	char *err_cline;
 	const char *err_func;
 	cmdparser_execute_type_t exec_type;
-	const func_t *bif = NULL;
+	const func_t *bif;
 	FvwmFunction *complex_function;
 	int set_silent;
 	int do_keep_rc = 0;
@@ -309,7 +310,8 @@ static void __execute_command_line(
 	set_silent = 0;
 	/* generate a parsing context; this *must* be destroyed before
 	 * returning */
-	rc = cmdparser_hooks->create_context(&pc, caller_pc, xaction, args);
+	rc = cmdparser_hooks->create_context(
+		&pc, caller_pc, xaction, all_pos_args_string, pos_arg_tokens);
 	if (rc != 0)
 	{
 		goto fn_exit;
@@ -476,16 +478,20 @@ cmdparser_hooks->debug(&pc, "!!!J");
 #if 1 /*!!!*/
 fprintf(stderr, "!!!pc.cline: '%s'\n", pc.cline);
 #endif
+		mask = (w != exc->w.w) ? ECC_W : 0;
+		ecc.w.fw = exc->w.fw;
+		ecc.w.w = w;
+		ecc.w.wcontext = exc->w.wcontext;
 		if (
 			(bif->flags & FUNC_NEEDS_WINDOW) &&
 			!(exec_flags & FUNC_DONT_DEFER))
 		{
-			int rc;
+			Bool rc;
 
 			rc = DeferExecution(
 				&ecc, &mask, bif->cursor, exc->x.elast->type,
 				(bif->flags & FUNC_ALLOW_UNMANAGED));
-			if (rc != 0)
+			if (rc == True)
 			{
 				break;
 			}
@@ -505,10 +511,6 @@ fprintf(stderr, "!!!skip no-defer\n");
 			 * skip command */
 			break;
 		}
-		mask = (w != exc->w.w) ? ECC_W : 0;
-		ecc.w.fw = exc->w.fw;
-		ecc.w.w = w;
-		ecc.w.wcontext = exc->w.wcontext;
 		exc2 = exc_clone_context(exc, &ecc, mask);
 		dummy_w = PressedW;
 		if (
@@ -683,7 +685,8 @@ static cfunc_action_t CheckActionType(
 static void __run_complex_function_items(
 	cond_rc_t *cond_rc, char cond, FvwmFunction *func,
 	const exec_context_t *exc, cmdparser_context_t *caller_pc,
-	char *args[], Bool has_ref_window_moved)
+	char *all_pos_args_string, char *pos_arg_tokens[],
+	Bool has_ref_window_moved)
 {
 	char c;
 	FunctionItem *fi;
@@ -709,7 +712,8 @@ static void __run_complex_function_items(
 		{
 			__execute_command_line(
 				cond_rc, exc, fi->action, caller_pc,
-				FUNC_DONT_DEFER, args, has_ref_window_moved);
+				FUNC_DONT_DEFER, all_pos_args_string,
+				pos_arg_tokens, has_ref_window_moved);
 			if (!has_ref_window_moved && PressedW &&
 			    XTranslateCoordinates(
 				  dpy, PressedW , Scr.Root, 0, 0, &x, &y,
@@ -725,7 +729,8 @@ static void __run_complex_function_items(
 }
 
 static void __cf_cleanup(
-	int *depth, char **arguments, cond_rc_t *cond_rc)
+	int *depth, char *all_pos_args_string, char **pos_arg_tokens,
+	cond_rc_t *cond_rc)
 {
 	int i;
 
@@ -734,11 +739,15 @@ static void __cf_cleanup(
 	{
 		Scr.flags.is_executing_complex_function = 0;
 	}
-	for (i = 0; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
+	if (all_pos_args_string != NULL)
 	{
-		if (arguments[i] != NULL)
+		free(all_pos_args_string);
+	}
+	for (i = 0; i < CMDPARSER_NUM_POS_ARGS; i++)
+	{
+		if (pos_arg_tokens[i] != NULL)
 		{
-			free(arguments[i]);
+			free(pos_arg_tokens[i]);
 		}
 	}
 	if (cond_rc->break_levels > 0)
@@ -764,7 +773,9 @@ static void execute_complex_function(
 	Bool ImmediateNeedsTarget = False;
 	int do_allow_unmanaged = FUNC_ALLOW_UNMANAGED;
 	int do_allow_unmanaged_immediate = FUNC_ALLOW_UNMANAGED;
-	char *arguments[CMDPARSER_NUM_POS_ARGS + 1], *taction;
+	char *all_pos_args_string;
+	char *pos_arg_tokens[CMDPARSER_NUM_POS_ARGS];
+	char *taction;
 	int x, y ,i;
 	XEvent d;
 	static int depth = 0;
@@ -798,29 +809,27 @@ static void execute_complex_function(
 	taction = pc->cline;
 	if (taction)
 	{
-		arguments[0] = safestrdup(taction);
+		all_pos_args_string = safestrdup(taction);
 		/* strip trailing newline */
-		if (arguments[0][0])
+		if (all_pos_args_string[0])
 		{
-			int l= strlen(arguments[0]);
+			int l= strlen(all_pos_args_string);
 
-			if (arguments[0][l - 1] == '\n')
+			if (all_pos_args_string[l - 1] == '\n')
 			{
-				arguments[0][l - 1] = 0;
+				all_pos_args_string[l - 1] = 0;
 			}
 		}
 		/* Get the argument list */
-		for (i = 1; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
+		for (i = 0; i < CMDPARSER_NUM_POS_ARGS; i++)
 		{
-			taction = GetNextToken(taction, &arguments[i]);
+			taction = GetNextToken(taction, &pos_arg_tokens[i]);
 		}
 	}
 	else
 	{
-		for (i = 0; i < CMDPARSER_NUM_POS_ARGS + 1; i++)
-		{
-			arguments[i] = NULL;
-		}
+		all_pos_args_string = 0;
+		memset(pos_arg_tokens, 0, sizeof(pos_arg_tokens));
 	}
 	/* In case we want to perform an action on a button press, we
 	 * need to fool other routines */
@@ -854,10 +863,12 @@ static void execute_complex_function(
 	{
 		if (DeferExecution(
 			    &ecc, &mask, CRS_SELECT, trigger_evtype,
-			    do_allow_unmanaged_immediate))
+			    do_allow_unmanaged_immediate) == True)
 		{
 			func->use_depth--;
-			__cf_cleanup(&depth, arguments, cond_rc);
+			__cf_cleanup(
+				&depth, all_pos_args_string, pos_arg_tokens,
+				cond_rc);
 			return;
 		}
 		NeedsTarget = False;
@@ -878,13 +889,14 @@ static void execute_complex_function(
 			ERR,
 			"ComplexFunction", "Grab failed in function %s,"
 			" unable to execute immediate action", func->name);
-		__cf_cleanup(&depth, arguments, cond_rc);
+		__cf_cleanup(
+			&depth, all_pos_args_string, pos_arg_tokens, cond_rc);
 		return;
 	}
 	exc2 = exc_clone_context(exc, &ecc, mask);
 	__run_complex_function_items(
-		cond_rc, CF_IMMEDIATE, func, exc2, pc, arguments,
-		has_ref_window_moved);
+		cond_rc, CF_IMMEDIATE, func, exc2, pc, all_pos_args_string,
+		pos_arg_tokens, has_ref_window_moved);
 	exc_destroy_context(exc2);
 	for (fi = func->first_item;
 	     fi != NULL && cond_rc->break_levels == 0;
@@ -913,7 +925,8 @@ static void execute_complex_function(
 	if (!Persist || cond_rc->break_levels != 0)
 	{
 		func->use_depth--;
-		__cf_cleanup(&depth, arguments, cond_rc);
+		__cf_cleanup(
+			&depth, all_pos_args_string, pos_arg_tokens, cond_rc);
 		UngrabEm(GRAB_NORMAL);
 		return;
 	}
@@ -924,10 +937,12 @@ static void execute_complex_function(
 	{
 		if (DeferExecution(
 			    &ecc, &mask, CRS_SELECT, trigger_evtype,
-			    do_allow_unmanaged))
+			    do_allow_unmanaged) == True)
 		{
 			func->use_depth--;
-			__cf_cleanup(&depth, arguments, cond_rc);
+			__cf_cleanup(
+				&depth, all_pos_args_string, pos_arg_tokens,
+				cond_rc);
 			UngrabEm(GRAB_NORMAL);
 			return;
 		}
@@ -1026,13 +1041,13 @@ static void execute_complex_function(
 	mask |= ECC_ETRIGGER | ECC_W;
 	exc2 = exc_clone_context(exc, &ecc, mask);
 	__run_complex_function_items(
-		cond_rc, type, func, exc2, pc, arguments,
-		has_ref_window_moved);
+		cond_rc, type, func, exc2, pc, all_pos_args_string,
+		pos_arg_tokens, has_ref_window_moved);
 	exc_destroy_context(exc2);
 	/* This is the right place to ungrab the pointer (see comment above).
 	 */
 	func->use_depth--;
-	__cf_cleanup(&depth, arguments, cond_rc);
+	__cf_cleanup(&depth, all_pos_args_string, pos_arg_tokens, cond_rc);
 	UngrabEm(GRAB_NORMAL);
 
 	return;
@@ -1049,7 +1064,7 @@ void functions_init(void)
 
 void execute_function(F_CMD_ARGS, func_flags_t exec_flags)
 {
-	__execute_command_line(F_PASS_ARGS, exec_flags, NULL, False);
+	__execute_command_line(F_PASS_ARGS, exec_flags, NULL, NULL, False);
 
 	return;
 }
