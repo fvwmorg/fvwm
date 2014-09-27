@@ -295,7 +295,7 @@ static void __execute_command_line(
 	char *err_cline;
 	const char *err_func;
 	cmdparser_execute_type_t exec_type;
-	const func_t *bif = NULL;
+	const func_t *bif;
 	MvwmFunction *complex_function;
 	int set_silent;
 	int do_keep_rc = 0;
@@ -480,16 +480,20 @@ cmdparser_hooks->debug(&pc, "!!!J");
 #if 1 /*!!!*/
 fprintf(stderr, "!!!pc.cline: '%s'\n", pc.cline);
 #endif
+		mask = (w != exc->w.w) ? ECC_W : 0;
+		ecc.w.fw = exc->w.fw;
+		ecc.w.w = w;
+		ecc.w.wcontext = exc->w.wcontext;
 		if (
 			(bif->flags & FUNC_NEEDS_WINDOW) &&
 			!(exec_flags & FUNC_DONT_DEFER))
 		{
-			int rc;
+			Bool rc;
 
 			rc = DeferExecution(
 				&ecc, &mask, bif->cursor, exc->x.elast->type,
 				(bif->flags & FUNC_ALLOW_UNMANAGED));
-			if (rc != 0)
+			if (rc == True)
 			{
 				break;
 			}
@@ -509,10 +513,6 @@ fprintf(stderr, "!!!skip no-defer\n");
 			 * skip command */
 			break;
 		}
-		mask = (w != exc->w.w) ? ECC_W : 0;
-		ecc.w.fw = exc->w.fw;
-		ecc.w.w = w;
-		ecc.w.wcontext = exc->w.wcontext;
 		exc2 = exc_clone_context(exc, &ecc, mask);
 		dummy_w = PressedW;
 		if (
@@ -865,7 +865,7 @@ static void execute_complex_function(
 	{
 		if (DeferExecution(
 			    &ecc, &mask, CRS_SELECT, trigger_evtype,
-			    do_allow_unmanaged_immediate))
+			    do_allow_unmanaged_immediate) == True)
 		{
 			func->use_depth--;
 			__cf_cleanup(
@@ -939,7 +939,7 @@ static void execute_complex_function(
 	{
 		if (DeferExecution(
 			    &ecc, &mask, CRS_SELECT, trigger_evtype,
-			    do_allow_unmanaged))
+			    do_allow_unmanaged) == True)
 		{
 			func->use_depth--;
 			__cf_cleanup(
