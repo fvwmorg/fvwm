@@ -246,6 +246,9 @@ void parse_message_line(char *line)
 		return;
 	}
 
+#if 1 /*!!!*/
+fprintf(stderr, "action: '%d'\n", action);
+#endif
 	switch (action)
 	{
 	case 1:
@@ -263,18 +266,32 @@ void parse_message_line(char *line)
 			char *value0, *value;
 			FvwmPicture *icon;
 
+#if 1 /*!!!*/
+fprintf(stderr, "loop: rest: '%s'\n", rest);
+#endif
 			/* parse option and value and give diagnostics */
 			rest = GetQuotedString(
 				rest, &option_pair, ",", NULL, NULL, NULL);
+#if 1 /*!!!*/
+fprintf(stderr, "l2  : rest: '%s'\n", rest);
+fprintf(stderr, "l2  : opt : '%s'\n", option_pair);
+#endif
 			while (isspace(*rest))
 			{
 				rest++;
 			}
+#if 1 /*!!!*/
+fprintf(stderr, "l3  : rest: '%s'\n", rest);
+#endif
 			if (!option_pair)
 				continue;
 
 			option = GetTokenIndex(
 				option_pair, button_options, -1, &value0);
+#if 1 /*!!!*/
+fprintf(stderr, "4   : opt : '%d'\n", option);
+fprintf(stderr, "4   : v0  : '%s'\n", value0);
+#endif
 			if (option < 0)
 			{
 				show_error(
@@ -285,6 +302,9 @@ void parse_message_line(char *line)
 			}
 
 			GetNextToken(value0, &value);
+#if 1 /*!!!*/
+fprintf(stderr, "5   : tok : '%s'\n", value);
+#endif
 			free(option_pair);
 
 			if (value == NULL)
@@ -300,8 +320,10 @@ void parse_message_line(char *line)
 				if (b->flags.b_Title)
 					free(b->title);
 				b->flags.b_Title = 1;
-				b->title = value;
-				value = NULL;
+				CopyString(&b->title, value);
+#if 1 /*!!!*/
+fprintf(stderr, "6   : copy: '%s'\n", b->title);
+#endif
 				break;
 			case 2:
 				/* ActiveTitle */
