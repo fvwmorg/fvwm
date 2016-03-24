@@ -19,7 +19,7 @@ release.
 Other branches in the repository will reflect on-going development from core
 fvwm-workers.   As such, these branches are often in a state of flux, and likely
 to be rebased against other branches.  *NO* code should be based off topic
-branches, unless explictly agreed with other developers, who might need to
+branches, unless explicitly agreed with other developers, who might need to
 collaborate.
 
 ### Submitting Pull-requests
@@ -69,7 +69,7 @@ be as release-worthy as can be.
 **NOTE**:  At present, this does not stop core fvwm-workers from force-pushing
 onto `master`.  This might be useful in some cases, but isn't recommended.
 
-Coventions
+Conventions
 ==========
 
 The following tries to list all the conventions that the fvwm developers
