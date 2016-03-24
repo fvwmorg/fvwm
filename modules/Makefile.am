@@ -2,6 +2,6 @@
 
 SUBDIRS = \
 	FvwmAnimate FvwmAuto FvwmBacker FvwmBanner FvwmButtons FvwmCommand \
-	FvwmCommandS FvwmConsole FvwmCpp FvwmEvent FvwmForm \
+	FvwmCommandS FvwmConsole FvwmCpp FvwmDX FvwmEvent FvwmForm \
 	FvwmIconMan FvwmIdent FvwmM4 FvwmPager \
-	FvwmPerl FvwmProxy FvwmRearrange FvwmScript
+	FvwmPerl FvwmProxy FvwmRearrange FvwmScript 

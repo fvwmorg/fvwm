@@ -1712,6 +1712,7 @@ dnl
 	modules/FvwmConsole/Makefile
 	modules/FvwmConsole/FvwmConsoleC.pl
 	modules/FvwmCpp/Makefile
+	modules/FvwmDX/Makefile
 	modules/FvwmEvent/Makefile
 	modules/FvwmForm/Makefile
 	modules/FvwmIconMan/Makefile
