@@ -21,7 +21,7 @@
 #include <stdio.h>
 
 #include "safemalloc.h"
-#include "queue.h"
+#include "fqueue.h"
 
 /* ---------------------------- local definitions -------------------------- */
 

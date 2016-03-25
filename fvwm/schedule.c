@@ -19,7 +19,7 @@
 #include <stdio.h>
 
 #include "libs/fvwmlib.h"
-#include "libs/queue.h"
+#include "libs/fqueue.h"
 #include "libs/charmap.h"
 #include "libs/wcontext.h"
 #include "libs/Parse.h"
