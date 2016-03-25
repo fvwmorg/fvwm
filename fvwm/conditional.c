@@ -386,29 +386,20 @@ char *CreateFlagString(char *string, char **restptr)
  */
 void FreeConditionMask(WindowConditionMask *mask)
 {
-	struct name_condition *pp,*pp2;
-	struct namelist *p,*p2;
+	struct name_condition *pp;
+	struct namelist *p;
 
-	for (pp=mask->name_condition; pp; )
-	{
+	TAILQ_FOREACH(pp, &mask->name_condq, entry) {
 		/* One malloc() is done for all the name strings.
 		   The string is tokenised & the name fields point to
 		   different parts of the one string.
 		   The start of the string is the first name in the string
 		   which is actually the last node in the linked list. */
-		for (p=pp->namelist; p; )
-		{
-			p2=p->next;
-			if(!p2)
-			{
-				free(p->name);
-			}
+		TAILQ_FOREACH(p, &pp->namelistq, entry) {
+			free(p->name);
 			free(p);
-			p=p2;
 		}
-		pp2=pp->next;
 		free(pp);
-		pp=pp2;
 	}
 }
 
@@ -440,6 +431,9 @@ void CreateConditionMask(char *flags, WindowConditionMask *mask)
 	{
 		return;
 	}
+
+	if (TAILQ_EMPTY(&mask->name_condq))
+		TAILQ_INIT(&mask->name_condq);
 
 	/* Next parse the flags in the string. */
 	next_condition = GetNextFullOption(flags, &allocated_condition);
@@ -724,16 +718,19 @@ void CreateConditionMask(char *flags, WindowConditionMask *mask)
 			pp = (struct name_condition *)
 				safemalloc(sizeof(struct name_condition));
 			pp->invert = (!on ? True : False);
-			pp->namelist = NULL;
-			pp->next = mask->name_condition;
-			mask->name_condition = pp;
+
+			TAILQ_INIT(&pp->namelistq);
+
+			TAILQ_INSERT_TAIL(&mask->name_condq, pp, entry);
+
 			for (;;)
 			{
 				p = (struct namelist *)
 					safemalloc(sizeof(struct namelist));
 				p->name=condp;
-				p->next=pp->namelist;
-				pp->namelist=p;
+
+				TAILQ_INSERT_TAIL(&pp->namelistq, p, entry);
+
 				while(*condp && *condp != '|')
 				{
 					condp++;
@@ -968,11 +965,9 @@ Bool MatchesConditionMask(FvwmWindow *fw, WindowConditionMask *mask)
 		}
 	}
 
-	for (pp = mask->name_condition; pp; pp = pp->next)
-	{
+	TAILQ_FOREACH(pp, &mask->name_condq, entry) {
 		does_match = 0;
-		for (p = pp->namelist; p; p = p->next)
-		{
+		TAILQ_FOREACH(p, &pp->namelistq, entry) {
 			name=p->name;
 			does_match |= matchWildcards(name, fw->name.name);
 			does_match |= matchWildcards(name, fw->icon_name.name);

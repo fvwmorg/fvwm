@@ -40,6 +40,7 @@
 #include "libs/PictureBase.h"
 #include "libs/Flocale.h"
 #include "libs/fvwmrect.h"
+#include "libs/queue.h"
 #include "window_flags.h"
 #include "condrc.h"
 
@@ -421,16 +422,19 @@ typedef struct action_flags
 struct namelist			/* matches to names in this list are ORed */
 {
 	char *name;
-	struct namelist *next;
+	TAILQ_ENTRY(namelist) entry;
 };
+TAILQ_HEAD(namelist_q, namelist);
 
 struct name_condition		/* matches to namelists in this list are
 				   ANDed, after possibly inverting each */
 {
 	Bool invert;
-	struct namelist *namelist;
-	struct name_condition *next;
+	struct namelist_q namelistq;
+
+	TAILQ_ENTRY(name_condition) entry;
 };
+TAILQ_HEAD(name_condition_q, name_condition);
 
 /* Window mask for Circulate and Direction functions */
 typedef struct WindowConditionMask
@@ -465,7 +469,7 @@ typedef struct WindowConditionMask
 	} my_flags;
 	window_flags flags;
 	window_flags flag_mask;
-	struct name_condition *name_condition;
+	struct name_condition_q name_condq;
 	int layer;
 	int desk;
 	int placed_by_button_mask;
