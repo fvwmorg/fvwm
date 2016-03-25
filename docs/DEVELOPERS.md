@@ -22,6 +22,23 @@ to be rebased against other branches.  *NO* code should be based off topic
 branches, unless explicitly agreed with other developers, who might need to
 collaborate.
 
+### Branch naming
+
+Branch names are used to try and indicate the feature, and who is working on
+them.  So for example, a topic-branch will be named as:
+
+`initials/rough-description-of-branch`
+
+For example:
+
+`ta/fix-clang-warnings`
+
+denotes that the branch is worked on by someone with the initials `TA` and that
+the branch is about fixing warnings from Clang.
+
+Sometimes, if more than one person is collaborating on a branch, the initials
+prefix might not be needed.
+
 ### Submitting Pull-requests
 
 External contributions are always welcomed and encouraged.  If you're thinking
