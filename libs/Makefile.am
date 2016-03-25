@@ -15,7 +15,7 @@ libfvwm_a_SOURCES = \
 	XError.h XResource.h charmap.h defaults.h envvar.h fio.h flist.h \
 	fsm.h ftime.h fvwm_sys_stat.h fvwmlib.h fvwmrect.h fvwmsignal.h \
 	gravity.c gravity.h lang-strings.h modifiers.h fqueue.h safemalloc.h \
-	setpgrp.h timeout.h vpacket.h wcontext.h wild.h \
+	setpgrp.h timeout.h vpacket.h wcontext.h wild.h queue.h \
 	\
 	BidiJoin.c Flocale.c PictureUtils.c FScreen.c Graphics.c \
 	PictureGraphics.c Bindings.c FlocaleCharset.c Parse.c \
