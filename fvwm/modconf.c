@@ -131,8 +131,7 @@ static struct moduleInfoList *AddToModList(char *tline)
 		t = t->next;
 	}
 
-	this = (struct moduleInfoList *)safemalloc(
-		sizeof(struct moduleInfoList));
+	this = safemalloc(sizeof *this);
 
 	this->alias_len = 0;
 	if (alias_end && alias_end[0] == MODULE_CONFIG_DELIM)
@@ -146,7 +145,7 @@ static struct moduleInfoList *AddToModList(char *tline)
 		this->alias_len = alias_end - tline;
 	}
 
-	this->data = (char *)safemalloc(strlen(rline)+1);
+	this->data = safemalloc(strlen(rline)+1);
 	strcpy(this->data, rline);
 
 	this->next = NULL;
@@ -258,7 +257,7 @@ static void send_desktop_names(fmodule *module)
 	{
 		if (d->name != NULL)
 		{
-			name = (char *)safemalloc(strlen(d->name) + 44);
+			name = safemalloc(strlen(d->name) + 44);
 			sprintf(name,"DesktopName %d %s", d->desk, d->name);
 			SendName(module, M_CONFIG_INFO, 0, 0, 0, name);
 			free(name);

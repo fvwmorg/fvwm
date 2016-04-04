@@ -183,7 +183,7 @@ struct MenuItem *menuitem_create(void)
 {
 	MenuItem *mi;
 
-	mi = (MenuItem *)safemalloc(sizeof(MenuItem));
+	mi = safemalloc(sizeof *mi);
 	memset(mi, 0, sizeof(MenuItem));
 
 	return mi;
@@ -233,8 +233,8 @@ struct MenuItem *menuitem_clone(struct MenuItem *mi)
 	int i;
 
 	/* copy everything */
-	new_mi = (MenuItem *)safemalloc(sizeof(MenuItem));
-	memcpy(new_mi, mi, sizeof(MenuItem));
+	new_mi = safemalloc(sizeof *new_mi);
+	memcpy(new_mi, mi, sizeof *new_mi);
 	/* special treatment for a few parts */
 	MI_NEXT_ITEM(new_mi) = NULL;
 	MI_PREV_ITEM(new_mi) = NULL;

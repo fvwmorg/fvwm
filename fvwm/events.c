@@ -4174,7 +4174,7 @@ int register_event_group(int event_base, int event_count, PFEH *jump_table)
 		return 1;
 	}
 	/* create the group structure (these are not freed until fvwm exits) */
-	group = (event_group_t*)safemalloc(sizeof(event_group_t));
+	group = safemalloc(sizeof *group);
 	group->base = event_base;
 	group->count = event_count;
 	group->jump_table = jump_table;

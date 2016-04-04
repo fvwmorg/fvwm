@@ -137,7 +137,7 @@ const exec_context_t *exc_clone_context(
 int i;
 #endif
 
-	exc = (exec_context_t *)safemalloc(sizeof(exec_context_t));
+	exc = safemalloc(sizeof *exc);
 #ifdef DEBUG_EXECCONTEXT
 fprintf(stderr, "xxx+= ");
 for(i=0;i<nx;i++)fprintf(stderr,"  ");

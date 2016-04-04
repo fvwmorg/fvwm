@@ -326,7 +326,7 @@ static char *ReadTitleButton(
 			{
 				tail = tail->next;
 			}
-			tail->next = (DecorFace *)safemalloc(sizeof(DecorFace));
+			tail->next = safemalloc(sizeof(DecorFace));
 			memcpy(tail->next, &tmpdf, sizeof(DecorFace));
 			if (DFS_FACE_TYPE(tail->next->style) == VectorButton &&
 			    DFS_FACE_TYPE((&TB_STATE(*tb)[bs_start])->style) ==
@@ -355,8 +355,7 @@ static char *ReadTitleButton(
 				{
 					tail = tail->next;
 				}
-				tail->next = (DecorFace *)safemalloc(
-					sizeof(DecorFace));
+				tail->next = safemalloc( sizeof(DecorFace));
 				memset(
 					&DFS_FLAGS(tail->next->style), 0,
 					sizeof(DFS_FLAGS(tail->next->style)));
@@ -565,9 +564,9 @@ static char *ReadMultiPixmapDecor(char *s, DecorFace *df)
 		(FvwmPicture**)safecalloc(
 			TBMP_NUM_PIXMAPS, sizeof(FvwmPicture*));
 	df->u.mp.acs = acs =
-		(FvwmAcs *)safemalloc(TBMP_NUM_PIXMAPS * sizeof(FvwmAcs));
+		safemalloc(TBMP_NUM_PIXMAPS * sizeof *acs);
 	df->u.mp.pixels = pixels =
-		(Pixel *)safemalloc(TBMP_NUM_PIXMAPS * sizeof(Pixel));
+		safemalloc(TBMP_NUM_PIXMAPS * sizeof *pixels);
 	for(i=0; i < TBMP_NUM_PIXMAPS; i++)
 	{
 		acs[i].cs = -1;
@@ -1417,8 +1416,7 @@ void FreeDecorFace(Display *dpy, DecorFace *df)
 			Pixel *p;
 			int i;
 
-			p = (Pixel *)safemalloc(
-				df->u.grad.npixels * sizeof(Pixel));
+			p = safemalloc(df->u.grad.npixels * sizeof *p);
 			for(i=0; i < df->u.grad.npixels; i++)
 			{
 				p[i] = df->u.grad.xcs[i].pixel;
@@ -1622,16 +1620,11 @@ Bool ReadDecorFace(char *s, DecorFace *df, int button, int verbose)
 
 			vc->num = num_coords;
 			vc->use_fgbg = 0;
-			vc->x = (signed char*)safemalloc(sizeof(char) *
-							 num_coords);
-			vc->y = (signed char*)safemalloc(sizeof(char) *
-							 num_coords);
-			vc->xoff = (signed char*)safemalloc(sizeof(char) *
-							    num_coords);
-			vc->yoff = (signed char*)safemalloc(sizeof(char) *
-							    num_coords);
-			vc->c = (signed char*)safemalloc(sizeof(char) *
-							 num_coords);
+			vc->x = safemalloc(sizeof(char) * num_coords);
+			vc->y = safemalloc(sizeof(char) * num_coords);
+			vc->xoff = safemalloc(sizeof(char) * num_coords);
+			vc->yoff = safemalloc(sizeof(char) * num_coords);
+			vc->c = safemalloc(sizeof(char) * num_coords);
 
 			/* get the points */
 			for (i = 0; i < vc->num; ++i)
@@ -3284,7 +3277,7 @@ void CMD_AddToDecor(F_CMD_ARGS)
 	if (!found)
 	{
 		/* then make a new one */
-		found = (FvwmDecor *)safemalloc(sizeof( FvwmDecor ));
+		found = safemalloc(sizeof *found);
 		InitFvwmDecor(found);
 		found->tag = item; /* tag it */
 		/* add it to list */
@@ -4194,8 +4187,8 @@ void CMD_StrokeFunc(F_CMD_ARGS)
 		XBell(dpy, 0);
 		return;
 	}
-	x = (int*)safemalloc(coords_size * sizeof(int));
-	y = (int*)safemalloc(coords_size * sizeof(int));
+	x = safemalloc(coords_size * sizeof(int));
+	y = safemalloc(coords_size * sizeof(int));
 	e = *exc->x.etrigger;
 	/* set the default option */
 	if (e.type == KeyPress || e.type == ButtonPress)

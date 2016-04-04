@@ -1757,8 +1757,7 @@ static Bool size_menu_vertically(MenuSizingParameters *msp)
 			}
 
 			t = EscapeString(MR_NAME(msp->menu), "\"", '\\');
-			tempname = (char *)safemalloc(
-				(10 + strlen(t)) * sizeof(char));
+			tempname = safemalloc((10 + strlen(t)) * sizeof(char));
 			strcpy(tempname, "Popup \"");
 			strcat(tempname, t);
 			strcat(tempname, "$\"");
@@ -1767,7 +1766,7 @@ static Bool size_menu_vertically(MenuSizingParameters *msp)
 			   but, we need it at the end.  (Give it just the name,
 			   * which is 6 chars past the action since
 			   * strlen("Popup ")==6 ) */
-			t = (char *)safemalloc(strlen(MR_NAME(msp->menu)) + 2);
+			t = safemalloc(strlen(MR_NAME(msp->menu)) + 2);
 			strcpy(t, MR_NAME(msp->menu));
 			strcat(t, "$");
 			menuContinuation = NewMenuRoot(t);
@@ -2044,9 +2043,9 @@ static MenuRoot *copy_menu_root(MenuRoot *mr)
 	{
 		return NULL;
 	}
-	tmp = (MenuRoot *)safemalloc(sizeof(MenuRoot));
-	tmp->d = (MenuRootDynamic *)safemalloc(sizeof(MenuRootDynamic));
-	memset(tmp->d, 0, sizeof(MenuRootDynamic));
+	tmp = safemalloc(sizeof *tmp);
+	tmp->d = safemalloc(sizeof *tmp);
+	memset(tmp->d, 0, sizeof *tmp->d);
 	tmp->s = mr->s;
 
 	MR_COPIES(mr)++;
@@ -2076,9 +2075,9 @@ static MenuRoot *copy_menu_root(MenuRoot *mr)
 static void clone_menu_root_static(
 	MenuRoot *dest_mr, MenuRoot *src_mr)
 {
-	dest_mr->s = (MenuRootStatic *)safemalloc(sizeof(MenuRootStatic));
+	dest_mr->s = safemalloc(sizeof dest_mr->s);
 	/* copy everything */
-	memcpy(dest_mr->s, src_mr->s, sizeof(MenuRootStatic));
+	memcpy(dest_mr->s, src_mr->s, sizeof *dest_mr->s);
 	/* special treatment for a few parts */
 	if (MR_NAME(src_mr) != NULL)
 	{
@@ -2108,9 +2107,9 @@ static MenuRoot *clone_menu(MenuRoot *mr)
 {
 	MenuRoot *new_mr;
 
-	new_mr = (MenuRoot *)safemalloc(sizeof(MenuRoot));
-	new_mr->d = (MenuRootDynamic *)safemalloc(sizeof(MenuRootDynamic));
-	memset(new_mr->d, 0, sizeof(MenuRootDynamic));
+	new_mr = safemalloc(sizeof *new_mr);
+	new_mr->d = safemalloc(sizeof new_mr->d);
+	memset(new_mr->d, 0, sizeof *new_mr->d);
 	clone_menu_root_static(new_mr, mr);
 
 	return new_mr;
@@ -5624,7 +5623,7 @@ static void menu_tear_off(MenuRoot *mr_to_copy)
 	}
 	mr = clone_menu(mr_to_copy);
 	/* also dump the menu style */
-	buffer = (char *)safemalloc(23);
+	buffer = safemalloc(23);
 	sprintf(buffer,"%lu",(unsigned long)mr);
 	action = buffer;
 	ms = menustyle_parse_style(F_PASS_ARGS);
@@ -6871,12 +6870,12 @@ MenuRoot *NewMenuRoot(char *name)
 		{'\0', NULL}};
 	string_context_t ctx;
 
-	mr = (MenuRoot *)safemalloc(sizeof(MenuRoot));
-	mr->s = (MenuRootStatic *)safemalloc(sizeof(MenuRootStatic));
-	mr->d = (MenuRootDynamic *)safemalloc(sizeof(MenuRootDynamic));
+	mr = safemalloc(sizeof *mr);
+	mr->s = safemalloc(sizeof *mr->s);
+	mr->d = safemalloc(sizeof *mr->d);
 
-	memset(mr->s, 0, sizeof(MenuRootStatic));
-	memset(mr->d, 0, sizeof(MenuRootDynamic));
+	memset(mr->s, 0, sizeof *mr->s);
+	memset(mr->d, 0, sizeof *mr->d);
 	MR_NEXT_MENU(mr) = Menus.all;
 	MR_NAME(mr) = safestrdup(name);
 	MR_WINDOW(mr) = None;

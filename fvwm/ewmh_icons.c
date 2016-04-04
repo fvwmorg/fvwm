@@ -361,7 +361,7 @@ CARD32 *ewmh_SetWmIconFromPixmap(
 				    AllPlanes, ZPixmap);
 	}
 	*orig_size = (height*width + 2 + keep_length) * sizeof(CARD32);
-	new_icon = (CARD32 *)safemalloc(*orig_size);
+	new_icon = safemalloc(*orig_size);
 	if (keep_length > 0)
 	{
 		memcpy(new_icon, &orig_icon[keep_start],
@@ -417,9 +417,8 @@ CARD32 *ewmh_SetWmIconFromPixmap(
 		unsigned char *cm;
 		XColor *colors;
 
-		colors = (XColor *)safemalloc(width * height * sizeof(XColor));
-		cm = (unsigned char *)safemalloc(
-			width * height * sizeof(char));
+		colors = safemalloc(width * height * sizeof *colors);
+		cm = safemalloc(width * height * sizeof(char));
 		for (j = 0; j < height; j++)
 		{
 			for (i = 0; i < width; i++)
@@ -582,10 +581,10 @@ void EWMH_DeleteWmIcon(FvwmWindow *fw, Bool mini_icon, Bool icon)
 
 	if (keep_length > 0)
 	{
-		new_list = (CARD32 *)safemalloc(keep_length * sizeof(CARD32));
+		new_list = safemalloc(keep_length * sizeof *new_list);
 		memcpy(
 			new_list, &list[keep_start],
-			keep_length * sizeof(CARD32));
+			keep_length * sizeof *new_list);
 	}
 
 	if (new_list != NULL)

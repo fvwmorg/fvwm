@@ -245,7 +245,7 @@ static void add_to_junk(Pixmap pixmap)
 {
 	struct junklist *oldjunk = junk;
 
-	junk = (struct junklist *)safemalloc(sizeof(struct junklist));
+	junk = safemalloc(sizeof *junk);
 	junk->prev = oldjunk;
 	junk->pixmap = pixmap;
 	if (!cleanup_scheduled)
@@ -1147,8 +1147,8 @@ void parse_colorset(int n, char *line)
 			/* Note: this may allocate a lot of memory:
 			 * cs->width * cs->height * 12 and then the rest of the
 			 * procedure can take a lot of times */
-			colors = (XColor *)safemalloc(
-				cs->width * cs->height * sizeof(XColor));
+			colors = safemalloc(cs->width * cs->height *
+					sizeof *colors);
 			/* get the pixmap and mask into an image */
 			image = XGetImage(
 				dpy, average_pix, 0, 0, cs->width, cs->height,

@@ -721,16 +721,14 @@ void CreateConditionMask(char *flags, WindowConditionMask *mask)
 			struct namelist *p;
 			char *condp = safestrdup(cond);
 
-			pp = (struct name_condition *)
-				safemalloc(sizeof(struct name_condition));
+			pp = safemalloc(sizeof *pp);
 			pp->invert = (!on ? True : False);
 			pp->namelist = NULL;
 			pp->next = mask->name_condition;
 			mask->name_condition = pp;
 			for (;;)
 			{
-				p = (struct namelist *)
-					safemalloc(sizeof(struct namelist));
+				p = safemalloc(sizeof *p);
 				p->name=condp;
 				p->next=pp->namelist;
 				pp->namelist=p;
@@ -1584,7 +1582,7 @@ void CMD_All(F_CMD_ARGS)
 	{
 		num++;
 	}
-	g = (FvwmWindow **)safemalloc(num * sizeof(FvwmWindow *));
+	g = safemalloc(num * sizeof *g);
 	num = 0;
 	if (!use_stack)
 	{

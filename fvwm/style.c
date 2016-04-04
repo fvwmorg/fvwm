@@ -273,8 +273,8 @@ static void copy_icon_boxes(icon_boxes **pdest, icon_boxes *src)
 	/* copy the icon boxes */
 	for ( ; src != NULL; src = src->next)
 	{
-		temp = (icon_boxes *)safemalloc(sizeof(icon_boxes));
-		memcpy(temp, src, sizeof(icon_boxes));
+		temp = safemalloc(sizeof *temp);
+		memcpy(temp, src, sizeof *temp);
 		temp->next = NULL;
 		if (last != NULL)
 			last->next = temp;
@@ -1796,9 +1796,9 @@ static char *style_parse_icon_box_style(
 	}
 
 	/* otherwise try to parse the icon box */
-	IconBoxes = (icon_boxes *)safemalloc(sizeof(icon_boxes));
+	IconBoxes = safemalloc(sizeof *IconBoxes);
 	/* clear it */
-	memset(IconBoxes, 0, sizeof(icon_boxes));
+	memset(IconBoxes, 0, sizeof *IconBoxes);
 	IconBoxes->IconScreen = FSCREEN_GLOBAL;
 	/* init grid x */
 	IconBoxes->IconGrid[0] = 3;
@@ -2102,7 +2102,7 @@ static Bool style_parse_one_style_option(
 		if (strncasecmp(token, prefix, l) != 0)
 		{
 			/* add missing prefix */
-			token_l = (char *)safemalloc(l + strlen(token) + 1);
+			token_l = safemalloc(l + strlen(token) + 1);
 			strcpy(token_l, prefix);
 			strcat(token_l, token);
 			token = token_l;
@@ -4651,9 +4651,9 @@ static void __style_command(F_CMD_ARGS, char *prefix, Bool is_window_style)
 	/* temp area to build name list */
 	window_style *ps;
 
-	ps = (window_style *)safemalloc(sizeof(window_style));
+	ps = safemalloc(sizeof *ps);
 	/* init temp window_style area */
-	memset(ps, 0, sizeof(window_style));
+	memset(ps, 0, sizeof *ps);
 	/* init default focus policy */
 	fpol_init_default_fp(&S_FOCUS_POLICY(SCF(*ps)));
 	/* mark style as changed */

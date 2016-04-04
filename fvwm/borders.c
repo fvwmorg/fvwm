@@ -1768,8 +1768,7 @@ static void border_setup_bar_pixmaps(
 	}
 	else
 	{
-		dcd->bar_pixmaps[bs].bps =
-			(bar_pixmap *)safemalloc(count*sizeof(bar_pixmap));
+		dcd->bar_pixmaps[bs].bps = safemalloc(count*sizeof(bar_pixmap));
 	}
 	dcd->bar_pixmaps[bs].count = count;
 	i = 0;

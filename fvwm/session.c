@@ -125,7 +125,7 @@ char *duplicate(const char *s)
 
 	if (!s) return NULL;
 	l = strlen(s);
-	r = (char *) safemalloc (sizeof(char)*(l+1));
+	r = safemalloc (sizeof(char)*(l+1));
 	strncpy(r, s, l+1);
 
 	return r;
@@ -1428,8 +1428,7 @@ LoadWindowStates(char *filename)
 		{
 			sscanf(s, "%*s %i%n",
 			       &matches[num_match - 1].wm_command_count, &pos);
-			matches[num_match - 1].wm_command = (char **)
-				safemalloc(
+			matches[num_match - 1].wm_command = safemalloc(
 					matches[num_match - 1].
 					wm_command_count * sizeof (char *));
 			for (i = 0;

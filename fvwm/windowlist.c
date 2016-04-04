@@ -86,11 +86,11 @@ static char *get_desk_title(int desk, unsigned long flags, Bool is_top_title)
 	desk_name = GetDesktopName(desk);
 	if (desk_name != NULL)
 	{
-		tlabel = (char *)safemalloc(strlen(desk_name)+50);
+		tlabel = safemalloc(strlen(desk_name)+50);
 	}
 	else
 	{
-		tlabel = (char *)safemalloc(50);
+		tlabel = safemalloc(50);
 	}
 
 	if (desk_name != NULL)

@@ -862,11 +862,11 @@ static void LoadDefaultLeftButton(DecorFace *df, int i)
 	case 0:
 	case 4:
 		v->num = 5;
-		v->x = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->y = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->xoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->yoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->c = (signed char*)safecalloc(v->num, sizeof(char));
+		v->x = safemalloc(sizeof(char) * v->num);
+		v->y = safemalloc(sizeof(char) * v->num);
+		v->xoff = safemalloc(sizeof(char) * v->num);
+		v->yoff = safemalloc(sizeof(char) * v->num);
+		v->c = safecalloc(v->num, sizeof(char));
 		v->x[0] = 22;
 		v->y[0] = 39;
 		v->c[0] = 1;
@@ -883,11 +883,11 @@ static void LoadDefaultLeftButton(DecorFace *df, int i)
 		break;
 	case 1:
 		v->num = 5;
-		v->x = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->y = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->xoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->yoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->c = (signed char*)safecalloc(v->num, sizeof(char));
+		v->x = safemalloc(sizeof(char) * v->num);
+		v->y = safemalloc(sizeof(char) * v->num);
+		v->xoff = safemalloc(sizeof(char) * v->num);
+		v->yoff = safemalloc(sizeof(char) * v->num);
+		v->c = safecalloc(v->num, sizeof(char));
 		v->x[0] = 32;
 		v->y[0] = 45;
 		v->x[1] = 68;
@@ -903,11 +903,11 @@ static void LoadDefaultLeftButton(DecorFace *df, int i)
 		break;
 	case 2:
 		v->num = 5;
-		v->x = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->y = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->xoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->yoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->c = (signed char*)safecalloc(v->num, sizeof(char));
+		v->x = safemalloc(sizeof(char) * v->num);
+		v->y = safemalloc(sizeof(char) * v->num);
+		v->xoff = safemalloc(sizeof(char) * v->num);
+		v->yoff = safemalloc(sizeof(char) * v->num);
+		v->c = safecalloc(v->num, sizeof(char));
 		v->x[0] = 49;
 		v->y[0] = 49;
 		v->c[0] = 1;
@@ -924,11 +924,11 @@ static void LoadDefaultLeftButton(DecorFace *df, int i)
 		break;
 	case 3:
 		v->num = 5;
-		v->x = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->y = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->xoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->yoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->c = (signed char*)safecalloc(v->num, sizeof(char));
+		v->x = safemalloc(sizeof(char) * v->num);
+		v->y = safemalloc(sizeof(char) * v->num);
+		v->xoff = safemalloc(sizeof(char) * v->num);
+		v->yoff = safemalloc(sizeof(char) * v->num);
+		v->c = safecalloc(v->num, sizeof(char));
 		v->x[0] = 32;
 		v->y[0] = 45;
 		v->c[0] = 1;
@@ -972,11 +972,11 @@ static void LoadDefaultRightButton(DecorFace *df, int i)
 	case 0:
 	case 3:
 		v->num = 5;
-		v->x = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->y = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->xoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->yoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->c = (signed char*)safecalloc(v->num, sizeof(char));
+		v->x = safemalloc(sizeof(char) * v->num);
+		v->y = safemalloc(sizeof(char) * v->num);
+		v->xoff = safemalloc(sizeof(char) * v->num);
+		v->yoff = safemalloc(sizeof(char) * v->num);
+		v->c = safecalloc(v->num, sizeof(char));
 		v->x[0] = 25;
 		v->y[0] = 25;
 		v->c[0] = 1;
@@ -993,11 +993,11 @@ static void LoadDefaultRightButton(DecorFace *df, int i)
 		break;
 	case 1:
 		v->num = 5;
-		v->x = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->y = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->xoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->yoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->c = (signed char*)safecalloc(v->num, sizeof(char));
+		v->x = safemalloc(sizeof(char) * v->num);
+		v->y = safemalloc(sizeof(char) * v->num);
+		v->xoff = safemalloc(sizeof(char) * v->num);
+		v->yoff = safemalloc(sizeof(char) * v->num);
+		v->c = safecalloc(v->num, sizeof(char));
 		v->x[0] = 39;
 		v->y[0] = 39;
 		v->c[0] = 1;
@@ -1014,11 +1014,11 @@ static void LoadDefaultRightButton(DecorFace *df, int i)
 		break;
 	case 2:
 		v->num = 5;
-		v->x = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->y = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->xoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->yoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->c = (signed char*)safecalloc(v->num, sizeof(char));
+		v->x = safemalloc(sizeof(char) * v->num);
+		v->y = safemalloc(sizeof(char) * v->num);
+		v->xoff = safemalloc(sizeof(char) * v->num);
+		v->yoff = safemalloc(sizeof(char) * v->num);
+		v->c = safecalloc(v->num, sizeof(char));
 		v->x[0] = 49;
 		v->y[0] = 49;
 		v->c[0] = 1;
@@ -1035,11 +1035,11 @@ static void LoadDefaultRightButton(DecorFace *df, int i)
 		break;
 	case 4:
 		v->num = 5;
-		v->x = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->y = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->xoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->yoff = (signed char*)safemalloc(sizeof(char) * v->num);
-		v->c = (signed char*)safecalloc(v->num, sizeof(char));
+		v->x = safemalloc(sizeof(char) * v->num);
+		v->y = safemalloc(sizeof(char) * v->num);
+		v->xoff = safemalloc(sizeof(char) * v->num);
+		v->yoff = safemalloc(sizeof(char) * v->num);
+		v->c = safecalloc(v->num, sizeof(char));
 		v->x[0] = 36;
 		v->y[0] = 36;
 		v->c[0] = 1;
@@ -1167,7 +1167,7 @@ static void InitVariables(void)
 	Scr.cascade_window = &Scr.FvwmRoot;
 	Scr.buttons2grab = 0;
 	/* initialisation of the head of the desktops info */
-	Scr.Desktops = (DesktopsInfo *)safemalloc(sizeof(DesktopsInfo));
+	Scr.Desktops = safemalloc(sizeof Scr.Desktops);
 	Scr.Desktops->name = NULL;
 	Scr.Desktops->desk = 0; /* not desk 0 */
 	Scr.Desktops->ewmh_dyn_working_area.x =
@@ -1800,7 +1800,7 @@ int main(int argc, char **argv)
 
 	memset(&Scr, 0, sizeof(Scr));
 	/* for use on restart */
-	g_argv = (char **)safemalloc((argc + 4) * sizeof(char *));
+	g_argv = safemalloc((argc + 4) * sizeof(char *));
 	g_argc = argc;
 	for (i = 0; i < argc; i++)
 	{

@@ -68,8 +68,7 @@ static void menustyle_free_face(MenuFace *mf)
 			Pixel *p;
 			int i;
 
-			p = (Pixel *)safemalloc(
-				mf->u.grad.npixels * sizeof(Pixel));
+			p = safemalloc(mf->u.grad.npixels * sizeof *p);
 			for(i=0; i < mf->u.grad.npixels; i++)
 			{
 				p[i] = mf->u.grad.xcs[i].pixel;
@@ -115,11 +114,11 @@ static void menustyle_copy_face(MenuFace *destmf, MenuFace *origmf)
 		break;
 	case GradientMenu:
 		destmf->u.grad.xcs =
-			(XColor *)safemalloc(sizeof(XColor) *
+			safemalloc(sizeof destmf->u.grad.xcs *
 					     origmf->u.grad.npixels);
 		memcpy(destmf->u.grad.xcs,
 		       origmf->u.grad.xcs,
-		       sizeof(XColor) * origmf->u.grad.npixels);
+		       sizeof destmf->u.grad.xcs * origmf->u.grad.npixels);
 		for (i = 0; i<origmf->u.grad.npixels;i++)
 		{
 			fvwmlib_clone_color(origmf->u.grad.xcs[i].pixel);
@@ -1912,7 +1911,7 @@ void CMD_CopyMenuStyle(F_CMD_ARGS)
 	if (!destms)
 	{
 		/* create destms menu style */
-		buffer = (char *)safemalloc(strlen(destname) + 3);
+		buffer = safemalloc(strlen(destname) + 3);
 		sprintf(buffer,"\"%s\"",destname);
 		action = buffer;
 		destms = menustyle_parse_style(F_PASS_ARGS);

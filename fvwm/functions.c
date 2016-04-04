@@ -1197,7 +1197,7 @@ static FvwmFunction *NewFvwmFunction(const char *name)
 {
 	FvwmFunction *tmp;
 
-	tmp = (FvwmFunction *)safemalloc(sizeof(FvwmFunction));
+	tmp = safemalloc(sizeof *tmp);
 	tmp->next_func = Scr.functions;
 	tmp->first_item = NULL;
 	tmp->last_item = NULL;
@@ -1446,7 +1446,7 @@ void AddToFunction(FvwmFunction *func, char *action)
 		return;
 	}
 
-	tmp = (FunctionItem *)safemalloc(sizeof(FunctionItem));
+	tmp = safemalloc(sizeof *tmp);
 	tmp->next_item = NULL;
 	tmp->func = func;
 	if (func->first_item == NULL)

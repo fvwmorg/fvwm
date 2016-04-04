@@ -2456,8 +2456,7 @@ void CMD_DesktopName(F_CMD_ARGS)
 		if (d == NULL)
 		{
 			/* add it at the end */
-			*prev = (DesktopsInfo *)safemalloc(
-				sizeof(DesktopsInfo));
+			*prev = safemalloc(sizeof(DesktopsInfo));
 			memset(*prev, 0, sizeof(DesktopsInfo));
 			(*prev)->desk = desk;
 			if (action != NULL && *action && *action != '\n')
@@ -2468,8 +2467,8 @@ void CMD_DesktopName(F_CMD_ARGS)
 		else
 		{
 			/* instert it */
-			new = (DesktopsInfo *)safemalloc(sizeof(DesktopsInfo));
-			memset(new, 0, sizeof(DesktopsInfo));
+			new = safemalloc(sizeof *new);
+			memset(new, 0, sizeof *new);
 			new->desk = desk;
 			if (action != NULL && *action && *action != '\n')
 			{
@@ -2490,12 +2489,12 @@ void CMD_DesktopName(F_CMD_ARGS)
 		 * desktop names */
 		if (action != NULL && *action && *action != '\n')
 		{
-			msg = (char *)safemalloc(strlen(action) + 44);
+			msg = safemalloc(strlen(action) + 44);
 			sprintf(msg, "DesktopName %d %s", desk, action);
 		}
 		else
 		{
-			msg = (char *)safemalloc(strlen(default_desk_name)+44);
+			msg = safemalloc(strlen(default_desk_name)+44);
 			sprintf(
 				msg, "DesktopName %d %s %d", desk,
 				default_desk_name, desk);
