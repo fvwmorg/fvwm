@@ -8,6 +8,6 @@
  *
  */
 void *safemalloc(size_t);
-char *safecalloc(int num, int length);
-char *saferealloc(char *ptr, int length);
+void *safecalloc(size_t, size_t);
+void *saferealloc(void *, size_t);
 char *safestrdup(const char *s);

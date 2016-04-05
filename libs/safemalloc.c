@@ -57,12 +57,12 @@ void *safemalloc(size_t length)
  *                   problem
  *
  ***********************************************************************/
-char *safecalloc(int num, int length)
+void *safecalloc(size_t num, size_t length)
 {
-	char *ptr;
+	void *ptr;
 
 	ptr = calloc(num, length);
-	if(ptr == (char *)0)
+	if(ptr == NULL)
 	{
 		/* doesn't return */
 		alloc_failed("calloc", length);
@@ -78,15 +78,15 @@ char *safecalloc(int num, int length)
  *                   problem
  *
  ***********************************************************************/
-char *saferealloc(char *src, int length)
+void *saferealloc(void *src, size_t length)
 {
-	char *ptr;
+	void *ptr;
 
 	if (src)
-		ptr = realloc((void *)src, length);
+		ptr = realloc(src, length);
 	else
 		ptr = malloc(length);
-	if(ptr == (char *)0)
+	if(ptr == NULL)
 	{
 		/* doesn't return */
 		alloc_failed("realloc", length);
