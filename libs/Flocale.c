@@ -291,7 +291,7 @@ XChar2b *FlocaleUtf8ToUnicodeStr2b(char *str, int len, int *nl)
 	XChar2b *str2b = NULL;
 	int i = 0, j = 0, t;
 
-	str2b = (XChar2b *)safemalloc((len+1)*sizeof(XChar2b));
+	str2b = safemalloc((len + 1) * sizeof *str2b);
 	while (i < len && str[i] != 0)
 	{
 		if ((str[i] & 0x80) == 0)
@@ -354,7 +354,7 @@ XChar2b *FlocaleStringToString2b(
 	{
 		euc = False;
 	}
-	str2b = (XChar2b *)safemalloc((len+1)*sizeof(XChar2b));
+	str2b = safemalloc((len + 1) * sizeof str2b);
 	if (euc)
 	{
 		while (i < len && str[i] != 0)
@@ -510,8 +510,7 @@ char *FlocaleEncodeString(
 		/* initialise array with composing characters (empty) */
 		if(comb_chars != NULL && *comb_chars == NULL)
 		{
-			*comb_chars = (superimpose_char_t *)
-				safemalloc(sizeof(superimpose_char_t));
+			*comb_chars = safemalloc(sizeof **comb_chars);
 			(*comb_chars)[0].position = -1;
  			(*comb_chars)[0].c.byte1 = 0;
  			(*comb_chars)[0].c.byte2 = 0;
@@ -522,7 +521,7 @@ char *FlocaleEncodeString(
 		*/
 		if(l_to_v != NULL && *l_to_v == NULL)
 		{
-			*l_to_v = (int*)safemalloc((len + 1) * sizeof(int));
+			*l_to_v = safemalloc((len + 1) * sizeof **l_to_v);
 			for(i = 0 ; i < len ; i++)
 				(*l_to_v)[i] = i;
 			(*l_to_v)[len] = -1;
@@ -746,7 +745,7 @@ void FlocaleRotateDrawString(
 				/* if conversion failed, combinational char
 				   is not representable in current charset */
 				/* just replace with empty string */
-				buf2 = (char *)safemalloc(sizeof(char));
+				buf2 = safemalloc(sizeof *buf2);
 				buf2[0] = 0;
 			}
 			tmp_fws.e_str = buf2;
@@ -762,8 +761,8 @@ void FlocaleRotateDrawString(
 			{
 				if (FLC_ENCODING_TYPE_IS_UTF_8(flf->fc))
 				{
-					tmp_fws.str2b = (XChar2b *)
-					       safemalloc(2 * sizeof(XChar2b));
+					tmp_fws.str2b = safemalloc(2 *
+							sizeof *tmp_fws.str2b);
 					tmp_fws.str2b[0] = comb_chars[i].c;
 					tmp_fws.str2b[1].byte1 = 0;
 					tmp_fws.str2b[1].byte2 = 0;
@@ -798,7 +797,7 @@ void FlocaleRotateDrawString(
 	}
 
 	/* reserve memory for the first XImage */
-	normal_data = (unsigned char *)safemalloc(normal_len * normal_h);
+	normal_data = safemalloc(normal_len * normal_h);
 
 	/* create depth 1 XImage */
 	if ((image = XCreateImage(
@@ -1097,8 +1096,8 @@ FlocaleFont *FlocaleGetFftFont(
 		}
 		return NULL;
 	}
-	flf = (FlocaleFont *)safemalloc(sizeof(FlocaleFont));
-	memset(flf, '\0', sizeof(FlocaleFont));
+	flf = safemalloc(sizeof *flf);
+	memset(flf, '\0', sizeof *flf);
 	flf->count = 1;
 	flf->fftf = *fftf;
 	FlocaleCharsetSetFlocaleCharset(dpy, flf, hints, encoding, module);
@@ -1181,8 +1180,8 @@ FlocaleFont *FlocaleGetFontSet(
 		XFreeStringList(ml);
 	}
 
-	flf = (FlocaleFont *)safemalloc(sizeof(FlocaleFont));
-	memset(flf, '\0', sizeof(FlocaleFont));
+	flf = safemalloc(sizeof *flf);
+	memset(flf, '\0', sizeof *flf);
 	flf->count = 1;
 	flf->fontset = fontset;
 	FlocaleCharsetSetFlocaleCharset(dpy, flf, hints, encoding, module);
@@ -1246,8 +1245,8 @@ FlocaleFont *FlocaleGetFont(
 		return NULL;
 	}
 
-	flf = (FlocaleFont *)safemalloc(sizeof(FlocaleFont));
-	memset(flf, '\0', sizeof(FlocaleFont));
+	flf = safemalloc(sizeof *flf);
+	memset(flf, '\0', sizeof *flf);
 	flf->count = 1;
 	flf->fontset = None;
 	flf->fftf.fftfont = NULL;
@@ -1865,8 +1864,8 @@ void FlocaleDrawString(
 		   but there for clarity,
 		   ending at 0 is what's expected in a correct
 		   string */
-		pixel_pos = (int *)safemalloc(
-			(char_len != 0 ? char_len : 1) * sizeof(int));
+		pixel_pos = safemalloc(
+			(char_len != 0 ? char_len : 1) * sizeof *pixel_pos);
 
 		/* if there is 0 bytes in the encoded string, there might
 		   still be combining character to draw (at position 0) */
@@ -1992,7 +1991,7 @@ void FlocaleDrawString(
 				/* if conversion failed, combinational char
 				   is not representable in current charset */
 				/* just replace with empty string */
-				buf2 = (char *)safemalloc(sizeof(char));
+				buf2 = safemalloc(sizeof *buf2);
 				buf2[0] = 0;
 			}
 			tmp_fws.e_str = buf2;
@@ -2038,8 +2037,9 @@ void FlocaleDrawString(
 			{
 				if (FLC_ENCODING_TYPE_IS_UTF_8(flf->fc))
 				{
-					tmp_fws.str2b = (XChar2b *)
-					       safemalloc(2 * sizeof(XChar2b));
+					tmp_fws.str2b =
+					       safemalloc(2 *
+						sizeof *tmp_fws.str2b);
 					tmp_fws.str2b[0] = comb_chars[i].c;
 					tmp_fws.str2b[1].byte1 = 0;
 					tmp_fws.str2b[1].byte2 = 0;
@@ -2298,8 +2298,8 @@ int FlocaleGetMinOffset(
 
 void FlocaleAllocateWinString(FlocaleWinString **pfws)
 {
-	*pfws = (FlocaleWinString *)safemalloc(sizeof(FlocaleWinString));
-	memset(*pfws, '\0', sizeof(FlocaleWinString));
+	*pfws = safemalloc(sizeof **pfws);
+	memset(*pfws, '\0', sizeof **pfws);
 }
 
 /*

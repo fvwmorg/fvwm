@@ -227,13 +227,13 @@ Bool MergeConfigLineResource(XrmDatabase *pdb, char *line, char *prefix,
     value++;
 
   /* prefix*suffix: value */
-  resource = (char *)safemalloc(len + (end - line) + 2);
+  resource = safemalloc(len + (end - line) + 2);
   strcpy(resource, prefix);
   strcat(resource, bindstr);
   strncat(resource, line, end - line);
 
   len = strlen(value);
-  myvalue = (char *)safemalloc(len + 1);
+  myvalue = safemalloc(len + 1);
   strcpy(myvalue, value);
   for (len--; len >= 0 && isspace((unsigned char)myvalue[len]); len--)
     myvalue[len] = 0;
@@ -271,8 +271,8 @@ Bool GetResourceString(
   char *Name;
   int i;
 
-  name = (char *)safemalloc(strlen(resource) + strlen(prefix) + 2);
-  Name = (char *)safemalloc(strlen(resource) + strlen(prefix) + 2);
+  name = safemalloc(strlen(resource) + strlen(prefix) + 2);
+  Name = safemalloc(strlen(resource) + strlen(prefix) + 2);
   strcpy(name, prefix);
   strcat(name, ".");
   strcat(name, resource);

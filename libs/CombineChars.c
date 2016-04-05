@@ -1912,8 +1912,7 @@ CombineChars(
 	}
 
 	/* decompose composed characters */
-	source = (unsigned short *)safemalloc(
-		(len + 1) * sizeof(unsigned short));
+	source = safemalloc((len + 1) * sizeof *source);
 	/* convert from UTF-8-encoded text to internal 16-bit encoding */
 	str_len = convert_to_ucs2(str_visual,source,len);
 	in_str_len = str_len;
@@ -1921,12 +1920,11 @@ CombineChars(
 	   have string length */
 
 	/* be pessimistic, assume all characters are decomposed */
-	dest = (unsigned short *)safemalloc(
-		(str_len + 1) * 2 * sizeof(unsigned short));
+	dest = safemalloc((str_len + 1) * 2 * sizeof *dest);
 	/* use theese to keep track of the mapping of characters from
 	   logical to visual */
-	source_v_to_l = (int *)safemalloc(str_len * sizeof(int));
-	dest_v_to_l = (int *)safemalloc(str_len * 2 * sizeof(int));
+	source_v_to_l = safemalloc(str_len * sizeof *source_v_to_l);
+	dest_v_to_l = safemalloc(str_len * 2 * sizeof *dest_v_to_l);
 	/* setup initial mapping 1-to-1 */
 	for(i = 0 ; i < str_len ; i++)
 	{
@@ -1963,9 +1961,8 @@ CombineChars(
 		source = dest;
 		source_v_to_l = dest_v_to_l;
 		str_len = j;
-		dest = (unsigned short *)safemalloc(
-			(str_len + 1) * 2 * sizeof(unsigned short));
-		dest_v_to_l = (int *)safemalloc(str_len * 2 * sizeof(int));
+		dest = safemalloc((str_len + 1) * 2 * sizeof *dest);
+		dest_v_to_l = safemalloc(str_len * 2 * sizeof *dest_v_to_l);
 	} while (has_changed);
 	/* source now holds decomposed string (got swapped before exiting
 	   loop, str_len holds string length */
@@ -2070,9 +2067,8 @@ CombineChars(
 			}
 		}
 		/* allocate storage for combining characters */
-		*comb_chars = (superimpose_char_t *)
-			safemalloc((comp_str_len + 1) *
-				   sizeof(superimpose_char_t));
+		*comb_chars = safemalloc((comp_str_len + 1) *
+				sizeof *comb_chars);
 	}
 	for (i = 0,j = 0,k = 0 ; i < str_len ; i++)
 	{
@@ -2112,7 +2108,7 @@ CombineChars(
 
 	if(l_to_v != NULL)
 	{
-		*l_to_v = (int *)safemalloc((in_str_len + 1) * sizeof(int));
+		*l_to_v = safemalloc((in_str_len + 1) * sizeof **l_to_v);
 		/* map the visual to logical mapping obtained above into
 		   a logical to visual mapping */
 		/* setup the final mapping from logical to visual positions */

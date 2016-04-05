@@ -469,14 +469,14 @@ Pixmap PCreateRenderPixmap(
 		goto bail;
 	}
 
-	colors = (XColor *)safemalloc(n_src_w * n_src_h * sizeof(XColor));
+	colors = safemalloc(n_src_w * n_src_h * sizeof *colors);
 	if (dest_fim)
 	{
 		dest_colors =
-			(XColor *)safemalloc(w * h * sizeof(XColor));
+			safemalloc(w * h * sizeof *dest_colors);
 	}
-	am = (unsigned short *)safemalloc(
-		n_src_w * n_src_h * sizeof(unsigned short));
+	am = safemalloc(
+		n_src_w * n_src_h * sizeof *am);
 
 	if (tint_percent > 0)
 	{
@@ -876,8 +876,8 @@ Pixmap PCreateDitherPixmap(
 		return None;
 	}
 
-	colors = (XColor *)safemalloc(out_width * out_height * sizeof(XColor));
-	cm = (unsigned char *)safemalloc(out_width * out_height * sizeof(char));
+	colors = safemalloc(out_width * out_height * sizeof *colors);
+	cm = safemalloc(out_width * out_height * sizeof *cm);
 
 	x = y = 0;
 	for (j = 0; j < out_height; j++,y++)
@@ -1147,8 +1147,8 @@ FvwmPicture *PGraphicsCreateStretchPicture(
 			dest_width, dest_height, alpha_gc);
 	}
 
-	q = (FvwmPicture*)safemalloc(sizeof(FvwmPicture));
-	memset(q, 0, sizeof(FvwmPicture));
+	q = safemalloc(sizeof *q);
+	memset(q, 0, sizeof *q);
 	q->count = 1;
 	q->name = NULL;
 	q->next = NULL;
@@ -1196,8 +1196,8 @@ FvwmPicture *PGraphicsCreateTiledPicture(
 			dest_height, FRenderGetAlphaDepth(), alpha_gc);
 	}
 
-	q = (FvwmPicture*)safemalloc(sizeof(FvwmPicture));
-	memset(q, 0, sizeof(FvwmPicture));
+	q = safemalloc(sizeof *q);
+	memset(q, 0, sizeof *q);
 	q->count = 1;
 	q->name = NULL;
 	q->next = NULL;

@@ -499,7 +499,7 @@ void FlocaleInit_X_Charset(Display *dpy, const char *module)
 				free(FLCXOMCharsetList);
 			}
 			FLCXOMCharsetList_num = cs.charset_count;
-			FLCXOMCharsetList = (FlocaleCharset **)safemalloc(
+			FLCXOMCharsetList = safemalloc(
 				sizeof(FlocaleCharset) * cs.charset_count);
 			for (i = 0; i <  FLCXOMCharsetList_num; i++)
 			{
@@ -731,7 +731,7 @@ void FlocaleCharsetSetFlocaleCharset(
 		/* the user has specified an iconv converter name and we do not
 		 * have it: must create a FlocaleCharset */
 		flf->flags.must_free_fc = True;
-		fc = (FlocaleCharset *)safemalloc(sizeof(FlocaleCharset));
+		fc = safemalloc(sizeof *fc);
 		if (flf->fc != NULL)
 		{
 			CopyString(&fc->x, flf->fc->x);
@@ -747,7 +747,7 @@ void FlocaleCharsetSetFlocaleCharset(
 			fc->bidi = NULL;
 			fc->encoding_type = FLC_ENCODING_TYPE_FONT;
 		}
-		fc->locale = (char **)safemalloc(2*sizeof(char *));
+		fc->locale = safemalloc(2*sizeof(char *));
 		CopyString(&fc->locale[0], iconv);
 		fc->locale[1] = NULL;
 		fc->iconv_index =  FLC_INDEX_ICONV_CHARSET_NOT_INITIALIZED;

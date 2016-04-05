@@ -403,7 +403,7 @@ char *module_expand_action(
 		r = &tmpr;
 	}
 	/* create a temporary storage for expanding */
-	action = (char *)safemalloc(MAX_MODULE_INPUT_TEXT_LEN);
+	action = safemalloc(MAX_MODULE_INPUT_TEXT_LEN);
 	for (src = in_action, dest = action; *src != 0; src++)
 	{
 		if (*src != '$')

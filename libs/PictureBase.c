@@ -267,7 +267,7 @@ char* PictureFindImageFile(const char* icon, const char* pathlist, int type)
 	    (render_opts = strrchr(icon, ':')))
 	{
 		length = render_opts - icon;
-		tmpbuf = (char *)safemalloc(length + 1);
+		tmpbuf = safemalloc(length + 1);
 		strncpy(tmpbuf, icon, length);
 		tmpbuf[length] = 0;
 

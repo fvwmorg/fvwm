@@ -389,8 +389,7 @@ void FScreenInit(Display *dpy)
 		 */
 		count = 2;
 		total_screens_xi = count;
-		screens_xi = (XineramaScreenInfo *)
-			safemalloc(sizeof(XineramaScreenInfo) * (1 + count));
+		screens_xi = safemalloc(sizeof *screens_xi * (1 + count));
 		/* calculate the faked sub screen dimensions */
 		w = DisplayWidth(disp, scr);
 		ws = 3 * w / 5;
@@ -438,19 +437,14 @@ void FScreenInit(Display *dpy)
 
 		info = FXineramaQueryScreens(disp, &count);
 		total_screens_xi = count;
-		screens_xi = (XineramaScreenInfo *)
-			safemalloc(sizeof(XineramaScreenInfo) *
-				   (1 + count));
-		memcpy(screens_xi + 1, info,
-		       sizeof(XineramaScreenInfo) * count);
+		screens_xi = safemalloc(sizeof *screens_xi * (1 + count));
+		memcpy(screens_xi + 1, info, sizeof *screens_xi * count);
 		XFree(info);
 	}
 	else
 	{
 		total_screens_xi = 0;
-		screens_xi =
-			(XineramaScreenInfo *)safemalloc(
-				sizeof(XineramaScreenInfo)*1);
+		screens_xi = safemalloc(sizeof *screens_xi *1);
 	}
 	total_screens = total_screens_xi;
 	screens = screens_xi;
@@ -538,8 +532,7 @@ Bool FScreenConfigureSLSSize(int width, int height)
 		total_sls_height = height;
 		ws = w / total_sls_width;
 		hs = h / total_sls_height;
-		screens_sls = (XineramaScreenInfo *)
-			safemalloc(sizeof(XineramaScreenInfo) *
+		screens_sls = safemalloc(sizeof *screens_sls *
 				   (1 + total_screens_sls));
 		/* calculate the faked sub screen dimensions */
 		screens_sls[0] = screens_xi[0];
@@ -580,8 +573,7 @@ Bool FScreenConfigureSLSScreens(int nscreens, char *args)
 		free(screens_sls);
 		screens_sls = NULL;
 	}
-	screens_sls = (XineramaScreenInfo *)
-		safemalloc(sizeof(XineramaScreenInfo) * (nscreens + 1));
+	screens_sls = safemalloc(sizeof *screens_sls * (nscreens + 1));
 	screens_sls[0] = screens_xi[0];
 	for (sn = 1; sn <= nscreens; sn++, args = next)
 	{

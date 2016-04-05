@@ -75,7 +75,7 @@ char *FBidiConvert(
 
 	/* it is possible that we allocate a bit more here, if utf-8 */
 	logical_unicode_str =
-		(FriBidiChar *)safemalloc((str_len + 1) * sizeof(FriBidiChar));
+		safemalloc((str_len + 1) * sizeof *logical_unicode_str);
 
 	/* convert to unicode first */
 	str_len = fribidi_charset_to_unicode(
@@ -83,14 +83,12 @@ char *FBidiConvert(
 		logical_unicode_str);
 
 	visual_unicode_str =
-		(FriBidiChar *)safemalloc((str_len + 1) * sizeof(FriBidiChar));
+		safemalloc((str_len + 1) * sizeof *visual_unicode_str);
 
 	/* apply bidi algorithm, convert logical string to visual string */
 	/* also keep track of how characters are reordered here, to reorder
 	   combing characters accordingly */
-	pos_l_to_v =
-		(FriBidiStrIndex *)safemalloc((str_len + 1) *
-			sizeof(FriBidiStrIndex));
+	pos_l_to_v = safemalloc((str_len + 1) * sizeof *pos_l_to_v);
 	fribidi_log2vis(
 		logical_unicode_str, str_len, &pbase_dir,
 		visual_unicode_str, pos_l_to_v, NULL, NULL);
@@ -123,7 +121,7 @@ char *FBidiConvert(
 		{
 		}
 		orig_len = i;
-		l_to_v_temp = (int *)safemalloc(orig_len * sizeof(int));
+		l_to_v_temp = safemalloc(orig_len * sizeof *l_to_v_temp);
 		for (i = 0; i < orig_len; i++)
 		{
 			l_to_v_temp[i] = pos_l_to_v[l_to_v[i]];
@@ -140,7 +138,7 @@ char *FBidiConvert(
 	/* character shape/join - will get pulled into fribidi with time */
 	str_len = shape_n_join(visual_unicode_str, str_len);
 
-	visual_str = (char *)safemalloc((4 * str_len + 1) * sizeof(char));
+	visual_str = safemalloc((4 * str_len + 1) * sizeof *visual_str);
 
 	/* convert from unicode finally */
 	*out_len = fribidi_unicode_to_charset(

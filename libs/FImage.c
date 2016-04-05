@@ -166,7 +166,7 @@ FImage *FCreateFImage (
 
 	FShmInit(dpy);
 
-	fim = (FImage *)safemalloc(sizeof(FImage));
+	fim = safemalloc(sizeof *fim);
 	fim->im = NULL;
 	fim->shminfo = NULL;
 
@@ -203,7 +203,7 @@ FImage *FGetFImage(
 
 	FShmInit(dpy);
 
-	fim = (FImage *)safemalloc(sizeof(FImage));
+	fim = safemalloc(sizeof *fim);
 	fim->im = NULL;
 	fim->shminfo = NULL;
 

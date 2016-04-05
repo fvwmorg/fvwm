@@ -380,11 +380,11 @@ int my_dither_depth_15_16_init(void)
 	}
 
 	Pcsi.red_dither =
-		(unsigned short *)safemalloc(4*4*256*sizeof(unsigned short));
+		safemalloc(4*4*256*sizeof(unsigned short));
 	Pcsi.green_dither =
-		(unsigned short *)safemalloc(4*4*256*sizeof(unsigned short));
+		safemalloc(4*4*256*sizeof(unsigned short));
 	Pcsi.blue_dither =
-		(unsigned short *)safemalloc(4*4*256*sizeof(unsigned short));
+		safemalloc(4*4*256*sizeof(unsigned short));
 
 	for (y = 0; y < 4; y++)
 	{
@@ -693,7 +693,7 @@ void free_colors_in_table(
 		return;
 	}
 
-	p = (Pixel *)safemalloc(n*sizeof(Pixel));
+	p = safemalloc(n*sizeof *p);
 	for(i= 0; i < n; i++)
 	{
 		do_free = 1;
@@ -754,7 +754,7 @@ XColor *build_mapping_colors(int nr, int ng, int nb)
 	int r, g, b, i;
 	XColor *colors;
 
-	colors = (XColor *)safemalloc(nr*ng*nb * sizeof(XColor));
+	colors = safemalloc(nr *ng *nb * sizeof *colors);
 	i = 0;
 	for (r = 0; r < nr; r++)
 	{
@@ -785,7 +785,7 @@ static short *build_mapping_table(int nr, int ng, int nb, Bool use_named)
 	double dst;
 
 	colors_map = build_mapping_colors(nr, ng, nb);
-	Table = (short *)safemalloc((size+1) * sizeof(short));
+	Table = safemalloc((size+1) * sizeof *Table);
 	for(i=0; i<size; i++)
 	{
 		minind = 0;
@@ -907,7 +907,7 @@ PColor *alloc_color_cube(
 		end_grey = ngrey;
 	}
 
-	color_table = (PColor *)safemalloc((size+1) * sizeof(PColor));
+	color_table = safemalloc((size+1) * sizeof *color_table);
 
 	i = 0;
 
@@ -1075,7 +1075,7 @@ PColor *alloc_named_ct(int *limit, Bool do_allocate)
 	XColor color;
 
 	*limit = (*limit > NColors)? NColors: *limit;
-	color_table = (PColor *)safemalloc((*limit+1) * sizeof(PColor));
+	color_table = safemalloc((*limit+1) * sizeof *color_table);
 	for(i=0; i<*limit; i++)
 	{
 		rc=XParseColor(Pdpy, Pcmap, color_names[i], &color);
@@ -1802,7 +1802,7 @@ Bool alloc_direct_colors(int *limit, Bool use_my_color_limit)
 	ng = 1 << Pcsi.green_prec;
 	nb = 1 << Pcsi.blue_prec;
 
-	colors = (XColor *)safemalloc(nb*sizeof(XColor));
+	colors = safemalloc(nb * sizeof *colors);
 	cf = DoRed|DoBlue|DoGreen;
 	for (r=0; r<nr; r++)
 	{
@@ -1842,7 +1842,7 @@ void init_static_colors_table(void)
 	int nbr_of_colors = min(256, (1 << Pdepth));
 
 	PColorLimit = nbr_of_colors;
-	Pct = (PColor *)safemalloc((nbr_of_colors+1) * sizeof(PColor));
+	Pct = safemalloc((nbr_of_colors+1) * sizeof(PColor));
 	for (i = 0; i < nbr_of_colors; i++)
 	{
 		colors[i].pixel = Pct[i].color.pixel = i;
@@ -1958,8 +1958,7 @@ PictureImageColorAllocator *PictureOpenImageColorAllocator(
 	PictureImageColorAllocator *pica;
 	Bool do_save_pixels = False;
 
-	pica = (PictureImageColorAllocator *)safemalloc(
-		sizeof(PictureImageColorAllocator));
+	pica = safemalloc(sizeof *pica);
 	if (Pdepth <= 8 && !do_not_save_pixels && (Pvisual->class & 1) &&
 	    ((PUseDynamicColors && Pct) || no_limit))
 	{
@@ -2023,12 +2022,12 @@ void PictureCloseImageColorAllocator(
 		}
 		if (free_num)
 		{
-			free_pixels = (Pixel *)safemalloc(
-				free_num * sizeof(Pixel));
+			free_pixels = safemalloc(
+				free_num * sizeof *free_pixels);
 		}
 		if (np && nalloc_pixels != NULL && alloc_pixels != NULL)
 		{
-			save_pixels = (Pixel *)safemalloc(np * sizeof(Pixel));
+			save_pixels = safemalloc(np * sizeof *save_pixels);
 		}
 		for(i = 0; i < pica->pixels_table_size; i++)
 		{

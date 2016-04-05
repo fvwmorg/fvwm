@@ -188,11 +188,9 @@ shape_n_join(
 	const char_shaped_t *curr;
 	const char_shaped_t *next;
 
-	list = (const char_shaped_t **)safemalloc(
-		(str_len + 2) * sizeof(char_shaped_t *));
+	list = safemalloc((str_len + 2) * sizeof(char_shaped_t *));
 
-	orig_str = (FriBidiChar *)safemalloc(
-		(str_len + 1) * sizeof(FriBidiChar));
+	orig_str = safemalloc((str_len + 1) * sizeof *orig_str);
 
 	/* head is NULL */
 	*list = NULL;
