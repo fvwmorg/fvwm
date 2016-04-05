@@ -7,7 +7,7 @@
  *                   problem
  *
  */
-char *safemalloc(int length);
+void *safemalloc(size_t);
 char *safecalloc(int num, int length);
 char *saferealloc(char *ptr, int length);
 char *safestrdup(const char *s);

@@ -18,7 +18,7 @@ extern void   PlaySound(int event);
 #endif
 extern void   Loop(void);
 extern void   ParseOptions(char *);
-extern char   *safemalloc(int length);
+extern void   *safemalloc(size_t);
 extern void   change_window_name(char *str);
 extern int    My_XNextEvent(Display *dpy, XEvent *event);
 extern RETSIGTYPE DeadPipe(int nonsense);

@@ -19,9 +19,9 @@
 #include <stdio.h>
 #include "safemalloc.h"
 
-static void alloc_failed(char *c, int length)
+static void alloc_failed(char *c, size_t length)
 {
-	fprintf(stderr, "%s of %d bytes failed. Exiting\n", c, length);
+	fprintf(stderr, "%s of %zu bytes failed. Exiting\n", c, length);
 	exit(1);
 }
 
@@ -33,15 +33,15 @@ static void alloc_failed(char *c, int length)
  *                   problem
  *
  ***********************************************************************/
-char *safemalloc(int length)
+void *safemalloc(size_t length)
 {
-	char *ptr;
+	void *ptr;
 
-	if(length <= 0)
-		length = 1;
+	if(length == 0)
+		alloc_failed("malloc", length);
 
 	ptr = malloc(length);
-	if(ptr == (char *)0)
+	if(ptr == NULL)
 	{
 		/* doesn't return */
 		alloc_failed("malloc", length);

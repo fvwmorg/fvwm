@@ -19,7 +19,7 @@ extern void   RedrawWindow(XEvent *evp);
 extern void   match_string(char *tline);
 extern void   Loop(void);
 extern void   ParseOptions(void);
-extern char   *safemalloc(int length);
+extern void   *safemalloc(size_t);
 extern int    My_XNextEvent(Display *dpy, XEvent *event);
 extern RETSIGTYPE DeadPipe(int nonsense);
 extern void   CreateIconWindow(struct icon_info *item);
