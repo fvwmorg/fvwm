@@ -54,7 +54,7 @@ void AddItem(List *list, long id, ConfigWinPacket *cfgpacket,
 	     long Desk, int count)
 {
   Item *new;
-  new=(Item *)safemalloc(sizeof(Item));
+  new = safemalloc(sizeof *new);
   new->id=id;
   new->name=NULL;
   memcpy(&new->flags, &cfgpacket->flags, sizeof(new->flags));
@@ -77,7 +77,7 @@ void AddItemName(List *list, char *string, int iconified)
 {
   Item *new;
 
-  new = (Item *)safemalloc(sizeof(Item));
+  new = safemalloc(sizeof *new);
   new->id = 0L;
   new->name = NULL;
   UpdateString(&new->name, string);

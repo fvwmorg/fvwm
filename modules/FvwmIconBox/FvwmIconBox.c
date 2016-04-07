@@ -2148,7 +2148,7 @@ void ParseOptions(void)
 	  tmp[strlen(tmp) -1] = '\0';
 	if (AnimCommand)
 	  free(AnimCommand);
-	AnimCommand = (char *)safemalloc((strlen(tmp) + 1) * sizeof(char));
+	AnimCommand = safemalloc((strlen(tmp) + 1) * sizeof(char));
 	strcpy(AnimCommand, tmp);
       }
       else if (strncasecmp(tline,CatString3("*",MyName,
@@ -2256,8 +2256,8 @@ void parseicon(char *tline)
   struct iconfile *tmp;
   char *ptr, *start, *end;
 
-  tmp = (struct iconfile *)safemalloc(sizeof(struct iconfile));
-  memset(tmp, 0, sizeof(struct iconfile));
+  tmp = safemalloc(sizeof *tmp);
+  memset(tmp, 0, sizeof *tmp);
 
    /* windowname */
    tmp->name = stripcpy2(tline);
@@ -2451,8 +2451,8 @@ void parsekey(char *tline)
   for (i=kmin; i<=kmax; i++)
     if (fvwm_KeycodeToKeysym(dpy, i, 0, 0) == keysym)
       {
-	k = (struct keyfunc *)safemalloc(sizeof(struct keyfunc));
-	memset(k, 0, sizeof(struct keyfunc));
+	k = safemalloc(sizeof *k);
+	memset(k, 0, sizeof *k);
 	k->name = nptr;
 	k->keycode = i;
 	k->action = aptr;
@@ -2727,7 +2727,7 @@ void process_message(unsigned long type, unsigned long *body)
       RedrawIcon(tmp, 2, NULL);
     break;
   case M_DEFAULTICON:
-    str = (char *)safemalloc(strlen((char *)&body[3])+1);
+    str = safemalloc(strlen((char *)&body[3])+1);
     strcpy(str, (char *)&body[3]);
     if (FvwmDefaultIcon)
       free(FvwmDefaultIcon);
@@ -2941,8 +2941,8 @@ Bool AddItem(ConfigWinPacket *cfgpacket)
     tmp = tmp->next;
   }
 
-  new = (struct icon_info *)safemalloc(sizeof(struct icon_info));
-  memset(new, 0, sizeof(struct icon_info));
+  new = safemalloc(sizeof *new);
+  memset(new, 0, sizeof *new);
   new->desk = cfgpacket->desk;
   new->id = cfgpacket->w;
   new->extra_flags = DEFAULTICON;
@@ -3031,7 +3031,7 @@ struct icon_info *UpdateItem(unsigned long type, unsigned long id, char *item)
   tmp = Head;
   while (tmp != NULL){
     if (tmp->id == id){
-      str = (char *)safemalloc(strlen(item)+1);
+      str = safemalloc(strlen(item)+1);
       strcpy(str, item);
 
       switch (type){

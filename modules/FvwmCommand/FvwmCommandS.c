@@ -562,7 +562,7 @@ void relay_packet(unsigned long type, unsigned long length,
   if (!body)
 	  return;
 
-  new = (Q *)safemalloc(sizeof(Q));
+  new = safemalloc(sizeof *new);
 
   new->length = length + 2 * SOL;
   new->sent = 0L;

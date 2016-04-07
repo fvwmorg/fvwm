@@ -101,8 +101,7 @@ Bool StartButtonParseConfig(char *tline)
 		{
 			/* shortcut button has been declared before start
 			 * button */
-			tempPtr = (StartAndLaunchButtonItem*)safemalloc(
-				sizeof(StartAndLaunchButtonItem));
+			tempPtr = safemalloc(sizeof(StartAndLaunchButtonItem));
 			StartAndLaunchButtonItemInit(tempPtr);
 			tempPtr->tail = First_Start_Button;
 			First_Start_Button = tempPtr;
@@ -120,8 +119,7 @@ Bool StartButtonParseConfig(char *tline)
 		if (First_Start_Button == NULL)
 		{
 			First_Start_Button = Last_Start_Button =
-				(StartAndLaunchButtonItem*)safemalloc(
-					sizeof(StartAndLaunchButtonItem));
+				safemalloc(sizeof(StartAndLaunchButtonItem));
 			StartAndLaunchButtonItemInit(First_Start_Button);
 			First_Start_Button->isStartButton = True;
 		}
@@ -129,8 +127,7 @@ Bool StartButtonParseConfig(char *tline)
 		{
 			/* shortcut button has been declared before start
 			 * button */
-			tempPtr = (StartAndLaunchButtonItem*) safemalloc(
-				sizeof(StartAndLaunchButtonItem));
+			tempPtr =  safemalloc(sizeof(StartAndLaunchButtonItem));
 			StartAndLaunchButtonItemInit(tempPtr);
 			tempPtr->tail = First_Start_Button;
 			First_Start_Button = tempPtr;
@@ -151,8 +148,7 @@ Bool StartButtonParseConfig(char *tline)
 		if (First_Start_Button == NULL)
 		{
 			First_Start_Button = Last_Start_Button =
-				(StartAndLaunchButtonItem*)safemalloc(
-					sizeof(StartAndLaunchButtonItem));
+				safemalloc(sizeof(StartAndLaunchButtonItem));
 			StartAndLaunchButtonItemInit(First_Start_Button);
 			First_Start_Button->isStartButton = True;
 		}
@@ -160,8 +156,7 @@ Bool StartButtonParseConfig(char *tline)
 		{
 			/* shortcut button has been declared before start
 			 * button */
-			tempPtr = (StartAndLaunchButtonItem*) safemalloc(
-				sizeof(StartAndLaunchButtonItem));
+			tempPtr =  safemalloc(sizeof(StartAndLaunchButtonItem));
 			StartAndLaunchButtonItemInit(tempPtr);
 			tempPtr->tail = First_Start_Button;
 			First_Start_Button = tempPtr;
@@ -179,8 +174,7 @@ Bool StartButtonParseConfig(char *tline)
 		if (First_Start_Button == NULL)
 		{
 			First_Start_Button = Last_Start_Button =
-				(StartAndLaunchButtonItem*)safemalloc(
-					sizeof(StartAndLaunchButtonItem));
+				safemalloc(sizeof(StartAndLaunchButtonItem));
 			StartAndLaunchButtonItemInit(First_Start_Button);
 			First_Start_Button->isStartButton = True;
 		}
@@ -188,8 +182,7 @@ Bool StartButtonParseConfig(char *tline)
 		{
 			/* shortcut button has been declared before start
 			 * button */
-			tempPtr = (StartAndLaunchButtonItem*)safemalloc(
-				sizeof(StartAndLaunchButtonItem));
+			tempPtr = safemalloc(sizeof(StartAndLaunchButtonItem));
 			StartAndLaunchButtonItemInit(tempPtr);
 			tempPtr->tail = First_Start_Button;
 			First_Start_Button = tempPtr;
@@ -213,14 +206,12 @@ Bool StartButtonParseConfig(char *tline)
 		if (Last_Start_Button == NULL)
 		{
 			First_Start_Button = Last_Start_Button =
-				(StartAndLaunchButtonItem*)safemalloc(
-					sizeof(StartAndLaunchButtonItem));
+				safemalloc(sizeof(StartAndLaunchButtonItem));
 		}
 		else
 		{
 			Last_Start_Button->tail =
-				(StartAndLaunchButtonItem*) safemalloc(
-					sizeof(StartAndLaunchButtonItem));
+				safemalloc(sizeof(StartAndLaunchButtonItem));
 			Last_Start_Button = Last_Start_Button->tail;
 		}
 

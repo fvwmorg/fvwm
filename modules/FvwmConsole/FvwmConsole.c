@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 	/* construct client's name */
 	strcpy(client, argv[0]);
 	strcat(client, "C");
-	eargv =(char **)safemalloc((argc+12)*sizeof(char *));
+	eargv = safemalloc((argc+12)*sizeof(char *));
 	/* copy arguments */
 	eargv[0] = XTERM;
 	j = 1;

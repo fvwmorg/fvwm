@@ -876,7 +876,7 @@ static void ProxyWindow_ProxyWindow(ProxyWindow *p)
 
 static ProxyWindow *new_ProxyWindow(void)
 {
-	ProxyWindow *p=(ProxyWindow *)safemalloc(sizeof(ProxyWindow));
+	ProxyWindow *p = safemalloc(sizeof *p);
 	ProxyWindow_ProxyWindow(p);
 	return p;
 }
@@ -917,7 +917,7 @@ static void WindowName_WindowName(WindowName *p)
 
 static WindowName *new_WindowName(void)
 {
-	WindowName *p=(WindowName *)safemalloc(sizeof(WindowName));
+	WindowName *p= safemalloc(sizeof *p);
 	WindowName_WindowName(p);
 	return p;
 }
@@ -938,7 +938,7 @@ static void ProxyGroup_ProxyGroup(ProxyGroup *p)
 
 static ProxyGroup *new_ProxyGroup(void)
 {
-	ProxyGroup *p=(ProxyGroup *)safemalloc(sizeof(ProxyGroup));
+	ProxyGroup *p= safemalloc(sizeof *p);
 	ProxyGroup_ProxyGroup(p);
 	return p;
 }
@@ -2002,7 +2002,7 @@ void RestackAtomic(int raise)
 	{
 		count++;
 	}
-	windows = (Window *) safemalloc (count * sizeof (Window));
+	windows = safemalloc (count * sizeof (Window));
 	for (proxy=firstProxy; proxy != NULL; proxy=proxy->next)
 	{
 		fprintf(stderr, "RestackAtomic %d %s\n",
@@ -4364,8 +4364,7 @@ int main(int argc, char **argv)
 
 	if (parse_options() == False)
 		exit(1);
-	stampQueue=(GeometryStamp*)safemalloc(
-		sizeof(GeometryStamp)*stampLimit);
+	stampQueue = safemalloc(sizeof *stampQueue * stampLimit);
 	if ((Ffont = FlocaleLoadFont(dpy, font_name, MyName)) == NULL)
 	{
 		fprintf(stderr,"%s: Couldn't load font \"%s\". Exiting!\n",

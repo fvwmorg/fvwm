@@ -221,7 +221,7 @@ Button *ButtonNew(const char *title, FvwmPicture *p, int state, int count)
 
   if (title == NULL)
     return NULL;
-  new = (Button *)safemalloc(sizeof(Button));
+  new = safemalloc(sizeof *new);
   new->title = safemalloc(strlen(title)+1);
   strcpy(new->title, title);
   if (p != NULL) {

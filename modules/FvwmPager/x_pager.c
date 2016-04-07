@@ -3331,7 +3331,7 @@ static void InsertExpand(char **dest, char *s)
   if (!s || !*s)
     return;
   len = strlen(*dest) + strlen(s) + 1;
-  *dest = (char *)safemalloc(len);
+  *dest = safemalloc(len);
   strcpy(*dest, tmp);
   free(tmp);
   strcat(*dest, s);

@@ -236,7 +236,7 @@ void parse_arguments(char **line, int *argc, char ***argv)
 	}
 	*argc = i;
 
-	*argv = (char **) safemalloc(i * sizeof(char *));
+	*argv = safemalloc(i * sizeof(char *));
 	for (i = 0; i < *argc; i++)
 	{
 		(*argv)[i] = tmp[i];

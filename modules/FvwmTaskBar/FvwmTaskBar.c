@@ -1458,8 +1458,7 @@ void HandleButtonRelease(
 				else
 				{
 					char *tmp2;
-					tmp = (char *)safemalloc(
-						100 * sizeof(char));
+					tmp = safemalloc(100 * sizeof(char));
 					*tmp = 0;
 
 					getButtonCommand(

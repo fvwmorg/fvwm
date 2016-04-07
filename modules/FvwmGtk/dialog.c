@@ -390,7 +390,7 @@ dialog_button (int argc, char **argv)
 
   item = gtk_button_new_with_label (argv[0]);
 
-  vals = (char **) safemalloc (argc * sizeof (char *));
+  vals = safemalloc (argc * sizeof (char *));
   for (i = 0; i < argc - 1; i++)
     {
       if (strcmp (argv[i+1], "--") == 0)

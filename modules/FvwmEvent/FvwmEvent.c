@@ -229,7 +229,7 @@ int main(int argc, char **argv)
 	int total, remaining, count, event;
 	int is_extended_msg;
 
-	cmd_line = (char *)safemalloc(1);
+	cmd_line = safemalloc(1);
 	*cmd_line = 0;
 	/* Save our program  name - for error events */
 	if ((s=strrchr(argv[0], '/')))
@@ -453,7 +453,7 @@ void execute_event(event_entry *event_table, short event, unsigned long *body)
 		{
 			len += strlen(audio_play_dir);
 		}
-		buf = (char *)safemalloc(len);
+		buf = safemalloc(len);
 		if (audio_compat)
 		{
 			/* Don't use audio_play_dir if it's NULL or if

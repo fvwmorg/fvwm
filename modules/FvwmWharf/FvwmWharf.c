@@ -763,7 +763,7 @@ void Loop(void)
 #ifdef ENABLE_SOUND
 	  PlaySound(WHEV_DROP);
 #endif
-	  Command = (unsigned char *)safemalloc(
+	  Command = safemalloc(
 	    strlen((char *)data) +
 	    strlen((char *)(Buttons[dummy].drop_action)));
 	  sprintf((char *)Command,Buttons[dummy].drop_action,

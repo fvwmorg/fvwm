@@ -297,7 +297,7 @@ int main(int argc, char **argv)
     }
   ndesks = desk2 - desk1 + 1;
 
-  Desks = (DeskInfo *)safemalloc(ndesks*sizeof(DeskInfo));
+  Desks = safemalloc(ndesks*sizeof(DeskInfo));
   memset(Desks, 0, ndesks * sizeof(DeskInfo));
   for(i=0;i<ndesks;i++)
     {
@@ -675,7 +675,7 @@ void list_add(unsigned long *body)
 		t = t->next;
 		i++;
 	}
-	*prev = (PagerWindow *)safemalloc(sizeof(PagerWindow));
+	*prev = safemalloc(sizeof(PagerWindow));
 	memset(*prev, 0, sizeof(PagerWindow));
 	handle_config_win_package(*prev, cfgpacket);
 	AddNewWindow(*prev);
@@ -1278,7 +1278,7 @@ void list_restack(unsigned long *body, unsigned long length)
   Window *wins;
   int i, j, d;
 
-  wins = (Window *) safemalloc (length * sizeof (Window));
+  wins =  safemalloc (length * sizeof *wins);
   /* first restack in the icon view */
   j = 0;
   for (i = 0; i < (length - FvwmPacketHeaderSize); i += 3)
@@ -1683,13 +1683,13 @@ void ParseOptions(void)
     tline2 = GetNextToken(tline2, &arg1);
     if (!arg1)
     {
-      arg1 = (char *)safemalloc(1);
+      arg1 = safemalloc(1);
       arg1[0] = 0;
     }
     tline2 = GetNextToken(tline2, &arg2);
     if (!arg2)
     {
-      arg2 = (char *)safemalloc(1);
+      arg2 = safemalloc(1);
       arg2[0] = 0;
     }
 
@@ -2222,8 +2222,8 @@ PagerStringList *NewPagerStringItem(PagerStringList *last, int desk)
 {
   PagerStringList *newitem;
 
-  newitem = (PagerStringList *)safemalloc(sizeof(PagerStringList));
-  memset(newitem, 0, sizeof(PagerStringList));
+  newitem = safemalloc(sizeof *newitem);
+  memset(newitem, 0, sizeof *newitem);
   last->next = newitem;
   newitem->colorset = -1;
   newitem->highcolorset = -1;

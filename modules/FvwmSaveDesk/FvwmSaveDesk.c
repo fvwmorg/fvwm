@@ -152,7 +152,7 @@ void process_message(unsigned long type,unsigned long *body)
       {
 	struct list *l;
 	if ((l = find_window(body[0])) != 0) {
-	   l->name = (char *)safemalloc(strlen((char *)&body[3])+1);
+	   l->name = safemalloc(strlen((char *)&body[3])+1);
 	   strcpy(l->name,(char *)&body[3]);
 	}
       }
@@ -210,7 +210,7 @@ void add_window(unsigned long new_win, unsigned long *body)
   if(new_win == 0)
     return;
 
-  t = (struct list *)safemalloc(sizeof(struct list));
+  t = safemalloc(sizeof *t);
   t->id = new_win;
   t->next = list_root;
   t->frame_height = cfgpacket->frame_height;

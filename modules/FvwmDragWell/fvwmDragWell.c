@@ -586,13 +586,13 @@ void parseOptions(void)
     tline2 = GetNextToken(tline2, &arg1);
     if (!arg1)
     {
-      arg1 = (char *)safemalloc(1);
+      arg1 = safemalloc(1);
       arg1[0] = 0;
     }
     tline2 = GetNextToken(tline2, &arg2);
     if (!arg2)
     {
-      arg2 = (char *)safemalloc(1);
+      arg2 = safemalloc(1);
       arg2[0] = 0;
     }
 

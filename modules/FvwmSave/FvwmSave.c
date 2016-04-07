@@ -186,7 +186,7 @@ void add_window(unsigned long new_win, unsigned long *body)
   if(new_win == 0)
     return;
 
-  t = (struct list *)safemalloc(sizeof(struct list));
+  t = safemalloc(sizeof *t);
   t->id = new_win;
   t->next = list_root;
   t->frame_height = cfgpacket->frame_height;

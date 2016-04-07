@@ -142,7 +142,7 @@ static void SetupTimer(void)
 static char *CopyQuotedString (char *cp)
 {
   char *dp, *bp, c;
-  bp = dp = (char *)safemalloc(strlen(cp) + 1);
+  bp = dp = safemalloc(strlen(cp) + 1);
   while (1) {
     switch (c = *(cp++)) {
     case '\\':
@@ -165,7 +165,7 @@ static char *CopyQuotedString (char *cp)
 static char *CopySolidString (char *cp)
 {
   char *dp, *bp, c;
-  bp = dp = (char *)safemalloc(strlen(cp) + 1);
+  bp = dp = safemalloc(strlen(cp) + 1);
   while (1) {
     c = *(cp++);
     if (c == '\\') {
@@ -630,7 +630,7 @@ static void ct_InputPointerFore(char *cp) {
 static void ct_Line(char *cp)
 {
   /* malloc new line */
-  cur_line->next = (struct _line *)safemalloc(sizeof(struct _line));
+  cur_line->next = safemalloc(sizeof(struct _line));
   memset(cur_line->next, 0, sizeof(struct _line));
   cur_line = cur_line->next;		/* new current line */
   cur_line->next = &root_line;		/* new next ptr, (actually root) */
@@ -785,7 +785,7 @@ static void AssignDrawTable(Item *adt_item)
 
   /* Time to add a DrawTable */
   /* get one */
-  new_dt = (struct _drawtable *)safemalloc(sizeof(struct _drawtable));
+  new_dt = safemalloc(sizeof(struct _drawtable));
   memset(new_dt, 0, sizeof(struct _drawtable));
   new_dt->dt_next = 0;			/* new end of list */
   if (CF.roots_dt == 0) {		   /* If first entry in list */
@@ -972,11 +972,11 @@ static void ct_Input(char *cp)
     free(item->input.init_value);
     item->input.init_value = CopyQuotedString(++cp);
   }
-  item->input.blanks = (char *)safemalloc(item->input.size);
+  item->input.blanks = safemalloc(item->input.size);
   for (j = 0; j < item->input.size; j++)
     item->input.blanks[j] = ' ';
   item->input.buf = strlen(item->input.init_value) + 1;
-  item->input.value = (char *)safemalloc(item->input.buf);
+  item->input.value = safemalloc(item->input.buf);
   item->input.value[0] = 0;		/* avoid reading unitialized data */
 
   item->header.size_x = item->header.dt_ptr->dt_Ffont->max_char_width

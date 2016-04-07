@@ -441,7 +441,7 @@ static int JmpArgs = 0;
 
 static Function *parse_function(char **line, char *pstop_char)
 {
-  Function *ftype = (Function *)safemalloc(sizeof(Function));
+  Function *ftype = safemalloc(sizeof *ftype);
   char *ptr, *name, *tok;
   int j, flag;
   FunctionType *builtin_functions_i;
@@ -686,8 +686,8 @@ Binding *ParseMouseEntry(char *tline)
 		    "Excess modifiers will be ignored.");
   }
 
-  new = (Binding *)safemalloc(sizeof(Binding));
-  memset(new, 0, sizeof(Binding));
+  new = safemalloc(sizeof *new);
+  memset(new, 0, sizeof *new);
   new->type = BIND_BUTTONPRESS;
   new->Button_Key = button;
   new->Modifier = mods;
@@ -766,8 +766,8 @@ static Binding *ParseKeyEntry(char *tline)
 	actionstring = keystring = NULL;
       }
       temp = new;
-      new  = (Binding *)safemalloc(sizeof(Binding));
-      memset(new, 0, sizeof(Binding));
+      new  = safemalloc(sizeof *new);
+      memset(new, 0, sizeof *new);
       new->type = BIND_KEYPRESS;
       new->Button_Key = i;
       new->key_name = keystring;
@@ -797,8 +797,8 @@ static Binding *ParseSimpleEntry(char *tline)
 		return NULL;
 	}
 
-	new = (Binding *)safemalloc(sizeof(Binding));
-	memset(new, 0, sizeof(Binding));
+	new = safemalloc(sizeof *new);
+	memset(new, 0, sizeof *new);
 	new->type = BIND_KEYPRESS;
 	new->key_name = "select";
 	new->Action = stripcpy(tline);
@@ -1608,7 +1608,7 @@ void read_in_resources(void)
 	DoGetNextToken(p, &token, NULL, ",", NULL);
 	if (!token)
 	  {
-	    token = (char *)safemalloc(1);
+	    token = safemalloc(1);
 	    *token = 0;
 	  }
 
@@ -1632,7 +1632,7 @@ void read_in_resources(void)
 	DoGetNextToken(p, &token, NULL, ",", NULL);
 	if (!token)
 	  {
-	    token = (char *)safemalloc(1);
+	    token = safemalloc(1);
 	    *token = 0;
 	  }
 
@@ -1859,7 +1859,7 @@ void read_in_resources(void)
 	DoGetNextToken(p, &token, NULL, ",", NULL);
 	if (!token)
 	  {
-	    token = (char *)safemalloc(1);
+	    token = safemalloc(1);
 	    *token = 0;
 	  }
 
@@ -1877,7 +1877,7 @@ void read_in_resources(void)
 	DoGetNextToken(p, &token, NULL, ",", NULL);
 	if (!token)
 	  {
-	    token = (char *)safemalloc(1);
+	    token = safemalloc(1);
 	    *token = 0;
 	  }
 
@@ -2140,7 +2140,7 @@ void read_in_resources(void)
 	DoGetNextToken(p, &token, NULL, ",", NULL);
 	if (!token)
 	  {
-	    token = (char *)safemalloc(1);
+	    token = safemalloc(1);
 	    *token = 0;
 	  }
 

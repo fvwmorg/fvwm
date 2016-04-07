@@ -790,8 +790,7 @@ static int f_scandir(const char *dir, struct dirent *** namelist)
 	f_dir = opendir(dir);
 	if (f_dir == NULL)
 		return -1;
-	namelist[0] =
-		(struct dirent **)safemalloc(sizeof(struct dirent *) * 10);
+	namelist[0] = safemalloc(sizeof(struct dirent *) * 10);
 	do {
 		f_temp = readdir(f_dir);
 		if (f_temp == NULL)
@@ -807,8 +806,7 @@ static int f_scandir(const char *dir, struct dirent *** namelist)
 				namelist[0] = (struct dirent **)r_ret;
 				namelist_size = f_count + 10;
 			}
-			namelist[0][f_count] = (struct dirent *)safemalloc(
-				sizeof(struct dirent));
+			namelist[0][f_count] = safemalloc(sizeof(struct dirent));
 			memcpy(
 				namelist[0][f_count], f_temp,
 				sizeof(struct dirent));

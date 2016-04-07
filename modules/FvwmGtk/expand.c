@@ -50,7 +50,7 @@ split_string (char *val, str *pre)
       if (s && t)
 	{
 	  /* append the part before $( */
-	  curr->next = (str *) safemalloc (sizeof (str));
+	  curr->next = safemalloc (sizeof (str));
 	  curr = curr->next;
 	  *s = '\0';
 	  curr->s = safestrdup (v);
@@ -58,7 +58,7 @@ split_string (char *val, str *pre)
 	  *s = '$';
 
 	  /* append the variable reference, silently omit the ) */
-	  curr->next = (str *) safemalloc (sizeof (str));
+	  curr->next = safemalloc (sizeof (str));
 	  curr = curr->next;
 	  curr->next = NULL;
 	  *t = '\0';
@@ -71,7 +71,7 @@ split_string (char *val, str *pre)
       else
 	{
 	  /* append the part after the last variable reference */
-	  curr->next = (str *) safemalloc (sizeof (str));
+	  curr->next = safemalloc (sizeof (str));
 	  curr = curr->next;
 	  curr->next = NULL;
 	  curr->s = safestrdup (v);
@@ -94,7 +94,7 @@ combine_string (str *p)
     {
       l += strlen (r->s);
     }
-  res = (char *) safemalloc (l * sizeof (char));
+  res = safemalloc (l * sizeof (char));
   *res = '\0';
   for (r = p; r != NULL; r = next)
     {
@@ -113,7 +113,7 @@ recursive_replace (GtkWidget *d, char *val)
   str *head, *r, *tail, *next;
   char *nval;
 
-  head = (str *) safemalloc (sizeof (str));
+  head = safemalloc (sizeof (str));
   head->is_var = 0;
   head->s = safestrdup("");
   head->next = NULL;

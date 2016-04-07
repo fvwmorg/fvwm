@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 {
 	char *temp, *s;
 
-	commands = (CommandChain*)safemalloc(sizeof(CommandChain));
+	commands = safemalloc(sizeof *commands);
 	commands->first = commands->last = NULL;
 
 	/* Save the program name for error messages and config parsing */
@@ -660,7 +660,7 @@ void AddCommand(char *line)
 	Bool do_ignore_desk = True;
 	Bool do_ignore_page = True;
 
-	this = (Command*)safemalloc(sizeof(Command));
+	this = safemalloc(sizeof *this);
 	this->desk = 0;
 	memset(&(this->flags), 0, sizeof(this->flags));
 	this->flags.do_match_any_desk = 1;
@@ -764,7 +764,7 @@ void AddCommand(char *line)
 		/* Plain fvwm command */
 
 		this->type = 0;
-		this->cmdStr = (char *)safemalloc(strlen(line) + 1);
+		this->cmdStr = safemalloc(strlen(line) + 1);
 		strcpy(this->cmdStr, line);
 	}
 

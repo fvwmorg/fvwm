@@ -46,7 +46,7 @@ int ModuleLen;
 static char *alloc_string(char *string)
 {
 	int len = strlen(string);
-	char *ret = (char *)safemalloc((len + 1) * sizeof(char));
+	char *ret = safemalloc((len + 1) * sizeof(char));
 	strcpy(ret, string);
 	return ret;
 }
@@ -144,7 +144,7 @@ int allocate_managers(int num)
 	}
 
 	globals.num_managers = num;
-	globals.managers = (WinManager *)safemalloc(num * sizeof(WinManager));
+	globals.managers = safemalloc(num * sizeof(WinManager));
 
 	for (i = 0; i < num; i++) {
 		init_win_manager(i);

@@ -72,7 +72,7 @@ window_list (int argc, char **argv)
   g_return_if_fail (argc >= 1);
 
   item = find_or_create_menu (argv[0]);
-  opts = (window_list_options *) safemalloc (sizeof (window_list_options));
+  opts = safemalloc (sizeof (window_list_options));
   memset (opts, '\0', sizeof (window_list_options));
 
   for (i = 1; i < argc; i++)
