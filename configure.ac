@@ -528,6 +528,13 @@ fi
 AH_TEMPLATE([HAVE_X11_XKBLIB_H],[Define if Xkb extension is used.])
 AC_CHECK_HEADER(X11/XKBlib.h, AC_DEFINE(HAVE_X11_XKBLIB_H))
 
+AH_TEMPLATE([HAVE_ASPRINTF],[Define if asprintf is present.])
+AC_CHECK_FUNC(asprintf, found_asprintf=yes, found_asprintf=no)
+if test "x$found_asprintf" = xyes; then
+	AC_DEFINE(HAVE_ASPRINTF)
+fi
+AM_CONDITIONAL(NO_ASPRINTF, [test "x$found_asprintf" = xno])
+
 # ********* xineramA
 problem_xinerama=""
 

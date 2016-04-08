@@ -28,6 +28,10 @@ libfvwm_a_SOURCES = \
 	FGettext.c Rectangles.c timeout.c flist.c charmap.c wcontext.c \
 	modifiers.c fsm.c FTips.c fio.c fvwmlib.c
 
+if NO_ASPRINTF
+libfvwm_a_SOURCES+= asprintf.c
+endif
+
 libfvwm_a_LIBADD = @LIBOBJS@ @ALLOCA@
 
 AM_CPPFLAGS = -I$(top_srcdir) $(xpm_CFLAGS) $(Xft_CFLAGS) $(X_CFLAGS) \
