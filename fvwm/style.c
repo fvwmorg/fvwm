@@ -2102,9 +2102,7 @@ static Bool style_parse_one_style_option(
 		if (strncasecmp(token, prefix, l) != 0)
 		{
 			/* add missing prefix */
-			token_l = safemalloc(l + strlen(token) + 1);
-			strcpy(token_l, prefix);
-			strcat(token_l, token);
+			safeasprintf(&token_l, "%s%s", prefix, token);
 			token = token_l;
 		}
 	}

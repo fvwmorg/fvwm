@@ -137,16 +137,14 @@ int moduleTimeout = DEFAULT_MODULE_TIMEOUT;
     Used for obsolete PixmapPath and IconPath **/
 static void obsolete_imagepaths( const char* pre_path )
 {
-	char* tmp = stripcpy( pre_path );
-	char* path = alloca(strlen( tmp ) + strlen(PictureGetImagePath()) + 2 );
+	char *tmp = stripcpy(pre_path);
+	char *path;
 
-	strcpy( path, tmp );
-	free( tmp );
-
-	strcat( path, ":" );
-	strcat( path, PictureGetImagePath() );
+	safeasprintf(&path, "%s:%s", tmp, PictureGetImagePath());
 
 	PictureSetImagePath( path );
+
+	free(path);
 
 	return;
 }

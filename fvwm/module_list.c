@@ -1114,7 +1114,7 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 	int sec = 0;
 	char *next;
 	char *token;
-	char *expect = ModuleFinishedStartupResponse;
+	char *expect = safestrdup(ModuleFinishedStartupResponse);
 	fmodule *module;
 	fd_set in_fdset;
 	fd_set out_fdset;
@@ -1135,8 +1135,7 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 		token = PeekToken(next, &next);
 		if (token)
 		{
-			expect = alloca(strlen(token) + 1);
-			strcpy(expect, token);
+			expect = safestrdup(token);
 		}
 		action = next;
 		token = PeekToken(action, &next);
@@ -1158,14 +1157,14 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 	if (!action)
 	{
 		/* no module name */
-		return;
+		goto out;
 	}
 
 	module = do_execute_module(F_PASS_ARGS, False, False);
 	if (module == NULL)
 	{
 		/* executing the module failed, just return */
-		return;
+		goto out;
 	}
 
 	/* Busy cursor stuff */
@@ -1288,7 +1287,8 @@ void CMD_ModuleSynchronous(F_CMD_ARGS)
 		UngrabEm(GRAB_BUSY);
 	}
 
-	return;
+out:
+	free(expect);
 }
 
 /* mask handling - does this belong here? */

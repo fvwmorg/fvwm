@@ -1757,18 +1757,13 @@ static Bool size_menu_vertically(MenuSizingParameters *msp)
 			}
 
 			t = EscapeString(MR_NAME(msp->menu), "\"", '\\');
-			tempname = safemalloc((10 + strlen(t)) * sizeof(char));
-			strcpy(tempname, "Popup \"");
-			strcat(tempname, t);
-			strcat(tempname, "$\"");
+			safeasprintf(&tempname, "Popup \"%s$\"", t);
 			free(t);
 			/* NewMenuRoot inserts at the head of the list of menus
 			   but, we need it at the end.  (Give it just the name,
 			   * which is 6 chars past the action since
 			   * strlen("Popup ")==6 ) */
-			t = safemalloc(strlen(MR_NAME(msp->menu)) + 2);
-			strcpy(t, MR_NAME(msp->menu));
-			strcat(t, "$");
+			safeasprintf(&t, "%s$", MR_NAME(msp->menu));
 			menuContinuation = NewMenuRoot(t);
 			free(t);
 			MR_CONTINUATION_MENU(msp->menu) = menuContinuation;
