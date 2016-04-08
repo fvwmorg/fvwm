@@ -17,3 +17,5 @@ void *safemalloc(size_t);
 void *safecalloc(size_t, size_t);
 void *saferealloc(void *, size_t);
 char *safestrdup(const char *s);
+int safeasprintf(char **, const char *, ...);
+int safevasprintf(char **, const char *, va_list);

@@ -17,6 +17,7 @@
 #include "config.h"
 
 #include <stdio.h>
+#include <stdarg.h>
 #include "safemalloc.h"
 
 static void alloc_failed(char *c, size_t length)
@@ -111,3 +112,30 @@ char *safestrdup(const char *src)
 	}
 	return cpy;
 }
+
+int
+safeasprintf(char **ret, const char *fmt, ...)
+{
+	va_list ap;
+	int i;
+
+	va_start(ap, fmt);
+	i = safevasprintf(ret, fmt, ap);
+	va_end(ap);
+
+	return i;
+}
+
+int
+safevasprintf(char **ret, const char *fmt, va_list ap)
+{
+	int i;
+
+	i = vasprintf(ret, fmt, ap);
+
+	if (i < 0 || *ret == NULL)
+		alloc_failed("xasprintf", i);
+
+	return i;
+}
+
