@@ -11,7 +11,6 @@ SUBDIRS = \
 	bin \
 	utils \
 	$(FVWM_PERLLIB) \
-	doc \
 	docs \
 	rpm \
 	debian \

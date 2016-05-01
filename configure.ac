@@ -55,10 +55,6 @@ AC_SUBST(FVWMWORKERSLIST)
 AC_SUBST(FVWMWORKERSLISTLONG)
 AC_SUBST(MANPAGE_PREAMBLE)
 
-# check for programs needed to build html docs
-AC_CHECK_PROG(SED, sed, sed, "")
-AC_SUBST(SED)
-
 # optional python:
 AM_PATH_PYTHON([2.5],, [:])
 
@@ -90,7 +86,6 @@ AC_SUBST(PERL)
 # installation paths
 FVWM_MODULESUBDIR=/${PACKAGE}/${VERSION}
 FVWM_DATASUBDIR=/${PACKAGE}
-FVWM_DOCSUBDIR=/doc/${PACKAGE}
 
 AC_ARG_ENABLE(package-subdirs,
   AS_HELP_STRING([--disable-package-subdirs],
@@ -101,7 +96,6 @@ AC_ARG_ENABLE(package-subdirs,
 
 FVWM_MODULEDIR='${libexecdir}'"$FVWM_MODULESUBDIR"
 FVWM_DATADIR='${datadir}'"$FVWM_DATASUBDIR"
-FVWM_DOCDIR='${datadir}'"$FVWM_DOCSUBDIR"
 FVWM_PERLLIBDIR='${datadir}'"$FVWM_DATASUBDIR/perllib"
 FVWM_CONFDIR='${sysconfdir}'dnl used _only_ to search for system.fvwm2rc
 
@@ -109,7 +103,6 @@ AC_SUBST(FVWM_MODULEDIR)
 AC_SUBST(FVWM_DATADIR)
 AC_SUBST(FVWM_PERLLIBDIR)
 AC_SUBST(FVWM_CONFDIR)
-AC_SUBST(FVWM_DOCDIR)
 
 AH_TEMPLATE([FVWM_CONFIG],
   [Name of config filenames in FVWM_USERDIR and FVWM_DATADIR])
@@ -270,154 +263,6 @@ esac
 # - version of fontconfig without fontconfig-config
 # - version of fribidi without fribidi-config
 AM_CHECK_PKG_CONFIG
-
-
-# Building man pages & HTML documentation (from XML source).
-# extract command names
-if test ! x"$SED" = x; then
-	DOC_COMMANDS=`
-		sed -n '
-		:findhead
-			/#.*define.*CMD_ENT/bfindcmd
-			n
-			bfindhead
-		:findcmd
-			n
-			/CMD_ENT/bfound
-			bfindcmd
-		:found
-			/"#"/bfindcmd
-			/"propertychange"/bfindcmd
-			/"readwritecolors"/bfindcmd
-			/"send_.*"/bfindcmd
-			/"set_.*"/bfindcmd
-			s/.*CMD_ENT.*CMD_//
-			s/,.*//
-			p
-			n
-			bfindcmd
-	' < fvwm/functable.c`
-	DOC_COMMANDS=`echo $DOC_COMMANDS`
-	# with .xml suffix
-	DOC_COMMANDS_XML=`for i in $DOC_COMMANDS; do echo ${i}.xml; done`
-	DOC_COMMANDS_XML=`echo $DOC_COMMANDS_XML`
-	# with .xml suffix and path
-	DOC_COMMANDS_XML_PATH=`
-		for i in $DOC_COMMANDS; do
-			echo ../commands/${i}.xml;
-		done
-	`
-	DOC_COMMANDS_XML_PATH=`echo $DOC_COMMANDS_XML_PATH`
-	# with .html suffix
-	DOC_COMMANDS_HTML=`for i in $DOC_COMMANDS; do echo ${i}.html; done`
-	DOC_COMMANDS_HTML=`echo $DOC_COMMANDS_HTML`
-	# extract module names
-	DOC_MODULES=""
-	DOC_MODULES=`
-		for i in modules/*; do echo "$i"; done |
-		sed -n '
-			:search
-			/^modules.Fvwm/bfound
-			bnext
-		:found
-			s/modules.//
-			/FvwmTabs/bnext
-			p
-		:next
-			n
-			bsearch
-		'
-	`
-	DOC_MODULES=`echo $DOC_MODULES`
-	DOC_MODULES_HTML=`for i in $DOC_MODULES; do echo ${i}.html; done`
-	DOC_MODULES_HTML=`echo $DOC_MODULES_HTML`
-	# extract man page section names
-	DOC_SECTIONS=`cat doc/fvwm/sections`
-	DOC_SECTIONS=`echo $DOC_SECTIONS`
-	DOC_SECTIONS_XML=`for i in $DOC_SECTIONS; do echo ${i}.xml; done`
-	DOC_SECTIONS_XML=`echo $DOC_SECTIONS_XML`
-	DOC_SECTIONS_XML_PATH=`for i in $DOC_SECTIONS; do echo ${i}.xml; done`
-	DOC_SECTIONS_XML_PATH=`echo $DOC_SECTIONS_XML`
-else
-	DOC_COMMANDS=""
-	DOC_COMMANDS_XML=""
-	DOC_COMMANDS_XML_PATH=""
-	DOC_COMMANDS_HTML=""
-	DOC_MODULES=""
-	DOC_MODULES_HTML=""
-	DOC_SECTIONS=""
-	DOC_SECTIONS_XML=""
-	DOC_SECTIONS_XML_PATH=""
-fi
-AC_SUBST(DOC_COMMANDS)
-AC_SUBST(DOC_COMMANDS_XML)
-AC_SUBST(DOC_COMMANDS_XML_PATH)
-AC_SUBST(DOC_COMMANDS_HTML)
-AC_SUBST(DOC_MODULES)
-AC_SUBST(DOC_MODULES_HTML)
-AC_SUBST(DOC_SECTIONS)
-AC_SUBST(DOC_SECTIONS_XML)
-AC_SUBST(DOC_SECTIONS_XML_PATH)
-
-problem_mandoc=""
-AC_CHECK_PROG(XSLTPROC, xsltproc, xsltproc, "")
-
-AC_ARG_ENABLE(mandoc,
-  AS_HELP_STRING([--disable-mandoc],
-    [disable generation of man pages]),
-  [ if test x"$enableval" = xyes; then
-		with_mandoc="yes, check"
-	else
-		with_mandoc="no"
-		problem_mandoc=": Explicitly disabled"
-	fi ],
-  [ with_mandoc="not specified, check" ]
-)
-
-if test ! x"$with_mandoc" = xno; then
-	if test x"$XSLTPROC" = x ; then
-		with_mandoc="no"
-		problem_mandoc=": No xsltproc found in PATH"
-	elif test x"$SED" = x ; then
-		with_mandoc="no"
-		problem_mandoc=": No sed found in PATH"
-	elif test x"$HAVE_PERL_FOR_DOCS" = x0 ; then
-		with_mandoc="no"
-		problem_mandoc=": No perl found in PATH"
-	else
-		with_mandoc="yes"
-	fi
-fi
-AM_CONDITIONAL([FVWM_BUILD_MANDOC], [test x"$with_mandoc" = xyes])
-
-
-problem_htmldoc=""
-AC_ARG_ENABLE(htmldoc,
-  AS_HELP_STRING([--enable-htmldoc],[enable generation of HTML documentation]),
-  [ if test x"$enableval" = xyes; then
-		with_htmldoc="yes, check"
-	else
-		with_htmldoc="no"
-		problem_htmldoc=": Explicitly disabled"
-	fi ],
-  [ with_htmldoc="no" ]
-)
-
-if test ! x"$with_htmldoc" = xno; then
-	if test x"$XSLTPROC" = x ; then
-		with_htmldoc="no"
-		problem_htmldoc=": No xsltproc found in PATH"
-	elif test x"$SED" = x ; then
-		with_htmldoc="no"
-		problem_htmldoc=": No sed found in PATH"
-	elif test x"$HAVE_PERL_FOR_DOCS" = x0 ; then
-		with_htmldoc="no"
-		problem_htmldoc=": No perl found in PATH"
-	else
-		with_htmldoc="yes"
-	fi
-fi
-AM_CONDITIONAL([FVWM_BUILD_HTMLDOC], [test x"$with_htmldoc" = xyes])
 
 
 # ********* session management
@@ -1761,25 +1606,6 @@ dnl
 	rpm/fvwm.spec
 	debian/Makefile
 	debian/control
-	doc/fvwm.ent
-	doc/footer.html
-	doc/Makefile
-	doc/fvwm/Makefile
-	doc/commands/Makefile
-	doc/docbook-xml/Makefile
-	doc/docbook-xml/ent/Makefile
-	doc/docbook-xsl/Makefile
-	doc/docbook-xsl/common/Makefile
-	doc/docbook-xsl/manpages/Makefile
-	doc/docbook-xsl/profiling/Makefile
-	doc/docbook-xsl/highlighting/Makefile
-	doc/docbook-xsl/lib/Makefile
-	doc/docbook-xsl/html/Makefile
-	doc/modules/Makefile
-	doc/modules/images/Makefile
-	doc/modules/images/FvwmTabs/Makefile
-	doc/images/Makefile
-	doc/images/svg_rendering/Makefile
 	docs/Makefile
 	sample.fvwmrc/Makefile
 	tests/Makefile
@@ -1853,7 +1679,6 @@ eval my_bindir="`eval echo ${bindir}`"
 eval my_mandir="`eval echo ${mandir}`"
 eval my_moddir="`eval echo ${FVWM_MODULEDIR}`"; eval my_moddir="$my_moddir"
 eval my_datdir="`eval echo ${FVWM_DATADIR}`"
-eval my_docdir="`eval echo ${FVWM_DOCDIR}`"
 eval my_plldir="`eval echo ${FVWM_PERLLIBDIR}`"
 test x"$FVWM_PERLLIB" = x && my_plldir="(Not installed) $my_plldir"
 eval my_localedir="`eval echo ${LOCALEDIR}`"
@@ -1896,8 +1721,6 @@ Fvwm Configuration:
   With Xft anti-alias font support?   $with_xft$problem_xft
   With XPM image support?             $with_xpm$problem_xpm
   With Xrender image support?         $with_xrender$problem_xrender
-  Build man pages?                    $with_mandoc$problem_mandoc
-  Build HTML documentation?           $with_htmldoc$problem_htmldoc
 
 See INSTALL.fvwm for the description of what this may mean."
 
