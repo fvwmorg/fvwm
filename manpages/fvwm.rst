@@ -3463,7 +3463,7 @@ listing the key and its value. *verbose* has no effect with this option.
 |                    |                    |                    | is invoked, the    |
 |                    |                    |                    | last command that  |
 |                    |                    |                    | was executed by    |
-|                    |                    |                    | |fvwm| is executed   |
+|                    |                    |                    | |fvwm| is executed |
 |                    |                    |                    | again. This        |
 |                    |                    |                    | happens regardless |
 |                    |                    |                    | of whether it was  |
