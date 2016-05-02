@@ -58,6 +58,20 @@ AC_SUBST(MANPAGE_PREAMBLE)
 # optional python:
 AM_PATH_PYTHON([2.5],, [:])
 
+# fvwm.1 manpage generation
+AC_ARG_WITH([rst2man],
+	AS_HELP_STRING([--with-rst2man=PATH], [Location of rst2man (auto)]),
+		[RST2MAN="$withval"],
+	AC_CHECK_PROGS(RST2MAN, [rst2man rst2man.py], [no]))
+
+if test "x$RST2MAN" = "xno"; then
+	AC_MSG_WARN(
+		[rst2man is needed to build man pages (install: python-docutils).
+		Using:  --with-rst2man=/bin/true.])
+	RST2MAN="/bin/true"
+fi
+
+
 #!!!
 PERL=""
 REQUIRED_PERL_VERSION=5.004
@@ -1607,6 +1621,7 @@ dnl
 	debian/Makefile
 	debian/control
 	docs/Makefile
+	manpages/Makefile
 	sample.fvwmrc/Makefile
 	tests/Makefile
 	tests/hints/Makefile
@@ -1700,7 +1715,6 @@ Fvwm Configuration:
   Man pages:   $my_mandir
   Modules:     $my_moddir
   Data files:  $my_datdir
-  Doc files:   $my_docdir
   Perl lib:    $my_plldir
   Locale msg:  $my_localedir $INST_LINGUAS
 

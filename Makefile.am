@@ -16,6 +16,7 @@ SUBDIRS = \
 	debian \
 	sample.fvwmrc \
 	$(POSUB) \
+	manpages \
 	tests
 
 EXTRA_DIST = \
@@ -34,8 +35,6 @@ EXTRA_DIST = \
 #    make dist2       # instead of make dist
 #    make distcheck2  # instead of make distcheck
 #    make distclean2  # instead of make distclean
-
-DISTCHECK_CONFIGURE_FLAGS = --enable-htmldoc
 
 distcheck2: distcheck
 	@banner="$(distdir).tar.gz - ready for distribution"; \
