@@ -50,27 +50,27 @@ These are the command line options that are recognized by fvwm:
 
 **−i** \| **−−clientid** *id*
 
-This option is used when fvwm is started by a session manager. Should
+This option is used when |fvwm| is started by a session manager. Should
 not be used by a user.
 
 **−c** \| **−−cmd** *config−command*
 
-Causes fvwm to use *config−command* instead of ’\ **Read** *config*\ ’
+Causes |fvwm| to use *config−command* instead of ’\ **Read** *config*\ ’
 (or ’\ **Read** *.fvwm2rc*\ ’) as its initialization command. (Note that
 up to 10 **−f** and **−c** parameters can be given, and they are
 executed in the order specified.)
 
 Any module started by command line arguments is assumed to be a module
 that sends back config commands. All command line modules have to quit
-before fvwm proceeds on to the StartFunction and setting border
+before |fvwm| proceeds on to the StartFunction and setting border
 decorations and styles. There is a potential deadlock if you start a
 module other than **FvwmCpp**/**FvwmM4**/**FvwmPerl** but there is a
-timeout so fvwm eventually gets going.
+timeout so |fvwm| eventually gets going.
 
-As an example, starting the pager this way hangs fvwm until the timeout,
+As an example, starting the pager this way hangs |fvwm| until the timeout,
 but the following should work well:
 
-fvwm −c "**AddToFunc** StartFunction I **Module FvwmPager**"
+|fvwm| −c "**AddToFunc** StartFunction I **Module FvwmPager**"
 
 **−d** \| **−−display** *displayname*
 
@@ -81,11 +81,11 @@ from the environment variable *$DISPLAY*.
 
 Puts X transactions in synchronous mode, which dramatically slows things
 down, but guarantees that fvwm’s internal error messages are correct.
-Also causes fvwm to output debug messages while running.
+Also causes |fvwm| to output debug messages while running.
 
 **−f** *config−file*
 
-Causes fvwm to read *config−file* instead of *~/.fvwm/config* as its
+Causes |fvwm| to read *config−file* instead of *~/.fvwm/config* as its
 initialization file. This is equivalent to −c ’\ **Read**
 *config−file*\ ’.
 
@@ -100,47 +100,47 @@ the other wm is ICCCM2 2.0 compliant.
 
 **−F** \| **−−restore** *state−file*
 
-This option is used when fvwm is started by a session manager. Should
+This option is used when |fvwm| is started by a session manager. Should
 not be used by a user.
 
 **−s** \| **−−single−screen** [*screen\_num*]
 
-On a multi−screen display, run fvwm only on the screen named in the
+On a multi−screen display, run |fvwm| only on the screen named in the
 *$DISPLAY* environment variable or provided through the **−d** option.
 The optional argument *screen\_num* should be positive or null and
-override the screen number. Normally, fvwm attempts to start up on all
+override the screen number. Normally, |fvwm| attempts to start up on all
 screens of a multi−screen display.
 
 **−V** \| **−−version**
 
-Prints the version of fvwm to *stderr*. Also prints an information about
+Prints the version of |fvwm| to *stderr*. Also prints an information about
 the compiled in support for readline, rplay, stroke, xpm, png, svg,
 GNOME hints, EWMH hints, session management, bidirectional text,
 multibyte characters, xinerama and Xft aa font rendering.
 
 **−C** \| **−−visual** *visual−class*
 
-Causes fvwm to use *visual−class* for the window borders and menus.
+Causes |fvwm| to use *visual−class* for the window borders and menus.
 *visual−class* can be "StaticGray", "GrayScale", "StaticColor",
 "PseudoColor", "TrueColor" or "DirectColor".
 
 **−I** \| **−−visualid** *id*
 
-Causes fvwm to use *id* as the visual id for the window borders and
+Causes |fvwm| to use *id* as the visual id for the window borders and
 menus. *id* can be specified as N for decimal or 0xN for hexadecimal.
 See man page of xdpyinfo for a list of supported visuals.
 
 **−l** \| **−−color−limit** *limit*
 
 Specifies a *limit* on the colors used in image, gradient and possibly
-simple colors used by fvwm. In fact, fvwm (and all the modules) uses a
+simple colors used by fvwm. In fact, |fvwm| (and all the modules) uses a
 palette with at most *limit* colors. This option is only useful with
 screens that display 256 colors (or less) with a dynamic visual
 (PseudoColor, GrayScale or DirectColor). The default depends on your X
 server and how you run fvwm. In most case this default is reasonable.
 The **−l** option should be used only if you encounter problems with
-colors. By default, fvwm tries to detect large pre−allocated palettes.
-If such a palette is detected fvwm uses it and a priori the **−l** must
+colors. By default, |fvwm| tries to detect large pre−allocated palettes.
+If such a palette is detected |fvwm| uses it and a priori the **−l** must
 not be used. Moreover, in this case the **−A** and **−S** options are
 forced. Note that XFree−4.2 pre−allocates 244 colors (if you use a
 driver with Render support) leaving only a few free colors. This may
@@ -169,14 +169,14 @@ Display depth 4 (16 colors)
 | DirectColor: 10 (2x2x2 color cube + 2 grey)
 
 These defaults may change before version 2.6. Note that if you use a
-private color map (i.e., fvwm is started with the **−C** or the **−I**
+private color map (i.e., |fvwm| is started with the **−C** or the **−I**
 options), then other defaults are used.
 
 Now what to do if you encounter problems with colors? The first thing to
 do is to check if you really cannot run your X server with depth 15, 16
 or better. Check your X server documentation. Note that some hardware
 can support two different depths on the same screen (typically depth 8
-and depth 24). If depth 8 is the default, you can force fvwm to use the
+and depth 24). If depth 8 is the default, you can force |fvwm| to use the
 best depth by using the **−C** option with *TrueColor* as argument. So
 now we assume that you are forced to run in depth 8 with a dynamic
 visual because your hardware/driver cannot do better or because you need
@@ -187,7 +187,7 @@ the default color map must share these colors. The main problem is that
 there are applications which use a lot or even all the colors. If you
 use such application you may have no more free colors and some
 applications (which used only a few colors) may fail to start or are
-unusable. There are three things that can be done (and fvwm does not
+unusable. There are three things that can be done (and |fvwm| does not
 really play a particular role, all applications are concerned). The
 first is to run the applications which waste your (default) color map
 with a private color map. For example, run netscape with the −install
@@ -196,7 +196,7 @@ option, run KDE or QT applications with the −−cmap option, use the
 visually disturbing (see the **ColormapFocus** command for a better
 control of the color maps switching). The second method is to limit the
 number of colors that the applications use. Again, some applications
-have options to specify a given color limit. With fvwm you may try
+have options to specify a given color limit. With |fvwm| you may try
 various values, 61 (a special "visual" palette), 56 (a 4x4x3 color cube
 plus 6 grey), 29 (a 3x3x3 color cube plus 2 grey), 10 or 9. Also, you
 may use the **−L** option. However, limiting the number of colors is not
@@ -212,20 +212,20 @@ and B >= 2. To get an RxGxB color cube give an argument to **−l** an
 integer c >= R\*G\*B and < (R+1)\*(G+1)\*B if B=R and < R\*G\*(B+1) if B
 < R (and different from 61). If c > R\*G\*B, then some grey may be added
 to the color cube. You can use the **PrintInfo** *Colors* [*1*] command
-to get information on your fvwm colors setting. In particular, this
-command prints the palette used by fvwm in rgb format (the last integer
-gives the number of times fvwm has allocated the colors).
+to get information on your |fvwm| colors setting. In particular, this
+command prints the palette used by |fvwm| in rgb format (the last integer
+gives the number of times |fvwm| has allocated the colors).
 
 **−L** \| **−−strict−color−limit**
 
 If the screen displays 256 colors (or less) and has a dynamic visual,
-causes fvwm to use its palette for all the colors. By default, the
+causes |fvwm| to use its palette for all the colors. By default, the
 palette is used only for images and gradients.
 
 **−P** \| **−−visual−palette**
 
 If the screen displays 256 colors (or less) and has a dynamic visual,
-this option causes fvwm to use a palette designed for limiting the
+this option causes |fvwm| to use a palette designed for limiting the
 "visual" color distance between the points of the palette. Moreover, for
 better color sharing, if possible colors with a name in the X rgb data
 base are used for defining the colors (with the hope that applications
@@ -236,16 +236,16 @@ if 61 or 9 is used as argument to the **−l** option.
 **−A** \| **−−allocate−palette**
 
 If the screen displays 256 colors (or less) and has a dynamic visual
-this option causes fvwm to allocate all the colors of its palette at
+this option causes |fvwm| to allocate all the colors of its palette at
 start up for reserving these colors for future use. This option forces
-the **−static−palette** option. By default, fvwm allocates (reserves) a
+the **−static−palette** option. By default, |fvwm| allocates (reserves) a
 color in its palette only if it needs this color.
 
 **−S** \| **−−static−palette**
 
 If the screen displays 256 colors (or less) and has a dynamic visual
-this option causes fvwm to never free the colors in its palette. By
-default, when fvwm does not need a color any more it frees this color so
+this option causes |fvwm| to never free the colors in its palette. By
+default, when |fvwm| does not need a color any more it frees this color so
 that a new color can be used. This option may speed up image loading and
 save a few bits of memory.
 
@@ -311,7 +311,7 @@ separate window, called the **FvwmWinList** (another module).
 window in a lower layer never obscures a window in a higher layer. The
 layer of a window can be changed by using the **Layer** command. The
 concept of layers is a generalization of the *StaysOnTop* flag of older
-fvwm versions. The *StaysOnTop* and *StaysPut* **Style** options are now
+|fvwm| versions. The *StaysOnTop* and *StaysPut* **Style** options are now
 implemented by putting the windows in suitable layers and the previously
 missing *StaysOnBottom* **Style** option has been added.
 
@@ -388,9 +388,9 @@ XTerm\*Page: 3 2 1
 USE ON MULTI−SCREEN DISPLAYS
 ----------------------------
 
-If the **−s** command line argument is not given, fvwm automatically
-starts up on every screen on the specified display. After fvwm starts
-each screen is treated independently. Restarts of fvwm need to be
+If the **−s** command line argument is not given, |fvwm| automatically
+starts up on every screen on the specified display. After |fvwm| starts
+each screen is treated independently. Restarts of |fvwm| need to be
 performed separately on each screen. The use of
 
 **EdgeScroll** 0 0
@@ -405,7 +405,7 @@ XINERAMA SUPPORT
 |fvwm| supports the Xinerama extension of newer X servers which is similar
 to multi head support (multiple screens) but allows one to move windows
 between screens. If Xinerama support has been compiled into fvwm, it is
-used whenever fvwm runs on an X server that supports and uses multiple
+used whenever |fvwm| runs on an X server that supports and uses multiple
 screens via Xinerama. Without this option, the whole desktop is treated
 as one big screen. For example, menus might pop up right between two
 screens. The *EdgeResistance* option of the **Style** command command
@@ -447,14 +447,14 @@ that can be entered in an **FvwmConsole** window or with
 
 For multi−screen implementations other than Xinerama, such as Single
 Logical Screen, it is possible to simulate a Xinerama configuration if
-the total screen seen by fvwm is made up of equal sized monitors in a
+the total screen seen by |fvwm| is made up of equal sized monitors in a
 rectangular grid. The commands **XineramaSls**, **XineramaSlsSize** and
 **XineramaSlsScreens** are used to configure this feature.
 
 INITIALIZATION
 --------------
 
-During initialization, fvwm searches for a configuration file which
+During initialization, |fvwm| searches for a configuration file which
 describes key and button bindings, and many other things. The format of
 these files is described later. |fvwm| first searches for configuration
 files using the command
@@ -490,7 +490,7 @@ F1 keys on the root window bring up menus and forms that can create a
 starting configuration file.
 
 |fvwm| sets two environment variables which are inherited by its children.
-These are *$DISPLAY* which describes the display on which fvwm is
+These are *$DISPLAY* which describes the display on which |fvwm| is
 running. *$DISPLAY* may be *unix:0.0* or *:0.0*, which doesn’t work too
 well when passed through ssh to another machine, so *$HOSTDISPLAY* is
 set to a network−ready description of the display. *$HOSTDISPLAY* always
@@ -515,7 +515,7 @@ functionality.
 
 The standard way to start applications or modules on fvwm’s start up is
 to add them to an initialization function (usually **StartFunction** or
-**InitFunction**). This way they are only started after fvwm finishes to
+**InitFunction**). This way they are only started after |fvwm| finishes to
 read and execute *config* file.
 
 |fvwm| has three special functions for initialization: **StartFunction**,
@@ -530,7 +530,7 @@ have started by fvwm.
 exiting or restarting before actually quitting. It could be used to
 explicitly kill modules, etc.
 
-If fvwm is run under a session manager, functions
+If |fvwm| is run under a session manager, functions
 **SessionInitFunction** and **SessionRestartFunction** are executed
 instead of InitFunction and RestartFunction. This helps to define the
 user’s *config* file to be good for both running under a session manager
@@ -587,11 +587,11 @@ ICONS AND IMAGES
 |fvwm| can load **.xbm, .xpm, .png** and **.svg** images. **XBM** images
 are monochrome. |fvwm| can always display **XBM** files. **XPM** and
 **PNG** formats are color images. SVG is a vector graphics image format.
-Compile−time options determine whether fvwm can display **XPM**, **PNG**
+Compile−time options determine whether |fvwm| can display **XPM**, **PNG**
 or **SVG** icons and images. See the *INSTALL.fvwm* file for more
 information.
 
-The related **SHAPE** compile−time option can make fvwm display spiffy
+The related **SHAPE** compile−time option can make |fvwm| display spiffy
 shaped icons.
 
 | **SVG rendering options**
@@ -741,27 +741,27 @@ MODULES
 -------
 
 A module is a separate program which runs as a separate Unix process but
-transmits commands to fvwm to execute. Users can write their own modules
+transmits commands to |fvwm| to execute. Users can write their own modules
 to do any weird or bizarre manipulations without bloating or affecting
-the integrity of fvwm itself.
+the integrity of |fvwm| itself.
 
-Modules must be spawned by fvwm so that it can set up two pipes for fvwm
+Modules must be spawned by |fvwm| so that it can set up two pipes for fvwm
 and the module to communicate with. The pipes are already open for the
 module when it starts and the file descriptors for the pipes are
 provided as command line arguments.
 
-Modules can be spawned by fvwm at any time during the X session by use
+Modules can be spawned by |fvwm| at any time during the X session by use
 of the **Module** command. Modules can exist for the duration of the X
 session, or can perform a single task and exit. If the module is still
-active when fvwm is told to quit, then fvwm closes the communication
+active when |fvwm| is told to quit, then |fvwm| closes the communication
 pipes and waits to receive a SIGCHLD from the module, indicating that it
 has detected the pipe closure and has exited. If modules fail to detect
-the pipe closure fvwm exits after approximately 30 seconds anyway. The
+the pipe closure |fvwm| exits after approximately 30 seconds anyway. The
 number of simultaneously executing modules is limited by the operating
 system’s maximum number of simultaneously open files, usually between 60
 and 256.
 
-Modules simply transmit commands to the fvwm command engine. Commands
+Modules simply transmit commands to the |fvwm| command engine. Commands
 are formatted just as in the case of a mouse binding in the *config*
 setup file. Certain auxiliary information is also transmitted, as in the
 sample module **FvwmButtons**.
@@ -775,8 +775,8 @@ ICCCM COMPLIANCE
 *http://tronche.com/gui/x/icccm/* for more info. In addition, ICCCM
 states that it should be possible for applications to receive any
 keystroke, which is not consistent with the keyboard shortcut approach
-used in fvwm and most other window managers. In particular you cannot
-have the same keyboard shortcuts working with your fvwm and another fvwm
+used in |fvwm| and most other window managers. In particular you cannot
+have the same keyboard shortcuts working with your |fvwm| and another fvwm
 running within Xnest (a nested X server running in a window). The same
 problem exists with mouse bindings.
 
@@ -788,15 +788,15 @@ The ICCCM states that windows possessing the property
 should not be given the keyboard input focus by the window manager.
 These windows can take the input focus by themselves, however. A number
 of applications set this property, and yet expect the window manager to
-give them the keyboard focus anyway, so fvwm provides a window style,
-*Lenience*, which allows fvwm to overlook this ICCCM rule. Even with
+give them the keyboard focus anyway, so |fvwm| provides a window style,
+*Lenience*, which allows |fvwm| to overlook this ICCCM rule. Even with
 this window style it is not guaranteed that the application accepts
 focus.
 
 The differences between ICCCM 1.1 and 2.0 include the ability to take
 over from a running ICCCM 2.0 compliant window manager; thus
 
-fvwm; vi ~/.fvwm/config; fvwm −replace
+fvwm; vi ~/.fvwm/config; |fvwm| −replace
 
 resembles the **Restart** command. It is not exactly the same, since
 killing the previously running wm may terminate your X session, if the
@@ -825,7 +825,7 @@ EXTENDED WINDOW MANAGER HINTS
 |fvwm| attempts to respect the extended window manager hints (ewmh or EWMH
 for short) specification:
 *http://www.freedesktop.org/wiki/Standards\_2fwm\_2dspec* and some
-extensions of this specification. This allows fvwm to work with KDE
+extensions of this specification. This allows |fvwm| to work with KDE
 version >= 2, GNOME version 2 and other applications which respect this
 specification (any application based on *GTK+* version 2). Applications
 which respect this specification are called ewmh compliant applications.
@@ -838,9 +838,9 @@ There is a new Context ’D’ for the **Key**, **PointerKey**, **Mouse**
 and **Stroke** commands. This context is for desktop applications (such
 as kdesktop and Nautilus desktop).
 
-When a compliant taskbar asks fvwm to activate a window (typically when
+When a compliant taskbar asks |fvwm| to activate a window (typically when
 you click on a button which represents a window in such a taskbar), then
-fvwm calls the complex function **EWMHActivateWindowFunc** which by
+|fvwm| calls the complex function **EWMHActivateWindowFunc** which by
 default is Iconify Off, Focus and Raise. You can redefine this function.
 For example:
 
@@ -861,7 +861,7 @@ visible screen minus these reserved spaces. If a panel can be hidden by
 clicking on a button the Working Area does not change (as you can unhide
 the panel at any time), but the Dynamic Working Area is updated: the
 space reserved by the panel is removed (and added again if you pop up
-the panel). The Dynamic Working Area may be used when fvwm places or
+the panel). The Dynamic Working Area may be used when |fvwm| places or
 maximizes a window. To know if an application reserves space you can
 type "xprop \| grep \_NET\_WM\_STRUT" in a terminal and select the
 application. If four numbers appear then these numbers define the
@@ -885,7 +885,7 @@ your config:
 **Style** \* *OLDecor*
 
 Most (perhaps all) Open Look applications have a strange notion of
-keyboard focus handling. Although a lot of work went into fvwm to work
+keyboard focus handling. Although a lot of work went into |fvwm| to work
 well with these, you may still encounter problems. It is recommended to
 use the *NeverFocus* focus policy and the *Lenience* style for all such
 applications (the windows still get the focus):
@@ -912,14 +912,14 @@ CONFIGURATION
 
 Lines beginning with ’#’ are ignored by fvwm. Lines starting with ’\*’
 are expected to contain module configuration commands (rather than
-configuration commands for fvwm itself). Like in shell scripts embedded
+configuration commands for |fvwm| itself). Like in shell scripts embedded
 newlines in a configuration file line can be quoted by preceding them
 with a backslash. All lines linked in this fashion are treated as a
 single line. The newline itself is ignored.
 
 |fvwm| makes no distinction between configuration commands and action
-commands, so anything mentioned in the fvwm commands section can be
-placed on a line by itself for fvwm to execute as it reads the
+commands, so anything mentioned in the |fvwm| commands section can be
+placed on a line by itself for |fvwm| to execute as it reads the
 configuration file, or it can be placed as an executable command in a
 menu or bound to a mouse button or a keyboard key. It is left as an
 exercise for the user to decide which function make sense for
@@ -934,8 +934,8 @@ FONTS
   **Style**, the Font **MenuStyle** and the **DefaultFont** commands.
   Also, all the Modules which use text have configuration command(s) to
   specify font(s). All these styles and commands take a font name as an
-  argument. This section explains what is a font name for fvwm and which
-  fonts fvwm loads.
+  argument. This section explains what is a font name for |fvwm| and which
+  fonts |fvwm| loads.
 
 First, you can use what we can call a usual font name, for example,
 
@@ -951,12 +951,12 @@ example with
 
 −adobe−courier−bold−r−normal−−10−\*
 
-if the locale charset is ISO8859−1, then fvwm tries to load a font which
+if the locale charset is ISO8859−1, then |fvwm| tries to load a font which
 matches
 
 −adobe−courier−bold−r−normal−−10−\*−ISO8859−1
 
-with the locale charset ISO8859−15 fvwm tries to load
+with the locale charset ISO8859−15 |fvwm| tries to load
 
 −adobe−courier−bold−r−normal−−10−\*−ISO8859−15.
 
@@ -993,9 +993,9 @@ size use pixelsize=), encoding allows for enforce a charset (iso8859−1
 or iso10646−1 only; if no encoding is given the locale charset is
 assumed). An important parameter is "minspace=bool" where bool is True
 or False. If bool is False (the default?) Xft gives a greater font
-height to fvwm than if bool is True. This may modify text placement,
+height to |fvwm| than if bool is True. This may modify text placement,
 icon and window title height, line spacing in menus and **FvwmIdent**,
-button height in some fvwm modules ...etc. With a LCD monitor you may
+button height in some |fvwm| modules ...etc. With a LCD monitor you may
 try to add "rgba=mode" where mode is either rgb, bgr, vrgb or vbgr to
 enable subpixel rendering. The best mode depends on the way your LCD
 cells are arranged. You can pass other specifications in between ":", as
@@ -1005,9 +1005,9 @@ proportional or charcell, "charwidth=integer", "charheight=integer" or
 parameters are not always taken in account.
 
 To determine which Xft fonts are really loaded you can export
-XFT\_DEBUG=1 before starting fvwm and take a look to the error log. With
+XFT\_DEBUG=1 before starting |fvwm| and take a look to the error log. With
 Xft2 you may use fc−list to list the available fonts. Anyway, Xft
-support is experimental (from the X and the fvwm point of view) and the
+support is experimental (from the X and the |fvwm| point of view) and the
 quality of the rendering depends on number of parameters (the XFree and
 the freetype versions and your video card(s)).
 
@@ -1016,22 +1016,22 @@ or extended) as:
 
 xft:Verdana:pixelsize=14;−adobe−courier−bold−r−normal−−14−\*
 
-then, if either loading the Xft font fails or fvwm has no Xft support,
-fvwm loads the font "−adobe−courier−bold−r−normal−−14−\*". This allows
+then, if either loading the Xft font fails or |fvwm| has no Xft support,
+|fvwm| loads the font "−adobe−courier−bold−r−normal−−14−\*". This allows
 for writing portable configuration files.
 
 | **Font and string encoding**
-| Once a font is loaded, fvwm finds its encoding (or charset) using its
-  name (the last two fields of the name). fvwm assumes that the strings
+| Once a font is loaded, |fvwm| finds its encoding (or charset) using its
+  name (the last two fields of the name). |fvwm| assumes that the strings
   which are displayed with this font use this encoding (an exception is
   that if an iso10646−1 font is loaded, then UTF−8 is assumed for string
   encoding). In a normal situation, (i) a font is loaded by giving a
   font name without specifying the encoding, (ii) the encoding of the
   loaded font is the locale encoding, and then (iii) the strings in the
-  fvwm configuration files should use the locale encoding as well as the
+  |fvwm| configuration files should use the locale encoding as well as the
   window and icon name. With Xft the situation is bit different as Xft
   supports only iso10646−1 and iso8859−1. If you do not specify one of
-  these encodings in the Xft font name, then fvwm does strings
+  these encodings in the Xft font name, then |fvwm| does strings
   conversion using (iii). Note that with multibyte fonts (and in
   particular with "CJK" fonts) for good text rendering, the locale
   encoding should be the charset of the font.
@@ -1041,7 +1041,7 @@ encoding in the beginning of a font description as follow:
 
 StringEncoding=\ *enc*:\_full\_font\_name\_
 
-where *enc* is an encoding supported by fvwm (usually font name charset
+where *enc* is an encoding supported by |fvwm| (usually font name charset
 plus some unicode encodings: UTF−8, USC−2, USC−4 and UTF−16).
 
 For example, you may use an iso8859−1 locale charset and have an
@@ -1084,7 +1084,7 @@ to be UTF−8 and use a font in the locale charset:
 
 StringEncoding=UTF−8:−\*−pretty\_font−\*−12−\*
 
-In most cases, fvwm correctly determines the encoding of the font.
+In most cases, |fvwm| correctly determines the encoding of the font.
 However, some fonts do not end with valid encoding names. When the font
 name isn’t normal, for example:
 
@@ -1095,7 +1095,7 @@ delimiter. For example:
 
 **MenuStyle** \* *Font* −misc−fixed−\*−−20−\*−my\_utf8−36/iso10646−1
 
-If fvwm finds an encoding, fvwm uses the iconv system functions to do
+If |fvwm| finds an encoding, |fvwm| uses the iconv system functions to do
 conversion between encodings. Unfortunately, there are no standards. For
 conversion between iso8859−1 and UTF−8: a GNU system uses "ISO−8859−1"
 and other systems use "iso881" to define the converters (these two names
@@ -1110,7 +1110,7 @@ use:
 **Style** \* *Font* −misc−fixed−\*−−14−\*−iso8859−1/\*/latin1
 
 to use latin1 for defining the converter for the iso8859−1 encoding. The
-"\*" in between the "/" says to fvwm to determine the encoding from the
+"\*" in between the "/" says to |fvwm| to determine the encoding from the
 end of the font name. Use:
 
 **Style** \* *Font* \\
@@ -1120,7 +1120,7 @@ end of the font name. Use:
 |                                      | o8859−6/local\_iso8859\_6\_iconv     |
 +--------------------------------------+--------------------------------------+
 
-to force fvwm to use the font with iso8859−6 as the encoding (this is
+to force |fvwm| to use the font with iso8859−6 as the encoding (this is
 useful for bi−directionality) and to use local\_iso8859\_6\_iconv for
 defining the converters.
 
@@ -1135,7 +1135,7 @@ shadow. *offset* is an optional positive integer which defines the
 number of pixels to offset the shadow from the edge of the character.
 The default offset is zero. *directions* is an optional set of
 directions the shadow emanates from the character. The *directions* are
-a space separated list of fvwm directions:
+a space separated list of |fvwm| directions:
 
 *N*, *North*, *Top*, *t*, *Up*, *u*, *−*
 
@@ -1174,7 +1174,7 @@ BI−DIRECTIONAL TEXT
 Arabic and Hebrew text require bi−directional text support to be
 displayed correctly, this means that logical strings should be converted
 before their visual presentation, so left−to−right and right−to−left
-sub−strings are determined and reshuffled. In fvwm this is done
+sub−strings are determined and reshuffled. In |fvwm| this is done
 automatically in window titles, menus, module labels and other places if
 the fonts used for displaying the text are of one of the charsets that
 require *bidi* (bi−directional) support. For example, this includes
@@ -1214,12 +1214,12 @@ are lost after saving and restarting the session. To become permanent,
 such changes have to be added to the configuration file.
 
 Note further that the current implementation has the following anomaly
-when used on a multi−screen display: Starting fvwm for the first time,
-fvwm manages all screens by forking a copy of itself for each screen.
+when used on a multi−screen display: Starting |fvwm| for the first time,
+|fvwm| manages all screens by forking a copy of itself for each screen.
 Every copy knows its parent and issuing a **Quit** command to any
-instance of fvwm kills the master and thus all copies of fvwm. When you
+instance of |fvwm| kills the master and thus all copies of fvwm. When you
 save and restart the session, the session manager brings up a copy of
-fvwm on each screen, but this time they are started as individual
+|fvwm| on each screen, but this time they are started as individual
 instances managing one screen only. Thus a **Quit** kills only the copy
 it was sent to. This is probably not a very serious problem, since with
 session management, you are supposed to quit a session through the
@@ -1257,7 +1257,7 @@ The following commands are built−in to fvwm:
 | + M $0
 | + D **Lower**
 
-The Help and F1 keys invoke a built−in menu that fvwm creates. This is
+The Help and F1 keys invoke a built−in menu that |fvwm| creates. This is
 primarily for new users that have not created their own configuration
 file. Either key on the root (background) window pops up an menu to help
 you get started.
@@ -1280,7 +1280,7 @@ COMMAND EXECUTION
 -----------------
 
 | **Module and Function Commands**
-| If fvwm encounters a command that it doesn’t recognize, it checks to
+| If |fvwm| encounters a command that it doesn’t recognize, it checks to
   see if the specified command should have been
 
 **Function** (rest of command)
@@ -1296,15 +1296,15 @@ Example: the *config* file contains the line
 
 HelpMe
 
-|fvwm| looks for an fvwm command called "HelpMe", and fails. Next it looks
+|fvwm| looks for an |fvwm| command called "HelpMe", and fails. Next it looks
 for a user−defined complex function called "HelpMe". If no such function
-exists, fvwm tries to execute a module called "HelpMe".
+exists, |fvwm| tries to execute a module called "HelpMe".
 
 | **Delayed Execution of Commands**
 | Note: There are many commands that affect look and feel of specific,
   some or all windows, like **Style**, **Mouse**, **Colorset**,
   **TitleStyle** and many others. For performance reasons such changes
-  are not applied immediately but only when fvwm is idle, i.e. no user
+  are not applied immediately but only when |fvwm| is idle, i.e. no user
   interaction or module input is pending. Specifically, new **Style**
   options that are set in a function are not applied until after the
   function has completed. This can sometimes lead to unwanted effects.
@@ -1315,7 +1315,7 @@ To force that all pending changes are applied immediately, use the
 QUOTING
 -------
 
-Quotes are required only when needed to make fvwm consider two or more
+Quotes are required only when needed to make |fvwm| consider two or more
 words to be a single argument. Unnecessary quoting is allowed. If you
 want a quote character in your text, you must escape it by using the
 backslash character. For example, if you have a pop−up menu called
@@ -1335,9 +1335,9 @@ single characters works even inside other kinds of quotes.
 COMMAND EXPANSION
 -----------------
 
-Whenever an fvwm command line is executed, fvwm performs parameter
+Whenever an |fvwm| command line is executed, |fvwm| performs parameter
 expansion. A parameter is a ’$’ followed by a word enclosed in brackets
-($[...]) or a single special character. If fvwm encounters an unquoted
+($[...]) or a single special character. If |fvwm| encounters an unquoted
 parameter on the command line it expands it to a string indicated by the
 parameter name. Unknown parameters are left untouched. Parameter
 expansion is performed before quoting. To get a literal ’$’ use "$$".
@@ -1373,7 +1373,7 @@ window with the focus, the **Current** command can be used:
 
 **Current Echo** $[desk.n] $[page.nx] $[w.class]
 
-The parameters known by fvwm are:
+The parameters known by |fvwm| are:
 
 $$
 
@@ -1488,7 +1488,7 @@ $[w.miniiconfile.svgopts]
 The window’s name, icon name, resource class and resource name, visible
 name, file name of its icon or mini icon defined with the *Icon* or
 *MiniIcon* style (including the full path if the file was found on
-disk), and (if fvwm is compiled with SVG support) the icon or mini icon
+disk), and (if |fvwm| is compiled with SVG support) the icon or mini icon
 svg rendering options (including the leading colon), or unexpanded
 "$[w.<attribute>]" string if no window is associated with the command.
 
@@ -1561,7 +1561,7 @@ not enabled.
 
 $[screen]
 
-The screen number fvwm is running on. Useful for setups with multiple
+The screen number |fvwm| is running on. Useful for setups with multiple
 screens.
 
 $[fg.cs<n>] $[bg.cs<n>] $[hilight.cs<n>] $[shadow.cs<n>]
@@ -1610,7 +1610,7 @@ If no key is present, the unexpanded string is returned.
 
 $[...]
 
-If the string within the braces is neither of the above, fvwm tries to
+If the string within the braces is neither of the above, |fvwm| tries to
 find an environment variable with this name and replaces its value if
 one is found (e.g. "$[PAGER]" could be replaced by "more"). Otherwise
 the string is left as is.
@@ -1669,7 +1669,7 @@ generating menus dynamically and many other features. Please refer to
 the **MenuStyle** command to learn more. **
 Types of Menus**
 
-In fvwm there are four slightly different types of menus:
+In |fvwm| there are four slightly different types of menus:
 
 **Popup** menus can appear everywhere on the screen on their own or
 attached to a part of a window. The **Popup** command opens popup menus.
@@ -1763,7 +1763,7 @@ the case for tear off menus).
 Items can be selected directly by pressing a hotkey that can be
 configured individually for each menu item. The hotkey is indicated by
 underlining it in the menu item label. With the *AutomaticHotkeys* menu
-style fvwm automatically assigns hotkeys to all menu items.
+style |fvwm| automatically assigns hotkeys to all menu items.
 
 The most basic keys to navigate through menus are the cursor keys (move
 up or down one item, enter or leave a sub menu), Space (activate item)
@@ -1881,7 +1881,7 @@ and to remove the builtin backspace binding, use:
 See the section **Menu Bindings** for details on how to assign other
 bindings for tear off.
 
-Note that prior to fvwm 2.5.20 the tear off mouse bindings were
+Note that prior to |fvwm| 2.5.20 the tear off mouse bindings were
 redefined in different way, which no longer work.
 
 The window containing the menu is placed as any other window would be.
@@ -1909,7 +1909,7 @@ destroy such a menu, close its window or press the Escape key.
 
 Tear off menus behave somewhat differently than normal menus and
 windows. They do not take the keyboard focus, but while the pointer is
-over one of them, all key presses are sent to the menu. Other fvwm key
+over one of them, all key presses are sent to the menu. Other |fvwm| key
 bindings are disabled as long as the pointer is inside the tear off menu
 or one of its sub menus. When the pointer leaves this area, all sub
 menus are closed immediately. Note that the window containing a tear off
@@ -1954,7 +1954,7 @@ or
 There is no end−of−menu symbol. Menus do not have to be defined in a
 contiguous region of the *config* file. The quoted (or first word)
 portion in the above examples is the menu label, which appears in the
-menu when the user pops it up. The remaining portion is an fvwm command
+menu when the user pops it up. The remaining portion is an |fvwm| command
 which is executed if the user selects that menu item. An empty
 menu−label ("") and the **Nop** function are used to insert a separator
 into the menu.
@@ -1974,7 +1974,7 @@ fail and may screw up your menus. See the **Silent** command.
 | Do not issue **MenuStyle** commands as dynamic menu actions. Chances
   are good that this crashes fvwm.
 
-There are several configurable scripts installed together with fvwm for
+There are several configurable scripts installed together with |fvwm| for
 automatic menu generation. They have their own man pages. Some of them,
 specifically **fvwm−menu−directory** and **fvwm−menu−desktop**, may be
 used with *DynamicPopupAction* to create a directory listing or
@@ -2005,7 +2005,7 @@ The keyword *MissingSubmenuFunction* has a similar meaning. It is
 executed whenever you try to pop up a sub menu that does not exist. With
 this function you can define and destroy menus on the fly. You can use
 any command after the keyword, but if the name of an item (that is a
-submenu) defined with **AddToFunc** follows it, fvwm executes this
+submenu) defined with **AddToFunc** follows it, |fvwm| executes this
 command:
 
 **Function** <function−name> <submenu−name>
@@ -2124,7 +2124,7 @@ then it is created.
 Deletes a menu, so that subsequent references to it are no longer valid.
 You can use this to change the contents of a menu during an fvwm
 session. The menu can be rebuilt using **AddToMenu**. The optional
-parameter *recreate* tells fvwm not to throw away the menu completely
+parameter *recreate* tells |fvwm| not to throw away the menu completely
 but to throw away all the menu items (including the title).
 
 DestroyMenu Utilities
@@ -2285,7 +2285,7 @@ option *TearOffImmediately*. Normally the menu opens in normal state for
 a split second before being torn off. As tearing off places the menu
 like any other window, a position should be specified explicitly:
 
-| # Forbid fvwm to place the menu window **
+| # Forbid |fvwm| to place the menu window **
   Style** <name of menu> UsePPosition
 | # Menu at top left corner of screen
 | Menu Root 0p 0p TearOffImmediately
@@ -2515,7 +2515,7 @@ is used since sub menus pop up immediately then.
 
 *PopupImmediately* makes menu items with sub menus pop up it up as soon
 as the pointer enters the item. The *PopupDelay option* is ignored then.
-If *PopupDelayed* is used fvwm looks at the *PopupDelay* option if or
+If *PopupDelayed* is used |fvwm| looks at the *PopupDelay* option if or
 when this automatic popup happens.
 
 *PopdownDelay* works exactly like *PopupDelay* but determines the
@@ -2595,7 +2595,7 @@ activated, and the menu stays open if *PopupIgnore* is used (even if the
 menu was invoked with the **Popup** command). *PopupAsSubmenu* is the
 default.
 
-*RemoveSubmenus* instructs fvwm to remove sub menu when you move back
+*RemoveSubmenus* instructs |fvwm| to remove sub menu when you move back
 into the parent menu. With *HoldSubmenus* the sub menu remains visible.
 You probably want to use *HoldSubmenus* if you are using the
 *PopupDelayed* style. *RemoveSubmenus* affects menu navigation with the
@@ -2614,7 +2614,7 @@ does not work on such a machine.
 
 *ItemFormat* takes a special string as its argument that determines the
 layout of the menu items. Think of the format string as if it were a
-menu item. All you have to do is tell fvwm where to place the different
+menu item. All you have to do is tell |fvwm| where to place the different
 parts of the menu item (i.e. the labels, the triangle denoting a sub
 menu, the mini icons and the side pic) in the blank area. The string
 consists of spaces, Tab characters and formatting directives beginning
@@ -2641,7 +2641,7 @@ the left (**%<**).
 The first **%\|** denotes the beginning of the area that is highlighted
 either with a background color or a relief (or both). The second **%\|**
 marks the end of this area. **%\|** can be used up to twice in the
-string. If you do not add one or both of them, fvwm sets the margins to
+string. If you do not add one or both of them, |fvwm| sets the margins to
 the margins of the whole item (not counting the side picture).
 
 **%s**
@@ -2704,7 +2704,7 @@ triangle + 3p) (1p + end of hilighted area).
 
 MenuStyle \* ItemFormat "%.1\|%3.2<%5i%5l%5l%5r%5i%1\|%4s"
 
-Is used by fvwm with the *SubmenusLeft* option below.
+Is used by |fvwm| with the *SubmenusLeft* option below.
 
 *VerticalItemSpacing* and *VerticalTitleSpacing* control the vertical
 spacing of menu items and titles like *ItemFormat* controls the
@@ -2904,28 +2904,28 @@ omitted, the default setting is restored.
 *FlickeringMoveWorkaround* disables ConfigureNotify events that are
 usually sent to an application while it is moved. If some windows
 flicker annoyingly while being moved, this option may help you. Note
-that if this problem occurs it is not an fvwm bug, it is a problem of
+that if this problem occurs it is not an |fvwm| bug, it is a problem of
 the application.
 
-*MixedVisualWorkaround* makes fvwm install the root colormap before it
+*MixedVisualWorkaround* makes |fvwm| install the root colormap before it
 does some operations using the root window visuals. This is only useful
-when the **−visual** option is used to start fvwm and then only with
+when the **−visual** option is used to start |fvwm| and then only with
 some configurations of some servers (e.g. Exceed 6.0 with an 8 bit
-PseudoColor root and fvwm using a 24 bit TrueColor visual).
+PseudoColor root and |fvwm| using a 24 bit TrueColor visual).
 
 The *ModalityIsEvil* option controls whether Motif applications have the
 ability to have modal dialogs (dialogs that force you to close them
 first before you can do anything else). The default is to not allow
 applications to have modal dialogs. Use this option with care. Once this
-option is turned on, you have to restart fvwm to turn it off.
+option is turned on, you have to restart |fvwm| to turn it off.
 
-*RaiseOverNativeWindows* makes fvwm try to raise the windows it manages
+*RaiseOverNativeWindows* makes |fvwm| try to raise the windows it manages
 over native windows of the X server’s host system. This is needed for
 some X servers running under Windows, Windows NT or Mac OS X. |fvwm| tries
 to detect if it is running under such an X server and initializes the
 flag accordingly.
 
-*RaiseOverUnmanaged* makes fvwm try to raise the windows it manages over
+*RaiseOverUnmanaged* makes |fvwm| try to raise the windows it manages over
 override\_redirect windows. This is used to cope with ill−mannered
 applications that use long−lived windows of this sort, contrary to ICCCM
 conventions. It is useful with the *Unmanaged* style option too.
@@ -2950,17 +2950,17 @@ specification before version 1.2 (the current KDE 2 & 3 versions). These
 pagers and taskbars use the IconicState WM\_STATE state to determine if
 an application is iconified. This state, according to the ICCCM, does
 not imply that a window is iconified (in the usual sense). Turning on
-this option forces fvwm to establish an equivalence between the
+this option forces |fvwm| to establish an equivalence between the
 IconicState WM\_STATE state and the iconified window. This violates
 ICCCM compliance but should not cause big problems. By default this
 option is off.
 
-With the *DisplayNewWindowNames* enabled, fvwm prints the name, icon
+With the *DisplayNewWindowNames* enabled, |fvwm| prints the name, icon
 name (if available), resource and class of new windows to the console.
 This can help in finding the correct strings to use in the **Style**
 command.
 
-When the *ExplainWindowPlacement* option is enabled, fvwm prints a
+When the *ExplainWindowPlacement* option is enabled, |fvwm| prints a
 message to the console whenever a new window is placed or one of the
 commands **PlaceAgain**, **Recapture** or **RecaptureWindow** is used.
 The message explains on which desk, page, Xinerama screen and position
@@ -2969,11 +2969,11 @@ specific window does not appear where you think it should.
 
 The *DebugCRMotionMethod* option enables some debugging code in the
 ConfigureRequest handling routines of fvwm. It is not helpful for the
-user, but if you report a bug to the fvwm team we may ask you to enable
+user, but if you report a bug to the |fvwm| team we may ask you to enable
 this option.
 
 The *TransliterateUtf8* option enables transliteration during
-conversions from utf−8 strings. By default fvwm will not transliterate
+conversions from utf−8 strings. By default |fvwm| will not transliterate
 during conversion, but will fall back to alternate strings provided by
 the clients if conversion from utf−8 fails due to characters which have
 no direct correspondance in the target charecter set. Some clients
@@ -2986,7 +2986,7 @@ This command controls the cursor during the execution of certain
 commands. *Option* can be *DynamicMenu*, *ModuleSynchronous*, *Read*,
 *Wait* or *\**. An option must be followed by a boolean argument *bool*.
 You can use commas to separate individual options. If you set an option
-to "True", then when the corresponding command is run, fvwm displays the
+to "True", then when the corresponding command is run, |fvwm| displays the
 cursor of the *WAIT* context of the **CursorStyle** command. "False"
 forces to not display the cursor. The default is:
 
@@ -3005,11 +3005,11 @@ command and the *Read* option is set to "True".
 
 The *ModuleSynchronous* option affects the **ModuleSynchronous**
 command. If this option is set to "False", then the busy cursor is not
-displayed while fvwm waits for a module started by **ModuleSynchronous**
+displayed while |fvwm| waits for a module started by **ModuleSynchronous**
 to complete its startup.
 
 The *Wait* option affects only the root cursor. During a wait pause the
-root cursor is replaced by the busy cursor and fvwm is still fully
+root cursor is replaced by the busy cursor and |fvwm| is still fully
 functional (you can escape from the pause, see the **EscapeFunc**
 command). If you want to use this option and if you do not use the
 default root cursor, you must set your root cursor with the
@@ -3028,7 +3028,7 @@ This command is obsolete. See the **−−color−limit** option to fvwm.
 
 **ColormapFocus** FollowsMouse \| FollowsFocus
 
-By default, fvwm installs the colormap of the window that the cursor is
+By default, |fvwm| installs the colormap of the window that the cursor is
 in. If you use
 
 ColormapFocus *FollowsFocus*
@@ -3069,7 +3069,7 @@ used when moving or resizing windows
 
 *WAIT* (watch)
 
-used during certain fvwm commands (see **BusyCursor** for details)
+used during certain |fvwm| commands (see **BusyCursor** for details)
 
 *MENU* (top\_left\_arrow)
 
@@ -3153,7 +3153,7 @@ also be *None* (no cursor) or *Tiny* (a single pixel as the cursor).
 | CursorStyle DESTROY gumby
 
 Alternatively, the cursor can be loaded from an (XPM, PNG or SVG) image
-*file*. If fvwm is compiled with Xcursor support, full ARGB is used, and
+*file*. If |fvwm| is compiled with Xcursor support, full ARGB is used, and
 (possibly animated) cursor files made with the **xcursorgen** program
 can be loaded. Otherwise the cursor is converted to monochrome.
 
@@ -3194,7 +3194,7 @@ or any variant of the **DefaultColors** command.
 **DefaultFont** [*fontname*]
 
 **DefaultFont** sets the default font to font *fontname*. The default
-font is used by fvwm whenever no other font has been specified. To reset
+font is used by |fvwm| whenever no other font has been specified. To reset
 the default font to the built−in default, omit the argument. The default
 font is used for menus, window titles, icon titles as well as the
 geometry feedback windows during a move or resize operation. To override
@@ -3246,14 +3246,14 @@ outside the **Key** command does nothing.
 
 **FakeClick** [*command value*] ...
 
-This command is mainly intended for debugging fvwm and no guarantees are
+This command is mainly intended for debugging |fvwm| and no guarantees are
 made that it works for you. *FakeClick* can simulate mouse button press
-and release events and pass them to fvwm or the applications. The
+and release events and pass them to |fvwm| or the applications. The
 parameters are a list of commands which consist of pairs of *command*
 tokens and integer *values*, The *press* and *release* commands are
 followed by the appropriate mouse button number and generate a button
 press or release event on the window below the pointer. The *wait*
-commands pauses fvwm for the given number of milliseconds. The
+commands pauses |fvwm| for the given number of milliseconds. The
 *modifiers* command simulates pressing or releasing modifier keys. The
 values 1 to 5 are mapped to Mod1 to Mod5 while 6, 7 and 8 are mapped to
 Shift , Lock and Control The modifier is set for any further button
@@ -3274,9 +3274,9 @@ command names can be abbreviated with their first letter.
 
 **FakeKeypress** [*command value*] ...
 
-This command is mainly intended for debugging fvwm and no guarantees are
+This command is mainly intended for debugging |fvwm| and no guarantees are
 made that it works for you. **FakeKeypress** can simulate key press and
-release events and pass them to fvwm or applications. The parameters are
+release events and pass them to |fvwm| or applications. The parameters are
 a list of commands which consist of pairs of command tokens and values.
 The *press* and *release* commands are followed by a key name. The key
 name is a standard X11 key name as defined in
@@ -3339,7 +3339,7 @@ This command is obsolete. Please use **ImagePath** instead.
 
 Specifies a colon separated list of directories in which to search for
 images (both monochrome and pixmap). To find an image given by a
-relative pathname, fvwm looks into each directory listed in turn, and
+relative pathname, |fvwm| looks into each directory listed in turn, and
 uses the first file found.
 
 If a directory is given in the form "/some/dir;.ext", this means all
@@ -3377,7 +3377,7 @@ default locale path is:
 
 /install\_prefix/share/locale;fvwm
 
-where install\_prefix is the fvwm installation directory. With such a
+where install\_prefix is the |fvwm| installation directory. With such a
 locale path translations are searched for in
 
 /install\_prefix/share/locale/lang/LC\_MESSAGES/fvwm.mo
@@ -3395,10 +3395,10 @@ LocalePath ";fvwm−themes:+"
 
 to add locale catalogs.
 
-The default fvwm catalog contains a few strings used by the fvwm
+The default |fvwm| catalog contains a few strings used by the fvwm
 executable itself (Desk and Geometry) and strings used in some default
 configuration files and **FvwmForm** configuration. You can take a look
-at the po/ subdirectory of the fvwm source to get the list of the
+at the po/ subdirectory of the |fvwm| source to get the list of the
 strings with a possible translation in various languages. At present,
 very few languages are supported.
 
@@ -3436,7 +3436,7 @@ valid subjects are:
 
 *Colors* which prints information about the colors used by fvwm. This
 useful on screens which can only display 256 (or less) colors at once.
-If *verbose* is one or greater the palette used by fvwm is printed. If
+If *verbose* is one or greater the palette used by |fvwm| is printed. If
 you have a limited color palette, and you run out of colors, this
 command might be helpful.
 
@@ -3447,11 +3447,11 @@ together with their respective reuse.
 *Locale* which prints information on your locale and the fonts that fvwm
 used. *verbose* can be 1 or 2.
 
-*nls* which prints information on the locale catalogs that fvwm used
+*nls* which prints information on the locale catalogs that |fvwm| used
 
-*style* which prints information on fvwm styles. *verbose* can be 1.
+*style* which prints information on |fvwm| styles. *verbose* can be 1.
 
-*bindings* which prints information on all the bindings fvwm has: key,
+*bindings* which prints information on all the bindings |fvwm| has: key,
 mouse and stroke bindings. *verbose* has no effect with this option.
 
 *infostore* which prints information on all entries in the infostore,
@@ -3463,7 +3463,7 @@ listing the key and its value. *verbose* has no effect with this option.
 |                    |                    |                    | is invoked, the    |
 |                    |                    |                    | last command that  |
 |                    |                    |                    | was executed by    |
-|                    |                    |                    | fvwm is executed   |
+|                    |                    |                    | |fvwm| is executed   |
 |                    |                    |                    | again. This        |
 |                    |                    |                    | happens regardless |
 |                    |                    |                    | of whether it was  |
@@ -3495,7 +3495,7 @@ be useful in some tricky setups. The *command* is executed in the same
 context window as the **Schedule** command. An optional integer argument
 *command\_id* may be given in decimal, hexadecimal or octal format. This
 id can be used with the **Deschedule** command to remove the scheduled
-command before it is executed. If no id is given, fvwm uses negative id
+command before it is executed. If no id is given, |fvwm| uses negative id
 numbers, starting with −1 and decreasing by one with each use of the
 **Schedule** command. Note that the **Schedule** command and its
 arguments undergo the usual command line expansion, and, when *command*
@@ -3644,18 +3644,18 @@ the Alt−Tab behavior in another GUI.
 *IconifiedAtEnd* makes iconified windows be moved to the end of the
 list. This is also from another GUI.
 
-The *NoGeometry* option causes fvwm to not display the geometries as
+The *NoGeometry* option causes |fvwm| to not display the geometries as
 well as the separators which indicate the different desktops.
 *NoGeometryWithInfo* removes the geometries, but keep the desktop
-information and indicates iconic windows. *NoDeskNum* causes fvwm to not
+information and indicates iconic windows. *NoDeskNum* causes |fvwm| to not
 display the desktop number in the geometry or before the window title
 with the *NoGeometryWithInfo* option. *NoNumInDeskTitle* is only useful
 if a desktop name is defined with the **DesktopName** command. It causes
-fvwm to not display the desktop number before the desktop name. By
+|fvwm| to not display the desktop number before the desktop name. By
 default, the WindowList menu have a title which indicates the current
 desk or the selected desktop if the *Desk* condition is used. The
 *NoCurrentDeskTitle* option removes this title. *TitleForAllDesks*
-causes fvwm to add a menu title with the desk name and/or number before
+causes |fvwm| to add a menu title with the desk name and/or number before
 each group of windows on the same desk. With *NoLayer*, the layer of the
 window is not diplayed. The options *ShowPage*, *ShowPageX* and
 *ShowPageY* enable displaying the page of the window rounded multiples
@@ -3848,11 +3848,11 @@ obsolete **WindowsDesk** command, which can no longer be used.
 
 **MoveThreshold** [*pixels*]
 
-When the user presses a mouse button upon an object fvwm waits to see if
+When the user presses a mouse button upon an object |fvwm| waits to see if
 the action is a click or a drag. If the mouse moves by more than
 *pixels* pixels it is assumed to be a drag.
 
-Previous versions of fvwm hardwired *pixels* to 3, which is now the
+Previous versions of |fvwm| hardwired *pixels* to 3, which is now the
 default value. If *pixels* is negative or omitted the default value
 (which might be increased when 16000x9000 pixel displays become
 affordable) is restored.
@@ -3906,7 +3906,7 @@ global screen or the screen number itself (counting from zero).
 
 **OpaqueMoveSize** [*percentage*]
 
-Tells fvwm the maximum size window with which opaque window movement
+Tells |fvwm| the maximum size window with which opaque window movement
 should be used. The percentage is percent of the total screen area (may
 be greater than 100). With
 
@@ -3999,7 +3999,7 @@ the size of the client window, thus
 Resize 100 100
 
 may make the window bigger than the screen. To base the new size on the
-size of the whole fvwm window, add the *frame* option after the command.
+size of the whole |fvwm| window, add the *frame* option after the command.
 The options *fixeddirection*, *direction* and *warptoborder* are only
 used in interactive move operations. With *fixeddirection* the same
 border is moved even if the pointer moves past the opposite border. The
@@ -4206,7 +4206,7 @@ percentage of window down and in from the upper left hand corner (or
 number of pixels down and in if ’\ *p*\ ’ is appended to the numbers).
 If a number is negative the opposite edge is used and the direction
 reversed. This command works also with windows that are not managed by
-fvwm. In this case fvwm does not bring the window onto the screen if it
+fvwm. In this case |fvwm| does not bring the window onto the screen if it
 is not visible. For example it is possible to warp the pointer to the
 center of the root window on screen 1:
 
@@ -4347,11 +4347,11 @@ command may be removed at some point in the future. Please read the note
 at the end of the section **Delayed Execution of Commands** to learn
 about how to avoid the **Recapture** command.
 
-Causes fvwm to recapture all of its windows. This ensures that the
+Causes |fvwm| to recapture all of its windows. This ensures that the
 latest style parameters are used. The recapture operation is visually
 disturbing.
 
-Since fvwm version 2.4 only a very few **Style** options need a
+Since |fvwm| version 2.4 only a very few **Style** options need a
 **Recapture** to take effect (e.g. *UseStyle*).
 
 **RecaptureWindow**
@@ -4359,7 +4359,7 @@ Since fvwm version 2.4 only a very few **Style** options need a
 This command is obsolete and should not be used anymore. See
 **Recapture** For details.
 
-Causes fvwm to recapture the chosen window.
+Causes |fvwm| to recapture the chosen window.
 
 **Refresh**
 
@@ -4372,7 +4372,7 @@ function.
 
 Causes the chosen window to redraw itself. All pending updates of the
 window’s style and look are applied immediately. E.g. if **Style** or
-**TitleStyle** commands were issued inside a fvwm function.
+**TitleStyle** commands were issued inside a |fvwm| function.
 
 **Stick** [*bool*]
 
@@ -4438,7 +4438,7 @@ the **Style** command instead.
 **Mouse, Key & Stroke Bindings
 IgnoreModifiers** [*Modifiers*]
 
-Tells fvwm which modifiers to ignore when matching Mouse or Key
+Tells |fvwm| which modifiers to ignore when matching Mouse or Key
 bindings. **IgnoreModifiers** affects the *ClickToFocus* style too. This
 command belongs into your *config*. If you issue it when your fvwm
 session is already up and running the results are unpredictable. The
@@ -4455,7 +4455,7 @@ off you can use this command:
 
 IgnoreModifiers L25
 
-If the *Modifiers* argument is the string "*default*", fvwm reverts back
+If the *Modifiers* argument is the string "*default*", |fvwm| reverts back
 to the default value "L".
 
 | **Important**
@@ -4469,7 +4469,7 @@ to the default value "L".
 
 **EdgeCommand** [*direction *\ [*Function*]]
 
-Binds a specified fvwm command *Function* to an edge of the screen.
+Binds a specified |fvwm| command *Function* to an edge of the screen.
 Direction may be one of "*North*", "*Top*", "*West*", "*Left*",
 "*South*", "*Bottom*", "*Right*" and "*East*". If *Function* is omitted
 the binding for this edge is removed. If EdgeCommand is called without
@@ -4523,7 +4523,7 @@ pan frame is always created on that edge.
 
 **EdgeLeaveCommand** [*direction *\ [*Function*]]
 
-Binds a specified fvwm command *Function* to an edge of the screen.
+Binds a specified |fvwm| command *Function* to an edge of the screen.
 Direction may be one of "*North*", "*Top*", "*West*", "*Left*",
 "*South*", "*Bottom*", "*Right*" and "*East*". If *Function* is omitted
 the binding for this edge is removed. If EdgeLeaveCommand is called
@@ -4554,7 +4554,7 @@ Mouse** 3 R A GnomeButton
 
 **Key** [(*window*)] *Keyname Context Modifiers Function*
 
-Binds a keyboard key to a specified fvwm command, or removes the binding
+Binds a keyboard key to a specified |fvwm| command, or removes the binding
 if *Function* is ’−’. The syntax is the same as for a **Mouse** binding
 except that the mouse button number is replaced with a *Keyname*.
 Normally, the key binding is activated when the key is pressed.
@@ -4571,7 +4571,7 @@ necessarily the same as the window the pointer is over (with
 and *ClickToFocus*. If you encounter problems, use the **PointerKey**
 command instead. If you want to bind keys to a window with *SloppyFocus*
 or *ClickToFocus* that are supposed to work when the pointer is not over
-the window, fvwm assumes the pointer is over the client window (i.e. you
+the window, |fvwm| assumes the pointer is over the client window (i.e. you
 have to use the ’W’ context).
 
 The special context ’\ *M*\ ’ for menus can be used to (re)define the
@@ -4719,7 +4719,7 @@ Example:
 
 **Stroke** [(*window*)] *Sequence Button Context Modifiers Function*
 
-Binds a mouse stroke sequence to a specified fvwm command, or removes
+Binds a mouse stroke sequence to a specified |fvwm| command, or removes
 the binding if *Function* is ’−’. The syntax is the same as for a
 **Mouse** binding except that *Sequence* is inserted in front of the
 button number and a value of 0 for *Button* concerns the **StrokeFunc**
@@ -4782,13 +4782,13 @@ your machine. Here an example:
 This example starts the "QuitVerify" form if you draw a box that begins
 in the top left corner.
 
-Note: You need **libstroke** installed and fvwm compiled with stroke
+Note: You need **libstroke** installed and |fvwm| compiled with stroke
 support. **libstroke** can be obtained at
 *http://www.etla.net/~willey/projects/libstroke/*
 
 **StrokeFunc** [*Options*]
 
-Causes fvwm to record a mouse stroke sequence and to execute the
+Causes |fvwm| to record a mouse stroke sequence and to execute the
 corresponding action as defined in a **Stroke** command. The cursor is
 modified to the *STROKE* context of the **CursorStyle** command during
 recording. When the stroke is finished **StrokeFunc** looks for a stroke
@@ -4803,7 +4803,7 @@ function is via a **Mouse** or **Key** command. Examples:
 Key** x R N StrokeFunc
 
 If you press mouse button 3 and Alt anywhere (respectively, press the
-key x when the cursor is on the root window), then fvwm records the
+key x when the cursor is on the root window), then |fvwm| records the
 mouse motions until the mouse button 3 (respectively, the x key) is
 released and then check if the recorded *sequence* corresponds to a
 stroke binding of the form
@@ -4820,9 +4820,9 @@ to abort the command.
 
 The **StrokeFunc** command has five options: *NotStayPressed*,
 *EchoSequence*, *DrawMotion*, *FeedBack* and *StrokeWidth*. These
-options are disabled by default. *EchoSequence* causes fvwm to Echo the
-recorded stroke sequence. *DrawMotion* causes fvwm to draw the mouse
-motion on the screen. *FeedBack* causes fvwm to display during a
+options are disabled by default. *EchoSequence* causes |fvwm| to Echo the
+recorded stroke sequence. *DrawMotion* causes |fvwm| to draw the mouse
+motion on the screen. *FeedBack* causes |fvwm| to display during a
 fraction of second the cursor of the *WAIT* context of the
 **CursorStyle** command if the recorded stroke sequence corresponds to a
 stroke binding. *StrokeWidth* takes an integer argument, which must be
@@ -4885,7 +4885,7 @@ window. The changes take effect immediately.
 
 All pending updates of all windows’ styles and looks are applied
 immediately. E.g. if **Style**, *WindowStyle* or *TitleStyle* commands
-were issued inside a fvwm function.
+were issued inside a |fvwm| function.
 
 **Style** *stylename options* ...
 
@@ -5016,13 +5016,13 @@ following keywords. Each group of style names is separated by slashes
 
 In the above list some options are listed as
 style−option/opposite−style−option. The opposite−style−option for
-entries that have them describes the fvwm default behavior and can be
-used if you want to change the fvwm default behavior. **
+entries that have them describes the |fvwm| default behavior and can be
+used if you want to change the |fvwm| default behavior. **
 Focus policy**
 
-*ClickToFocus* instructs fvwm to give the focus to a window when it is
+*ClickToFocus* instructs |fvwm| to give the focus to a window when it is
 clicked in. The default *MouseFocus* (or its alias *FocusFollowsMouse*)
-tells fvwm to give a window the focus as soon as the pointer enters the
+tells |fvwm| to give a window the focus as soon as the pointer enters the
 window, and take it away when the pointer leaves the window.
 *SloppyFocus* is similar, but doesn’t give up the focus if the pointer
 leaves the window to pass over the root window or a ClickToFocus window
@@ -5133,7 +5133,7 @@ are created. *FPGrabFocus* is the default for windows with the
 *ClickToFocus* style. Note that even if these styles are disabled, the
 application may take the focus itself. |fvwm| can not prevent this.
 
-The *OverrideGrabFocus* style instructs fvwm to never take away the
+The *OverrideGrabFocus* style instructs |fvwm| to never take away the
 focus from such a window via the *GrabFocus* or *GrabFocusTransient*
 styles. This can be useful if you like to have transient windows receive
 the focus immediately, for example in a web browser, but not while you
@@ -5150,7 +5150,7 @@ not. Similarly, *ClickToFocusRaisesOff*/*MouseFocusClickRaisesOff* and
 *ClickToFocusRaises*/*MouseFocusClickRaises* control if the window is
 raised (but depending on the focus model).
 
-Note: in fvwm versions prior to 2.5.3, the "Click..." options applied
+Note: in |fvwm| versions prior to 2.5.3, the "Click..." options applied
 only to windows with *ClickToFocus* while the "Mouse..." options applied
 to windows with a different focus policy. This is no longer the case.
 
@@ -5262,7 +5262,7 @@ font given in the **DefaultFont** command is used. To revert back to the
 default, use the style without the name argument. These styles replace
 the older **WindowFont** and *IconFont* commands.
 
-The deprecated *IndexedWindowName* style causes fvwm to use window
+The deprecated *IndexedWindowName* style causes |fvwm| to use window
 titles in the form
 
 name (i)
@@ -5383,7 +5383,7 @@ application (with the WM\_HINTS property or with the ewmh
 to override any client−provided icons; the *NoIconOverride* style
 changes the behavior to not override any client−provided icons; the
 default overriding behavior can be activated with the
-*NoActiveIconOverride* style. With this style, fvwm uses application
+*NoActiveIconOverride* style. With this style, |fvwm| uses application
 provided icons if the icon is changed but uses the icon provided in the
 configuration file until then.
 
@@ -5439,7 +5439,7 @@ in the lower right hand corner of the screen. One way to figure out a
 geometry like this is to use a window that resizes in pixel increments,
 for example, xv. Then resize and place the xv window where you want the
 iconbox. Then use FvwmIdent to read the windows geometry. The icon box
-is a region of the screen where fvwm attempts to put icons for any
+is a region of the screen where |fvwm| attempts to put icons for any
 matching window, as long as they do not overlap other icons. Multiple
 icon boxes can be defined as overflow areas. When the first icon box is
 full, the second one is filled. All the icon boxes for one style must be
@@ -5554,7 +5554,7 @@ Note that module provided icon managers are not affected by this style.
 
 *MiniIcon* specifies a pixmap to use as the miniature icon for the
 window. This miniature icon can be drawn in a title−bar button (see
-**ButtonStyle**), and can be used by various fvwm modules
+**ButtonStyle**), and can be used by various |fvwm| modules
 (**FvwmWinList**, **FvwmIconMan** and **FvwmTaskBar**). It takes the
 name of a pixmap as an argument.
 
@@ -5582,7 +5582,7 @@ window handles) and busy mode otherwise. Use the *WindowShadeAlwaysLazy
 or WindowShadeBusy* to force using the lazy or busy mode. The default
 setting is restored with *WindowShadeLazy*.
 
-*ResizeOpaque* instructs fvwm to resize the corresponding windows with
+*ResizeOpaque* instructs |fvwm| to resize the corresponding windows with
 their contents visible instead of using an outline. Since this causes
 the application to redraw frequently it can be quite slow and make the
 window flicker excessively, depending on the amount of graphics the
@@ -5634,20 +5634,20 @@ round.
 *StippledIconTitle* works like *StippledTitle* in that it draws stipples
 on the titles of icons but doesn’t make the icon sticky.
 
-*IgnoreRestack* makes fvwm ignore attempts of clients to raise or lower
+*IgnoreRestack* makes |fvwm| ignore attempts of clients to raise or lower
 their own windows. By default, the opposite style, *AllowRestack* is
 active.
 
-*FixedPosition* and *FixedUSPosition* make fvwm ignore attempts of the
+*FixedPosition* and *FixedUSPosition* make |fvwm| ignore attempts of the
 user to move the window. It is still possible to move the window by
 resizing it. To allow the user to move windows, use the
 *VariablePosition* or *VariableUSPosition* style.
 
-*FixedSize* and *FixedUSSize* make fvwm ignore attempts of the user to
+*FixedSize* and *FixedUSSize* make |fvwm| ignore attempts of the user to
 resize the window. To allow the user to resize windows, use the
 *VariableSize* or *VariableUSSize* style.
 
-*FixedPPosition* and *FixedPSize* make fvwm ignore attempts of the
+*FixedPPosition* and *FixedPSize* make |fvwm| ignore attempts of the
 program to move or resize its windows. To allow this kind of actions,
 use the *VariablePPosition* or *VariablePSize* style. These styles may
 sometimes affect the initial placement and dimensions of new windows
@@ -5656,8 +5656,8 @@ places, try either the *VariablePPosition* or *!UsePPosition* styles.
 The *FixedPSize* style may screw up window dimensions for some
 applications. Do Not use this style in this case.
 
-*MoveByProgramMethod* affects how fvwm reacts to requests by the
-application to move its windows. By default, fvwm tries to detect which
+*MoveByProgramMethod* affects how |fvwm| reacts to requests by the
+application to move its windows. By default, |fvwm| tries to detect which
 method to use, but it sometimes detects the wrong method. You may come
 across a window that travels across the screen by a few pixels when the
 application resizes it, moves to a screen border with the frame
@@ -5665,9 +5665,9 @@ decorations off screen, that remembers its position for the next time it
 starts but appears in a slighly shifted position, or that attepmts to
 become full screen but has the. Try out both options, *UseGravity* and
 *IgnoreGravity* on the window (and that window only) and see if that
-helps. By default, fvwm uses the *AutoDetect* method. Once the method
-was detected, it is never changed again. As long as fvwm can not detect
-the proper method, it uses *IgnoreGravity*. To force fvwm to retry the
+helps. By default, |fvwm| uses the *AutoDetect* method. Once the method
+was detected, it is never changed again. As long as |fvwm| can not detect
+the proper method, it uses *IgnoreGravity*. To force |fvwm| to retry the
 detection, use one of the other two options first and then use
 *AutoDetect* again.
 
@@ -5693,13 +5693,13 @@ been disabled either using the style *!Maximizable* or through WM hints.
 This is on by default. The opposite, *!AllowMaximizeFixedSize*, inhibits
 all windows that are not resizable from being maximized.
 
-*ResizeHintOverride* instructs fvwm to ignore the program supplied
+*ResizeHintOverride* instructs |fvwm| to ignore the program supplied
 minimum and maximum size as well as the resize step size (the character
 size in many applications). This can be handy for broken applications
 that refuse to be resized. Do not use it if you do not need it. The
 default (opposite) style is *NoResizeOverride*.
 
-*MinWindowSize [ width [ p ] height [ p ] ]* Tells fvwm the minimum
+*MinWindowSize [ width [ p ] height [ p ] ]* Tells |fvwm| the minimum
 width and height of a window. The values are the percentage of the total
 screen area. If the letter ’\ *p*\ ’ is appended to either of the
 values, the numbers are interpreted as pixels. This command is useful
@@ -5707,7 +5707,7 @@ for certain versions of xemacs which freak out if their windows become
 too small. If you omit he parameters or their values are invalid, both
 limits are set to 0 pixels (which is the default value).
 
-*MaxWindowSize [ width [ p ] height [ p ] ]* Tells fvwm the maximum
+*MaxWindowSize [ width [ p ] height [ p ] ]* Tells |fvwm| the maximum
 width and height of a window. The values are the percentage of the total
 screen area. If the letter ’\ *p*\ ’ is appended to either of the
 values, the numbers are interpreted as pixels. This command is useful to
@@ -5770,7 +5770,7 @@ arguments reinstates the default settings.
 The styles *EdgeMoveDelay* and *EdgeResizeDelay* tells how hard it
 should be to change the desktop viewport by moving or resizing a window
 over the edge of the screen. The parameter tells how many milliseconds
-the pointer must spend on the screen edge before fvwm moves the
+the pointer must spend on the screen edge before |fvwm| moves the
 viewport. The command **EdgeScroll** determines how far the viewport is
 scrolled. If −1 is given as the delay, page flipping is disabled
 completely. The defaults are no delay for moving (0) and no flipping for
@@ -5795,7 +5795,7 @@ xinerama screen on which the window should be kept. Both values are 0 by
 default. To restore the defaults, the option *EdgeMoveResistance* can be
 used without any parameters.
 
-The option *InitialMapCommand* allows for any valid fvwm command or
+The option *InitialMapCommand* allows for any valid |fvwm| command or
 function to run when the window is initially mapped by fvwm. Example:
 
 **Style** MyWindow StartsOnPage 0 0, InitialMapCommand Iconify
@@ -5941,7 +5941,7 @@ hits the bottom screen border.
 
 **Placement policy options and window stacking**
 
-*!UsePPosition* instructs fvwm to ignore the program specified position
+*!UsePPosition* instructs |fvwm| to ignore the program specified position
 (PPosition hint) when adding new windows. Using PPosition is required
 for some applications, but if you do not have one of those it’s a real
 headache. Many programs set PPosition to something obnoxious like 0,0
@@ -5960,7 +5960,7 @@ certain spot on the screen without the user’s consent. Note:
 Note: *!UseTransientPPosition* is equivalent to the deprecated option
 *!TransientPPosition*
 
-*NoUseIconPosition* instructs fvwm to ignore the program specified icon
+*NoUseIconPosition* instructs |fvwm| to ignore the program specified icon
 position (IconPosition hint) when iconifying the window. Note:
 *!UseIconPosition* is equivalent to the deprecated option
 *!IconPosition*
@@ -5987,7 +5987,7 @@ for the global screen or the screen number itself (counting from zero).
 A new window is placed on the specified Xinerama screen. The default is
 to place windows on the screen that contains the mouse pointer at the
 time the window is created. However, those windows which are not placed
-by fvwm (i.e., those with a USPosition hint from a user specified
+by |fvwm| (i.e., those with a USPosition hint from a user specified
 geometry) are normally placed in a position relative to the global
 screen. The *StartsOnScreen* style is also useful to cause these windows
 to be placed relative to a specific Xinerama screen. For example:
@@ -6022,14 +6022,14 @@ default is *ManualPlacementIgnoresStartsOnPage*;
 *CaptureHonorsStartsOnPage* causes the initial capture (of an already
 existing window) at startup to place the window according to the
 *StartsOnPage* and *StartsOnScreen* desk, page and Xinerama screen
-specification. *CaptureIgnoresStartsOnPage* causes fvwm to ignore these
+specification. *CaptureIgnoresStartsOnPage* causes |fvwm| to ignore these
 settings (including *StartsOnDesk*) on initial capture. The default is
 *CaptureIgnoresStartsOnPage*.
 
 *RecaptureHonorsStartsOnPage* causes a window to be placed according to,
 or revert to, the *StartsOnPage* and *StartsOnScreen* desk, page and
 Xinerama screen specification on **Restart** or *Recapture*.
-*RecaptureIgnoresStartsOnPage* causes fvwm to respect the current window
+*RecaptureIgnoresStartsOnPage* causes |fvwm| to respect the current window
 position on **Restart** or **Recapture**. The default is
 *RecaptureIgnoresStartsOnPage*.
 
@@ -6046,16 +6046,16 @@ by the command **DefaultLayers**; the default is 4.
 *StaysOnBottom* puts the window in the bottom layer. This layer can be
 changed by the command **DefaultLayers**; the default is 2.
 
-*StartsLowered* instructs fvwm to put the window initially at the bottom
+*StartsLowered* instructs |fvwm| to put the window initially at the bottom
 of its layer rather than the default *StartsRaised*.
 
-*StartShaded* tells fvwm to shade the window. An optional direction
+*StartShaded* tells |fvwm| to shade the window. An optional direction
 argument may be given, which can be one of "*North*", "*South*",
 "*West*", "*East*", "*NorthWest*", "*NorthEast*", "*SouthWest*",
 "*SouthEast*" or if no direction is given, the default is to shade
 north.
 
-*SkipMapping* tells fvwm not to switch to the desk the window is on when
+*SkipMapping* tells |fvwm| not to switch to the desk the window is on when
 it gets mapped initially (useful with *StartsOnDesk* or *StartsOnPage*).
 
 *KeepWindowGroupsOnDesk* makes new windows that have the window group
@@ -6067,7 +6067,7 @@ windows in this case.
 **Transient windows**
 
 *DecorateTransient* causes transient windows, which are normally left
-undecorated, to be given the usual fvwm decorations (title bar, buttons,
+undecorated, to be given the usual |fvwm| decorations (title bar, buttons,
 etc.). Note that some pop−up windows, such as the xterm menus, are not
 managed by the window manager and still do not receive decorations.
 *NakedTransient* (the default) causes transient windows not to be given
@@ -6108,9 +6108,9 @@ like this
 To understand the used terminology in this sub section, please read the
 **Extended Window Manager Hints** section.
 
-*EWMHDonateIcon* instructs fvwm to set the application ewmh icon hint
-with the icon that is used by fvwm if the application does not provide
-such hint (and if the icon used by fvwm is not an icon window).
+*EWMHDonateIcon* instructs |fvwm| to set the application ewmh icon hint
+with the icon that is used by |fvwm| if the application does not provide
+such hint (and if the icon used by |fvwm| is not an icon window).
 *EWMHDonateMiniIcon* does the same thing for mini icons. This allows
 compliant pager, taskbar, iconbox ...etc to display the same (mini)
 icons as fvwm. Note that on some hardware (e.g., 8−bit displays) these
@@ -6120,37 +6120,37 @@ and *EWMHDontDonateMiniIcon* restore the defaults which are to not set
 any ewmh (mini) icons hints.
 
 By default, if an application provides an ewmh icon hint of small size
-(i.e., height and width less than or equal to 22), then fvwm uses this
-icon as its mini icon. *EWMHMiniIconOverride* instructs fvwm to ignore
+(i.e., height and width less than or equal to 22), then |fvwm| uses this
+icon as its mini icon. *EWMHMiniIconOverride* instructs |fvwm| to ignore
 ewmh icons and to use the mini icon provided by the *MiniIcon* style.
 *EWMHNoMiniIconOverride* restores the default.
 
-*EWMHUseStackingOrderHints* causes fvwm to use EWMH hints and respect
+*EWMHUseStackingOrderHints* causes |fvwm| to use EWMH hints and respect
 EWMH hints which change the window layer. *EWMHIgnoreStackingOrderHints*
-causes fvwm to ignore EWMH layer hints.
+causes |fvwm| to ignore EWMH layer hints.
 
 An application can ask for some reserved space on the desktop by a hint.
 In the EWMH terminology such a hint is called a strut and it is used to
 compute the working area and may be used for window placement and in the
-maximize command. *EWMHIgnoreStrutHints* causes fvwm to ignore such
-hints, as *EWMHUseStrutHints*, causes fvwm to use it which is the
+maximize command. *EWMHIgnoreStrutHints* causes |fvwm| to ignore such
+hints, as *EWMHUseStrutHints*, causes |fvwm| to use it which is the
 default.
 
-*EWMHIgnoreStateHints* causes fvwm to ignore initial EWMH state hints
+*EWMHIgnoreStateHints* causes |fvwm| to ignore initial EWMH state hints
 when a new window is mapped. The default *EWMHUseStateHints* causes fvwm
 to accept such hints.
 
-*EWMHIgnoreWindowType* causes fvwm to ignore EWMH window type
-specification. The default *!EWMHIgnoreWindowType* causes fvwm to style
+*EWMHIgnoreWindowType* causes |fvwm| to ignore EWMH window type
+specification. The default *!EWMHIgnoreWindowType* causes |fvwm| to style
 windows of specified types as such.
 
-*EWMHMaximizeIgnoreWorkingArea* causes fvwm to ignore the EWMH working
+*EWMHMaximizeIgnoreWorkingArea* causes |fvwm| to ignore the EWMH working
 area when it executes a **Maximize** command. With
 *EWMHMaximizeUseWorkingArea* the EWMH working area is used as with
 *EWMHMaximizeUseDynamicWorkingArea* the EWMH dynamic working area is
 used (the default).
 
-*EWMHPlacementIgnoreWorkingArea* causes fvwm to ignore the EWMH working
+*EWMHPlacementIgnoreWorkingArea* causes |fvwm| to ignore the EWMH working
 area when it places (or places again) a window. With
 *EWMHPlacementUseWorkingArea* the EWMH working area is taken in account
 as with *EWMHPlacementUseDynamicWorkingArea* the EWMH dynamic working
@@ -6167,7 +6167,7 @@ determine if the X server uses backing store for the window or not.
 of a window in memory. This is usually slower if the client runs on the
 same machine as the X server, but can be much faster if the connection
 is slow (see also *SaveUnder* below). *BackingStoreOff* disables backing
-store for the window. By default, fvwm does not enable or disable
+store for the window. By default, |fvwm| does not enable or disable
 backing store itself but leaves is as the window requested it. To revert
 back to the application’s choice, use the *BackingStoreWindowDefault*
 style.
@@ -6178,7 +6178,7 @@ store.
 *SaveUnder* enables the corresponding window attribute in the X server.
 For a window using this style, the X server tries to store the graphics
 below it in memory which is usually slower if the client runs on the
-same machine as the X server. *SaveUnder* may speed up fvwm if the
+same machine as the X server. *SaveUnder* may speed up |fvwm| if the
 connection to the X server is slow (e.g. over a modem link). To disable
 save under, use the *SaveUnderOff* style. This is the default. See also
 *BackingStore* above.
@@ -6190,21 +6190,21 @@ type *ParentRelative* to achieve transparency. |fvwm| modules that support
 transparent colorsets require this setting. *Opacity* is the default and
 should be used for all non−transparent clients for better performance.
 
-*MwmDecor* makes fvwm attempt to recognize and respect the mwm
+*MwmDecor* makes |fvwm| attempt to recognize and respect the mwm
 decoration hints that applications occasionally use. To switch this
 style off, use the *NoDecorHint* style.
 
-*MwmFunctions* makes fvwm attempt to recognize and respect the mwm
+*MwmFunctions* makes |fvwm| attempt to recognize and respect the mwm
 prohibited operations hints that applications occasionally use.
-*HintOverride* makes fvwm shade out operations that mwm would prohibit,
+*HintOverride* makes |fvwm| shade out operations that mwm would prohibit,
 but it lets you perform the operation anyway. *NoFuncHint* allows turns
 off the mwm hints completely.
 
-*OLDecor* makes fvwm attempt to recognize and respect the olwm and olvwm
+*OLDecor* makes |fvwm| attempt to recognize and respect the olwm and olvwm
 hints that many older XView and OLIT applications use. Switch this
 option off with *NoOLDecor*.
 
-With *GNOMEIgnoreHints* fvwm ignores all GNOME hints for the window,
+With *GNOMEIgnoreHints* |fvwm| ignores all GNOME hints for the window,
 even if GNOME compliance is compiled in. This is useful for those pesky
 applications that try to be more clever than the user and use GNOME
 hints to force the window manager to ignore the user’s preferences. The
@@ -6279,7 +6279,7 @@ these styles as condition names. Take care not to confuse them.
 
 **Examples**
 
-| # Change default fvwm behavior to no title−
+| # Change default |fvwm| behavior to no title−
 | # bars on windows! Also define a default icon.
 | Style \* !Title, \\
 | Icon unknown1.xpm, \\
@@ -6382,7 +6382,7 @@ Initially for this example all button states are set to a pixmap. The
 second line replaces the "ActiveDown" state with a gradient (it
 overrides the pixmap assigned to it in the line before, which assigned
 the same style to every state). Then, the *UseTitleStyle* flag is set
-for all buttons, which causes fvwm to draw any styles set with
+for all buttons, which causes |fvwm| to draw any styles set with
 **TitleStyle** before drawing the buttons. Finally, **AddButtonStyle**
 is used to place additional pixmaps for both "ActiveUp" and "ActiveDown"
 states and a vector button style is drawn on top of all states.
@@ -6671,7 +6671,7 @@ style is fully destructive.
 
 The *Colorset cs* [*alpha*] style fills the button with the Colorset
 *cs*. The optional *alpha* argument is a percentage between 0 and 100.
-It causes fvwm to merge the colorset background onto the button using
+It causes |fvwm| to merge the colorset background onto the button using
 this percentage. If the percentage is 0 the colorset background is
 hidden and if it is 100 the colorset background is fully applied. The
 default is 100. So, the destructiveness depends on the *alpha* argument.
@@ -6700,7 +6700,7 @@ ButtonStyle 2 Vector 4 50x30@1 70x70@0 30x70@0 50x30@1
 then the button 2 decoration uses a 4−point pattern consisting of a line
 from (x=50,y=30) to (70,70) in the shadow color (@0), and then to
 (30,70) in the shadow color, and finally to (50,30) in the highlight
-color (@1). Is that too confusing? See the fvwm web pages for some
+color (@1). Is that too confusing? See the |fvwm| web pages for some
 examples with screenshots.
 
 A more complex example of *Vector*:
@@ -6781,7 +6781,7 @@ State−independent flags affect button behavior. Each *flag* is separated
 by a space. If a ’!’ is prefixed to the flag then the behavior is
 negated. The special flag *Clear* clears any existing flags.
 
-The following flags are usually used to tell fvwm which buttons should
+The following flags are usually used to tell |fvwm| which buttons should
 be affected by mwm function hints (see *MwmFunctions* option of the
 **Style** command. This is not done automatically since you might have
 buttons bound to complex functions, for instance.
@@ -6836,7 +6836,7 @@ plans to replace it with a more flexible solution in fvwm−3.0.
 
 Deletes the *decor* defined with **AddToDecor**, so that subsequent
 references to it are no longer valid. Windows using this *decor* revert
-to the "Default" decor. The optional parameter *recreate* tells fvwm not
+to the "Default" decor. The optional parameter *recreate* tells |fvwm| not
 to throw away the decor completely but to throw away only its contents.
 If the decor is created again later, windows do not use it before the
 *UseDecor* style is applied again unless the decor was destroyed with
@@ -7039,7 +7039,7 @@ Defines the virtual desktop size in units of the physical screen size.
 
 Tells how hard it should be to change the desktop viewport by moving the
 mouse over the edge of the screen. The parameter tells how many
-milliseconds the pointer must spend on the screen edge before fvwm moves
+milliseconds the pointer must spend on the screen edge before |fvwm| moves
 the viewport. This is intended for people who use
 
 **EdgeScroll** 100 100
@@ -7081,12 +7081,12 @@ wraps around at the edge of the desktop. If
 
 EdgeScroll 100000 100000
 
-is used fvwm scrolls by whole pages, wrapping around at the edge of the
+is used |fvwm| scrolls by whole pages, wrapping around at the edge of the
 desktop.
 
 **EdgeThickness** 0 \| 1 \| 2
 
-This is the width or height of the invisible window that fvwm creates on
+This is the width or height of the invisible window that |fvwm| creates on
 the edges of the screen that are used for the edge scrolling feature.
 
 In order to enable page scrolling via the mouse, four windows called the
@@ -7125,7 +7125,7 @@ definition of the Working Area.
 **EwmhNumberOfDesktops** *num* [*max*]
 
 This command is useful only for an ewmh compliant pager or taskbar (as
-kpager or kicker taskbar) and not for fvwm modules ( **FvwmPager** or
+kpager or kicker taskbar) and not for |fvwm| modules ( **FvwmPager** or
 **FvwmIconMan**). It causes a compliant application to consider at least
 *num* desktops (desktop 0 to desktop *num*\ −1). The optional argument
 *max* causes a compliant application to never consider more than *max*
@@ -7134,7 +7134,7 @@ number of desktops is determined dynamically. It is at least *num*, but
 it can be d if there is a window on desktop d−1 (or if the current
 desktop is desktop d−1) and d is less or equal to *max* or *max* is
 null. Moreover, a compliant pager can ask to change *num* itself. This
-is accepted by fvwm only if this number is less than or equal to *max*
+is accepted by |fvwm| only if this number is less than or equal to *max*
 or if *max* is null. Note that negative desktops are not supported by
 the ewmh specification. The default is 4 0.
 
@@ -7229,7 +7229,7 @@ desktop. If
 
 Scroll 100000 0
 
-is executed over and over fvwm moves to the next desktop page on each
+is executed over and over |fvwm| moves to the next desktop page on each
 execution and wraps around at the edge of the desktop, so that every
 page is hit in turn.
 
@@ -7285,7 +7285,7 @@ none) resets the primary screen to 0.
 
 For multi−screen implementations other than Xinerama, such as Single
 Logical Screen, it is possible to simulate a Xinerama configuration if
-the total screen seen by fvwm is made up of equal sized monitors in a
+the total screen seen by |fvwm| is made up of equal sized monitors in a
 rectangular grid. The **XineramaSls** command turns SLS support on or
 off or toggles it to the opposite state, depending on if the boolean
 argument is "True", "False" or "toggle". If no argument is given, this
@@ -7410,7 +7410,7 @@ Mouse** 3 6 A FuncIconifySameResource $[w.resource]
 
 Deletes a function, so that subsequent references to it are no longer
 valid. You can use this to change the contents of a function during a
-fvwm session. The function can be rebuilt using **AddToFunc**.
+|fvwm| session. The function can be rebuilt using **AddToFunc**.
 
 DestroyFunc PrintFunction
 
@@ -7425,13 +7425,13 @@ Echo Beginning style definitions...
 
 The **EchoFuncDefinition** is similar to the **Echo** command but prints
 the definition for the given *function* to *stderr*. It is useful to
-find out how fvwm handles quoting and for debugging functions
+find out how |fvwm| handles quoting and for debugging functions
 
 **Exec** *command*
 
 Executes *command*. You should not use an ampersand ’&’ at the end of
 the command. You probably want to use an additional "exec" at the
-beginning of *command*. Without that, the shell that fvwm invokes to run
+beginning of *command*. Without that, the shell that |fvwm| invokes to run
 your command stays until the command exits. In effect, you’ll have twice
 as many processes running as you need. Note that some shells are smart
 enough to avoid this, but it never hurts to include the "exec" anyway.
@@ -7465,14 +7465,14 @@ default Bourne shell (*/bin/sh*).
 Used to bind a previously defined function to a key or mouse button. The
 following example binds mouse button 1 to a function called
 "Move−or−Raise", whose definition was provided as an example earlier in
-this man page. After performing this binding fvwm executes the
+this man page. After performing this binding |fvwm| executes the
 "move−or−raise" function whenever button 1 is pressed in a window’s
 title−bar.
 
 **Mouse** 1 T A Function Move−or−Raise
 
 The keyword **Function** may be omitted if *FunctionName* does not
-coincide with an fvwm command.
+coincide with an |fvwm| command.
 
 Warning: Please read the comments on executing complex functions in the
 section **Scripting and Complex Functions**.
@@ -7480,15 +7480,15 @@ section **Scripting and Complex Functions**.
 **InfoStoreAdd** *key value*
 
 Stores the *value* at the given *key*. This is useful to store generic
-information used in the lifetime of an fvwm config file. For example
+information used in the lifetime of an |fvwm| config file. For example
 storing program preferences for opening video files.
 
 The purpose of this command is to store internal information to fvwm
-which can be used bu fvwm functions, or when opening programs of a
+which can be used bu |fvwm| functions, or when opening programs of a
 certain type. Previous to this command the only way to do this was via
 **SetEnv** but this is discouraged because it places such information in
 the environment, which pollutes it and makes the information global to
-other processes started by fvwm which may then modify them which might
+other processes started by |fvwm| which may then modify them which might
 not be what’s wanted. Hence the point of **InfoStoreAdd** is to still
 allow for such information to be stored, but kept internal to fvwm.
 
@@ -7532,7 +7532,7 @@ action for **Menu** or **Popup**.
 
 **PipeRead** *command* [quiet]
 
-Causes fvwm to read commands from the output of the *command*. This
+Causes |fvwm| to read commands from the output of the *command*. This
 *command* is executed by */bin/sh* as if you typed it on the command
 line. If the command consists of more than one word it must be quoted.
 Useful for building up dynamic menu entries based on a directories
@@ -7565,7 +7565,7 @@ section **Conditional Commands** for the meaning of return codes).
 
 **Read** *filename* [quiet]
 
-Causes fvwm to read commands from the file named *filename*. If the
+Causes |fvwm| to read commands from the file named *filename*. If the
 keyword *Quiet* follows the command no message is produced if the file
 is not found. If the file name does not begin with a slash (’/’), fvwm
 looks in the user’s data directory, then the system data directory. The
@@ -7584,7 +7584,7 @@ conjunction with the **FvwmM4** module. For example:
 SetEnv height HEIGHT
 
 makes the **FvwmM4** set variable *HEIGHT* usable by processes started
-by fvwm as the environment variable *$height*. If *value* includes
+by |fvwm| as the environment variable *$height*. If *value* includes
 whitespace, you should enclose it in quotes. If no *value* is given, the
 variable is deleted.
 
@@ -7595,7 +7595,7 @@ selected when such a function is invoked the user is asked to select a
 window. Sometimes this behavior is unwanted, for example if the function
 was called by a module and the window that was selected at first does
 not exist anymore. You can prevent this by putting **Silent** in front
-of the fvwm *command*. If a function that needs a window is called with
+of the |fvwm| *command*. If a function that needs a window is called with
 **Silent** without a window selected, it simply returns without doing
 anything. If **Silent** is used on a user defined function it affects
 all function and sub function calls until the original function exits.
@@ -7622,7 +7622,7 @@ inherited by processes started directly by fvwm.
 
 **Wait** *window*
 
-This command is intended to be used in fvwm functions only. It causes
+This command is intended to be used in |fvwm| functions only. It causes
 execution of a function to pause until a new window matching *window*
 appears. This can be a window’s name, class, or resource string. It may
 contain the wildcards ’\*’ and ’?’, which are matched in the usual Unix
@@ -7941,7 +7941,7 @@ The **WindowId** command looks for a specific window *id* and runs the
 specified *command* on it. The second form of syntax retrieves the
 window id of the root window of the given *screen*. If no *screen* is
 given, the current screen is assumed. The window indicated by *id* may
-belong to a window not managed by fvwm or even a window on a different
+belong to a window not managed by |fvwm| or even a window on a different
 screen. Although most commands can not operate on such windows, there
 are some exceptions, for example the **WarpToWindow** command. Returns
 −1 if no window with the given id exists. See **Conditions** section for
@@ -7972,7 +7972,7 @@ should be stored in the environment variable for a further proceeding.
 The *conditions* that may be given as an argument to any conditional
 command are a list of keywords separated by commas, enclosed in
 parentheses. Unless stated otherwise, conditional commands accept all
-the conditions listed below. Note that earlier versions of fvwm required
+the conditions listed below. Note that earlier versions of |fvwm| required
 the conditions to be separated by whitespace instead of commas and
 enclosed in brackets instead of parentheses (this is still supported for
 backward compatibility).
@@ -8014,7 +8014,7 @@ Next** (!**FvwmPager**, !\ **FvwmForm**\ \*, !\ **FvwmButtons**)
 **Raise**
 
 These two commands are equivalent; either one raises the next window
-which is not one of the named fvwm modules.
+which is not one of the named |fvwm| modules.
 
 Any condition can be negated by using a an exclamation mark (’!’)
 directly in front of its name.
@@ -8226,7 +8226,7 @@ conflicts.
 Deletes module configuration entries, so that new configuration lines
 may be entered instead. This also sometimes the only way to turn back
 some module settings, previously defined. This changes the way a module
-runs during a fvwm session without restarting. Wildcards can be used for
+runs during a |fvwm| session without restarting. Wildcards can be used for
 portions of the name as well.
 
 The new non−conflicting syntax allows a delimiter, a colon and optional
@@ -8267,7 +8267,7 @@ or de−iconified), **FvwmAuto** (an auto raise module), **FvwmBacker**
 (to change the background when you change desktops), **FvwmBanner** (to
 display a spiffy XBM, XPM, PNG or SVG), **FvwmButtons** (brings up a
 customizable tool bar), **FvwmCommandS** (a command server to use with
-shell’s FvwmCommand client), **FvwmConsole** (to execute fvwm commands
+shell’s FvwmCommand client), **FvwmConsole** (to execute |fvwm| commands
 directly), **FvwmCpp** (to preprocess your *config* with cpp),
 **FvwmDebug** (to help debug fvwm), **FvwmDragWell** (the place to
 drag&drop to), **FvwmEvent** (trigger various actions by events),
@@ -8279,11 +8279,11 @@ the desktop), **FvwmPerl** (a Perl manipulator and preprocessor),
 **FvwmProxy** (to locate and control obscured windows by using small
 proxy windows), **FvwmRearrange** (to rearrange windows), **FvwmSave**
 (saves the desktop state in .xinitrc style), **FvwmSaveDesk** (saves the
-desktop state in fvwm commands), **FvwmScript** (another powerful dialog
+desktop state in |fvwm| commands), **FvwmScript** (another powerful dialog
 toolkit), **FvwmScroll** (puts scrollbars on any window), **FvwmTabs**
 (a generic tabbing module), **FvwmTaskBar** (a Windows like task bar),
 **FvwmTheme** (managed colorsets, obsolete), **FvwmWharf** (an AfterStep
-like button bar), **FvwmWindowMenu** (a configurable fvwm menu listing
+like button bar), **FvwmWindowMenu** (a configurable |fvwm| menu listing
 current windows), **FvwmWinList** (a window list). These modules have
 their own man pages. There may be other modules out on there as well.
 
@@ -8291,11 +8291,11 @@ Modules can be short lived transient programs or, like **FvwmButtons** ,
 can remain for the duration of the X session. Modules are terminated by
 the window manager prior to restarts and quits, if possible. See the
 introductory section on modules. The keyword **Module** may be omitted
-if *modulename* is distinct from all fvwm commands.
+if *modulename* is distinct from all |fvwm| commands.
 
 **ModuleListenOnly** *modulename* [*moduleparams*]
 
-This command works like the **Module** command, but fvwm never sends any
+This command works like the **Module** command, but |fvwm| never sends any
 messages to the module. This may be handy to write a module as a shell
 script that is triggered by external events without the burden to answer
 packets sent by fvwm. For example, a module written as a shell script
@@ -8305,7 +8305,7 @@ clock.
 **ModulePath** *path*
 
 Specifies a colon separated list of directories in which to search for
-modules. To find a module, fvwm searches each directory in turn and uses
+modules. To find a module, |fvwm| searches each directory in turn and uses
 the first file found. Directory names on the list do not need trailing
 slashes.
 
@@ -8326,17 +8326,17 @@ environment variable *$FVWM\_MODULEDIR*.
 The **ModuleSynchronous** command is very similar to **Module**. Fvwm
 stops processing any commands and user input until the module sends a
 string beginning with "NOP FINISHED STARTUP" back to fvwm. If the
-optional *Timeout* is given fvwm gives up if the module sent no input
-back to fvwm for *secs* seconds. If the *Expect* option is given, fvwm
+optional *Timeout* is given |fvwm| gives up if the module sent no input
+back to |fvwm| for *secs* seconds. If the *Expect* option is given, fvwm
 waits for the given *string* instead. **ModuleSynchronous** should only
-be used during fvwm startup to enforce the order in which modules are
+be used during |fvwm| startup to enforce the order in which modules are
 started. This command is intended for use with the (currently
 hypothetical) module that should be in place before other modules are
 started.
 
-Warning: It is quite easy to hang fvwm with this command, even if a
+Warning: It is quite easy to hang |fvwm| with this command, even if a
 timeout is given. Be extra careful choosing the string to wait for.
-Although all modules in the fvwm distribution send back the "NOP
+Although all modules in the |fvwm| distribution send back the "NOP
 FINISHED STARTUP" string once they have properly started up, this may
 not be the case for third party modules. Moreover, you can try to escape
 from a locked **ModuleSynchronous** command by using the key sequence
@@ -8344,8 +8344,8 @@ Ctrl-Alt-Escape (see the **EscapeFunc**).
 
 **ModuleTimeout** *timeout*
 
-Specifies how many seconds fvwm waits for a module to respond. If the
-module does not respond within the time limit then fvwm kills it.
+Specifies how many seconds |fvwm| waits for a module to respond. If the
+module does not respond within the time limit then |fvwm| kills it.
 *timeout* must be greater than zero, or it is reset to the default value
 of 30 seconds.
 
@@ -8368,12 +8368,12 @@ implementation of more complex commands in modules.
 
 **QuitScreen**
 
-Causes fvwm to stop managing the screen on which the command was issued.
+Causes |fvwm| to stop managing the screen on which the command was issued.
 
 **Restart** [*window\_manager *\ [*params*]]
 
-Causes fvwm to restart itself if *window\_manager* is left blank, or to
-switch to an alternate window manager (or other fvwm version) if
+Causes |fvwm| to restart itself if *window\_manager* is left blank, or to
+switch to an alternate window manager (or other |fvwm| version) if
 *window\_manager* is specified. If the window manager is not in your
 default search path, then you should use the full path name for
 *window\_manager*.
@@ -8384,8 +8384,8 @@ expanded to the user’s home directory) and environmental variables
 *$VAR* or *${VAR}*. Here are several examples:
 
 | **Key** F1 R N Restart **
-  Key** F1 R N Restart fvwm −s **
-  Key** F1 R N Restart ~/bin/fvwm −f $HOME/.fvwm/main **
+  Key** F1 R N Restart |fvwm| −s **
+  Key** F1 R N Restart ~/bin/|fvwm| −f $HOME/.fvwm/main **
   Key** F1 R N Restart fvwm1 −s −f .fvwmrc **
   Key** F1 R N Restart xterm −n ’"X console"’ \\
 | −T \\"X\\ console\\" −e fvwm1 −s
@@ -8397,16 +8397,16 @@ command line arguments are lost. On a restart without parameters or with
 −−pass−args, they are preserved. Here are some cases when ’Restart
 fvwm2’ or ’Restart fvwm’ cause troubles:
 
-| \* running fvwm under a session manager
-| \* running fvwm with multi headed displays
+| \* running |fvwm| under a session manager
+| \* running |fvwm| with multi headed displays
 | \* having command line arguments, like
 | −f themes−rc or −cmd
 | \* if the first fvwm2 in the $PATH is a
 | different one
 
 This is why we are issuing a warning on an old usage. If you really want
-to restart to fvwm with no additional arguments, you may get rid of this
-warning by using "Restart fvwm −s" or "Restart /full/path/fvwm".
+to restart to |fvwm| with no additional arguments, you may get rid of this
+warning by using "Restart |fvwm| −s" or "Restart /full/path/fvwm".
 
 Note, currently with multi headed displays, restart of fvwms on
 different screens works independently.
@@ -8421,7 +8421,7 @@ This command is useful if you use initial arguments like
 
 −cmd FvwmCpp
 
-and want to switch to another fvwm version without losing the initial
+and want to switch to another |fvwm| version without losing the initial
 arguments.
 
 **Restart −−dont−preserve−state** [*other−params*]
@@ -8450,8 +8450,8 @@ this functionality. Use Unix signals to manage xsm remotely.
 
 | **Colorsets**
 | Colorsets are a powerful method to control colors. Colorsets create
-  appearance resources that are shared by fvwm and its modules. When a
-  colorset is modified all parts of fvwm react to that change. A
+  appearance resources that are shared by |fvwm| and its modules. When a
+  colorset is modified all parts of |fvwm| react to that change. A
   colorset includes a foreground color, background color, shadow and
   highlight color (often based on the background color), background face
   (this includes images and all kinds of gradients). There is a way to
@@ -8542,7 +8542,7 @@ behavior the color name can be omitted.
 
 *fgsh* takes a color name as an argument and sets the color used by the
 shadowing font effect. See the **Font Shadow Effects** section of the
-fvwm man page. By default this color is computed from the foreground and
+|fvwm| man page. By default this color is computed from the foreground and
 background colors. To switch back to the default the color name can be
 omitted.
 
@@ -8626,7 +8626,7 @@ of the root window) which corresponds to the main colorset and most of
 the widgets are windows which are children of the main window. *Tint*
 may work or not with the *Transparent* option. When the colorset is
 drawn on the foreground *Tint* should work. In some cases, tinting may
-be very slow. Tinting may work with fvwm menu (without animation).
+be very slow. Tinting may work with |fvwm| menu (without animation).
 Tinting may work better if your X server has backing store enabled (try
 xdpyinfo to see if this the case). There is a chance that the backing
 store support of your X server does not work well with the terrible hack
@@ -8638,7 +8638,7 @@ make this option work, you must use an **Esetroot** compatible program,
 fvwm−root with the −−retain−pixmap option or **FvwmBacker** with the
 RetainPixmap option (and colorset or solid backgrounds). The *buffer*
 keyword is useful only when the *Tint* option is used too. This speeds
-up creation of windows which use the colorset (useful for fvwm menus) at
+up creation of windows which use the colorset (useful for |fvwm| menus) at
 the cost of memory usage. It also speeds up opaque move and resize which
 can be unacceptably slow without *buffer*. However, this option may add
 a lot of memory to your X server (depending on the size of the image
@@ -8656,7 +8656,7 @@ mask is equivalent to all not completely transparent pixels (alpha > 0).
 
 | **Warning**
 | Due to the way X11 implements shapes you cannot take back making
-  windows shaped. You may have to restart fvwm or the shaped
+  windows shaped. You may have to restart |fvwm| or the shaped
   application.
 
 *?Gradient ...* creates a pixmap and stretches it to fit the window.
@@ -8689,23 +8689,23 @@ specified, they are recomputed from the tinted bg color. With no
 arguments this option removes the tint.
 
 *Alpha* takes a percentage between 0 and 100 as an argument. It causes
-fvwm to merge the image defined using *?Pixmap* or *?Gradient* with the
+|fvwm| to merge the image defined using *?Pixmap* or *?Gradient* with the
 *bg* color using the percentage. If the percentage is 0 the image is
 hidden and if it is 100 the image is displayed as usual (no merge). The
 default is 100 and it is restored if no argument is given.
 
 *fgAlpha* takes a percentage between 0 and 100 as an argument. It causes
-fvwm to merge the text and the colorset background using the percentage.
+|fvwm| to merge the text and the colorset background using the percentage.
 If the percentage is 0 the text is hidden and if it is 100 the text is
 displayed as usual (no merge). This option has an effect only with fonts
 loaded by Xft, see the **Font Names and Font Loading** section. The
 default is 100 and it is restored if no argument is given.
 
-*Dither* causes fvwm to dither the image defined using *?Pixmap* or
+*Dither* causes |fvwm| to dither the image defined using *?Pixmap* or
 *?Gradient.* This is useful only with displays with depth less than or
 equal to 16 (i.e., on displays which can only display less than 65537
 colors at once). The dithering effect lets you simulate having more
-colors available that you actually have. *NoDither* causes fvwm to do
+colors available that you actually have. *NoDither* causes |fvwm| to do
 not dither the images. *Dither* is the default if the depth is less than
 or equal to 8 (a screen with 256 colors or less). In depth 15 (32768
 colors) and 16 (65536 colors), the default is *NoDither*, however this
@@ -8713,15 +8713,15 @@ effect can be useful with images which contain a lot of close colors.
 For example a fine gradient looks more smooth.
 
 *IconTint* takes 2 arguments, a color and a percentage between 0 and
-100. It causes fvwm or a module to tint the "icons" which are rendered
+100. It causes |fvwm| or a module to tint the "icons" which are rendered
 into the colorset background with the specified color using a
-percentage. Here "icons" means, fvwm Icons, fvwm menu icons, MiniIcons
+percentage. Here "icons" means, |fvwm| Icons, |fvwm| menu icons, MiniIcons
 which represent applications in various modules, images loaded by
 modules (e.g., images specified by the *Icon* **FvwmButtons** button
 option) ...etc. With no arguments this option removes the icon tint.
 
 *IconAlpha* takes a percentage between 0 and 100 as an argument. It
-causes fvwm to merge the "icons" which are rendered into the colorset
+causes |fvwm| to merge the "icons" which are rendered into the colorset
 background using this percentage. The default is 100 and it is restored
 if no argument is given.
 
@@ -8776,8 +8776,8 @@ if that is set to contrast.
 
 Makes colorset 7 blink.
 
-The color names used in colorsets are saved as fvwm variables which can
-be substituted in any fvwm command. For example:
+The color names used in colorsets are saved as |fvwm| variables which can
+be substituted in any |fvwm| command. For example:
 
 | **AddToFunc** InitFunction
 | + I **Exec** exec xterm −fg $[fg.cs0] −bg $[bg.cs0]
@@ -8856,7 +8856,7 @@ Examples:
 ENVIRONMENT
 -----------
 
-The environment variables that have an effect on how fvwm operates are
+The environment variables that have an effect on how |fvwm| operates are
 the following:
 
 *DISPLAY*
@@ -8865,13 +8865,13 @@ the following:
 
 *FVWM\_MODULEDIR*
 
-Set by fvwm to the directory containing the standard fvwm modules.
+Set by |fvwm| to the directory containing the standard |fvwm| modules.
 
 *FVWM\_USERDIR*
 
 Used to determine the user’s data directory for reading and sometimes
 writing personal files. If this variable is not already set, it is set
-by fvwm to *$HOME/.fvwm*, which is the default user’s data directory.
+by |fvwm| to *$HOME/.fvwm*, which is the default user’s data directory.
 
 *SESSION\_MANAGER*
 
@@ -8881,12 +8881,12 @@ by fvwm to *$HOME/.fvwm*, which is the default user’s data directory.
 
 This is used mainly to determine xsm running to work around its bug. If
 this variable is set to "xsm", DiscardCommand is set as xsm expects it
-and not as XSMP requires. If you run fvwm under xsm, you should set this
+and not as XSMP requires. If you run |fvwm| under xsm, you should set this
 variable to "xsm", otherwise old state files are not removed.
 
 *SM\_SAVE\_DIR*
 
-If this is set, fvwm saves its session data in this directory. Otherwise
+If this is set, |fvwm| saves its session data in this directory. Otherwise
 it uses *$HOME*. Note, the state files are named *.fs−??????* and
 normally are removed automatically when not used anymore.
 
@@ -8895,7 +8895,7 @@ AUTHORS
 
 Robert Nation with help from many people, based on twm code, which was
 written by Tom LaStrange. After Robert Nation came Charles Hines,
-followed by Brady Montz. Currently fvwm is developed by a number of
+followed by Brady Montz. Currently |fvwm| is developed by a number of
 people on the fvwm−workers mailing list `<fvwm-workers@fvwm.org>`_.
 
 COPYRIGHT
@@ -8903,7 +8903,7 @@ COPYRIGHT
 
 |fvwm| and all the modules, scripts and other files coming with the
 distribution are subject to the GNU General Public License (GPL). Please
-refer to the COPYING file that came with fvwm for details.
+refer to the COPYING file that came with |fvwm| for details.
 
 BUGS
 ----
@@ -8911,7 +8911,7 @@ BUGS
 Bug reports can be sent to the fvwm−workers mailing list at
 `<fvwm−workers@fvwm.org>`_.
 
-The official fvwm homepage is `<http://fvwm.org/>`_
+The official |fvwm| homepage is `<http://fvwm.org/>`_
 
 .. |fvwm| replace:: **fvwm**
 .. |date| date:: %d-%b-%Y
