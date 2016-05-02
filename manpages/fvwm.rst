@@ -46,219 +46,188 @@ operating the menus, using keyboard shortcuts.
 OPTIONS
 -------
 
-These are the command line options that are recognized by fvwm:
+These are the command line options that are recognized by |fvwm|:
 
-**−i** \| **−−clientid** *id*
+−i, −−clientid id
+        This option is used when |fvwm| is started by a session manager.
+        Should not be used by a user.
 
-This option is used when |fvwm| is started by a session manager. Should
-not be used by a user.
+−c, −−cmd config−command
+        Causes |fvwm| to use *config−command* instead of ’\ **Read** *config*\ ’
+        (or ’\ **Read** *.fvwm2rc*\ ’) as its initialization command. (Note that
+        up to 10 **−f** and **−c** parameters can be given, and they are
+        executed in the order specified.)
 
-**−c** \| **−−cmd** *config−command*
+        Any module started by command line arguments is assumed to be a module
+        that sends back config commands. All command line modules have to quit
+        before |fvwm| proceeds on to the StartFunction and setting border
+        decorations and styles. There is a potential deadlock if you start a
+        module other than **FvwmCpp**/**FvwmM4**/**FvwmPerl** but there is a
+        timeout so |fvwm| eventually gets going.
 
-Causes |fvwm| to use *config−command* instead of ’\ **Read** *config*\ ’
-(or ’\ **Read** *.fvwm2rc*\ ’) as its initialization command. (Note that
-up to 10 **−f** and **−c** parameters can be given, and they are
-executed in the order specified.)
+        As an example, starting the pager this way hangs |fvwm| until the
+        timeout, but the following should work well:
 
-Any module started by command line arguments is assumed to be a module
-that sends back config commands. All command line modules have to quit
-before |fvwm| proceeds on to the StartFunction and setting border
-decorations and styles. There is a potential deadlock if you start a
-module other than **FvwmCpp**/**FvwmM4**/**FvwmPerl** but there is a
-timeout so |fvwm| eventually gets going.
+        |fvwm| −c "**AddToFunc** StartFunction I **Module FvwmPager**"
 
-As an example, starting the pager this way hangs |fvwm| until the timeout,
-but the following should work well:
+−d, −−display displayname
+        Manage the display called *displayname* instead of the name obtained
+        from the environment variable *$DISPLAY*.
 
-|fvwm| −c "**AddToFunc** StartFunction I **Module FvwmPager**"
+−D, −−debug
+        Puts X transactions in synchronous mode, which dramatically slows things
+        down, but guarantees that |fvwm|'s internal error messages are correct.
+        Also causes |fvwm| to output debug messages while running.
 
-**−d** \| **−−display** *displayname*
+−f config−file
+        Causes |fvwm| to read *config−file* instead of *~/.fvwm/config* as its
+        initialization file. This is equivalent to −c ’\ **Read**
+        *config−file*\ ’.
 
-Manage the display called *displayname* instead of the name obtained
-from the environment variable *$DISPLAY*.
+−h, −−help
+        A short usage description is printed.
 
-**−D** \| **−−debug**
+−r, −−replace
+        Try to take over from a previously running wm. This does not work unless
+        the other wm is ICCCM2 2.0 compliant.
 
-Puts X transactions in synchronous mode, which dramatically slows things
-down, but guarantees that fvwm’s internal error messages are correct.
-Also causes |fvwm| to output debug messages while running.
+−F, −−restore state−file
+        This option is used when |fvwm| is started by a session manager.  Should
+        not be used by a user.
 
-**−f** *config−file*
+−s, −−single−screen screen\_num
+        On a multi−screen display, run |fvwm| only on the screen named in the
+        *$DISPLAY* environment variable or provided through the **−d** option.
+        The optional argument *screen\_num* should be positive or null and
+        override the screen number. Normally, |fvwm| attempts to start up on all
+        screens of a multi−screen display.
 
-Causes |fvwm| to read *config−file* instead of *~/.fvwm/config* as its
-initialization file. This is equivalent to −c ’\ **Read**
-*config−file*\ ’.
+−V, −−version
+        Prints the version of |fvwm| to *stderr*.  Also prints information about
+        the compiled in support for different libraries.
 
-**−h** \| **−−help**
+−C, −−visual visual−class
+        Causes |fvwm| to use *visual−class* for the window borders and menus.
+        *visual−class* can be "StaticGray", "GrayScale", "StaticColor",
+        "PseudoColor", "TrueColor" or "DirectColor".
 
-A short usage description is printed.
+−I, −−visualid id
+        Causes |fvwm| to use *id* as the visual id for the window borders and
+        menus. *id* can be specified as N for decimal or 0xN for hexadecimal.
+        See man page of xdpyinfo for a list of supported visuals.
 
-**−r** \| **−−replace**
+−l, −−color−limit limit
+        Specifies a *limit* on the colors used in image, gradient and possibly
+        simple colors used by fvwm. In fact, |fvwm| (and all the modules) uses a
+        palette with at most *limit* colors. This option is only useful with
+        screens that display 256 colors (or less) with a dynamic visual
+        (PseudoColor, GrayScale or DirectColor). The default depends on your X
+        server and how you run fvwm. In most case this default is reasonable.
+        The **−l** option should be used only if you encounter problems with
+        colors. By default, |fvwm| tries to detect large pre−allocated palettes.
+        If such a palette is detected |fvwm| uses it and a priori the **−l** must
+        not be used. Moreover, in this case the **−A** and **−S** options are
+        forced. Note that XFree−4.2 pre−allocates 244 colors (if you use a
+        driver with Render support) leaving only a few free colors. This may
+        lead to some color problems (and nothing can be done). XFree−4.3 or
+        better pre−allocate only 85 colors. If no pre−allocated palette is auto
+        detected the defaults are as follow:
 
-Try to take over from a previously running wm. This does not work unless
-the other wm is ICCCM2 2.0 compliant.
+        Display depth 8 (256 colors)
+        PseudoColor: 68 (4x4x4 color cube + 4 grey)
+        GrayScale: 64 regular grey
+        DirectColor: 32 (3x3x3 color cube + 5 grey)
 
-**−F** \| **−−restore** *state−file*
+        Display depth 4 (16 colors)
+        PseudoColor: 10 (2x2x2 Pseudocolor cube + 2 grey)
+        GrayScale: 8 regular grey
+        DirectColor: 10 (2x2x2 color cube + 2 grey)
 
-This option is used when |fvwm| is started by a session manager. Should
-not be used by a user.
+        These defaults may change before version 2.6. Note that if you use a
+        private color map (i.e., |fvwm| is started with the **−C** or the **−I**
+        options), then other defaults are used.
 
-**−s** \| **−−single−screen** [*screen\_num*]
+        Now what to do if you encounter problems with colors? The first thing to
+        do is to check if you really cannot run your X server with depth 15, 16
+        or better. Check your X server documentation. Note that some hardware
+        can support two different depths on the same screen (typically depth 8
+        and depth 24). If depth 8 is the default, you can force |fvwm| to use the
+        best depth by using the **−C** option with *TrueColor* as argument. So
+        now we assume that you are forced to run in depth 8 with a dynamic
+        visual because your hardware/driver cannot do better or because you need
+        to use an application which needs to run under this mode (e.g., because
+        this application needs read−write colors). What it should be understand
+        is that you have only 256 colors and that all the applications which use
+        the default color map must share these colors. The main problem is that
+        there are applications which use a lot or even all the colors. If you
+        use such application you may have no more free colors and some
+        applications (which used only a few colors) may fail to start or are
+        unusable. There are three things that can be done (and |fvwm| does not
+        really play a particular role, all applications are concerned). The
+        first is to run the applications which waste your (default) color map
+        with a private color map. For example, run netscape with the −install
+        option, run KDE or QT applications with the −−cmap option, use the
+        **−C** option for fvwm. The disadvantage of this method is that it is
+        visually disturbing (see the **ColormapFocus** command for a better
+        control of the color maps switching). The second method is to limit the
+        number of colors that the applications use. Again, some applications
+        have options to specify a given color limit. With |fvwm| you may try
+        various values, 61 (a special "visual" palette), 56 (a 4x4x3 color cube
+        plus 6 grey), 29 (a 3x3x3 color cube plus 2 grey), 10 or 9. Also, you
+        may use the **−L** option. However, limiting the number of colors is not
+        the definitive solution. The definitive solution is to try cause
+        applications which use a lot of colors use the same colors. This is a
+        difficult task as there are no formal standards for this goal. However,
+        some toolkits as QT and GTK use color cubes as palettes. So, the idea is
+        to configure your applications/toolkits to all use the same color cube.
+        Moreover, you can use the colors in this color cube in your X resources
+        configuration files and/or as arguments to colors options. |fvwm| can use
+        any color cube of the form RxGxB with 2 <= R <= 6, R = G, R−1 =< B <= R
+        and B >= 2. To get an RxGxB color cube give an argument to **−l** an
+        integer c >= R\*G\*B and < (R+1)\*(G+1)\*B if B=R and < R\*G\*(B+1) if B
+        < R (and different from 61). If c > R\*G\*B, then some grey may be added
+        to the color cube. You can use the **PrintInfo** *Colors* [*1*] command
+        to get information on your |fvwm| colors setting. In particular, this
+        command prints the palette used by |fvwm| in rgb format (the last integer
+        gives the number of times |fvwm| has allocated the colors).
 
-On a multi−screen display, run |fvwm| only on the screen named in the
-*$DISPLAY* environment variable or provided through the **−d** option.
-The optional argument *screen\_num* should be positive or null and
-override the screen number. Normally, |fvwm| attempts to start up on all
-screens of a multi−screen display.
+−L, −−strict−color−limit
+        If the screen displays 256 colors (or less) and has a dynamic visual,
+        causes |fvwm| to use its palette for all the colors. By default, the
+        palette is used only for images and gradients.
 
-**−V** \| **−−version**
+−P, −−visual−palette
+        If the screen displays 256 colors (or less) and has a dynamic visual,
+        this option causes |fvwm| to use a palette designed for limiting the
+        "visual" color distance between the points of the palette. Moreover, for
+        better color sharing, if possible colors with a name in the X rgb data
+        base are used for defining the colors (with the hope that applications
+        and images prefer to use named colors). If the **−l** option is not used
+        this palette has 61 colors. This palette is also automatically selected
+        if 61 or 9 is used as argument to the **−l** option.
 
-Prints the version of |fvwm| to *stderr*. Also prints an information about
-the compiled in support for readline, rplay, stroke, xpm, png, svg,
-GNOME hints, EWMH hints, session management, bidirectional text,
-multibyte characters, xinerama and Xft aa font rendering.
+−A, −−allocate−palette
+        If the screen displays 256 colors (or less) and has a dynamic visual
+        this option causes |fvwm| to allocate all the colors of its palette at
+        start up for reserving these colors for future use. This option forces
+        the **−static−palette** option. By default, |fvwm| allocates (reserves) a
+        color in its palette only if it needs this color.
 
-**−C** \| **−−visual** *visual−class*
+−S, −−static−palette
+        If the screen displays 256 colors (or less) and has a dynamic visual
+        this option causes |fvwm| to never free the colors in its palette. By
+        default, when |fvwm| does not need a color any more it frees this color so
+        that a new color can be used. This option may speed up image loading and
+        save a few bits of memory.
 
-Causes |fvwm| to use *visual−class* for the window borders and menus.
-*visual−class* can be "StaticGray", "GrayScale", "StaticColor",
-"PseudoColor", "TrueColor" or "DirectColor".
+−blackout
+        This option is provided for backward compatibility only. Blacking out
+        the screen during startup is not necessary (and doesn’t work) anymore.
+        This option will be removed in the future.
 
-**−I** \| **−−visualid** *id*
-
-Causes |fvwm| to use *id* as the visual id for the window borders and
-menus. *id* can be specified as N for decimal or 0xN for hexadecimal.
-See man page of xdpyinfo for a list of supported visuals.
-
-**−l** \| **−−color−limit** *limit*
-
-Specifies a *limit* on the colors used in image, gradient and possibly
-simple colors used by fvwm. In fact, |fvwm| (and all the modules) uses a
-palette with at most *limit* colors. This option is only useful with
-screens that display 256 colors (or less) with a dynamic visual
-(PseudoColor, GrayScale or DirectColor). The default depends on your X
-server and how you run fvwm. In most case this default is reasonable.
-The **−l** option should be used only if you encounter problems with
-colors. By default, |fvwm| tries to detect large pre−allocated palettes.
-If such a palette is detected |fvwm| uses it and a priori the **−l** must
-not be used. Moreover, in this case the **−A** and **−S** options are
-forced. Note that XFree−4.2 pre−allocates 244 colors (if you use a
-driver with Render support) leaving only a few free colors. This may
-lead to some color problems (and nothing can be done). XFree−4.3 or
-better pre−allocate only 85 colors. If no pre−allocated palette is auto
-detected the defaults are as follow:
-
-Display depth 8 (256 colors)
-
-+--------------------------+--------------------------+--------------------------+
-|                          | PseudoColor: 68 (4x4x4   |                          |
-|                          | color cube + 4 grey)     |                          |
-+--------------------------+--------------------------+--------------------------+
-
-| GrayScale: 64 regular grey
-| DirectColor: 32 (3x3x3 color cube + 5 grey)
-
-Display depth 4 (16 colors)
-
-+--------------------------+--------------------------+--------------------------+
-|                          | PseudoColor: 10 (2x2x2   |                          |
-|                          | color cube + 2 grey)     |                          |
-+--------------------------+--------------------------+--------------------------+
-
-| GrayScale: 8 regular grey
-| DirectColor: 10 (2x2x2 color cube + 2 grey)
-
-These defaults may change before version 2.6. Note that if you use a
-private color map (i.e., |fvwm| is started with the **−C** or the **−I**
-options), then other defaults are used.
-
-Now what to do if you encounter problems with colors? The first thing to
-do is to check if you really cannot run your X server with depth 15, 16
-or better. Check your X server documentation. Note that some hardware
-can support two different depths on the same screen (typically depth 8
-and depth 24). If depth 8 is the default, you can force |fvwm| to use the
-best depth by using the **−C** option with *TrueColor* as argument. So
-now we assume that you are forced to run in depth 8 with a dynamic
-visual because your hardware/driver cannot do better or because you need
-to use an application which needs to run under this mode (e.g., because
-this application needs read−write colors). What it should be understand
-is that you have only 256 colors and that all the applications which use
-the default color map must share these colors. The main problem is that
-there are applications which use a lot or even all the colors. If you
-use such application you may have no more free colors and some
-applications (which used only a few colors) may fail to start or are
-unusable. There are three things that can be done (and |fvwm| does not
-really play a particular role, all applications are concerned). The
-first is to run the applications which waste your (default) color map
-with a private color map. For example, run netscape with the −install
-option, run KDE or QT applications with the −−cmap option, use the
-**−C** option for fvwm. The disadvantage of this method is that it is
-visually disturbing (see the **ColormapFocus** command for a better
-control of the color maps switching). The second method is to limit the
-number of colors that the applications use. Again, some applications
-have options to specify a given color limit. With |fvwm| you may try
-various values, 61 (a special "visual" palette), 56 (a 4x4x3 color cube
-plus 6 grey), 29 (a 3x3x3 color cube plus 2 grey), 10 or 9. Also, you
-may use the **−L** option. However, limiting the number of colors is not
-the definitive solution. The definitive solution is to try cause
-applications which use a lot of colors use the same colors. This is a
-difficult task as there are no formal standards for this goal. However,
-some toolkits as QT and GTK use color cubes as palettes. So, the idea is
-to configure your applications/toolkits to all use the same color cube.
-Moreover, you can use the colors in this color cube in your X resources
-configuration files and/or as arguments to colors options. |fvwm| can use
-any color cube of the form RxGxB with 2 <= R <= 6, R = G, R−1 =< B <= R
-and B >= 2. To get an RxGxB color cube give an argument to **−l** an
-integer c >= R\*G\*B and < (R+1)\*(G+1)\*B if B=R and < R\*G\*(B+1) if B
-< R (and different from 61). If c > R\*G\*B, then some grey may be added
-to the color cube. You can use the **PrintInfo** *Colors* [*1*] command
-to get information on your |fvwm| colors setting. In particular, this
-command prints the palette used by |fvwm| in rgb format (the last integer
-gives the number of times |fvwm| has allocated the colors).
-
-**−L** \| **−−strict−color−limit**
-
-If the screen displays 256 colors (or less) and has a dynamic visual,
-causes |fvwm| to use its palette for all the colors. By default, the
-palette is used only for images and gradients.
-
-**−P** \| **−−visual−palette**
-
-If the screen displays 256 colors (or less) and has a dynamic visual,
-this option causes |fvwm| to use a palette designed for limiting the
-"visual" color distance between the points of the palette. Moreover, for
-better color sharing, if possible colors with a name in the X rgb data
-base are used for defining the colors (with the hope that applications
-and images prefer to use named colors). If the **−l** option is not used
-this palette has 61 colors. This palette is also automatically selected
-if 61 or 9 is used as argument to the **−l** option.
-
-**−A** \| **−−allocate−palette**
-
-If the screen displays 256 colors (or less) and has a dynamic visual
-this option causes |fvwm| to allocate all the colors of its palette at
-start up for reserving these colors for future use. This option forces
-the **−static−palette** option. By default, |fvwm| allocates (reserves) a
-color in its palette only if it needs this color.
-
-**−S** \| **−−static−palette**
-
-If the screen displays 256 colors (or less) and has a dynamic visual
-this option causes |fvwm| to never free the colors in its palette. By
-default, when |fvwm| does not need a color any more it frees this color so
-that a new color can be used. This option may speed up image loading and
-save a few bits of memory.
-
-**−blackout**
-
-This option is provided for backward compatibility only. Blacking out
-the screen during startup is not necessary (and doesn’t work) anymore.
-This option will be removed in the future.
-
-**−−debug−stack−ring**
-
-Enables stack ring debugging. This option is only intended for internal
-debugging and should only be used by developers.
+−−debug−stack−ring
+        Enables stack ring debugging. This option is only intended for internal
+        debugging and should only be used by developers.
 
 ANATOMY OF A WINDOW
 -------------------
