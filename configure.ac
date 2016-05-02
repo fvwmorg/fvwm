@@ -60,6 +60,20 @@ AC_SUBST(MANPAGE_PREAMBLE)
 # optional python:
 AM_PATH_PYTHON([2.5],, [:])
 
+# fvwm.1 manpage generation
+AC_ARG_WITH([asciidoctor],
+	AS_HELP_STRING([--with-asciidoctor=PATH], [Location of asciidoctor (auto)]),
+		[ASCIIDOCTOR="$withval"],
+	AC_CHECK_PROGS(ASCIIDOCTOR, [asciidoctor asciidoctor], [no]))
+
+if test "x$ASCIIDOCTOR" = "xno"; then
+	AC_MSG_WARN(
+		[asciidoctor is needed to build man pages (install: asciidoctor).
+		Using:  --with-asciidoctor=/bin/true.])
+	ASCIIDOCTOR="/bin/true"
+fi
+
+
 #!!!
 PERL=""
 REQUIRED_PERL_VERSION=5.004
@@ -1501,6 +1515,7 @@ AC_OUTPUT(
 	Makefile
 	libs/Makefile
 	fvwm/Makefile
+	manpages/Makefile
 	modules/Makefile
 dnl
 	bin/fvwm-bug.1
@@ -1622,7 +1637,6 @@ Fvwm Configuration:
   Man pages:   $my_mandir
   Modules:     $my_moddir
   Data files:  $my_datdir
-  Doc files:   $my_docdir
   Perl lib:    $my_plldir
   Locale msg:  $my_localedir $INST_LINGUAS
 

@@ -37,6 +37,10 @@ addons:
     - sharutils
     - xsltproc
     - build-essential
+=
+before_install:
+    - gem install asciidoctor
+
 script: (CFLAGS= ./autogen.sh) && make
 notifications:
         irc:
