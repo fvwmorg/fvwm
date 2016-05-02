@@ -32,17 +32,6 @@ DESCRIPTION
 |fvwm| is a window manager for X11. It is designed to minimize memory
 consumption, provide a 3D look to window frames, and a virtual desktop.
 
-Note that there are several window managers around that have "fvwm" in
-their name. In the past, version 2.x of fvwm was commonly called fvwm2
-to distinguish it from the former version 1.x (fvwm or even fvwm1).
-Since version 1.x has been replaced by version 2.x a long time ago we
-simply call version 2.x and all versions to come, fvwm, throughout this
-document, and the executable program is named fvwm. There is an fvwm
-offspring called fvwm95, it is mostly a patched version of fvwm−2.0.43.
-The main goal of fvwm95 was to supply a Windows 95 like look and feel.
-Since then, fvwm has been greatly enhanced and practically all fvwm95
-features can be achieved by fvwm.
-
 |fvwm| provides both a large *virtual desktop* and *multiple disjoint
 desktops* which can be used separately or together. The virtual desktop
 allows you to pretend that your video screen is really quite large, and
@@ -53,24 +42,6 @@ but each screen is completely unrelated to the others.
 |fvwm| provides *keyboard accelerators* that allow you to perform most
 window manager functions, including moving and resizing windows and
 operating the menus, using keyboard shortcuts.
-
-|fvwm| has also overcome the distinction between configuration commands
-and action commands that most window managers make. Configuration
-commands typically set fonts, colors, menu contents, and key and mouse
-function bindings, while action commands do things like raise and lower
-windows. |fvwm| makes no such distinction and allows anything to be
-changed at any time.
-
-Other noteworthy differences between fvwm and other X11 window managers
-are the introduction of the *SloppyFocus* and *NeverFocus* focus
-methods. Focus policy can be separately specified for different window
-groups. Windows using *SloppyFocus* acquire focus when the pointer moves
-into them and retain focus until some other window acquires it. Such
-windows do not lose focus when the pointer moves into the root window.
-The *NeverFocus* policy is provided for use with windows into which one
-never types (e.g. xclock, oclock, xbiff, xeyes, tuxeyes) − for example,
-if a SloppyFocus terminal window has focus, moving the pointer over a
-NeverFocus decoration window does not deprive the terminal of focus.
 
 OPTIONS
 -------
@@ -610,14 +581,6 @@ note, all these special functions may be emulated now using
 | + I **KillModule** MyBuggyModule
 | + I **Test** (ToRestart) **Beep**
 
-COMPILATION OPTIONS
--------------------
-
-|fvwm| has a number of compile−time options. If you have trouble using a
-certain command or feature, check to see if support for it was included
-at compile time. Optional features are described in the *config.h* file
-that is generated during compilation.
-
 ICONS AND IMAGES
 ----------------
 
@@ -856,13 +819,6 @@ are:
   AddToFunc** UrgencyDoneFunc
 | + I **Nop**
 
-GNOME COMPLIANCE
-----------------
-
-|fvwm| attempts to be GNOME (version 1) compliant. Check
-*http://www.gnome.org* for what that may mean. To disable GNOME hints
-for some or all windows, the *GNOMEIgnoreHints* style can be used.
-
 EXTENDED WINDOW MANAGER HINTS
 -----------------------------
 
@@ -944,24 +900,6 @@ style:
 Style** <application name> *SloppyFocus*, *Lenience* **
 Style** <application name> *ClickToFocus*, *Lenience*
 
-M4 PREPROCESSING
-----------------
-
-M4 pre−processing is handled by a module in fvwm. To get more details,
-try man **FvwmM4**. In short, if you want fvwm to parse your files with
-m4, then replace the command **Read** with **FvwmM4** in your
-*~/.fvwm/config* file (if it appears at all), and start fvwm with the
-command
-
-fvwm −cmd "**FvwmM4** config"
-
-CPP PREPROCESSING
------------------
-
-Cpp is the C−language pre−processor. fvwm offers cpp processing which
-mirrors the m4 pre−processing. To find out about it, re−read the **M4**
-section, but replace "m4" with "cpp".
-
 CONFIGURATION
 -------------
 
@@ -986,18 +924,6 @@ configuration file, or it can be placed as an executable command in a
 menu or bound to a mouse button or a keyboard key. It is left as an
 exercise for the user to decide which function make sense for
 initialization and which ones make sense for run−time.
-
-| **Supplied Configuration**
-| A sample configuration file, *system.fvwm2rc*, is supplied with the
-  fvwm distribution. It is well commented and can be used as a source of
-  examples for fvwm configuration. It may be copied to
-  */usr/local/share/fvwm/config* file.
-
-Alternatively, the built−in menu (accessible when no configuration file
-is found) has options to create an initial config file for the user.
-
-If you are new to fvwm, try *fvwm−themes*\ [] package demonstrating the
-powerful fvwm functionality.
 
 FONTS
 -----
@@ -1691,23 +1617,6 @@ the string is left as is.
 
 Some examples can be found in the description of the **AddToFunc**
 command.
-
-SCRIPTING & COMPLEX FUNCTIONS
------------------------------
-
-To achieve the more complex effects, fvwm has a number of commands that
-improve its scripting abilities. Scripts can be read from a file with
-**Read**, from the output of a command with **PipeRead** or written as a
-complex function with the **AddToFunc** command. For the curious,
-section 7 of the fvwm FAQ shows some real life applications of
-scripting. Please refer to the sections **User Functions and Shell
-Commands** and **Conditional Commands** for details. A word of warning:
-during execution of complex functions, fvwm needs to take all input from
-the mouse pointer (the pointer is "grabbed" in the slang of X). No other
-programs can receive any input from the pointer while a function is run.
-This can confuse some programs. For example, the xwd program refuses to
-make screen shots when run from a complex function. To achieve the same
-functionality you can use the **Read** or **PipeRead** command instead.
 
 LIST OF FVWM COMMANDS
 ---------------------
@@ -3395,91 +3304,6 @@ Send A to a specific window:
 **WindowId** 0x3800002 FakeKeypress press A
 
 Note: all command names can be abbreviated with their first letter.
-
-**GlobalOpts** [*options*]
-
-This command is obsolete. Please replace the global options in your
-configuration file according to the following table:
-
-| GlobalOpts *WindowShadeShrinks*
-| −−> **
-  Style** \* *WindowShadeShrinks*
-
-| GlobalOpts *WindowShadeScrolls*
-| −−> **
-  Style** \* *WindowShadeScrolls*
-
-| GlobalOpts *SmartPlacementIsReallySmart*
-| −−> **
-  Style** \* *MinOverlapPlacement*
-
-| GlobalOpts *SmartPlacementIsNormal*
-| −−> **
-  Style** \* *TileCascadePlacement*
-
-| GlobalOpts *ClickToFocusDoesntPassClick*
-| −−> **
-  Style** \* *ClickToFocusPassesClickOff*
-
-| GlobalOpts *ClickToFocusPassesClick*
-| −−> **
-  Style** \* *ClickToFocusPassesClick*
-
-| GlobalOpts *ClickToFocusDoesntRaise*
-| −−> **
-  Style** \* *ClickToFocusRaisesOff*
-
-| GlobalOpts *ClickToFocusRaises*
-| −−> **
-  Style** \* *ClickToFocusRaises*
-
-| GlobalOpts *MouseFocusClickDoesntRaise*
-| −−> **
-  Style** \* *MouseFocusClickRaisesOff*
-
-| GlobalOpts *MouseFocusClickRaises*
-| −−> **
-  Style** \* *MouseFocusClickRaises*
-
-| GlobalOpts *NoStipledTitles*
-| −−> **
-  Style** \* !\ *StippledTitle*
-
-| GlobalOpts *StipledTitles*
-| −−> **
-  Style** \* *StippledTitle*
-
-| GlobalOpts *CaptureHonorsStartsOnPage*
-| −−> **
-  Style** \* *CaptureHonorsStartsOnPage*
-
-| GlobalOpts *CaptureIgnoresStartsOnPage*
-| −−> **
-  Style** \* *CaptureIgnoresStartsOnPage*
-
-| GlobalOpts *RecaptureHonorsStartsOnPage*
-| −−> **
-  Style** \* *RecaptureHonorsStartsOnPage*
-
-| GlobalOpts *RecaptureIgnoresStartsOnPage*
-| −−> **
-  Style** \* *RecaptureIgnoresStartsOnPage*
-
-| GlobalOpts *ActivePlacementHonorsStartsOnPage*
-| −−> **
-  Style** \* *ManualPlacementHonorsStartsOnPage*
-
-| GlobalOpts *ActivePlacementIgnoresStartsOnPage*
-| −−> **
-  Style** \* *ManualPlacementIgnoresStartsOnPage*
-
-| GlobalOpts *RaiseOverNativeWindows*
-| −−> **
-  BugOpts** *RaiseOverNativeWindows* on
-
-| GlobalOpts *IgnoreNativeWindows*
-| −−> **
-  BugOpts** *RaiseOverNativeWindows* off
 
 **HilightColor** *textcolor backgroundcolor*
 
@@ -6114,59 +5938,6 @@ Style \* ManualPlacement
 Now, whenever a window is created and the user presses button 3 to
 finish initial placement, the window is automatically enlarged until it
 hits the bottom screen border.
-
-*Old placement styles* DumbPlacement / SmartPlacement /
-SmartPlacementOff, CleverPlacement / CleverPlacementOff, ActivePlacement
-/ RandomPlacement, ActivePlacementsHonorsStartsOnPage /
-ActivePlacementsHonorsStartsOnPageOff, GlobalOpts
-SmartPlacementIsReallySmart / GlobalOpts SmartPlacementIsNormal are
-still supported but will be removed in the future. The old and new
-styles can be translated according to the following table:
-
-| **GlobalOpts** SmartPlacementIsReallySmart
-| Style \* SmartPlacement
-| −−>
-| Style \* SmartPlacement, CleverPlacement
-
-| **GlobalOpts** SmartPlacementIsNormal
-| Style \* SmartPlacement
-| −−>
-| Style \* SmartPlacement, CleverPlacementOff
-
-| Style \* DumbPlacement, RandomPlacement
-| −−>
-| Style \* CascadePlacement
-
-| Style \* DumbPlacement, ActivePlacement
-| −−>
-| Style \* ManualPlacement
-
-| Style \* SmartPlacement, \\
-| RandomPlacement, CleverPlacementOff
-| −−>
-| Style \* TileCascadePlacement
-
-| Style \* SmartPlacement, \\
-| ActivePlacement, CleverPlacementOff
-| −−>
-| Style \* TileManualPlacement
-
-| Style \* SmartPlacement, CleverPlacement
-| −−>
-| Style \* MinOverlapPlacement
-
-| Style \* SmartPlacement, \\
-| ActivePlacement, CleverPlacement
-| −−>
-| Style \* MinOverlapPercentPlacement
-
-| Style \* ActivePlacementsHonorsStartsOnPage
-| −−>
-| Style \* ManualPlacementsHonorsStartsOnPage
-
-| Style \* ActivePlacementsHonorsStartsOnPageOff
-| −−>
-| Style \* ManualPlacementsHonorsStartsOnPageOff
 
 **Placement policy options and window stacking**
 
