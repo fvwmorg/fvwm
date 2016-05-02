@@ -10,6 +10,7 @@ Makefile
 Makefile.in
 aclocal.m4
 autom4te.cache/
+<<<<<<< HEAD
 bin/fvwm-bug
 bin/fvwm-config
 bin/fvwm-convert-2.4
@@ -31,6 +32,7 @@ doc/footer.html
 doc/fvwm.ent
 etc/
 fvwm/fvwm
+missing
 modules/FvwmAnimate/FvwmAnimate
 modules/FvwmAuto/FvwmAuto
 modules/FvwmBacker/FvwmBacker
@@ -55,6 +57,13 @@ modules/FvwmDebug/FvwmDebug
 modules/FvwmEvent/FvwmEvent
 modules/FvwmForm/FvwmForm
 modules/FvwmForm/FvwmTalk
+modules/FvwmDebug/FvwmGtkDebug
+modules/FvwmDragWell/FvwmDragWell
+modules/FvwmEvent/FvwmEvent
+modules/FvwmForm/FvwmForm
+modules/FvwmForm/FvwmForm-Setup
+modules/FvwmForm/FvwmTalk
+modules/FvwmIconBox/FvwmIconBox
 modules/FvwmIconMan/FvwmIconMan
 modules/FvwmIdent/FvwmIdent
 modules/FvwmM4/FvwmM4
@@ -70,4 +79,18 @@ modules/FvwmScroll/FvwmScroll
 perllib/FVWM/Module.pm
 stamp-h1
 tags
+modules/FvwmSaveDesk/FvwmSaveDesk
+modules/FvwmScript/FvwmScript
+modules/FvwmScript/Scripts/FvwmScript-ComExample
+modules/FvwmScript/Scripts/FvwmScript-Setup95
+modules/FvwmScroll/FvwmScroll
+modules/FvwmTabs/FvwmTabs
+modules/FvwmTaskBar/FvwmTaskBar
+modules/FvwmTheme/FvwmTheme
+modules/FvwmWharf/FvwmWharf
+modules/FvwmWinList/FvwmWinList
+modules/FvwmWindowMenu/FvwmWindowMenu
+perllib/FVWM/Module.pm
+rpm/fvwm.spec
+stamp-h1
 tests/hints/hints_test
