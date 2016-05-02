@@ -1,76 +1,35 @@
+====
 FVWM
 ====
 
-| `NAME <#NAME>`__
-| `SYNOPSIS <#SYNOPSIS>`__
-| `DESCRIPTION <#DESCRIPTION>`__
-| `OPTIONS <#OPTIONS>`__
-| `ANATOMY OF A WINDOW <#ANATOMY%20OF%20A%20WINDOW>`__
-| `THE VIRTUAL DESKTOP <#THE%20VIRTUAL%20DESKTOP>`__
-| `USE ON MULTI−SCREEN DISPLAYS <#USE%20ON%20MULTI−SCREEN%20DISPLAYS>`__
-| `XINERAMA SUPPORT <#XINERAMA%20SUPPORT>`__
-| `INITIALIZATION <#INITIALIZATION>`__
-| `COMPILATION OPTIONS <#COMPILATION%20OPTIONS>`__
-| `ICONS AND IMAGES <#ICONS%20AND%20IMAGES>`__
-| `MODULES <#MODULES>`__
-| `ICCCM COMPLIANCE <#ICCCM%20COMPLIANCE>`__
-| `GNOME COMPLIANCE <#GNOME%20COMPLIANCE>`__
-| `EXTENDED WINDOW MANAGER
-  HINTS <#EXTENDED%20WINDOW%20MANAGER%20HINTS>`__
-| `MWM COMPATIBILITY <#MWM%20COMPATIBILITY>`__
-| `OPEN LOOK AND XVIEW
-  COMPATIBILITY <#OPEN%20LOOK%20AND%20XVIEW%20COMPATIBILITY>`__
-| `M4 PREPROCESSING <#M4%20PREPROCESSING>`__
-| `CPP PREPROCESSING <#CPP%20PREPROCESSING>`__
-| `CONFIGURATION <#CONFIGURATION>`__
-| `FONTS <#FONTS>`__
-| `BI−DIRECTIONAL TEXT <#BI−DIRECTIONAL%20TEXT>`__
-| `KEYBOARD SHORTCUTS <#KEYBOARD%20SHORTCUTS>`__
-| `SESSION MANAGEMENT <#SESSION%20MANAGEMENT>`__
-| `BOOLEAN ARGUMENTS <#BOOLEAN%20ARGUMENTS>`__
-| `BUILTIN KEY AND MOUSE
-  BINDINGS <#BUILTIN%20KEY%20AND%20MOUSE%20BINDINGS>`__
-| `COMMAND EXECUTION <#COMMAND%20EXECUTION>`__
-| `QUOTING <#QUOTING>`__
-| `COMMAND EXPANSION <#COMMAND%20EXPANSION>`__
-| `SCRIPTING & COMPLEX
-  FUNCTIONS <#SCRIPTING%20&%20COMPLEX%20FUNCTIONS>`__
-| `LIST OF FVWM COMMANDS <#LIST%20OF%20FVWM%20COMMANDS>`__
-| `ENVIRONMENT <#ENVIRONMENT>`__
-| `AUTHORS <#AUTHORS>`__
-| `COPYRIGHT <#COPYRIGHT>`__
-| `BUGS <#BUGS>`__
+---------------------------------
+F? Virtual Window Manager for X11
+---------------------------------
 
---------------
+:Date: |date|
+:Manual section: 1
 
-NAME ` <>`__
-------------
+SYNOPSIS
+--------
 
-Fvwm − F? Virtual Window Manager for X11
+|fvwm| \
+ [**−c **\ *config−command*]
+ [**−d **\ *displayname*]
+ [**−f **\ *config−file*]
+ [**−r**]
+ [**−s **\ [*screen\_num*]] [**−V**]
+ [**−C **\ *visual−class* \| **−I **\ *visual−id*]
+ [**−l **\ *colors *\] [**−L**] [**−A** ] [**−S**] [**−P**]
+ [**−D**] [**−h**]
+ [**−i **\ *client−id*]
+ [**−F **\ *state−file*]
+ [**−−debug−stack−ring**]
+ [**−blackout**]
 
-SYNOPSIS ` <>`__
-----------------
+DESCRIPTION
+-----------
 
-+--------------------------------------+--------------------------------------+
-|                                      | **fvwm** [**−c **\ *config−command*] |
-|                                      | [**−d **\ *displayname*]             |
-|                                      | [**−f **\ *config−file*] [**−r**]    |
-|                                      | [**−s **\ [*screen\_num*]] [**−V**]  |
-|                                      | [**−C **\ *visual−class* \|          |
-|                                      | **−I **\ *visual−id*]                |
-|                                      | [**−l **\ *colors *\ [**−L**] [**−A* |
-|                                      | *] [**−S**] [**−P**]]                |
-|                                      | [**−D**] [**−h**]                    |
-|                                      | [**−i **\ *client−id*]               |
-|                                      | [**−F **\ *state−file*]              |
-|                                      | [**−−debug−stack−ring**]             |
-|                                      | [**−blackout**]                      |
-+--------------------------------------+--------------------------------------+
-
-DESCRIPTION ` <>`__
--------------------
-
-Fvwm is a window manager for X11. It is designed to minimize memory
+|fvwm| is a window manager for X11. It is designed to minimize memory
 consumption, provide a 3D look to window frames, and a virtual desktop.
 
 Note that there are several window managers around that have "fvwm" in
@@ -84,22 +43,22 @@ The main goal of fvwm95 was to supply a Windows 95 like look and feel.
 Since then, fvwm has been greatly enhanced and practically all fvwm95
 features can be achieved by fvwm.
 
-Fvwm provides both a large *virtual desktop* and *multiple disjoint
+|fvwm| provides both a large *virtual desktop* and *multiple disjoint
 desktops* which can be used separately or together. The virtual desktop
 allows you to pretend that your video screen is really quite large, and
 you can scroll around within the desktop. The multiple disjoint desktops
 allow you to pretend that you really have several screens to work at,
 but each screen is completely unrelated to the others.
 
-Fvwm provides *keyboard accelerators* that allow you to perform most
+|fvwm| provides *keyboard accelerators* that allow you to perform most
 window manager functions, including moving and resizing windows and
 operating the menus, using keyboard shortcuts.
 
-Fvwm has also overcome the distinction between configuration commands
+|fvwm| has also overcome the distinction between configuration commands
 and action commands that most window managers make. Configuration
 commands typically set fonts, colors, menu contents, and key and mouse
 function bindings, while action commands do things like raise and lower
-windows. Fvwm makes no such distinction and allows anything to be
+windows. |fvwm| makes no such distinction and allows anything to be
 changed at any time.
 
 Other noteworthy differences between fvwm and other X11 window managers
@@ -113,8 +72,8 @@ never types (e.g. xclock, oclock, xbiff, xeyes, tuxeyes) − for example,
 if a SloppyFocus terminal window has focus, moving the pointer over a
 NeverFocus decoration window does not deprive the terminal of focus.
 
-OPTIONS ` <>`__
----------------
+OPTIONS
+-------
 
 These are the command line options that are recognized by fvwm:
 
@@ -276,7 +235,7 @@ difficult task as there are no formal standards for this goal. However,
 some toolkits as QT and GTK use color cubes as palettes. So, the idea is
 to configure your applications/toolkits to all use the same color cube.
 Moreover, you can use the colors in this color cube in your X resources
-configuration files and/or as arguments to colors options. Fvwm can use
+configuration files and/or as arguments to colors options. |fvwm| can use
 any color cube of the form RxGxB with 2 <= R <= 6, R = G, R−1 =< B <= R
 and B >= 2. To get an RxGxB color cube give an argument to **−l** an
 integer c >= R\*G\*B and < (R+1)\*(G+1)\*B if B=R and < R\*G\*(B+1) if B
@@ -330,10 +289,10 @@ This option will be removed in the future.
 Enables stack ring debugging. This option is only intended for internal
 debugging and should only be used by developers.
 
-ANATOMY OF A WINDOW ` <>`__
----------------------------
+ANATOMY OF A WINDOW
+-------------------
 
-Fvwm puts a decorative border around most windows. This border consists
+|fvwm| puts a decorative border around most windows. This border consists
 of a bar on each side and a small L−shaped section on each corner. There
 is an additional top bar called the title−bar which is used to display
 the name of the window. In addition, there are up to 10 title−bar
@@ -354,10 +313,10 @@ adds a close button to the right. The number of title−bar buttons used
 depends on which ones have mouse actions bound to them. See the
 **Mouse** command.
 
-THE VIRTUAL DESKTOP ` <>`__
----------------------------
+THE VIRTUAL DESKTOP
+-------------------
 
-Fvwm provides multiple virtual desktops for users who wish to use them.
+|fvwm| provides multiple virtual desktops for users who wish to use them.
 The screen is a viewport onto a *desktop* which may be larger than the
 screen. Several distinct desktops can be accessed (concept: one desktop
 for each project, or one desktop for each application, when view
@@ -377,7 +336,7 @@ window manager to operate. Windows may also be listed, along with their
 geometries, in a window list, accessible as a pop−up menu, or as a
 separate window, called the **FvwmWinList** (another module).
 
-Fvwm keeps the windows on the desktop in a layered stacking order; a
+|fvwm| keeps the windows on the desktop in a layered stacking order; a
 window in a lower layer never obscures a window in a higher layer. The
 layer of a window can be changed by using the **Layer** command. The
 concept of layers is a generalization of the *StaysOnTop* flag of older
@@ -455,8 +414,8 @@ or
 
 XTerm\*Page: 3 2 1
 
-USE ON MULTI−SCREEN DISPLAYS ` <>`__
-------------------------------------
+USE ON MULTI−SCREEN DISPLAYS
+----------------------------
 
 If the **−s** command line argument is not given, fvwm automatically
 starts up on every screen on the specified display. After fvwm starts
@@ -469,10 +428,10 @@ is strongly recommended for multi−screen displays. You may need to quit
 on each screen to quit from the X session completely. This is not to be
 confused with Xinerama support.
 
-XINERAMA SUPPORT ` <>`__
-------------------------
+XINERAMA SUPPORT
+----------------
 
-Fvwm supports the Xinerama extension of newer X servers which is similar
+|fvwm| supports the Xinerama extension of newer X servers which is similar
 to multi head support (multiple screens) but allows one to move windows
 between screens. If Xinerama support has been compiled into fvwm, it is
 used whenever fvwm runs on an X server that supports and uses multiple
@@ -498,7 +457,7 @@ support Xinerama or only one screen is used, the screen bit is ignored.
 
 **Style** \* *IconBox* 64x300−0−0@p
 
-Xinerama support can be configured to use a primary screen. Fvwm can be
+Xinerama support can be configured to use a primary screen. |fvwm| can be
 configured to place new windows and icons on this screen. The primary
 screen is screen 0 by default but can be changed with the
 **XineramaPrimaryScreen** command.
@@ -521,12 +480,12 @@ the total screen seen by fvwm is made up of equal sized monitors in a
 rectangular grid. The commands **XineramaSls**, **XineramaSlsSize** and
 **XineramaSlsScreens** are used to configure this feature.
 
-INITIALIZATION ` <>`__
-----------------------
+INITIALIZATION
+--------------
 
 During initialization, fvwm searches for a configuration file which
 describes key and button bindings, and many other things. The format of
-these files is described later. Fvwm first searches for configuration
+these files is described later. |fvwm| first searches for configuration
 files using the command
 
 **Read** *config*
@@ -559,7 +518,7 @@ If a configuration file is not found, the left mouse button, or Help or
 F1 keys on the root window bring up menus and forms that can create a
 starting configuration file.
 
-Fvwm sets two environment variables which are inherited by its children.
+|fvwm| sets two environment variables which are inherited by its children.
 These are *$DISPLAY* which describes the display on which fvwm is
 running. *$DISPLAY* may be *unix:0.0* or *:0.0*, which doesn’t work too
 well when passed through ssh to another machine, so *$HOSTDISPLAY* is
@@ -588,7 +547,7 @@ to add them to an initialization function (usually **StartFunction** or
 **InitFunction**). This way they are only started after fvwm finishes to
 read and execute *config* file.
 
-Fvwm has three special functions for initialization: **StartFunction**,
+|fvwm| has three special functions for initialization: **StartFunction**,
 which is executed on startups and restarts; **InitFunction** and
 **RestartFunction**, which are executed during initialization and
 restarts (respectively) just after StartFunction. These functions may be
@@ -596,7 +555,7 @@ customized in a user’s *config* file using the **AddToFunc** command
 (described later) to start up modules, xterms, or whatever you’d like to
 have started by fvwm.
 
-Fvwm has also a special exit function: **ExitFunction**, executed when
+|fvwm| has also a special exit function: **ExitFunction**, executed when
 exiting or restarting before actually quitting. It could be used to
 explicitly kill modules, etc.
 
@@ -651,19 +610,19 @@ note, all these special functions may be emulated now using
 | + I **KillModule** MyBuggyModule
 | + I **Test** (ToRestart) **Beep**
 
-COMPILATION OPTIONS ` <>`__
----------------------------
+COMPILATION OPTIONS
+-------------------
 
-Fvwm has a number of compile−time options. If you have trouble using a
+|fvwm| has a number of compile−time options. If you have trouble using a
 certain command or feature, check to see if support for it was included
 at compile time. Optional features are described in the *config.h* file
 that is generated during compilation.
 
-ICONS AND IMAGES ` <>`__
-------------------------
+ICONS AND IMAGES
+----------------
 
-Fvwm can load **.xbm, .xpm, .png** and **.svg** images. **XBM** images
-are monochrome. Fvwm can always display **XBM** files. **XPM** and
+|fvwm| can load **.xbm, .xpm, .png** and **.svg** images. **XBM** images
+are monochrome. |fvwm| can always display **XBM** files. **XPM** and
 **PNG** formats are color images. SVG is a vector graphics image format.
 Compile−time options determine whether fvwm can display **XPM**, **PNG**
 or **SVG** icons and images. See the *INSTALL.fvwm* file for more
@@ -815,8 +774,8 @@ Transposing is done last of all, after everything else.
 
 image.svg:!−0x0−30+10@30/3x/2y
 
-MODULES ` <>`__
----------------
+MODULES
+-------
 
 A module is a separate program which runs as a separate Unix process but
 transmits commands to fvwm to execute. Users can write their own modules
@@ -846,10 +805,10 @@ sample module **FvwmButtons**.
 
 Please refer to the **Module Commands** section for details.
 
-ICCCM COMPLIANCE ` <>`__
-------------------------
+ICCCM COMPLIANCE
+----------------
 
-Fvwm attempts to be ICCCM 2.0 compliant. Check
+|fvwm| attempts to be ICCCM 2.0 compliant. Check
 *http://tronche.com/gui/x/icccm/* for more info. In addition, ICCCM
 states that it should be possible for applications to receive any
 keystroke, which is not consistent with the keyboard shortcut approach
@@ -884,7 +843,7 @@ file.
 Further additions are support for client−side colormap installation (see
 the ICCCM for details) and the urgency hint. Clients can set this hint
 in the WM\_HINTS property of their window and expect the window manager
-to attract the user’s attention to the window. Fvwm has two re−definable
+to attract the user’s attention to the window. |fvwm| has two re−definable
 functions for this purpose, "UrgencyFunc" and "UrgencyDoneFunc", which
 are executed when the flag is set/cleared. Their default definitions
 are:
@@ -897,17 +856,17 @@ are:
   AddToFunc** UrgencyDoneFunc
 | + I **Nop**
 
-GNOME COMPLIANCE ` <>`__
-------------------------
+GNOME COMPLIANCE
+----------------
 
-Fvwm attempts to be GNOME (version 1) compliant. Check
+|fvwm| attempts to be GNOME (version 1) compliant. Check
 *http://www.gnome.org* for what that may mean. To disable GNOME hints
 for some or all windows, the *GNOMEIgnoreHints* style can be used.
 
-EXTENDED WINDOW MANAGER HINTS ` <>`__
--------------------------------------
+EXTENDED WINDOW MANAGER HINTS
+-----------------------------
 
-Fvwm attempts to respect the extended window manager hints (ewmh or EWMH
+|fvwm| attempts to respect the extended window manager hints (ewmh or EWMH
 for short) specification:
 *http://www.freedesktop.org/wiki/Standards\_2fwm\_2dspec* and some
 extensions of this specification. This allows fvwm to work with KDE
@@ -952,18 +911,18 @@ type "xprop \| grep \_NET\_WM\_STRUT" in a terminal and select the
 application. If four numbers appear then these numbers define the
 reserved space as explained in the **EwmhBaseStruts** command.
 
-MWM COMPATIBILITY ` <>`__
--------------------------
+MWM COMPATIBILITY
+-----------------
 
-Fvwm provides options to emulate Motif Window Manager (Mwm) as well as
+|fvwm| provides options to emulate Motif Window Manager (Mwm) as well as
 possible. Please refer to the **Emulate** command as well as to the Mwm
 specific options of the **Style** and **MenuStyle** commands for
 details.
 
-OPEN LOOK AND XVIEW COMPATIBILITY ` <>`__
------------------------------------------
+OPEN LOOK AND XVIEW COMPATIBILITY
+---------------------------------
 
-Fvwm supports all the Open Look decoration hints (except pushpins).
+|fvwm| supports all the Open Look decoration hints (except pushpins).
 Should you use any such application, please add the following line to
 your config:
 
@@ -985,8 +944,8 @@ style:
 Style** <application name> *SloppyFocus*, *Lenience* **
 Style** <application name> *ClickToFocus*, *Lenience*
 
-M4 PREPROCESSING ` <>`__
-------------------------
+M4 PREPROCESSING
+----------------
 
 M4 pre−processing is handled by a module in fvwm. To get more details,
 try man **FvwmM4**. In short, if you want fvwm to parse your files with
@@ -996,15 +955,15 @@ command
 
 fvwm −cmd "**FvwmM4** config"
 
-CPP PREPROCESSING ` <>`__
--------------------------
+CPP PREPROCESSING
+-----------------
 
 Cpp is the C−language pre−processor. fvwm offers cpp processing which
 mirrors the m4 pre−processing. To find out about it, re−read the **M4**
 section, but replace "m4" with "cpp".
 
-CONFIGURATION ` <>`__
----------------------
+CONFIGURATION
+-------------
 
 | **Configuration Files**
 | The configuration file is used to describe mouse and button bindings,
@@ -1020,7 +979,7 @@ newlines in a configuration file line can be quoted by preceding them
 with a backslash. All lines linked in this fashion are treated as a
 single line. The newline itself is ignored.
 
-Fvwm makes no distinction between configuration commands and action
+|fvwm| makes no distinction between configuration commands and action
 commands, so anything mentioned in the fvwm commands section can be
 placed on a line by itself for fvwm to execute as it reads the
 configuration file, or it can be placed as an executable command in a
@@ -1040,8 +999,8 @@ is found) has options to create an initial config file for the user.
 If you are new to fvwm, try *fvwm−themes*\ [] package demonstrating the
 powerful fvwm functionality.
 
-FONTS ` <>`__
--------------
+FONTS
+-----
 
 | **Font names and font loading**
 | The fonts used for the text of a window title, icon titles, menus and
@@ -1283,8 +1242,8 @@ refer to the **Colorsets** section for details about colorsets.
 Note: It can be difficult to find the font, *fg*, *fgsh* and *bg* colors
 to make this effect look good, but it can look quite good.
 
-BI−DIRECTIONAL TEXT ` <>`__
----------------------------
+BI−DIRECTIONAL TEXT
+-------------------
 
 Arabic and Hebrew text require bi−directional text support to be
 displayed correctly, this means that logical strings should be converted
@@ -1299,8 +1258,8 @@ fonts.
 This bi−directional text support is done using the *fribidi* library
 compile time option, see *INSTALL.fvwm*.
 
-KEYBOARD SHORTCUTS ` <>`__
---------------------------
+KEYBOARD SHORTCUTS
+------------------
 
 Almost all window manager operations can be performed from the keyboard
 so mouse−less operation should be possible. In addition to scrolling
@@ -1314,15 +1273,15 @@ the pointer movement to go in smaller steps. Standard emacs and vi
 cursor movement controls ( n , p , f , b , and j , k , h , l ) can be
 used instead of the arrow keys.
 
-SESSION MANAGEMENT ` <>`__
---------------------------
+SESSION MANAGEMENT
+------------------
 
-Fvwm supports session management according to the X Session Management
+|fvwm| supports session management according to the X Session Management
 Protocol. It saves and restores window position, size, stacking order,
 desk, stickiness, shadiness, maximizedness, iconifiedness for all
 windows. Furthermore, some global state is saved.
 
-Fvwm doesn’t save any information regarding styles, decors, functions or
+|fvwm| doesn’t save any information regarding styles, decors, functions or
 menus. If you change any of these resources during a session (e.g. by
 issuing **Style** commands or by using various modules), these changes
 are lost after saving and restarting the session. To become permanent,
@@ -1345,8 +1304,8 @@ session manager anyway. If it is really needed,
 still kills all copies of fvwm. Your system must have the **killall**
 command though.
 
-BOOLEAN ARGUMENTS ` <>`__
--------------------------
+BOOLEAN ARGUMENTS
+-----------------
 
 A number of commands take one or several boolean arguments. These take a
 few equivalent inputs: "yes", "on", "true", "t" and "y" all evaluate to
@@ -1354,8 +1313,8 @@ true while "no", "off", "false", "f" and "n" evaluate to false. Some
 commands allow "toggle" too which means that the feature is disabled if
 it is currently enabled and vice versa.
 
-BUILTIN KEY AND MOUSE BINDINGS ` <>`__
---------------------------------------
+BUILTIN KEY AND MOUSE BINDINGS
+------------------------------
 
 The following commands are built−in to fvwm:
 
@@ -1391,8 +1350,8 @@ binding, use this:
 
 **Key** Tab A M −
 
-COMMAND EXECUTION ` <>`__
--------------------------
+COMMAND EXECUTION
+-----------------
 
 | **Module and Function Commands**
 | If fvwm encounters a command that it doesn’t recognize, it checks to
@@ -1411,7 +1370,7 @@ Example: the *config* file contains the line
 
 HelpMe
 
-Fvwm looks for an fvwm command called "HelpMe", and fails. Next it looks
+|fvwm| looks for an fvwm command called "HelpMe", and fails. Next it looks
 for a user−defined complex function called "HelpMe". If no such function
 exists, fvwm tries to execute a module called "HelpMe".
 
@@ -1427,8 +1386,8 @@ exists, fvwm tries to execute a module called "HelpMe".
 To force that all pending changes are applied immediately, use the
 **UpdateStyles**, **Refresh** or **RefreshWindow** commands.
 
-QUOTING ` <>`__
----------------
+QUOTING
+-------
 
 Quotes are required only when needed to make fvwm consider two or more
 words to be a single argument. Unnecessary quoting is allowed. If you
@@ -1447,8 +1406,8 @@ reverse single quotes. All three kinds of quotes are treated in the same
 way. Single characters can be quoted with a preceding backslash. Quoting
 single characters works even inside other kinds of quotes.
 
-COMMAND EXPANSION ` <>`__
--------------------------
+COMMAND EXPANSION
+-----------------
 
 Whenever an fvwm command line is executed, fvwm performs parameter
 expansion. A parameter is a ’$’ followed by a word enclosed in brackets
@@ -1733,8 +1692,8 @@ the string is left as is.
 Some examples can be found in the description of the **AddToFunc**
 command.
 
-SCRIPTING & COMPLEX FUNCTIONS ` <>`__
--------------------------------------
+SCRIPTING & COMPLEX FUNCTIONS
+-----------------------------
 
 To achieve the more complex effects, fvwm has a number of commands that
 improve its scripting abilities. Scripts can be read from a file with
@@ -1750,8 +1709,8 @@ This can confuse some programs. For example, the xwd program refuses to
 make screen shots when run from a complex function. To achieve the same
 functionality you can use the **Read** or **PipeRead** command instead.
 
-LIST OF FVWM COMMANDS ` <>`__
------------------------------
+LIST OF FVWM COMMANDS
+---------------------
 
 The command descriptions below are grouped together in the following
 sections. The sections are hopefully sorted in order of usefulness to
@@ -1794,7 +1753,7 @@ the newcomer.
   other ways to invoke a menu too). This is usually done in the
   configuration file.
 
-Fvwm menus are extremely configurable in look and feel. Even the
+|fvwm| menus are extremely configurable in look and feel. Even the
 slightest nuances can be changed to the user’s liking, including the
 menu item fonts, the background, delays before popping up sub menus,
 generating menus dynamically and many other features. Please refer to
@@ -2073,7 +2032,7 @@ like this:
 | + "" **Nop**
 | + Modules **Popup** Module−Popup
 | + "" **Nop**
-| + Exit Fvwm **Popup** Quit−Verify
+| + Exit |fvwm| **Popup** Quit−Verify
 
 The menu could be invoked via
 
@@ -2970,7 +2929,7 @@ a main menu, called "RootMenu":
 | + "Really Quit Fvwm?" **Title**
 | + "Yes, Really Quit" **Quit**
 | + "Restart Fvwm" **Restart**
-| + "Restart Fvwm 1.xx" **Restart** fvwm1 −s
+| + "Restart |fvwm| 1.xx" **Restart** fvwm1 −s
 | + "" **Nop**
 | + "No, Don’t Quit" **Nop**
 
@@ -2982,8 +2941,8 @@ a main menu, called "RootMenu":
 | + "" **Nop**
 | + "X utilities" Popup Xutils
 | + "" **Nop**
-| + "Fvwm Modules" Popup Module−Popup
-| + "Fvwm Window Ops" Popup Window−Ops
+| + "|fvwm| Modules" Popup Module−Popup
+| + "|fvwm| Window Ops" Popup Window−Ops
 | + "" **Nop**
 | + "Previous Focus" **Prev** (AcceptsFocus) **Focus**
 | + "Next Focus" **Next** (AcceptsFocus) **Focus**
@@ -3053,7 +3012,7 @@ option is turned on, you have to restart fvwm to turn it off.
 
 *RaiseOverNativeWindows* makes fvwm try to raise the windows it manages
 over native windows of the X server’s host system. This is needed for
-some X servers running under Windows, Windows NT or Mac OS X. Fvwm tries
+some X servers running under Windows, Windows NT or Mac OS X. |fvwm| tries
 to detect if it is running under such an X server and initializes the
 flag accordingly.
 
@@ -3352,7 +3311,7 @@ the **Schedule** command from the list of commands to be executed unless
 they were already executed. If the *command\_id* is omitted, the value
 of the variable $[schedule.last] is used as the id.
 
-**Emulate** Fvwm \| Mwm \| Win
+**Emulate** |fvwm| \| Mwm \| Win
 
 This command is a catch all for how miscellaneous things are done by
 fvwm. Right now this command affects where the move/resize feedback
@@ -4273,7 +4232,7 @@ Examples:
 # Grow the focused window towards the top of screen **
 Current Resize** keep w+$[w.y]p keep 0
 
-Note: Fvwm may not be able to parse the command properly if the option
+Note: |fvwm| may not be able to parse the command properly if the option
 *bottomright* of the **Resize** command is used.
 
 **ResizeMoveMaximize** *resize−arguments move−arguments*
@@ -4883,7 +4842,7 @@ pressed on an rxvt window:
 
 Mouse (rxvt) 3 A A **WindowList**
 
-Note that Fvwm actually intercepts all events for a window−specific
+Note that |fvwm| actually intercepts all events for a window−specific
 binding and (if the focused window doesn’t match any of the bindings)
 sends a synthetic copy of the event to the window. This should be
 transparent to most applications, however (for security reasons) some
@@ -5348,7 +5307,7 @@ New normal or transient windows with the *FPGrabFocus* or
 *FPGrabFocusTransient* style automatically receive the focus when they
 are created. *FPGrabFocus* is the default for windows with the
 *ClickToFocus* style. Note that even if these styles are disabled, the
-application may take the focus itself. Fvwm can not prevent this.
+application may take the focus itself. |fvwm| can not prevent this.
 
 The *OverrideGrabFocus* style instructs fvwm to never take away the
 focus from such a window via the *GrabFocus* or *GrabFocusTransient*
@@ -5959,15 +5918,15 @@ edges. The default behavior is *All*.
 The third and last optional argument may be set to one of the four
 following values:
 
-• With *Screen* the already snapping icons or windows, which is
+. With *Screen* the already snapping icons or windows, which is
 controlled by the second argument, will snap now also to the screen
 edges.
 
-• *ScreenWindows* snaps only windows to the screen edges.
+. *ScreenWindows* snaps only windows to the screen edges.
 
-• *ScreenIcons* snaps only icons to the screen edges.
+. *ScreenIcons* snaps only icons to the screen edges.
 
-• *ScreenAll* snaps windows and icons to the screen edges.
+. *ScreenAll* snaps windows and icons to the screen edges.
 
 The option *SnapGrid* defines an invisible grid on the screen. During an
 interactive move a window or icon is positioned such that its location
@@ -6034,7 +5993,7 @@ Style** XTeddy InitialMapCommand Nop
 Applications can place windows at a particular spot on the screen either
 by window manager hints or a geometry specification. When they do
 neither, then the window manager steps in to find a place for the
-window. Fvwm knows several ways to deal with this situation. The default
+window. |fvwm| knows several ways to deal with this situation. The default
 is *TileCascadePlacement*.
 
 *PositionPlacement* [*Center*\ \|\ *UnderMouse*\ \|\ *move−arguments*]
@@ -6456,7 +6415,7 @@ save under, use the *SaveUnderOff* style. This is the default. See also
 Note: This style is useless if the X server does not allow save under.
 
 *ParentalRelativity* enables clients that use a background pixmap of
-type *ParentRelative* to achieve transparency. Fvwm modules that support
+type *ParentRelative* to achieve transparency. |fvwm| modules that support
 transparent colorsets require this setting. *Opacity* is the default and
 should be used for all non−transparent clients for better performance.
 
@@ -7326,7 +7285,7 @@ and should be replaced with the following three commands as needed:
 | or **
   Style** \* EdgeMoveResistance *moving xinerama−scrolling*
 
-Fvwm does this substitution automatically and prints a warning.
+|fvwm| does this substitution automatically and prints a warning.
 
 **EdgeScroll** *horizontal*\ [p] *vertical*\ [p] [wrap \| wrapx \|
 wrapy]
@@ -7912,7 +7871,7 @@ The above function starts an xterm on the current desk, waits for it to
 map itself, then switches to desk 2 and starts an xmh. After the xmh
 window appears control moves to desk 0.
 
-Fvwm remains partially functional during a wait, but any input from the
+|fvwm| remains partially functional during a wait, but any input from the
 modules is queued up and processed only after the window appears or the
 command is aborted. For example, windows can not be focused with
 **FvwmTaskBar** or **FvwmWinList** during a wait.
@@ -7947,7 +7906,7 @@ used.
 
 **The Ring of Windows**
 
-Fvwm stores windows in a ring internally. Think of the focused window as
+|fvwm| stores windows in a ring internally. Think of the focused window as
 a cursor on the current position in the ring. The **Next** command and
 many other commands search forwards through the ring for a matching
 window, and **Prev** searches backwards. The windows in the ring are
@@ -8463,7 +8422,7 @@ visible on the current viewport and not completely overlapped by other
 windows.
 
 | **Module Commands**
-| Fvwm maintains a database of module configuration lines in a form
+| |fvwm| maintains a database of module configuration lines in a form
 
 **\***\ *<ModuleName>*\ **:** *<Config−Resource>*
 
@@ -9123,15 +9082,15 @@ Examples:
 | # 50% from yellow to red **
   Colorset** 0 HGradient 128 3 Blue 1000 Green 1 Yellow 1000 Red
 
-ENVIRONMENT ` <>`__
--------------------
+ENVIRONMENT
+-----------
 
 The environment variables that have an effect on how fvwm operates are
 the following:
 
 *DISPLAY*
 
-Fvwm starts on this display unless the **−display** option is given.
+|fvwm| starts on this display unless the **−display** option is given.
 
 *FVWM\_MODULEDIR*
 
@@ -9145,7 +9104,7 @@ by fvwm to *$HOME/.fvwm*, which is the default user’s data directory.
 
 *SESSION\_MANAGER*
 
-Fvwm tries to contact this session manager.
+|fvwm| tries to contact this session manager.
 
 *SESSION\_MANAGER\_NAME*
 
@@ -9160,27 +9119,28 @@ If this is set, fvwm saves its session data in this directory. Otherwise
 it uses *$HOME*. Note, the state files are named *.fs−??????* and
 normally are removed automatically when not used anymore.
 
-AUTHORS ` <>`__
----------------
+AUTHORS
+-------
 
 Robert Nation with help from many people, based on twm code, which was
 written by Tom LaStrange. After Robert Nation came Charles Hines,
 followed by Brady Montz. Currently fvwm is developed by a number of
-people on the fvwm−workers mailing list.
+people on the fvwm−workers mailing list `<fvwm-workers@fvwm.org>`_.
 
-COPYRIGHT ` <>`__
------------------
+COPYRIGHT
+---------
 
-Fvwm and all the modules, scripts and other files coming with the
+|fvwm| and all the modules, scripts and other files coming with the
 distribution are subject to the GNU General Public License (GPL). Please
 refer to the COPYING file that came with fvwm for details.
 
-BUGS ` <>`__
-------------
+BUGS
+----
 
 Bug reports can be sent to the fvwm−workers mailing list at
-<fvwm−workers@fvwm.org>
+`<fvwm−workers@fvwm.org>`_.
 
-The official fvwm homepage is *http://fvwm.org/*.
+The official fvwm homepage is `<http://fvwm.org/>`_
 
---------------
+.. |fvwm| replace:: **fvwm**
+.. |date| date:: %d-%b-%Y
