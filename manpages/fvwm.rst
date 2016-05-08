@@ -131,17 +131,22 @@ These are the command line options that are recognized by |fvwm|:
         driver with Render support) leaving only a few free colors. This may
         lead to some color problems (and nothing can be done). XFree−4.3 or
         better pre−allocate only 85 colors. If no pre−allocated palette is auto
-        detected the defaults are as follow:
-
-        Display depth 8 (256 colors)
-        PseudoColor: 68 (4x4x4 color cube + 4 grey)
-        GrayScale: 64 regular grey
-        DirectColor: 32 (3x3x3 color cube + 5 grey)
-
-        Display depth 4 (16 colors)
-        PseudoColor: 10 (2x2x2 Pseudocolor cube + 2 grey)
-        GrayScale: 8 regular grey
-        DirectColor: 10 (2x2x2 color cube + 2 grey)
+        detected the defaults are as follows:
+        
+        | 
+        | 
+        |       Display depth 8 (256 colors)
+        |
+        |               PseudoColor: 68 (4x4x4 color cube + 4 grey)
+        |               GrayScale: 64 regular grey
+        |               DirectColor: 32 (3x3x3 color cube + 5 grey)
+        |
+        |       Display depth 4 (16 colors)
+        |
+        |                PseudoColor: 10 (2x2x2 Pseudocolor cube + 2 grey)
+        |                GrayScale: 8 regular grey
+        |                DirectColor: 10 (2x2x2 color cube + 2 grey)
+        |
 
         These defaults may change before version 2.6. Note that if you use a
         private color map (i.e., |fvwm| is started with the **−C** or the **−I**
@@ -167,7 +172,7 @@ These are the command line options that are recognized by |fvwm|:
         first is to run the applications which waste your (default) color map
         with a private color map. For example, run netscape with the −install
         option, run KDE or QT applications with the −−cmap option, use the
-        **−C** option for fvwm. The disadvantage of this method is that it is
+        **−C** option for |fvwm|. The disadvantage of this method is that it is
         visually disturbing (see the **ColormapFocus** command for a better
         control of the color maps switching). The second method is to limit the
         number of colors that the applications use. Again, some applications
@@ -293,7 +298,8 @@ made to stick to the glass, if desired.
 Window geometries are specified relative to the current viewport. That
 is:
 
-xterm −geometry +0+0
+| 
+|        xterm −geometry +0+0
 
 creates a window in the upper left hand corner of the visible portion of
 the screen. It is permissible to specify geometries which place windows
@@ -302,14 +308,16 @@ screen is 1000 by 1000 pixels, and the desktop size is 3x3, and the
 current viewport is at the upper left hand corner of the desktop,
 invoking:
 
-xterm −geometry +1000+1000
+| 
+|        xterm −geometry +1000+1000
 
 places a window just off of the lower right hand corner of the screen.
 It can be found by moving the mouse to the lower right hand corner of
 the screen and waiting for it to scroll into view. A geometry specified
 as something like:
 
-xterm −geometry −5−5
+| 
+|        xterm −geometry −5−5
 
 places the window’s lower right hand corner 5 pixels from the lower
 right corner of the visible portion of the screen. Not all applications
@@ -337,22 +345,30 @@ Some applications that understand standard Xt command line arguments and
 X resources, like xterm and xfontsel, allow the user to specify the
 start−up desk or page on the command line:
 
-xterm −xrm "\*Desk:1"
+|       
+|       xterm −xrm "\*Desk:1"
+|       
 
 starts an xterm on desk number 1;
 
-xterm −xrm "\*Page:3 2 1"
+| 
+| 
+|       xterm −xrm "\*Page:3 2 1" 
 
 starts an xterm two pages to the right and one down from the upper left
 hand page of desk number 3. Not all applications understand the use of
 these options, however. You could achieve the same results with the
 following lines in your *.Xdefaults* file:
 
-XTerm\*Desk: 1
+|
+|       XTerm\*Desk: 1
+| 
 
 or
 
-XTerm\*Page: 3 2 1
+|
+| 
+|       XTerm\*Page: 3 2 1
 
 USE ON MULTI−SCREEN DISPLAYS
 ----------------------------
@@ -362,7 +378,9 @@ starts up on every screen on the specified display. After |fvwm| starts
 each screen is treated independently. Restarts of |fvwm| need to be
 performed separately on each screen. The use of
 
-**EdgeScroll** 0 0
+| 
+| **EdgeScroll** 0 0
+ 
 
 is strongly recommended for multi−screen displays. You may need to quit
 on each screen to quit from the X session completely. This is not to be
@@ -395,7 +413,9 @@ the global screen (the rectangle that encloses all Xinerama screens),
 one that currently contains the pointer). If the X server does not
 support Xinerama or only one screen is used, the screen bit is ignored.
 
-**Style** \* *IconBox* 64x300−0−0@p
+| 
+|       **Style** \* *IconBox* 64x300−0−0@p
+|
 
 Xinerama support can be configured to use a primary screen. |fvwm| can be
 configured to place new windows and icons on this screen. The primary
@@ -409,7 +429,9 @@ resolutions. In this situation, windows may get stuck in the portion of
 the whole desktop that belongs to neither screen. When this happens, the
 windows or icons can be retrieved with the command
 
-**All MoveToScreen**
+|
+|       **All MoveToScreen**
+| 
 
 that can be entered in an **FvwmConsole** window or with
 **FvwmCommand**.
@@ -428,7 +450,9 @@ describes key and button bindings, and many other things. The format of
 these files is described later. |fvwm| first searches for configuration
 files using the command
 
-**Read** *config*
+| 
+|       **Read** *config*
+| 
 
 This looks for file *config* in *$FVWM\_USERDIR* and *$FVWM\_DATADIR*
 directories, as described in **Read**. If this fails more files are
@@ -436,23 +460,20 @@ queried for backward compatibility. Here is the complete list of all
 file locations queried in the default installation (only the first found
 file is used):
 
-+--------------------------+--------------------------+--------------------------+
-|                          | *$HOME*/.fvwm/config     |                          |
-+--------------------------+--------------------------+--------------------------+
+| 
+|       *$HOME*/.fvwm/config
+|       /usr/local/share/fvwm/config
+| 
 
-/usr/local/share/fvwm/config
+The following locations are not guaranteed to be supported in future versions:
 
-+--------------------------+--------------------------+--------------------------+
-|                          | *$HOME*/.fvwm/.fvwm2rc   |                          |
-+--------------------------+--------------------------+--------------------------+
-
-| *$HOME*/.fvwm2rc
-| /usr/local/share/fvwm/.fvwm2rc
-| /usr/local/share/fvwm/system.fvwm2rc
-| /etc/system.fvwm2rc
-
-Please note, the last 5 locations are not guaranteed to be supported in
-the future.
+| 
+|       *$HOME*/.fvwm/.fvwm2rc
+|       *$HOME*/.fvwm2rc
+|       /usr/local/share/fvwm/.fvwm2rc
+|       /usr/local/share/fvwm/system.fvwm2rc
+|       /etc/system.fvwm2rc
+| 
 
 If a configuration file is not found, the left mouse button, or Help or
 F1 keys on the root window bring up menus and forms that can create a
@@ -470,11 +491,15 @@ Unix−domain sockets, which are faster.
 If you want to start some applications or modules with fvwm, you can
 simply put
 
-**Exec** app
+|
+|       **Exec** app
+| 
 
 or
 
-**Module** FvwmXxx
+|
+|       **Module** FvwmXxx
+| 
 
 into your *config*, but it is not recommended; do this only if you know
 what you are doing. It is usually important to start applications or
@@ -507,48 +532,62 @@ and without it. Generally it is a bad idea to start xterms or other
 applications in "Session\*" functions. Also someone can decide to start
 different modules while running under a session manager or not. For the
 similar purposes **SessionExitFunction** is used instead of
-ExitFunction.
+**ExitFunction**.
 
-| **DestroyFunc** StartFunction **
-  AddToFunc** StartFunction
-| + I **Module FvwmPager** \* \*
-| + I **Module FvwmButtons**
+|
+|       **DestroyFunc** StartFunction
+|       **AddToFunc** StartFunction
+|       + I **Module FvwmPager** \* \*
+|       + I **Module FvwmButtons**
+|       
 
-| **DestroyFunc** InitFunction **
-  AddToFunc** InitFunction
-| + I **Module FvwmBanner**
-| + I **Module FvwmTaskBar**
-| + I **Exec** xsetroot −solid cyan
-| + I **Exec** xterm
-| + I **Exec** netscape
+|       
+|       **DestroyFunc** InitFunction
+|       **AddToFunc** InitFunction
+|       + I **Module FvwmBanner**
+|       + I **Module FvwmTaskBar**
+|       + I **Exec** xsetroot −solid cyan
+|       + I **Exec** xterm
+|       + I **Exec** netscape
+|       
 
-| **DestroyFunc** RestartFunction **
-  AddToFunc** RestartFunction
-| + I **Module FvwmTaskBar**
+|       
+|       **DestroyFunc** RestartFunction
+|       **AddToFunc** RestartFunction
+|       + I **Module FvwmTaskBar**
+|       
 
-| **DestroyFunc** SessionInitFunction **
-  AddToFunc** SessionInitFunction
-| + I **Module FvwmBanner**
+|       
+|       **DestroyFunc** SessionInitFunction
+|       **AddToFunc** SessionInitFunction
+|       + I **Module FvwmBanner**
+|       
 
-| **DestroyFunc** SessionRestartFunction **
-  AddToFunc** SessionRestartFunction
-| + I **Nop**
+|       
+|       **DestroyFunc** SessionRestartFunction
+|       **AddToFunc** SessionRestartFunction
+|       + I **Nop**
+|       
 
 You do not need to define all special functions if some are empty. Also
 note, all these special functions may be emulated now using
 **StartFunction** and **ExitFunction,** like this:
 
-| **DestroyFunc** StartFunction **
-  AddToFunc** StartFunction
-| + I **Test** (Init) **Module FvwmBanner**
-| + I **Module FvwmPager** \* \*
-| + I **Test** (Restart) **Beep**
+| 
+|       **DestroyFunc** StartFunction
+|       **AddToFunc** StartFunction
+|       + I **Test** (Init) **Module FvwmBanner**
+|       + I **Module FvwmPager** \* \*
+|       + I **Test** (Restart) **Beep**
+|       
 
-| **DestroyFunc** ExitFunction **
-  AddToFunc** ExitFunction
-| + I **Test** (Quit) **Echo** Bye−bye
-| + I **KillModule** MyBuggyModule
-| + I **Test** (ToRestart) **Beep**
+|       
+|       **DestroyFunc** ExitFunction 
+|       **AddToFunc** ExitFunction
+|       + I **Test** (Quit) **Echo** Bye−bye
+|       + I **KillModule** MyBuggyModule
+|       + I **Test** (ToRestart) **Beep**
+| 
 
 ICONS AND IMAGES
 ----------------
@@ -567,29 +606,14 @@ shaped icons.
 | SVG images are generated from (XML) text files. A really simple SVG
   file might look something like this:
 
-<svg width="120" height="80">
-
-+--------------------------------------+--------------------------------------+
-|                                      | <rect fill="red" width="40"          |
-|                                      | height="40" x="0" y="0" />           |
-+--------------------------------------+--------------------------------------+
-|                                      | <rect fill="lime" width="40"         |
-|                                      | height="40" x="40" y="0" />          |
-+--------------------------------------+--------------------------------------+
-|                                      | <rect fill="blue" width="40"         |
-|                                      | height="40" x="80" y="0" />          |
-+--------------------------------------+--------------------------------------+
-|                                      | <rect fill="cyan" width="40"         |
-|                                      | height="40" x="0" y="40" />          |
-+--------------------------------------+--------------------------------------+
-|                                      | <rect fill="magenta" width="40"      |
-|                                      | height="40" x="40" y="40" />         |
-+--------------------------------------+--------------------------------------+
-|                                      | <rect fill="yellow" width="40"       |
-|                                      | height="40" x="80" y="40" />         |
-+--------------------------------------+--------------------------------------+
-
-</svg>
+|       <svg width="120" height="80">
+|               <rect fill="red" width="40" height="40" x="0" y="0" />
+|               <rect fill="lime" width="40" height="40" x="40" y="0" />
+|               <rect fill="blue" width="40" height="40" x="80" y="0" />
+|               <rect fill="cyan" width="40" height="40" x="0" y="40" />
+|               <rect fill="magenta" width="40" height="40" x="40" y="40" />
+|               <rect fill="yellow" width="40" height="40" x="80" y="40" />
+|       </svg>
 
 By default, SVG images are rendered as the image creator intended them
 to. But since SVG is a vector graphics format, the images can be
@@ -600,72 +624,79 @@ the same icon file rendered at diffrent sizes for the *Icon* and
 The rendering options are specified as a string appended to the SVG
 filename as follows:
 
-+--------------------------------------+--------------------------------------+
-|                                      | *image.svg*:[!] [(1) *size*]         |
-|                                      | [(2) *position*] [(3) \ *rotation*]  |
-|                                      | [(4) \ *scale*]                      |
-|                                      | ...                                  |
-+--------------------------------------+--------------------------------------+
-|                                      | (1) [−]*width*\ {x}[−]*height*       |
-+--------------------------------------+--------------------------------------+
-|                                      | (2) {− \| +}\ *xpos*\ {− \|          |
-|                                      | +}\ *ypos*                           |
-+--------------------------------------+--------------------------------------+
-|                                      | (3) @[−]\ *angle*                    |
-+--------------------------------------+--------------------------------------+
-|                                      | (4) {\* \| /}[−]*factor*\ [x \| y]   |
-+--------------------------------------+--------------------------------------+
+| 
+|       *image.svg*:[!] [(1) *size*] [(2) *position*] [(3) *rotation*] [(4) \ *scale*] ...
+|       (1) [−]*width*\ {x}[−]*height*
+|       (2) {− \| +}\ *xpos*\ {− \| +}\ *ypos*
+|       (3) @[−]\ *angle*
+|       (4) {\* \| /}[−]*factor*\ [x \| y]
+| 
 
 The option string always starts with a colon (’:’) to separate it from
 the filename. An empty option string can skip this colon, but it might
 still be a good idea to include it to prevent ambiguity if the filename
 contains any colon.
 
-| filename\_without\_colon.svg
-| filename:with:colon.svg:
+|
+|       filename\_without\_colon.svg
+|       filename:with:colon.svg:
+|       
 
 An exclamation point (’!’) transposes the entire final image (including
 the rendering area), i.e. all the horizontal and all the vertical
 coordinates are swapped with each other.
 
-image.svg:!
+| 
+|       image.svg:!
+| 
 
 *width* and *height* specifies the dimensions of the rendering area in
 pixels, i.e. the dimensions of the resulting image. The actual image is
 fitted to fill the entire rendering area.
 
-image.svg:60x60
+| 
+|       image.svg:60x60
+| 
 
 Use a *width* or *height* value of 0 to keep the aspect ratio.
 
-| image.svg:0x60
-| image.svg:60x0
+| 
+|       image.svg:0x60
+|       image.svg:60x0
 
 A ’−’ before *width* mirrors the rendering area horizontally.
 
-image.svg:−0x0
+| 
+|       image.svg:−0x0
+| 
 
 A ’−’ before *height* mirrors the rendering area vertically.
 
-image.svg:0x−0
+| 
+|       image.svg:0x−0
+| 
 
 *xpos* and *ypos* specifies a translation of the image in pixels. A
 positive *xpos* value moves the image to the right. A positive *ypos*
 value moves it down. Moving it partially outside of the rendering area
 results in a cropped image.
 
-| image.svg:−30−0
-| image.svg:−0+10
-| image.svg:−30+10
+| 
+|       image.svg:−30−0
+|       image.svg:−0+10
+|       image.svg:−30+10
+| 
 
 *angle* specifies a rotation around the actual image center in degrees.
 This might result in a cropped image. A positive value rotates the image
 clockwise. Floating point values are recognized.
 
-| image.svg:@180
-| image.svg:@−90
-| image.svg:@30
-| image.svg:@57.3
+| 
+|       image.svg:@180
+|       image.svg:@−90
+|       image.svg:@30
+|       image.svg:@57.3
+| 
 
 *factor* specifes a scaling of the actual image (not the rendering
 area). Scaling it up results in a cropped image. Floting point values
@@ -673,38 +704,52 @@ are recognized. Division by zero is ignored. If *factor* is directly
 followed by a ’x’ or a ’y’, the scaling is horizontal or vertical
 respectively. Otherwise the scaling is uniform.
 
-| image.svg:\*2
-| image.svg:/2
-| image.svg:/3x
-| image.svg:/2y
+| 
+|       image.svg:\*2
+|       image.svg:/2
+|       image.svg:/3x
+|       image.svg:/2y
+| 
 
 Scaling down a translated or rotated image can prevent cropping.
 
-image.svg:@30\*0.6
+|
+|       image.svg:@30\*0.6
+|
 
 Repeated usage of translation, rotation, and scaling is allowed.
 Translation and rotation are additive. Scaling is multiplicative.
 
-| image.svg:\*2/3
-| image.svg:/3x/2y
+| 
+|       image.svg:\*2/3
+|       image.svg:/3x/2y
+| 
 
 When combining affine transformations, the scaling is always done first,
 then the rotation, and finally the translation.
 
-image.svg:−30+10@30/3x/2y
+|
+|       image.svg:−30+10@30/3x/2y
+| 
 
 Use a negative scale *factor* to mirror the actual image.
 
-image.svg:−30+10@30/−3x/2y
+|
+|       image.svg:−30+10@30/−3x/2y
+| 
 
 Mirroring of the rendering area is done after any scaling, rotation or
 translation of the image.
 
-image.svg:−0x0−30+10@30/3x/2y
+| 
+|       image.svg:−0x0−30+10@30/3x/2y
+| 
 
 Transposing is done last of all, after everything else.
 
-image.svg:!−0x0−30+10@30/3x/2y
+|
+|       image.svg:!−0x0−30+10@30/3x/2y
+| 
 
 MODULES
 -------
@@ -751,8 +796,10 @@ problem exists with mouse bindings.
 
 The ICCCM states that windows possessing the property
 
-| WM\_HINTS(WM\_HINTS):
-| Client accepts input or input focus: False
+| 
+|       WM\_HINTS(WM\_HINTS):
+|               Client accepts input or input focus: False
+| 
 
 should not be given the keyboard input focus by the window manager.
 These windows can take the input focus by themselves, however. A number
@@ -765,7 +812,9 @@ focus.
 The differences between ICCCM 1.1 and 2.0 include the ability to take
 over from a running ICCCM 2.0 compliant window manager; thus
 
-fvwm; vi ~/.fvwm/config; |fvwm| −replace
+| 
+|       fvwm; vi ~/.fvwm/config; |fvwm| −replace
+| 
 
 resembles the **Restart** command. It is not exactly the same, since
 killing the previously running wm may terminate your X session, if the
@@ -780,13 +829,17 @@ functions for this purpose, "UrgencyFunc" and "UrgencyDoneFunc", which
 are executed when the flag is set/cleared. Their default definitions
 are:
 
-| **AddToFunc** UrgencyFunc
-| + I **Iconify** off
-| + I **FlipFocus**
-| + I **Raise**
-| + I **WarpToWindow !raise** 5p 5p **
-  AddToFunc** UrgencyDoneFunc
-| + I **Nop**
+| 
+|       **AddToFunc** UrgencyFunc
+|       + I **Iconify** off
+|       + I **FlipFocus**
+|       + I **Raise**
+|       + I **WarpToWindow !raise** 5p 5p **
+| 
+|       **AddToFunc** UrgencyDoneFunc
+|       + I **Nop**
+| 
+
 
 EXTENDED WINDOW MANAGER HINTS
 -----------------------------
@@ -813,11 +866,13 @@ you click on a button which represents a window in such a taskbar), then
 default is Iconify Off, Focus and Raise. You can redefine this function.
 For example:
 
-| **DestroyFunc** EWMHActivateWindowFunc **
-  AddToFunc** EWMHActivateWindowFunc I **Iconify** Off
-| + I **Focus**
-| + I **Raise**
-| + I **WarpToWindow** 50 50
+| 
+|       **DestroyFunc** EWMHActivateWindowFunc **
+|       **AddToFunc** EWMHActivateWindowFunc I **Iconify** Off
+|       + I **Focus**
+|       + I **Raise**
+|       + I **WarpToWindow** 50 50
+| 
 
 additionally warps the pointer to the center of the window.
 
@@ -851,7 +906,9 @@ OPEN LOOK AND XVIEW COMPATIBILITY
 Should you use any such application, please add the following line to
 your config:
 
-**Style** \* *OLDecor*
+| 
+|       **Style** \* *OLDecor*
+| 
 
 Most (perhaps all) Open Look applications have a strange notion of
 keyboard focus handling. Although a lot of work went into |fvwm| to work
@@ -859,15 +916,18 @@ well with these, you may still encounter problems. It is recommended to
 use the *NeverFocus* focus policy and the *Lenience* style for all such
 applications (the windows still get the focus):
 
-**Style** <application name> *NeverFocus*, *Lenience*
+| 
+|       **Style** <application name> *NeverFocus*, *Lenience*
+| 
 
 But in case you can not live with that focus policy, you can try using
 one of the other focus policies in combination with the *Lenience*
 style:
 
-**Style** <application name> *MouseFocus*, *Lenience* **
-Style** <application name> *SloppyFocus*, *Lenience* **
-Style** <application name> *ClickToFocus*, *Lenience*
+| 
+|       **Style** <application name> *MouseFocus*, *Lenience* **
+|       **Style** <application name> *SloppyFocus*, *Lenience* **
+|       **Style** <application name> *ClickToFocus*, *Lenience*
 
 CONFIGURATION
 -------------
@@ -908,9 +968,11 @@ FONTS
 
 First, you can use what we can call a usual font name, for example,
 
-| −adobe−courier−bold−r−normal−−10−100−75−75−m−60−ISO8859−1
-| −adobe−courier−bold−r−normal−−10−\*
-| −\*−fixed−medium−o−normal−−14−\*−ISO8859−15
+| 
+|       −adobe−courier−bold−r−normal−−10−100−75−75−m−60−ISO8859−1
+|       −adobe−courier−bold−r−normal−−10−\*
+|       −\*−fixed−medium−o−normal−−14−\*−ISO8859−15
+| 
 
 That is, you can use an X Logical Font Description (XLFD for short).
 Then the "first" font which matches the description is loaded and used.
@@ -918,21 +980,29 @@ This "first" font depends of your font path and also of your locale.
 Fonts which match the locale charset are loaded in priority order. For
 example with
 
-−adobe−courier−bold−r−normal−−10−\*
+| 
+|       −adobe−courier−bold−r−normal−−10−\*
+| 
 
 if the locale charset is ISO8859−1, then |fvwm| tries to load a font which
 matches
 
-−adobe−courier−bold−r−normal−−10−\*−ISO8859−1
+| 
+|       −adobe−courier−bold−r−normal−−10−\*−ISO8859−1
+| 
 
 with the locale charset ISO8859−15 |fvwm| tries to load
 
-−adobe−courier−bold−r−normal−−10−\*−ISO8859−15.
+| 
+|       −adobe−courier−bold−r−normal−−10−\*−ISO8859−15.
+| 
 
 A font name can be given as an extended XLFD. This is a comma separated
 list of (simple) XLFD font names, for example:
 
-−adobe−courier−bold−r−normal−−14−\*,−\*−courier−medium−r−normal−−14−\*
+| 
+|       −adobe−courier−bold−r−normal−−14−\*,−\*−courier−medium−r−normal−−14−\*
+| 
 
 Each simple font name is tried until a matching font with the locale
 charset is found and if this fails each simple font name is tried
@@ -946,8 +1016,10 @@ are: xlsfonts, xfontsel, xfd and xset.
 If you have Xft support you can specify an Xft font name (description)
 of a true type (or Type1) font prefixed by "xft:", for example:
 
-| "xft:Luxi Mono"
-| "xft:Luxi Mono:Medium:Roman:size=14:encoding=iso8859−1"
+| 
+|       "xft:Luxi Mono"
+|       "xft:Luxi Mono:Medium:Roman:size=14:encoding=iso8859−1"
+| 
 
 The "first" font which matches the description is loaded. This first
 font depends on the XftConfig configuration file with Xft1 and on the
@@ -983,7 +1055,9 @@ the freetype versions and your video card(s)).
 After an Xft font name you can add after a ";" an XLFD font name (simple
 or extended) as:
 
-xft:Verdana:pixelsize=14;−adobe−courier−bold−r−normal−−14−\*
+| 
+|       xft:Verdana:pixelsize=14;−adobe−courier−bold−r−normal−−14−\*
+| 
 
 then, if either loading the Xft font fails or |fvwm| has no Xft support,
 |fvwm| loads the font "−adobe−courier−bold−r−normal−−14−\*". This allows
@@ -1020,25 +1094,35 @@ encoding in the font name. With a multibyte language, (as multibyte font
 works well only if the locale encoding is the charset of the font), you
 should use an iso10646−1 font:
 
-StringEncoding=jisx0208.1983−0:−\*−fixed−medium−r−\*−ja−\*−iso10646−1
+| 
+|       StringEncoding=jisx0208.1983−0:−\*−fixed−medium−r−\*−ja−\*−iso10646−1
+| 
 
 or
 
-"StringEncoding=jisx0208.1983−0:xft:Bitstream Cyberbit"
+| 
+|       "StringEncoding=jisx0208.1983−0:xft:Bitstream Cyberbit"
+| 
 
 if your **FvwmForm** configuration uses jisx0208.1983−0 encoding.
 Another possibility is to use UTF−8 encoding for your **FvwmForm**
 configuration and use an iso10646−1 font:
 
-−\*−fixed−medium−r−\*−ja−\*−iso10646−1
+| 
+|       −\*−fixed−medium−r−\*−ja−\*−iso10646−1
+| 
 
 or
 
-"StringEncoding=UTF−8:xft:Bitstream Cyberbit"
+| 
+|       "StringEncoding=UTF−8:xft:Bitstream Cyberbit"
+| 
 
 or equivalently
 
-"xft:Bitstream Cyberbit:encoding=iso10646−1"
+| 
+|       "xft:Bitstream Cyberbit:encoding=iso10646−1"
+| 
 
 In general iso10646−1 fonts together with UTF−8 string encoding allows
 the display of any characters in a given menu, **FvwmForm** etc.
@@ -1051,18 +1135,24 @@ may have a very large number of characters) or because you have a pretty
 font without an iso10646−1 charset, you can specify the string encoding
 to be UTF−8 and use a font in the locale charset:
 
-StringEncoding=UTF−8:−\*−pretty\_font−\*−12−\*
+| 
+|       StringEncoding=UTF−8:−\*−pretty\_font−\*−12−\*
+| 
 
 In most cases, |fvwm| correctly determines the encoding of the font.
 However, some fonts do not end with valid encoding names. When the font
 name isn’t normal, for example:
 
-−misc−fixed−\*−−20−\*−my\_utf8−36
+| 
+|       −misc−fixed−\*−−20−\*−my\_utf8−36
+| 
 
 you need to add the encoding after the font name using a slash as a
 delimiter. For example:
 
-**MenuStyle** \* *Font* −misc−fixed−\*−−20−\*−my\_utf8−36/iso10646−1
+| 
+|       **MenuStyle** \* *Font* −misc−fixed−\*−−20−\*−my\_utf8−36/iso10646−1
+| 
 
 If |fvwm| finds an encoding, |fvwm| uses the iconv system functions to do
 conversion between encodings. Unfortunately, there are no standards. For
@@ -1076,28 +1166,30 @@ encoding and UTF−8 at the end of the font name after the encoding hint
 and a / (another possible solution is to use GNU libiconv). For example
 use:
 
-**Style** \* *Font* −misc−fixed−\*−−14−\*−iso8859−1/\*/latin1
+| 
+|       **Style** \* *Font* −misc−fixed−\*−−14−\*−iso8859−1/\*/latin1
+| 
 
 to use latin1 for defining the converter for the iso8859−1 encoding. The
 "\*" in between the "/" says to |fvwm| to determine the encoding from the
 end of the font name. Use:
 
-**Style** \* *Font* \\
-
-+--------------------------------------+--------------------------------------+
-|                                      | −misc−fixed−\*−−14−\*−local8859−6/is |
-|                                      | o8859−6/local\_iso8859\_6\_iconv     |
-+--------------------------------------+--------------------------------------+
+| 
+|       **Style** \* *Font* \\
+|               −misc−fixed−\*−−14−\*−local8859−6/iso8859−6/local\_iso8859\_6\_iconv
+| 
 
 to force |fvwm| to use the font with iso8859−6 as the encoding (this is
 useful for bi−directionality) and to use local\_iso8859\_6\_iconv for
 defining the converters.
-
+ 
 | **Font Shadow Effects**
 | Fonts can be given 3d effects. At the beginning of the font name (or
   just after a possible StringEncoding specification) add
 
-Shadow=\ *size* [*offset*] [*directions]*]:
+| 
+|       Shadow=\ *size* [*offset*] [*directions]*]:
+| 
 
 *size* is a positive integer which specifies the number of pixels of
 shadow. *offset* is an optional positive integer which defines the
@@ -1194,7 +1286,9 @@ it was sent to. This is probably not a very serious problem, since with
 session management, you are supposed to quit a session through the
 session manager anyway. If it is really needed,
 
-**Exec** exec killall fvwm
+| 
+|       **Exec** exec killall fvwm
+| 
 
 still kills all copies of fvwm. Your system must have the **killall**
 command though.
@@ -1213,18 +1307,19 @@ BUILTIN KEY AND MOUSE BINDINGS
 
 The following commands are built−in to fvwm:
 
-| **Key** Help R A **Popup** MenuFvwmRoot **
-  Key** F1 R A **Popup** MenuFvwmRoot **
-  Key** Tab A M **WindowList** Root c c NoDeskSort **
-  Key** Escape A MC **EscapeFunc
-  Mouse** 1 R A **Menu** MenuFvwmRoot **
-  Mouse** 1 T A FuncFvwmRaiseLowerX **Move
-  Mouse** 1 FS A FuncFvwmRaiseLowerX **Resize
-  Mouse** 2 FST A FuncFvwmRaiseLowerX **Move
-  AddToFunc** FuncFvwmRaiseLowerX
-| + I **Raise**
-| + M $0
-| + D **Lower**
+|       **Key** Help R A **Popup** MenuFvwmRoot 
+|       **Key** F1 R A **Popup** MenuFvwmRoot
+|       **Key** Tab A M **WindowList** Root c c NoDeskSort
+|       **Key** Escape A MC **EscapeFunc**
+|       **Mouse** 1 R A **Menu** MenuFvwmRoot
+|       **Mouse** 1 T A FuncFvwmRaiseLowerX **Move**
+|       **Mouse** 1 FS A FuncFvwmRaiseLowerX **Resize**
+|       **Mouse** 2 FST A FuncFvwmRaiseLowerX **Move**
+|  
+|       **AddToFunc** FuncFvwmRaiseLowerX
+|       + I **Raise**
+|       + M $0
+|       + D **Lower**
 
 The Help and F1 keys invoke a built−in menu that |fvwm| creates. This is
 primarily for new users that have not created their own configuration
@@ -1243,7 +1338,9 @@ window.
 You can override or remove these bindings. To remove the window list
 binding, use this:
 
-**Key** Tab A M −
+| 
+|       **Key** Tab A M −
+| 
 
 COMMAND EXECUTION
 -----------------
@@ -1252,18 +1349,24 @@ COMMAND EXECUTION
 | If |fvwm| encounters a command that it doesn’t recognize, it checks to
   see if the specified command should have been
 
-**Function** (rest of command)
+| 
+|       **Function** (rest of command)
+| 
 
 or
 
-**Module** (rest of command)
+| 
+|       **Module** (rest of command)
+| 
 
 This allows complex functions or modules to be invoked in a manner which
 is fairly transparent to the configuration file.
 
 Example: the *config* file contains the line
 
-HelpMe
+| 
+|       HelpMe
+| 
 
 |fvwm| looks for an |fvwm| command called "HelpMe", and fails. Next it looks
 for a user−defined complex function called "HelpMe". If no such function
@@ -1290,11 +1393,15 @@ want a quote character in your text, you must escape it by using the
 backslash character. For example, if you have a pop−up menu called
 "Window−Ops", then you do not need quotes:
 
-**Popup** Window−Ops
+| 
+|       **Popup** Window−Ops
+| 
 
 but if you replace the dash with a space, then you need quotes:
 
-**Popup** "Window Ops"
+| 
+|       **Popup** "Window Ops"
+| 
 
 The supported quoting characters are double quotes, single quotes and
 reverse single quotes. All three kinds of quotes are treated in the same
@@ -1318,7 +1425,9 @@ other prefix commands it must be added before the other prefix.
 
 Example:
 
-**Pick** −\ **Exec** exec xmessage ’$[w.name]’
+| 
+|       **Pick** −\ **Exec** exec xmessage ’$[w.name]’
+| 
 
 opens an xmessage dialog with "$[w.name]" unexpanded.
 
@@ -1331,258 +1440,351 @@ You should use the longer substitutes instead.
 
 Example:
 
-| # Print the current desk number, horizontal page number
-| # and the window’s class (unexpanded here, no window). **
-  Echo** $[desk.n] $[page.nx] $[w.class]
+| 
+|       # Print the current desk number, horizontal page number
+|       # and the window’s class (unexpanded here, no window). **
+|       **Echo** $[desk.n] $[page.nx] $[w.class]
+| 
 
 Note: If the command is called outside a window context, it prints
 "$[w.class]" instead of the class name. It is usually not enough to have
 the pointer over a window to have a context window. To force using the
 window with the focus, the **Current** command can be used:
 
-**Current Echo** $[desk.n] $[page.nx] $[w.class]
+| 
+|       **Current Echo** $[desk.n] $[page.nx] $[w.class]
+| 
 
 The parameters known by |fvwm| are:
 
-$$
+::
 
-A literal ’$’.
+   $$
 
-$.
+        A literal ’$’.
 
-The absolute directory of the currently Read file. Intended for creating
-relative and relocatable configuration trees. If used outside of any
-read file, the returned value is ’.’.
+::
 
-$0 to $9
+  $.
 
-The positional parameters given to a complex function (a function that
-has been defined with the **AddToFunc** command). "$0" is replaced with
-the first parameter, "$1" with the second parameter and so on. If the
-corresponding parameter is undefined, the "$..." is deleted from the
-command line.
+        The absolute directory of the currently Read file. Intended for creating
+        relative and relocatable configuration trees. If used outside of any
+        read file, the returned value is ’.’.
 
-$\*
 
-All positional parameters given to a complex function. This includes
-parameters that follow after "$9".
+::
 
-$[*n*]
+  $0 to $9
 
-The *n*:th positional parameter given to a complex function, counting
-from 0. If the corresponding parameter is undefined, the "$[*n*]" is
-deleted from the command line. The parameter is expanded unquoted.
+        The positional parameters given to a complex function (a function that
+        has been defined with the AddToFunc command). "$0" is replaced with
+        the first parameter, "$1" with the second parameter and so on. If the
+        corresponding parameter is undefined, the "$..." is deleted from the
+        command line.
 
-$[\ *n*\ −\ *m*]
+::
 
-The positional parameters given to a complex function, starting with
-parameter *n* and ending with parameter *m*. If all the corresponding
-parameters are undefined, the "$[...]" is deleted from the command line.
-If only some of the parameters are defined, all defined parameters are
-expanded, and the remaining silently ignored. All parameters are
-expanded unquoted.
+  $*
 
-$[\ *n*\ −]
+        All positional parameters given to a complex function. This includes
+        parameters that follow after "$9".
 
-All the positional parameters given to a complex function, starting with
-parameter *n*. If all the corresponding parameters are undefined, the
-"$[...]" is deleted from the command line. All parameters are expanded
-unquoted.
+::
 
-$[\*]
+  $[n]
 
-All the positional parameters given to a complex function. This is
-equivalent of $[0−].
+        The *n*:th positional parameter given to a complex function, counting
+        from 0. If the corresponding parameter is undefined, the "$[*n*]" is
+        deleted from the command line. The parameter is expanded unquoted.
 
-$[version.num]
+::
 
-The version number, like "2.6.0".
+  $[n−m]
 
-$[version.info]
+        The positional parameters given to a complex function, starting with
+        parameter *n* and ending with parameter *m*. If all the corresponding
+        parameters are undefined, the "$[...]" is deleted from the command line.
+        If only some of the parameters are defined, all defined parameters are
+        expanded, and the remaining silently ignored. All parameters are
+        expanded unquoted.
 
-The version info, like " (from cvs)", empty for the official releases.
+::
 
-$[version.line]
+  $[n−]
 
-The first line printed by the −−version command line option.
+        All the positional parameters given to a complex function, starting with
+        parameter *n*. If all the corresponding parameters are undefined, the
+        "$[...]" is deleted from the command line. All parameters are expanded
+        unquoted.
 
-$[vp.x] $[vp.y] $[vp.width] $[vp.height]
+::
 
-Either coordinate or the width or height of the current viewport.
+  $[*]
 
-$[wa.x] $[wa.y] $[wa.width] $[wa.height]
+        All the positional parameters given to a complex function. This is
+        equivalent of $[0−].
 
-Either coordinate or the width or height of the EWMH working area.
+::
 
-$[dwa.x] $[dwa.y] $[dwa.width] $[dwa.height]
+  $[version.num]
 
-Either coordinate or the width or height of the dynamic EWMH working
-area.
+        The version number, like "2.6.0".
 
-$[desk.n]
+::
 
-The current desk number.
+  $[version.info]
 
-$[desk.name<n>]
+        The version info, like " (from cvs)", empty for the official releases.
 
-These parameters are replaced with the name of the desktop number <n>
-that is defined with the **DesktopName** command. If no name is defined,
-then the default name is returned.
+::
 
-$[desk.width] $[desk.height]
+  $[version.line]
 
-The width or height of the whole desktop, i.e. the width or height
-multiplied by the number of pages in x or y direction.
+        The first line printed by the −−version command line option.
 
-$[desk.pagesx] $[desk.pagesy]
+::
 
-The number of total pages in a desk in x or y direction. This is the
-same as the values set by **DesktopSize**.
+  $[vp.x] $[vp.y] $[vp.width] $[vp.height]
 
-$[page.nx] $[page.ny]
+        Either coordinate or the width or height of the current viewport.
 
-The current page numbers, by X and Y axes, starting from 0. *page* is
-equivalent to *area* in the GNOME terminology.
+::
 
-$[w.id]
+  $[wa.x] $[wa.y] $[wa.width] $[wa.height]
 
-The window−id (expressed in hex, e.g. 0x10023c) of the window the
-command was called for or "$[w.id]" if no window is associated with the
-command.
+        Either coordinate or the width or height of the EWMH working area.
 
-$[w.name] $[w.iconname] $[w.class] $[w.resource] $[w.visiblename]
-$[w.iconfile] $[w.miniiconfile] $[w.iconfile.svgopts]
-$[w.miniiconfile.svgopts]
+::
 
-The window’s name, icon name, resource class and resource name, visible
-name, file name of its icon or mini icon defined with the *Icon* or
-*MiniIcon* style (including the full path if the file was found on
-disk), and (if |fvwm| is compiled with SVG support) the icon or mini icon
-svg rendering options (including the leading colon), or unexpanded
-"$[w.<attribute>]" string if no window is associated with the command.
+  $[dwa.x] $[dwa.y] $[dwa.width] $[dwa.height]
 
-Note, the first 5 variables may include any kind of characters, so these
-variables are quoted. It means that the value is surrounded by single
-quote characters and any contained single quote is prefixed with a
-backslash. This guarantees that commands like:
+        Either coordinate or the width or height of the dynamic EWMH working
+        area.
 
-**Style** $[w.resource] *Icon* norm/network.png
+::
 
-work correctly, regardless of any special symbols the value may contain,
-like spaces and different kinds of quotes.
+  $[desk.n]
 
-In the case of the window’s visible name, this is the value returned
-from the literal title of the window shown in the titlebar. Typically
-this will be the same as $[w.name] once expanded, although in the case
-of using *IndexedWindowName* then this is more useful a distinction, and
-allows for referencing the specific window by its visible name for
-inclusion in things like **Style** commands.
+        The current desk number.
 
-$[w.x] $[w.y] $[w.width] $[w.height]
+::
 
-Either coordinate or the width or height of the current window if it is
-not iconified. If no window is associated with the command or the window
-is iconified, the string is left as is.
+  $[desk.name<n>]
 
-$[w.desk]
+        These parameters are replaced with the name of the desktop number <n>
+        that is defined with the DesktopName command. If no name is defined,
+        then the default name is returned.
 
-The number of the desk on which the window is shown. If the window is
-sticky the current desk number is used.
+::
 
-$[w.layer]
+  $[desk.width] $[desk.height]
 
-The layer of the window.
+        The width or height of the whole desktop, i.e. the width or height
+        multiplied by the number of pages in x or y direction.
 
-$[cw.x] $[cw.y] $[cw.width] $[cw.height]
+::
 
-These work like $[w....] but return the geometry of the client part of
-the window. In other words: the border and title of the window is not
-taken into account.
+  $[desk.pagesx] $[desk.pagesy]
 
-$[i.x], $[it.x], $[ip.x] $[i.y], $[it.y], $[ip.y] $[i.width],
-$[it.width], $[ip.width] $[i.height], $[it.height], $[ip.height]
+        The number of total pages in a desk in x or y direction. This is the
+        same as the values set by **DesktopSize**.
 
-These work like $[w....] but return the geometry of the icon ($[i....]),
-the icon title ($[it....]) or the icon picture ($[ip....]).
+::
 
-$[pointer.x] $[pointer.y]
+  $[page.nx] $[page.ny]
 
-These return the position of the pointer on the screen. If the pointer
-is not on the screen, these variables are not expanded.
+        The current page numbers, by X and Y axes, starting from 0. *page* is
+        equivalent to *area* in the GNOME terminology.
 
-$[pointer.wx] $[pointer.wy]
+::
 
-These return the position of the pointer in the selected window. If the
-pointer is not on the screen, the window is iconified or no window is
-selected, these variables are not expanded.
+  $[w.id]
 
-$[pointer.cx] $[pointer.cy]
+        The window−id (expressed in hex, e.g. 0x10023c) of the window the
+        command was called for or "$[w.id]" if no window is associated with the
+        command.
 
-These return the position of the pointer in the client portion of the
-selected window. If the pointer is not on the screen, the window is
-shaded or iconified or no window is selected, these variables are not
-expanded.
+::
 
-$[pointer.screen]
+  $[w.name] $[w.iconname] $[w.class] $[w.resource] $[w.visiblename]
+  $[w.iconfile] $[w.miniiconfile] $[w.iconfile.svgopts]
+  $[w.miniiconfile.svgopts]
 
-The screen number the pointer is currently on. Returns 0 if Xinerama is
-not enabled.
+        The window’s name, icon name, resource class and resource name, visible
+        name, file name of its icon or mini icon defined with the *Icon* or
+        *MiniIcon* style (including the full path if the file was found on
+        disk), and (if |fvwm| is compiled with SVG support) the icon or mini icon
+        svg rendering options (including the leading colon), or unexpanded
+        "$[w.<attribute>]" string if no window is associated with the command.
 
-$[screen]
+        Note, the first 5 variables may include any kind of characters, so these
+        variables are quoted. It means that the value is surrounded by single
+        quote characters and any contained single quote is prefixed with a
+        backslash. This guarantees that commands like:
 
-The screen number |fvwm| is running on. Useful for setups with multiple
-screens.
 
-$[fg.cs<n>] $[bg.cs<n>] $[hilight.cs<n>] $[shadow.cs<n>]
+::
 
-These parameters are replaced with the name of the foreground (fg),
-background (bg), hilight (hilight) or shadow (shadow) color that is
-defined in colorset <n> (replace <n> with zero or a positive integer).
-For example "$[fg.cs3]" is expanded to the name of the foreground color
-of colorset 3 (in rgb:rrrr/gggg/bbbb form). Please refer to the
-**Colorsets** section for details about colorsets.
+        Style $[w.resource] Icon norm/network.png
+ 
 
-$[schedule.last]
+::
 
-This is replaced by the id of the last command that was scheduled with
-the **Schedule** command, even if this command was already executed.
+        work correctly, regardless of any special symbols the value may contain,
+        like spaces and different kinds of quotes.
 
-$[schedule.next]
+::
 
-This is replaced by the id the next command used with **Schedule** will
-get (unless a different id is specified explicitly).
+  In the case of the window’s visible name, this is the value returned
+  from the literal title of the window shown in the titlebar. Typically
+  this will be the same as $[w.name] once expanded, although in the case
+  of using *IndexedWindowName* then this is more useful a distinction, and
+  allows for referencing the specific window by its visible name for
+  inclusion in things like **Style** commands.
 
-$[cond.rc]
+::
 
-The return code of the last conditional command. This variable is only
-valid inside a function and can not be used in a conditional command.
-Please refer to the section **Conditional Commands** in the command
-list.
+  $[w.x] $[w.y] $[w.width] $[w.height]
 
-$[func.context]
+        Either coordinate or the width or height of the current window if it is
+        not iconified. If no window is associated with the command or the window
+        is iconified, the string is left as is.
 
-The context character of the running command as used in the **Mouse**,
-**Key** or **PointerKey** command. This is useful for example with:
+::
 
-**Mouse** 3 FS N **WindowShade** $$[func.context]
+  $[w.desk]
 
-$[gt.\ *str*]
+        The number of the desk on which the window is shown. If the window is
+        sticky the current desk number is used.
 
-return the translation of *str* by looking in the current locale
-catalogs. If no translation is found *str* is returned as is. See the
-**LocalePath** command.
+::
 
-$[infostore.\ *key*]
+  $[w.layer]
 
-Return the value of the item stored in the InfoStore at the given *key*.
-If no key is present, the unexpanded string is returned.
+        The layer of the window.
 
-$[...]
+::
 
-If the string within the braces is neither of the above, |fvwm| tries to
-find an environment variable with this name and replaces its value if
-one is found (e.g. "$[PAGER]" could be replaced by "more"). Otherwise
-the string is left as is.
+  $[cw.x] $[cw.y] $[cw.width] $[cw.height]
+
+        These work like $[w....] but return the geometry of the client part of
+        the window. In other words: the border and title of the window is not
+        taken into account.
+
+::
+
+  $[i.x], $[it.x], $[ip.x] $[i.y], $[it.y], $[ip.y] $[i.width],
+  $[it.width], $[ip.width] $[i.height], $[it.height], $[ip.height]
+
+        These work like $[w....] but return the geometry of the icon ($[i....]),
+        the icon title ($[it....]) or the icon picture ($[ip....]).
+
+::
+  
+  $[pointer.x] $[pointer.y]
+
+        These return the position of the pointer on the screen. If the pointer
+        is not on the screen, these variables are not expanded.
+
+::
+
+  $[pointer.wx] $[pointer.wy]
+
+        These return the position of the pointer in the selected window. If the
+        pointer is not on the screen, the window is iconified or no window is
+        selected, these variables are not expanded.
+
+::
+
+  $[pointer.cx] $[pointer.cy]
+
+        These return the position of the pointer in the client portion of the
+        selected window. If the pointer is not on the screen, the window is
+        shaded or iconified or no window is selected, these variables are not
+        expanded.
+
+::
+
+  $[pointer.screen]
+
+        The screen number the pointer is currently on. Returns 0 if Xinerama is
+        not enabled.
+
+::
+  
+  $[screen]
+
+        The screen number |fvwm| is running on. Useful for setups with multiple
+        screens.
+
+::
+
+  $[fg.cs<n>] $[bg.cs<n>] $[hilight.cs<n>] $[shadow.cs<n>]
+
+  These parameters are replaced with the name of the foreground (fg),
+  background (bg), hilight (hilight) or shadow (shadow) color that is
+  defined in colorset <n> (replace <n> with zero or a positive integer).
+  For example "$[fg.cs3]" is expanded to the name of the foreground color
+  of colorset 3 (in rgb:rrrr/gggg/bbbb form). Please refer to the
+  **Colorsets** section for details about colorsets.
+
+::
+
+  $[schedule.last]
+
+        This is replaced by the id of the last command that was scheduled with
+        the Schedule command, even if this command was already executed.
+
+::
+
+  $[schedule.next]
+
+        This is replaced by the id the next command used with Schedule will
+        get (unless a different id is specified explicitly).
+
+::
+
+  $[cond.rc]
+
+        The return code of the last conditional command. This variable is only
+        valid inside a function and can not be used in a conditional command.
+        Please refer to the section Conditional Commands in the command
+        list.
+
+::
+
+  $[func.context]
+
+        The context character of the running command as used in the Mouse,
+        Key or **PointerKey** command. This is useful for example with:
+
+::
+
+        Mouse 3 FS N WindowShade $$[func.context] 
+
+::
+
+  $[gt.<str>]
+
+        Return the translation of <str> by looking in the current locale
+        catalogs. If no translation is found *str* is returned as is. See the
+        **LocalePath** command.
+
+::
+
+  $[infostore.<key>]
+
+        Return the value of the item stored in the InfoStore at the given <key>.
+        If no key is present, the unexpanded string is returned.
+
+::
+
+  $[...]
+
+        If the string within the braces is neither of the above, |fvwm| tries to
+        find an environment variable with this name and replaces its value if
+        one is found (e.g. "$[PAGER]" could be replaced by "more"). Otherwise
+        the string is left as is.
 
 Some examples can be found in the description of the **AddToFunc**
 command.
@@ -1624,12 +1826,15 @@ the newcomer.
 
 • **Color gradients**
 
-| **Menus**
-| Before a menu can be opened, it has to be populated with menu items
-  using the **AddToMenu** command and bound to a key or mouse button
-  with the **Key**, **PointerKey** or **Mouse** command (there are many
-  other ways to invoke a menu too). This is usually done in the
-  configuration file.
+
+Menus
+~~~~~
+
+Before a menu can be opened, it has to be populated with menu items
+using the **AddToMenu** command and bound to a key or mouse button
+with the **Key**, **PointerKey** or **Mouse** command (there are many
+other ways to invoke a menu too). This is usually done in the
+configuration file.
 
 |fvwm| menus are extremely configurable in look and feel. Even the
 slightest nuances can be changed to the user’s liking, including the
@@ -1662,7 +1867,8 @@ command from inside a menu.
 **Popup** command as its action is selected, the named menu is opened as
 an inferior menu to the parent. Any type of menu can have sub menus.
 
-**Menu Anatomy**
+Menu Anatomy
+~~~~~~~~~~~~
 
 Menus consist of any number of titles which are inactive menu items that
 usually appear at the top of the menu, normal items triggering various
@@ -1680,7 +1886,8 @@ honors the locale settings.
 Finally, there may be a picture running up either side of the menu (a
 "side bar").
 
-**Menu Navigation**
+Menu Navigation
+~~~~~~~~~~~~~~~
 
 Menus can be navigated either with the keyboard or with the mouse. Many
 people prefer to use the mouse, but it can be rather tedious. Once you
@@ -1689,7 +1896,8 @@ displays a menu, it can do nothing else. For example, new windows do not
 appear before the menu is closed. However, this is not exactly true for
 tear off menus. See the **Tear Off Menus** section for details.
 
-**Mouse Navigation**
+Mouse Navigation
+~~~~~~~~~~~~~~~~
 
 Moving the pointer over a menu selects the item below it. Normally this
 is indicated by a 3d border around the item, but not all parts of a menu
@@ -1721,7 +1929,8 @@ useful to navigate the menu if the pointer tends to stray off the menu.
 To unpost the menu and revert back to normal operation, either click on
 the same sub menu item or press any key.
 
-**Keyboard Navigation**
+Keyboard Navigation
+~~~~~~~~~~~~~~~~~~~
 
 Just like with mouse navigation, the item below the pointer is selected.
 This is achieved by warping the pointer to the menu items when
@@ -1774,7 +1983,8 @@ just below the next separator.
 
 *Backspace* tears off the menu.
 
-**Menu Bindings**
+Menu Bindings
+~~~~~~~~~~~~~
 
 The keys and mouse buttons used to navigate the menu can be configured
 using the **Key** and **Mouse** commands with the special context ’M’,
@@ -1828,7 +2038,8 @@ separators.
 **MenuTearOff** turns a normal menu into a "torn off" menu. See **Tear
 Off Menus** for details.
 
-**Tear Off Menus**
+Tear Off Menus
+~~~~~~~~~~~~~~
 
 A tear off menu is any menu that has been "torn off" the window it was
 attached to and pinned to the root window. There are three ways to tear
@@ -1841,11 +2052,15 @@ The builtin tear off actions can be overridden by undefining the builtin
 menu actions bound to tear off. To remove the builtin mouse button 2
 binding, use:
 
-**Mouse** 2 MT A −
+| 
+|       **Mouse** 2 MT A −
+| 
 
 and to remove the builtin backspace binding, use:
 
-**Key** Backspace M A −
+| 
+|        **Key** Backspace M A −
+| 
 
 See the section **Menu Bindings** for details on how to assign other
 bindings for tear off.
@@ -1857,17 +2072,21 @@ The window containing the menu is placed as any other window would be.
 If you find it confusing to have your tear off menus appear at random
 positions on the screen, put this line in your configuration file:
 
-**Style** fvwm\_menu *UsePPosition*
+| 
+|       **Style** fvwm\_menu *UsePPosition*
+| 
 
 To remove borders and buttons from a tear−off menu but keep the menu
 title, you can use
 
-**Style** fvwm\_menu !\ *Button* 0, !\ *Button* 1 **
-Style** fvwm\_menu !\ *Button* 2, !\ *Button* 3 **
-Style** fvwm\_menu !\ *Button* 4, !\ *Button* 5 **
-Style** fvwm\_menu !\ *Button* 6, !\ *Button* 7 **
-Style** fvwm\_menu !\ *Button* 8, !\ *Button* 9 **
-Style** fvwm\_menu *Title*, *HandleWidth* 0
+| 
+|       **Style** fvwm\_menu !\ *Button* 0, !\ *Button* 1 **
+|       **Style** fvwm\_menu !\ *Button* 2, !\ *Button* 3 **
+|       **Style** fvwm\_menu !\ *Button* 4, !\ *Button* 5 **
+|       **Style** fvwm\_menu !\ *Button* 6, !\ *Button* 7 **
+|       **Style** fvwm\_menu !\ *Button* 8, !\ *Button* 9 **
+|       **Style** fvwm\_menu *Title*, *HandleWidth* 0
+| 
 
 A tear off menu is a cross breeding between a window and a menu. The
 menu is swallowed by a window and its title is stripped off and
@@ -1892,33 +2111,41 @@ To create a tear off menu without opening the normal menu first, the
 option *TearOffImmediately* can be added to the **Menu** or **Popup**
 command.
 
-**AddToMenu** *menu−name* [*menu−label action*]
+| 
+|       **AddToMenu** *menu−name* [*menu−label action*]
+| 
 
 Begins or adds to a menu definition. Typically a menu definition looks
 like this:
 
-| AddToMenu Utilities Utilities **Title**
-| + Xterm **Exec** exec xterm −e tcsh
-| + Rxvt **Exec** exec rxvt
-| + "Remote Logins" **Popup** Remote−Logins
-| + Top **Exec** exec rxvt −T Top −n Top −e top
-| + Calculator **Exec** exec xcalc
-| + Xman **Exec** exec xman
-| + Xmag **Exec** exec xmag
-| + emacs **Exec** exec xemacs
-| + Mail MailFunction xmh "−font fixed"
-| + "" **Nop**
-| + Modules **Popup** Module−Popup
-| + "" **Nop**
-| + Exit |fvwm| **Popup** Quit−Verify
+| 
+|       AddToMenu Utilities Utilities **Title**
+|         + Xterm **Exec** exec xterm −e tcsh
+|         + Rxvt **Exec** exec rxvt
+|         + "Remote Logins" **Popup** Remote−Logins
+|         + Top **Exec** exec rxvt −T Top −n Top −e top
+|         + Calculator **Exec** exec xcalc
+|         + Xman **Exec** exec xman
+|         + Xmag **Exec** exec xmag
+|         + emacs **Exec** exec xemacs
+|         + Mail MailFunction xmh "−font fixed"
+|         + "" **Nop**
+|         + Modules **Popup** Module−Popup
+|         + "" **Nop**
+|         + Exit |fvwm| **Popup** Quit−Verify
+| 
 
 The menu could be invoked via
 
-**Mouse** 1 R A **Menu** Utilities Nop
+| 
+|       **Mouse** 1 R A **Menu** Utilities Nop
+|
 
 or
 
-**Mouse** 1 R A **Popup** Utilities
+| 
+|       **Mouse** 1 R A **Popup** Utilities
+| 
 
 There is no end−of−menu symbol. Menus do not have to be defined in a
 contiguous region of the *config* file. The quoted (or first word)
@@ -1939,9 +2166,11 @@ destroying the menu), do not forget to add the dynamic action again.
 Note: Do not trigger actions that require user interaction. They may
 fail and may screw up your menus. See the **Silent** command.
 
+| 
 | **Warning**
 | Do not issue **MenuStyle** commands as dynamic menu actions. Chances
-  are good that this crashes fvwm.
+|  are good that this crashes fvwm.
+| 
 
 There are several configurable scripts installed together with |fvwm| for
 automatic menu generation. They have their own man pages. Some of them,
@@ -1951,24 +2180,28 @@ GNOME/KDE application listing.
 
 Example (File browser):
 
-| # You can find the shell script fvwm\_make\_browse\_menu.sh
-| # in the utils/ directory of the distribution.
-| AddToMenu BrowseMenu
-| + DynamicPopupAction **PipeRead** \\
-| ’fvwm\_make\_browse\_menu.sh BrowseMenu’
+| 
+|        # You can find the shell script fvwm\_make\_browse\_menu.sh
+|        # in the utils/ directory of the distribution.
+|        AddToMenu BrowseMenu
+|        + DynamicPopupAction **PipeRead** \\
+|        ’fvwm\_make\_browse\_menu.sh BrowseMenu’
+| 
 
 Example (Picture menu):
 
-| # Build a menu of all .jpg files in
-| # $HOME/Pictures
-| AddToMenu JpgMenu foo title
-| + DynamicPopupAction **Function** MakeJpgMenu
-
-| **AddToFunc** MakeJpgMenu
-| + I **DestroyMenu** recreate JpgMenu
-| + I AddToMenu JpgMenu Pictures **Title**
-| + I **PipeRead** ’for i in *$HOME*/Pictures/\*.jpg; \\
-| do echo AddToMenu JpgMenu "‘basename $i‘" **Exec** xv $i; done’
+| 
+|       # Build a menu of all .jpg files in
+|       # $HOME/Pictures
+|       AddToMenu JpgMenu foo title
+|       + DynamicPopupAction **Function** MakeJpgMenu
+| 
+|       **AddToFunc** MakeJpgMenu
+|       + I **DestroyMenu** recreate JpgMenu
+|       + I AddToMenu JpgMenu Pictures **Title**
+|       + I **PipeRead** ’for i in *$HOME*/Pictures/\*.jpg; \\
+|               do echo AddToMenu JpgMenu "‘basename $i‘" **Exec** xv $i; done’
+| 
 
 The keyword *MissingSubmenuFunction* has a similar meaning. It is
 executed whenever you try to pop up a sub menu that does not exist. With
@@ -1977,7 +2210,9 @@ any command after the keyword, but if the name of an item (that is a
 submenu) defined with **AddToFunc** follows it, |fvwm| executes this
 command:
 
-**Function** <function−name> <submenu−name>
+| 
+|       **Function** <function−name> <submenu−name>
+| 
 
 i.e. the name is passed to the function as its first argument and can be
 referred to with "$0".
@@ -1988,18 +2223,20 @@ listing.
 
 Example:
 
-| # There is another shell script fvwm\_make\_directory\_menu.sh
-| # in the utils/ directory of the distribution. To use it,
-| # define this function in your configuration file:
-
-| **DestroyFunc** MakeMissingDirectoryMenu **
-  AddToFunc** MakeMissingDirectoryMenu
-| + I **PipeRead** fvwm\_make\_directory\_menu.sh $0
-
-| **DestroyMenu** SomeMenu
-| AddToMenu SomeMenu
-| + MissingSubmenuFunction MakeMissingDirectoryMenu
-| + "Root directory" **Popup** /
+| 
+|       # There is another shell script fvwm\_make\_directory\_menu.sh
+|       # in the utils/ directory of the distribution. To use it,
+|       # define this function in your configuration file:
+| 
+|       **DestroyFunc** MakeMissingDirectoryMenu **
+|       **AddToFunc** MakeMissingDirectoryMenu
+|       + I **PipeRead** fvwm\_make\_directory\_menu.sh $0
+| 
+|       **DestroyMenu** SomeMenu
+|       **AddToMenu** SomeMenu
+|       + MissingSubmenuFunction MakeMissingDirectoryMenu
+|       + "Root directory" **Popup** /
+| 
 
 This is another implementation of the file browser that uses sub menus
 for subdirectories.
@@ -2008,7 +2245,9 @@ Titles can be used within the menu. If you add the option *top* behind
 the keyword **Title**, the title is added to the top of the menu. If
 there was a title already, it is overwritten.
 
-AddToMenu Utilities Tools Title top
+| 
+|       AddToMenu Utilities Tools Title top
+| 
 
 All text up to the first Tab in the menu label is aligned to the left
 side of the menu, all text right of the first Tab is aligned to the left
@@ -2027,12 +2266,16 @@ If the menu−label contains a sub−string which is set off by stars, then
 the text between the stars is expected to be the name of an image file
 to insert in the menu. To get a literal ’\*’, insert "\*\*". For example
 
-+ Calculator\*xcalc.xpm\* **Exec** exec xcalc
+|       
+|       + Calculator\*xcalc.xpm\* **Exec** exec xcalc
+|       
 
 inserts a menu item labeled "Calculator" with a picture of a calculator
 above it. The following:
 
-+ \*xcalc.xpm\* **Exec** exec xcalc
+| 
+|       + \*xcalc.xpm\* **Exec** exec xcalc
+| 
 
 Omits the "Calculator" label, but leaves the picture.
 
@@ -2043,12 +2286,16 @@ menu label. A second mini icon that is drawn at the right side of the
 menu can be given in the same way. To get a literal ’%’, insert "%%".
 For example
 
-+ Calculator%xcalc.xpm% **Exec** exec xcalc
+| 
+|       + Calculator%xcalc.xpm% **Exec** exec xcalc
+| 
 
 inserts a menu item labeled "Calculator" with a picture of a calculator
 to the left. The following:
 
-+ %xcalc.xpm% **Exec** exec xcalc
+| 
+|       + %xcalc.xpm% **Exec** exec xcalc
+| 
 
 Omits the "Calculator" label, but leaves the picture. The pictures used
 with this feature should be small (perhaps 16x16).
@@ -2059,7 +2306,9 @@ of an image file to draw along the left side of the menu (a side
 pixmap). You may want to use the *SidePic* option of the **MenuStyle**
 command instead. To get a literal ’@’, insert "@@". For example
 
-AddToMenu StartMenu@linux−menu.xpm@
+| 
+|       AddToMenu StartMenu@linux−menu.xpm@
+| 
 
 creates a menu with a picture in its bottom left corner.
 
@@ -2069,7 +2318,9 @@ column containing the side picture is colored with that color. You can
 set this color for a menu style using the *SideColor* option of the
 **MenuStyle** command. To get a literal ’^’, insert "^^". Example:
 
-AddToMenu StartMenu@linux−menu.xpm@^blue^
+| 
+|       **AddToMenu** StartMenu@linux−menu.xpm@^blue^
+| 
 
 creates a menu with a picture in its bottom left corner and colors with
 blue the region of the menu containing the picture.
@@ -2077,18 +2328,24 @@ blue the region of the menu containing the picture.
 In all the above cases, the name of the resulting menu is name
 specified, stripped of the substrings between the various delimiters.
 
-**ChangeMenuStyle** *menustyle menu* ...
+| 
+|       **ChangeMenuStyle** *menustyle menu* ...
+| 
 
 Changes the menu style of *menu* to *menustyle*. You may specify more
 than one menu in each call of **ChangeMenuStyle**.
 
-**CopyMenuStyle** *orig−menustyle dest−menustyle*
+| 
+|       **CopyMenuStyle** *orig−menustyle dest−menustyle*
+| 
 
 Copy *orig−menustyle* to *dest−menustyle*, where *orig−menustyle* is an
 existing menu style. If the menu style *dest\_menustyle* does not exist,
 then it is created.
 
-**DestroyMenu** [recreate] *menu*
+| 
+|       **DestroyMenu** [recreate] *menu*
+| 
 
 Deletes a menu, so that subsequent references to it are no longer valid.
 You can use this to change the contents of a menu during an fvwm
@@ -2096,17 +2353,20 @@ session. The menu can be rebuilt using **AddToMenu**. The optional
 parameter *recreate* tells |fvwm| not to throw away the menu completely
 but to throw away all the menu items (including the title).
 
-DestroyMenu Utilities
-
-**DestroyMenuStyle** *menustyle*
+|
+|       **DestroyMenu** Utilities
+| 
+|       **DestroyMenuStyle** *menustyle*
 
 Deletes the menu style named *menustyle* and changes all menus using
 this style to the default style, you cannot destroy the default menu
 style.
 
-DestroyMenuStyle pixmap1
-
-**Menu** *menu−name* [*position*] [*double−click−action*]
+| 
+|       **DestroyMenuStyle** pixmap1
+|       
+|       **Menu** *menu−name* [*position*] [*double−click−action*]
+| 
 
 Causes a previously defined menu to be popped up in a sticky manner.
 That is, if the user invokes the menu with a click action instead of a
@@ -2129,25 +2389,25 @@ offset to this rectangle by which the upper left corner of the menu is
 moved from the upper left corner of the rectangle. The *position*
 arguments consist of several parts:
 
-+--------------------------+--------------------------+--------------------------+
-|                          | [*context−rectangle*] *x |                          |
-|                          | y* [*special−options*]   |                          |
-+--------------------------+--------------------------+--------------------------+
+| 
+| [*context−rectangle*] x y [*special−options*]
+| 
 
 The *context−rectangle* can be one of:
 
-*Root*
 
-the root window of the current screen.
+        *Root*
 
-*XineramaRoot*
+                the root window of the current screen.
 
-the root window of the whole Xinerama screen. Equivalent to "root" when
-Xinerama is not used.
+        *XineramaRoot*
 
-*Mouse*
+                the root window of the whole Xinerama screen. Equivalent to "root" when
+                Xinerama is not used.
 
-a 1x1 rectangle at the mouse position.
+        *Mouse*
+
+                a 1x1 rectangle at the mouse position.
 
 *Window*
 
@@ -2445,10 +2705,12 @@ reverted back to normal.
 
 Some examples of MenuFaces are:
 
-| MenuFace DGradient 128 2 lightgrey 50 blue 50 white
-| MenuFace TiledPixmap texture10.xpm
-| MenuFace HGradient 128 2 Red 40 Maroon 60 White
-| MenuFace Solid Maroon
+| 
+|       MenuFace DGradient 128 2 lightgrey 50 blue 50 white
+|       MenuFace TiledPixmap texture10.xpm
+|       MenuFace HGradient 128 2 Red 40 Maroon 60 White
+|       MenuFace Solid Maroon
+| 
 
 Note: The gradient styles H, V, B and D are optimized for high speed and
 low memory consumption in menus. This is not the case for all the other
@@ -2459,18 +2721,24 @@ following:
 
 Turn hilighting of the active menu item other than foreground color off:
 
-| MenuStyle <style> Hilight3DOff, !HilightBack
-| MenuStyle <style> ActiveFore <preferred color>
+| 
+|       MenuStyle <style> Hilight3DOff, !HilightBack
+|       MenuStyle <style> ActiveFore <preferred color>
+| 
 
 Make sure sub menus do not overlap the parent menu. This can prevent
 menus being redrawn every time a sub menu pops up or down.
 
-MenuStyle <style> PopupOffset 1 100
+| 
+|       MenuStyle <style> PopupOffset 1 100
+| 
 
 Run your X server with backing storage. If your X Server is started with
 the −bs option, turn it off. If not try the −wm and +bs options:
 
-startx −− −wm +bs
+| 
+|       startx −− −wm +bs
+| 
 
 You may have to adapt this example to your system (e.g. if you use xinit
 to start X).
@@ -2731,25 +2999,26 @@ the menu colorset (normally drawn with the hilight color).
 
 Examples:
 
-| MenuStyle \* Mwm
-| MenuStyle \* Foreground Black, Background gray40
-| MenuStyle \* Greyed gray70, ActiveFore White
-| MenuStyle \* !HilightBack, Hilight3DOff
-| MenuStyle \* Font lucidasanstypewriter−14
-| MenuStyle \* MenuFace DGradient 64 darkgray MidnightBlue
-
-| MenuStyle red Mwm
-| MenuStyle red Foreground Yellow
-| MenuStyle red Background Maroon
-| MenuStyle red Greyed Red, ActiveFore Red
-| MenuStyle red !HilightBack, Hilight3DOff
-| MenuStyle red Font lucidasanstypewriter−12
-| MenuStyle red MenuFace DGradient 64 Red Black
+| 
+|       MenuStyle \* Mwm
+|       MenuStyle \* Foreground Black, Background gray40
+|       MenuStyle \* Greyed gray70, ActiveFore White
+|       MenuStyle \* !HilightBack, Hilight3DOff
+|       MenuStyle \* Font lucidasanstypewriter−14
+|       MenuStyle \* MenuFace DGradient 64 darkgray MidnightBlue
+|       
+|       MenuStyle red Mwm
+|       MenuStyle red Foreground Yellow
+|       MenuStyle red Background Maroon
+|       MenuStyle red Greyed Red, ActiveFore Red
+|       MenuStyle red !HilightBack, Hilight3DOff
+|       MenuStyle red Font lucidasanstypewriter−12
+|       MenuStyle red MenuFace DGradient 64 Red Black
 
 Note that all style options could be placed on a single line for each
 style name.
 
-**MenuStyle** *forecolor backcolor shadecolor font style* [*anim*]
+|       **MenuStyle** *forecolor backcolor shadecolor font style* [*anim*]
 
 This is the old syntax of the **MenuStyle** command. It is obsolete and
 may be removed in the future. Please use the new syntax as described
@@ -2803,35 +3072,34 @@ sub menu:
 The following example defines a sub menu "Quit−Verify" and binds it into
 a main menu, called "RootMenu":
 
-| **AddToMenu** Quit−Verify
-| + "Really Quit Fvwm?" **Title**
-| + "Yes, Really Quit" **Quit**
-| + "Restart Fvwm" **Restart**
-| + "Restart |fvwm| 1.xx" **Restart** fvwm1 −s
-| + "" **Nop**
-| + "No, Don’t Quit" **Nop**
-
-| **AddToMenu** RootMenu "Root Menu" **Title**
-| + "Open XTerm Window" Popup NewWindowMenu
-| + "Login as Root" **Exec** exec xterm −T Root −n Root −e su −
-| + "Login as Anyone" **Popup** AnyoneMenu
-| + "Remote Hosts" **Popup** HostMenu
-| + "" **Nop**
-| + "X utilities" Popup Xutils
-| + "" **Nop**
-| + "|fvwm| Modules" Popup Module−Popup
-| + "|fvwm| Window Ops" Popup Window−Ops
-| + "" **Nop**
-| + "Previous Focus" **Prev** (AcceptsFocus) **Focus**
-| + "Next Focus" **Next** (AcceptsFocus) **Focus**
-| + "" **Nop**
-| + "Refresh screen" **Refresh**
-| + "" **Nop**
-| + "Reset X defaults" **Exec** xrdb −load \\
-| $HOME/.Xdefaults
-| + "" **Nop**
-| + "" **Nop**
-| + **Quit** Popup Quit−Verify
+|       **AddToMenu** Quit−Verify
+|       + "Really Quit Fvwm?" **Title**
+|       + "Yes, Really Quit" **Quit**
+|       + "Restart Fvwm" **Restart**
+|       + "Restart |fvwm| 1.xx" **Restart** fvwm1 −s
+|       + "" **Nop**
+|       + "No, Don’t Quit" **Nop**
+| 
+|       **AddToMenu** RootMenu "Root Menu" **Title**
+|       + "Open XTerm Window" Popup NewWindowMenu
+|       + "Login as Root" **Exec** exec xterm −T Root −n Root −e su −
+|       + "Login as Anyone" **Popup** AnyoneMenu
+|       + "Remote Hosts" **Popup** HostMenu
+|       + "" **Nop**
+|       + "X utilities" Popup Xutils
+|       + "" **Nop**
+|       + "|fvwm| Modules" Popup Module−Popup
+|       + "|fvwm| Window Ops" Popup Window−Ops
+|       + "" **Nop**
+|       + "Previous Focus" **Prev** (AcceptsFocus) **Focus**
+|       + "Next Focus" **Next** (AcceptsFocus) **Focus**
+|       + "" **Nop**
+|       + "Refresh screen" **Refresh**
+|       + "" **Nop**
+|       + "Reset X defaults" **Exec** xrdb −load $HOME/.Xdefaults
+|       + "" **Nop**
+|       + "" **Nop**
+|       + **Quit** Popup Quit−Verify
 
 Popup differs from **Menu** in that pop−ups do not stay up if the user
 simply clicks. These are popup−menus, which are a little hard on the
@@ -2840,28 +3108,25 @@ command for an explanation of the interactive behavior of menus. A menu
 can be open up to ten times at once, so a menu may even use itself or
 any of its predecessors as a sub menu.
 
-**TearMenuOff**
+TearMenuOff
+~~~~~~~~~~~
 
 When assigned to a menu item, it inserts a tear off bar into the menu (a
 horizontal broken line). Activating that item tears off the menu. If the
 menu item has a label, it is shown instead of the broken line. If used
 outside menus, this command does nothing. Examples:
 
-| **AddToMenu** WindowMenu
-| + I "" TearMenuOff
+|       **AddToMenu** WindowMenu
+|       + I "" TearMenuOff
+|       
+|       **AddToMenu** RootMenu
+|       + I "click here to tear me off" TearMenuOff
 
-| **AddToMenu** RootMenu
-| + I "click here to tear me off" TearMenuOff
 
-+--------------------+--------------------+--------------------+--------------------+
-|                    | **Title**          |                    | Does nothing This  |
-|                    |                    |                    | is used to insert  |
-|                    |                    |                    | a title line in a  |
-|                    |                    |                    | popup or menu.     |
-+--------------------+--------------------+--------------------+--------------------+
+Miscellaneous Commands
+~~~~~~~~~~~~~~~~~~~~~~
 
-**Miscellaneous Commands
-BugOpts** [*option *\ [*bool*]], ...
+**BugOpts** [*option *\ [*bool*]], ...
 
 This command controls several workarounds for bugs in third party
 programs. The individual options are separated by commas. The optional
@@ -7327,37 +7592,49 @@ There is a number of predefined symbols that are replaced by certain
 values if they appear on the command line. Please refer to the **Command
 Expansion** section for details.
 
+| 
 | **Warning**
 | Please read the comments on executing complex functions in the section
-  **Scripting and Complex Functions**.
+|  **Scripting and Complex Functions**.
+| 
 
 Examples:
 
 If you call
 
-**Key** F10 R A **Function** MailFunction xmh "−font fixed"
+| 
+|       **Key** F10 R A **Function** MailFunction xmh "−font fixed"
+| 
 
 and "MailFunction" is
 
-| AddToFunc MailFunction
-| + I **Next** ($0) **Iconify** off
-| + I **Next** (AcceptsFocus, $0) **Focus**
-| + I **None** ($0) **Exec** exec $0 $1
+| 
+|       AddToFunc MailFunction
+|       + I **Next** ($0) **Iconify** off
+|       + I **Next** (AcceptsFocus, $0) **Focus**
+|       + I **None** ($0) **Exec** exec $0 $1
+| 
 
 Then the last line of the function becomes
 
-+ I **None** (xmh) **Exec** exec xmh −font fixed
+| 
+|       + I **None** (xmh) **Exec** exec xmh −font fixed
+| 
 
 The expansion is performed as the function is executed, so you can use
 the same function with all sorts of different arguments. You could use
 
-**Key** F11 R A **Function** MailFunction zmail "−bg pink"
+| 
+|       **Key** F11 R A **Function** MailFunction zmail "−bg pink"
+| 
 
 in the same *config*, if you wanted. An example of using "$[w.id]" is:
 
-| AddToFunc PrintFunction
-| + I **Raise**
-| + I **Exec** xdpr −id $[w.id]
+| 
+|       AddToFunc PrintFunction
+|       + I **Raise**
+|       + I **Exec** xdpr −id $[w.id]
+| 
 
 Note that "$$" is expanded to ’$’.
 
@@ -7368,55 +7645,53 @@ of the same resource:
 AddToFunc FuncIconifySameResource "I" **All** ($0) **Iconify** on **
 Mouse** 3 6 A FuncIconifySameResource $[w.resource]
 
-+--------------------+--------------------+--------------------+--------------------+
-|                    | **Beep**           |                    | As might be        |
-|                    |                    |                    | expected, this     |
-|                    |                    |                    | makes the terminal |
-|                    |                    |                    | beep.              |
-+--------------------+--------------------+--------------------+--------------------+
+**Beep** ::
 
-**DestroyFunc** *function*
+        As might be expected, this makes the terminal beep.
 
-Deletes a function, so that subsequent references to it are no longer
-valid. You can use this to change the contents of a function during a
-|fvwm| session. The function can be rebuilt using **AddToFunc**.
+**DestroyFunc** *function* ::
 
-DestroyFunc PrintFunction
+        Deletes a function, so that subsequent references to it are no longer
+        valid. You can use this to change the contents of a function during a
+        |fvwm| session. The function can be rebuilt using **AddToFunc**.
 
-**Echo** *string*
+**Echo** *string* ::
 
-Prints a message to *stderr*. Potentially useful for debugging things in
-your *config*.
+        Prints a message to *stderr*. Potentially useful for debugging things in
+        your *config*.
 
-Echo Beginning style definitions...
+        **Echo** Beginning style definitions...
 
-**EchoFuncDefinition** *function*
+**EchoFuncDefinition** *function* ::
 
-The **EchoFuncDefinition** is similar to the **Echo** command but prints
-the definition for the given *function* to *stderr*. It is useful to
-find out how |fvwm| handles quoting and for debugging functions
+        The **EchoFuncDefinition** is similar to the **Echo** command but prints
+        the definition for the given *function* to *stderr*. It is useful to
+        find out how |fvwm| handles quoting and for debugging functions
 
-**Exec** *command*
+**Exec** *command* ::
 
-Executes *command*. You should not use an ampersand ’&’ at the end of
-the command. You probably want to use an additional "exec" at the
-beginning of *command*. Without that, the shell that |fvwm| invokes to run
-your command stays until the command exits. In effect, you’ll have twice
-as many processes running as you need. Note that some shells are smart
-enough to avoid this, but it never hurts to include the "exec" anyway.
+        Executes *command*. You should not use an ampersand ’&’ at the end of
+        the command. You probably want to use an additional "exec" at the
+        beginning of *command*. Without that, the shell that |fvwm| invokes to run
+        your command stays until the command exits. In effect, you’ll have twice
+        as many processes running as you need. Note that some shells are smart
+        enough to avoid this, but it never hurts to include the "exec" anyway.
 
-The following example binds function key F1 in the root window, with no
-modifiers, to the exec function. The program rxvt is started with an
-assortment of options.
+        The following example binds function key F1 in the root window, with no
+        modifiers, to the exec function. The program rxvt is started with an
+        assortment of options.
 
-| **Key** F1 R N Exec exec rxvt −fg yellow −bg blue \\
-| −e /bin/tcsh
+| 
+|       **Key** F1 R N Exec exec rxvt −fg yellow −bg blue \\
+|               −e /bin/tcsh
+| 
 
 Note that this function doesn’t wait for *command* to complete, so
 things like:
 
-Exec "echo **AddToMenu** ... > /tmp/file" **
-Read** /tmp/file
+| 
+|       Exec "echo **AddToMenu** ... > /tmp/file" **Read** /tmp/file
+| 
 
 do not work reliably (see the **PipeRead** command).
 
@@ -7426,8 +7701,10 @@ Makes the **Exec** command use the specified shell, or the value of the
 *$SHELL* environment variable if no shell is specified, instead of the
 default Bourne shell (*/bin/sh*).
 
-| ExecUseShell
-| ExecUseShell /usr/local/bin/tcsh
+| 
+|       ExecUseShell
+|       ExecUseShell /usr/local/bin/tcsh
+| 
 
 **Function** *FunctionName*
 
@@ -7438,14 +7715,16 @@ this man page. After performing this binding |fvwm| executes the
 "move−or−raise" function whenever button 1 is pressed in a window’s
 title−bar.
 
-**Mouse** 1 T A Function Move−or−Raise
+| 
+|       **Mouse** 1 T A Function Move−or−Raise
+| 
 
 The keyword **Function** may be omitted if *FunctionName* does not
 coincide with an |fvwm| command.
 
 Warning: Please read the comments on executing complex functions in the
 section **Scripting and Complex Functions**.
-
+ 
 **InfoStoreAdd** *key value*
 
 Stores the *value* at the given *key*. This is useful to store generic
@@ -7466,35 +7745,36 @@ Recalling the value of a given key happens through fvwm’s usual
 expansion mechanism. See the **Command Expansion** section for more
 details. For example:
 
-InfoStoreAdd teddybearprog xteddy
+| 
+|       InfoStoreAdd teddybearprog xteddy
+| 
+|       # Echo the value of teddybearprog
+|       Echo $[infostore.teddybearprog]
+| 
 
-| # Echo the value of teddybearprog
-| Echo $[infostore.teddybearprog]
-
-Removing an entry from the InfoStore is done with the
+Removing an entry from the InfoStore is done with the 
 **InfoStoreRemove** command.
 
 **InfoStoreRemove** *key*
 
 Removes an entry at the given *key* from the InfoStore. Example:
 
-InfoStoreRemove teddybearprog
+| 
+| InfoStoreRemove teddybearprog
+| 
 
-+--------------------+--------------------+--------------------+--------------------+
-|                    | **Nop**            |                    | Does nothing. This |
-|                    |                    |                    | is used to insert  |
-|                    |                    |                    | a blank line or    |
-|                    |                    |                    | separator in a     |
-|                    |                    |                    | menu. If the menu  |
-|                    |                    |                    | item specification |
-|                    |                    |                    | is                 |
-+--------------------+--------------------+--------------------+--------------------+
+**Nop** Does nothing. This is used to insert a blank line or separator in a menu.
+If the menu item specification is:
 
-**AddToMenu** MyMenu " " Nop
+| 
+|       **AddToMenu** MyMenu " " Nop
+| 
 
 then a blank line is inserted. If it looks like
 
-+ "" Nop
+| 
+|       + "" Nop
+| 
 
 then a separator line is inserted. Can also be used as the double−click
 action for **Menu** or **Popup**.
@@ -7510,9 +7790,11 @@ message is produced if the *command* is not found.
 
 Example:
 
-| **AddToMenu** HomeDirMenu
-| PipeRead ’for i in $HOME/\*; \\
-| do echo "+ $i **Exec** xterm −e vi $i"; done’
+| 
+|       **AddToMenu** HomeDirMenu
+|       PipeRead ’for i in $HOME/\*; \\
+|               do echo "+ $i **Exec** xterm −e vi $i"; done’
+| 
 
 Note: The **PipeRead** changes the pointer to a watch cursor by default
 during execution. However, some commands, for example xwd, need to take
@@ -7525,7 +7807,9 @@ The **PipeRead** command executes synchronously. If you want to **Exec**
 something, but need the command to run synchronously, you might do
 something like:
 
-PipeRead ’command 1>&2’
+| 
+|       PipeRead ’command 1>&2’
+| 
 
 The redirection causes any output from the program to go to stderr
 instead of being read as a sequence of commands by fvwm. **PipeRead**
@@ -7550,7 +7834,9 @@ export or setenv command. The *variable* and its *value* are inherited
 by processes started directly by fvwm. This can be especially useful in
 conjunction with the **FvwmM4** module. For example:
 
-SetEnv height HEIGHT
+| 
+|       SetEnv height HEIGHT
+| 
 
 makes the **FvwmM4** set variable *HEIGHT* usable by processes started
 by |fvwm| as the environment variable *$height*. If *value* includes
@@ -7578,10 +7864,13 @@ the command line is done as if **Silent** was not there.
 
 Examples:
 
-| Silent **Move** 0 0
-| Silent User\_defined\_function
-| # do not complain on keyboards without "Help" key
-| Silent **Key** Help R A **Popup** HelpMenu
+| 
+|       Silent **Move** 0 0
+|       Silent User\_defined\_function
+|       
+|       # do not complain on keyboards without "Help" key
+|       Silent **Key** Help R A **Popup** HelpMenu
+| 
 
 **UnsetEnv** [*variable*]
 
@@ -7598,14 +7887,15 @@ contain the wildcards ’\*’ and ’?’, which are matched in the usual Unix
 filename manner. This is particularly useful in the "InitFunction" if
 you are trying to start windows on specific desktops:
 
-| **AddToFunc** InitFunction
-| + I **Exec** exec xterm −geometry 80x64+0+0
-| + I Wait xterm
-| + I **GotoDesk** 0 2
-| + I **Exec** exec xmh −font fixed −geometry \\
-| 507x750+0+0
-| + I Wait xmh
-| + I **GotoDesk** 0 0
+| 
+|       **AddToFunc** InitFunction
+|       + I **Exec** exec xterm −geometry 80x64+0+0
+|       + I Wait xterm
+|       + I **GotoDesk** 0 2
+|       + I **Exec** exec xmh −font fixed −geometry 507x750+0+0
+|       + I Wait xmh
+|       + I **GotoDesk** 0 0
+| 
 
 The above function starts an xterm on the current desk, waits for it to
 map itself, then switches to desk 2 and starts an xmh. After the xmh
