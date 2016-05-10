@@ -5,8 +5,8 @@
 
 * Code auditing/security:
     * [ ] Remove SAFEFREE() macro;
-    * [ ]  Add xasprintf() to libs/safemalloc.[ch]
-    * [ ]  Audit xmalloc() use and consider xasprintf() wrapper
+    * [ ] Add xasprintf() to libs/safemalloc.[ch]
+    * [ ] Audit xmalloc() use and consider xasprintf() wrapper
 
 * Code cleanup needed!
     * [ ] Don't use typedefs for structs:
