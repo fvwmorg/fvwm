@@ -1731,7 +1731,6 @@ dnl
 	doc/images/Makefile
 	doc/images/svg_rendering/Makefile
 	docs/Makefile
-	sample.fvwmrc/Makefile
 	tests/Makefile
 	tests/hints/Makefile
 	po/Makefile
