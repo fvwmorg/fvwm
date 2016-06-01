@@ -1623,7 +1623,6 @@ do { void *p; p = (void *)&x; (void)p; } while (0);
 
 # mainly for fvwm-config
 AC_SUBST(with_bidi)
-AC_SUBST(with_gtk)
 AC_SUBST(with_gdkimlib)
 AC_SUBST(with_gettext)
 AC_SUBST(with_gnomelibs)
@@ -1677,7 +1676,6 @@ dnl	bin/fvwm-perllib.1
 	modules/FvwmConsole/FvwmConsoleC.pl.1
 	modules/FvwmCpp/FvwmCpp.1
 dnl	modules/FvwmDebug/FvwmDebug.1
-dnl	modules/FvwmDebug/FvwmGtkDebug.1
 dnl	modules/FvwmDebug/FvwmOldDebug.1
 	modules/FvwmEvent/FvwmEvent.1
 	modules/FvwmForm/FvwmForm.1
@@ -1743,7 +1741,6 @@ dnl
 	modules/FvwmCpp/Makefile
 	modules/FvwmDebug/Makefile
 	modules/FvwmDebug/FvwmDebug
-	modules/FvwmDebug/FvwmGtkDebug
 	modules/FvwmEvent/Makefile
 	modules/FvwmForm/Makefile
 	modules/FvwmIconMan/Makefile
