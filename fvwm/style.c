@@ -4113,7 +4113,7 @@ static Bool style_parse_one_style_option(
 			unsigned int states;
 
 			spargs = GetIntegerArguments(rest, NULL, tmpno, 1);
-			if (spargs == 1 && tmpno[0] >= 0 && tmpno[0] <= 31)
+			if (spargs == 1 && tmpno[0] >= 0 && tmpno[0] <= 64)
 			{
 				PeekToken(rest,&rest);
 				states = S_USER_STATES(SCF(*ps));

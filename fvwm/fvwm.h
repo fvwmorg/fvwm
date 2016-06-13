@@ -37,6 +37,9 @@
 #include <X11/Xutil.h>
 #include <X11/cursorfont.h>
 #include <X11/Intrinsic.h>
+
+#include <stdint.h>
+
 #include "libs/PictureBase.h"
 #include "libs/Flocale.h"
 #include "libs/fvwmrect.h"
@@ -201,7 +204,7 @@ typedef struct
 	unsigned has_no_border : 1;
 	unsigned has_window_font : 1;
 	unsigned title_dir : 2;
-	unsigned user_states : 32;
+	uint64_t user_states : 64;
 	/* static flags that do not change dynamically after the window has
 	 * been created */
 	struct
