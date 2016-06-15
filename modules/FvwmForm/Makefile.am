@@ -10,6 +10,9 @@ man_MANS = FvwmForm.1
 ## This provides compatibility.
 module_SCRIPTS = FvwmTalk
 
+FvwmForm.1:
+	$(RST2MAN) FvwmForm.rst > FvwmForm.1
+
 FvwmTalk: ../../config.h Makefile
 	echo "#!/bin/sh" > $@
 	echo exec ${moduledir}/FvwmForm '$$@' FvwmForm-Talk>> $@
