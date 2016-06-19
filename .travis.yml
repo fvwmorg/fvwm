@@ -10,34 +10,34 @@ matrix:
         - compiler: clang
           env: CFLAGS="-g -O2"
 addons:
-    apt:
-    packages:
-    - debhelper
-    - autotools-dev
-    - dh-autoreconf
-    - file
-    - fontconfig
-    - gettext
-    - libfontconfig-dev
-    - libfreetype6-dev
-    - libfribidi-dev
-    - libncurses5-dev
-    - libreadline-dev
-    - libpng-dev
-    - libsm-dev
-    - libx11-dev
-    - libxcursor-dev
-    - libxext-dev
-    - libxft-dev
-    - libxi-dev
-    - x11proto-xinerama-dev
-    - libxpm-dev
-    - libxrender-dev
-    - libxt-dev
-    - sharutils
-    - xsltproc
-    - build-essential
-=
+        apt:
+                packages:
+                - debhelper
+                - autotools-dev
+                - dh-autoreconf
+                - file
+                - fontconfig
+                - gettext
+                - libfontconfig-dev
+                - libfreetype6-dev
+                - libfribidi-dev
+                - libncurses5-dev
+                - libreadline-dev
+                - libpng-dev
+                - libsm-dev
+                - libx11-dev
+                - libxcursor-dev
+                - libxext-dev
+                - libxft-dev
+                - libxi-dev
+                - x11proto-xinerama-dev
+                - libxpm-dev
+                - libxrender-dev
+                - libxt-dev
+                - sharutils
+                - xsltproc
+                - build-essential
+
 before_install:
     - gem install asciidoctor
 
