@@ -579,6 +579,8 @@ typedef struct style_flags
 	unsigned use_colorset : 1;
 	unsigned use_colorset_hi : 1;
 	unsigned use_border_colorset : 1;
+	unsigned use_border_colorset_regions : 1;
+	unsigned use_border_colorset_handles : 1;
 	unsigned use_border_colorset_north : 1;
 	unsigned use_border_colorset_south : 1;
 	unsigned use_border_colorset_east : 1;
@@ -588,6 +590,8 @@ typedef struct style_flags
 	unsigned use_border_colorset_handles_sw : 1;
 	unsigned use_border_colorset_handles_se : 1;
 	unsigned use_border_colorset_hi : 1;
+	unsigned use_border_colorset_hi_regions : 1;
+	unsigned use_border_colorset_hi_handles : 1;
 	unsigned use_border_colorset_hi_north : 1;
 	unsigned use_border_colorset_hi_south : 1;
 	unsigned use_border_colorset_hi_east : 1;
