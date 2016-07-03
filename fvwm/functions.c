@@ -419,10 +419,10 @@ fprintf(stderr, "!!!do not expand\n");
 #if 1 /*!!!*/
 fprintf(stderr, "!!!is silent\n");
 #endif
-			if (scr_flags.are_functions_silent == 0)
+			if (Scr.flags.are_functions_silent == 0)
 			{
 				set_silent = 1;
-				scr_flags.are_functions_silent = 1;
+				Scr.flags.are_functions_silent = 1;
 			}
 		}
 		if (flags & CP_PREFIX_KEEPRC)
@@ -673,7 +673,7 @@ fprintf(stderr, "!!!execute '%s' (fw %p)\n", bif->keyword, exc2->w.fw);
 	}
 	if (set_silent)
 	{
-		scr_flags.are_functions_silent = 0;
+		Scr.flags.are_functions_silent = 0;
 	}
 	cmdparser_hooks->destroy_context(&pc);
 

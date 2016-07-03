@@ -26,7 +26,6 @@
 #include "cmdparser.h"
 #include "execcontext.h"
 #include "functable.h"
-#include "functable.h"
 #include "functable_complex.h"
 #include "misc.h"
 #include "screen.h"
@@ -51,7 +50,7 @@ FvwmFunction *NewFvwmFunction(const char *name)
 {
 	FvwmFunction *tmp;
 
-	tmp = fvwm_malloc(sizeof *tmp);
+	tmp = (FvwmFunction *)safemalloc(sizeof *tmp);
 	tmp->next_func = Scr.functions;
 	tmp->first_item = NULL;
 	tmp->last_item = NULL;
