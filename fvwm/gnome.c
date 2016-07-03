@@ -1136,14 +1136,16 @@ void GNOME_HandlePropRequest(
 		if (prop & WIN_STATE_SHADED)
 		{
 			/* shade up */
+			/*!!! pc !!!!*/
 			execute_function_override_window(
-				NULL, exc, "WindowShade True", 0, fwin);
+				NULL, exc, "WindowShade True", NULL, 0, fwin);
 		}
 		else
 		{
 			/* shade down */
+			/*!!! pc !!!!*/
 			execute_function_override_window(
-				NULL, exc, "WindowShade False", 0, fwin);
+				NULL, exc, "WindowShade False", NULL, 0, fwin);
 		}
 	}
 
