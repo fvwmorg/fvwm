@@ -64,7 +64,7 @@ typedef struct
 	cmdparser_execute_type_t (*find_something_to_execute)(
 		cmdparser_context_t *context,
 		const func_t **ret_builtin,
-		MvwmFunction **ret_complex_function);
+		FvwmFunction **ret_complex_function);
 	/* Release the context initialised with create_context(). */
 	void (*destroy_context)(cmdparser_context_t *context);
 	/* Print the contents of the context. */

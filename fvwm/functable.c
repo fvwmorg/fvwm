@@ -723,7 +723,7 @@ const func_t *find_builtin_function(const char *func)
 		return &(func_table[0]);
 	}
 
-	temp = mvwm_strdup(func);
+	temp = fvwm_strdup(func);
 	for (s = temp; *s != 0; s++)
 	{
 		if (isupper(*s))

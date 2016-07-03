@@ -76,7 +76,7 @@
 
 static void execute_complex_function(
 	cond_rc_t *cond_rc, const exec_context_t *exc, cmdparser_context_t *pc,
-	MvwmFunction *func, Bool has_ref_window_moved);
+	FvwmFunction *func, Bool has_ref_window_moved);
 
 /* ---------------------------- local variables ---------------------------- */
 
@@ -377,7 +377,7 @@ static void __execute_command_line(
 	const char *err_func;
 	cmdparser_execute_type_t exec_type;
 	const func_t *bif;
-	MvwmFunction *complex_function;
+	FvwmFunction *complex_function;
 	int set_silent;
 	int do_keep_rc = 0;
 	/* needed to be able to avoid resize to use moved windows for base */
@@ -635,7 +635,7 @@ fprintf(stderr, "!!!execute '%s' (fw %p)\n", bif->keyword, exc2->w.fw);
 		break;
 	}
 	case CP_EXECTYPE_COMPLEX_FUNCTION_DOES_NOT_EXIST:
-		mvwm_msg(
+		fvwm_msg(
 			ERR, "ComplexFunction", "No such function %s",
 			pc.complex_function_name);
 		break;
@@ -645,7 +645,7 @@ fprintf(stderr, "!!!execute '%s' (fw %p)\n", bif->keyword, exc2->w.fw);
 		 * white space after the asterisk. */
 		if (Scr.cur_decor && Scr.cur_decor != &Scr.DefaultDecor)
 		{
-			mvwm_msg(
+			fvwm_msg(
 				WARN, "__execute_command_line",
 				"Command can not be added to a decor;"
 				" executing command now: '%s'", pc.expline);
@@ -847,7 +847,7 @@ static void __cf_cleanup(
 
 static void execute_complex_function(
 	cond_rc_t *cond_rc, const exec_context_t *exc, cmdparser_context_t *pc,
-	MvwmFunction *func, Bool has_ref_window_moved)
+	FvwmFunction *func, Bool has_ref_window_moved)
 {
 	cond_rc_t tmp_rc;
 	cfunc_action_t type = CF_MOTION;

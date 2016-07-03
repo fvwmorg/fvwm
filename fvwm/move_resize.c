@@ -4617,7 +4617,7 @@ static void MaximizeWidth(
 	return;
 }
 
-static void unmaximize_mvwm_window(
+static void unmaximize_fvwm_window(
 	FvwmWindow *fw, cmdparser_context_t *pc)
 {
 	rectangle new_g;

@@ -18,11 +18,11 @@
 
 #include "config.h"
 
-#include "libs/mvwmlib.h"
+#include "libs/fvwmlib.h"
 #include "libs/Picture.h"
 #include "libs/Strings.h"
 
-#include "mvwm.h"
+#include "fvwm.h"
 #include "cmdparser.h"
 #include "execcontext.h"
 #include "functable.h"
@@ -47,11 +47,11 @@
 
 /* ---------------------------- local functions ---------------------------- */
 
-MvwmFunction *NewMvwmFunction(const char *name)
+FvwmFunction *NewFvwmFunction(const char *name)
 {
-	MvwmFunction *tmp;
+	FvwmFunction *tmp;
 
-	tmp = mvwm_malloc(sizeof *tmp);
+	tmp = fvwm_malloc(sizeof *tmp);
 	tmp->next_func = Scr.functions;
 	tmp->first_item = NULL;
 	tmp->last_item = NULL;
@@ -62,10 +62,10 @@ MvwmFunction *NewMvwmFunction(const char *name)
 	return tmp;
 }
 
-void DestroyFunction(MvwmFunction *func)
+void DestroyFunction(FvwmFunction *func)
 {
 	FunctionItem *fi,*tmp2;
-	MvwmFunction *tmp, *prev;
+	FvwmFunction *tmp, *prev;
 
 	if (func == NULL)
 	{
@@ -86,7 +86,7 @@ void DestroyFunction(MvwmFunction *func)
 
 	if (func->use_depth != 0)
 	{
-		mvwm_msg(
+		fvwm_msg(
 			ERR,"DestroyFunction",
 			"Function %s is in use (depth %d)", func->name,
 			func->use_depth);
@@ -124,9 +124,9 @@ void DestroyFunction(MvwmFunction *func)
 
 /* find_complex_function expects a token as the input. Make sure you have used
  * GetNextToken before passing a function name to remove quotes */
-MvwmFunction *find_complex_function(const char *function_name)
+FvwmFunction *find_complex_function(const char *function_name)
 {
-	MvwmFunction *func;
+	FvwmFunction *func;
 
 	if (function_name == NULL || *function_name == 0)
 	{

@@ -23,7 +23,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "mvwm.h"
+#include "fvwm.h"
 #include "execcontext.h"
 #include "conditional.h"
 #include "functable.h"
@@ -117,7 +117,7 @@ static int ocp_create_context(
 	{
 		if (dest_c->call_depth > MAX_FUNCTION_DEPTH)
 		{
-			mvwm_msg(
+			fvwm_msg(
 				ERR, "ocp_create_context",
 				"Function '%s' called with a depth of %i, "
 				"stopping function execution!",
@@ -341,7 +341,7 @@ static void ocp_release_expanded_line(cmdparser_context_t *c)
 
 static cmdparser_execute_type_t ocp_find_something_to_execute(
 	cmdparser_context_t *c, const func_t **ret_builtin,
-	MvwmFunction **ret_complex_function)
+	FvwmFunction **ret_complex_function)
 {
 	int is_function_builtin;
 

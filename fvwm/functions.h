@@ -66,6 +66,6 @@ void execute_function(F_CMD_ARGS, func_flags_t exec_flags);
 void execute_function_override_wcontext(
 	F_CMD_ARGS, func_flags_t exec_flags, int wcontext);
 void execute_function_override_window(
-	F_CMD_ARGS, func_flags_t exec_flags, MvwmWindow *fw);
+	F_CMD_ARGS, func_flags_t exec_flags, FvwmWindow *fw);
 
 #endif /* FUNCTIONS_H */

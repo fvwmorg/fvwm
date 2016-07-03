@@ -13,7 +13,7 @@
 
 typedef struct FunctionItem
 {
-	struct MvwmFunction *func;       /* the function this item is in */
+	struct FvwmFunction *func;       /* the function this item is in */
 	struct FunctionItem *next_item;  /* next function item */
 	char condition;                  /* the character string displayed on
 					  * left*/
@@ -22,14 +22,14 @@ typedef struct FunctionItem
 	func_flags_t flags;
 } FunctionItem;
 
-typedef struct MvwmFunction
+typedef struct FvwmFunction
 {
-	struct MvwmFunction *next_func;  /* next in list of root menus */
+	struct FvwmFunction *next_func;  /* next in list of root menus */
 	FunctionItem *first_item;        /* first item in function */
 	FunctionItem *last_item;         /* last item in function */
 	char *name;                      /* function name */
 	int use_depth;
-} MvwmFunction;
+} FvwmFunction;
 
 /* Types of events for the FUNCTION builtin */
 typedef enum
@@ -46,9 +46,9 @@ typedef enum
 
 /* ---------------------------- interface functions ------------------------ */
 
-MvwmFunction *NewMvwmFunction(const char *name);
-void DestroyFunction(MvwmFunction *func);
-MvwmFunction *find_complex_function(const char *function_name);
+FvwmFunction *NewFvwmFunction(const char *name);
+void DestroyFunction(FvwmFunction *func);
+FvwmFunction *find_complex_function(const char *function_name);
 Bool functions_is_complex_function(const char *function_name);
 
 #endif /* FUNCTABLE_COMPLEX_H */
