@@ -1,23 +1,44 @@
-########################## Icon Manager ####################################
-# this FvwmIconMan setup is for swallowing in button bar example
+#
+# FvwmIconMan - A good replacement for FvwmTaskBar, it's a very
+# versitile module that allows one to group windows together, or have
+# several icon managers running, one that groups one set of windows, and
+# another that managers the other ones.
+#
+# In this configuration, FvwmIconMan acts not dissimilar to the
+# WindowsXp taskbar in how it maps out windows -- except that it maps
+# windows one page at a time.
+
 DestroyModuleConfig FvwmIconMan: *
+*FvwmIconMan: Colorset 1
+*FvwmIconMan: FocusAndSelectColorset 2
+*FvwmIconMan: FocusColorset 1
 *FvwmIconMan: NumManagers 1
 *FvwmIconMan: Resolution  page
-*FvwmIconMan: Background  bisque3
-*FvwmIconMan: Foreground  black
-*FvwmIconMan: Font        7x13bold
+*FvwmIconMan: ReliefThickness 1
+*FvwmIconMan: Font        "Shadow=2 sw:xft:ArialBlack"
 *FvwmIconMan: Format      "%t"
+*FvwmIconMan: Action      Mouse   0 N sendcommand Nop
 *FvwmIconMan: Action      Mouse   1 N sendcommand Focus, sendcommand "Iconify"
 *FvwmIconMan: Action      Mouse   2 N sendcommand "Iconify 1"
-*FvwmIconMan: Action      Mouse   3 N sendcommand "FvwmIdent"
+*FvwmIconMan: Action      Mouse   3 N sendcommand "Menu FvwmMenuWindowOps"
 *FvwmIconMan: FollowFocus true
 *FvwmIconMan: Sort        none
-*FvwmIconMan: IconButton          up black maroon
-*FvwmIconMan: PlainButton          up black bisque3
-*FvwmIconMan: SelectButton         down black bisque3
-*FvwmIconMan: FocusButton          up yellow firebrick
-*FvwmIconMan: FocusAndSelectButton down yellow firebrick
-*FvwmIconMan: DontShow icon=Untitled resource=Untitled
-#*FvwmIconMan: DrawIcons true
-*FvwmIconMan: ButtonGeometry  300x0
-*FvwmIconMan: ManagerGeometry 1x5
+*FvwmIconMan: DontShow icon=Untitled, resource=Untitled
+*FvwmIconMan: ManagerGeometry 1x1
+*FvwmIconMan: FollowFocus True
+*FvwmIconMan: UseWinList True
+
+#
+# A wrapper function to start the module -- effectively reduces the
+# overhead and need of using FvwmEvent...
+#
+
+DestroyFunc StartFvwmIconMan
+AddToFunc   StartFvwmIconMan
++ I Module FvwmIconMan
++ I Wait   FvwmIconMan
++ I All (FvwmIconMan) AnimatedMove 160p -0p
++ I All (FvwmIconMan) Maximize Grow Grow
+
+# Kick the function, and start the module
+StartFvwmIconMan

@@ -1,0 +1,84 @@
+# FvwmForm-Setup - Setup Text for fvwm
+# Caution, during install, this file goes thru sed, a trailing newline
+# is required.
+DestroyModuleConfig  FvwmForm-Setup: *
+*FvwmForm-Setup: ColorSet 1
+*FvwmForm-Setup: Font "Shadow=2 sw:xft:ArialBlack"
+*FvwmForm-Setup: WarpPointer
+# Layout
+*FvwmForm-Setup: Line    center
+*FvwmForm-Setup: Text    "fvwm - Create Configuration"
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    " "
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: PadVText 0
+*FvwmForm-Setup: Text    "Use this form to create your configuration file."
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    "The file created is ~/.fvwm/config or $FVWM_USERDIR/config"
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    ""
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    "After creation, the config file can then be changed with any"
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    "editor to suit your own needs."
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    ""
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Selection meth multiple
+*FvwmForm-Setup: Choice  BASIC BASIC on "Create a starting config file"
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    ""
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    "These files are optional.  Select the modules you want to customize"
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    "You can always copy them later.  Note that FvwmButtons includes"
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    "FvwmPager.  FvwmIconMan acts like the Windows taskbar."  
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    "It's recommended you select both of these."
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Text    ""
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Selection meth multiple
+#*FvwmForm-Setup: Choice  BAK BAK off "FvwmBacker   "
+*FvwmForm-Setup: Choice  BUT BUT off "FvwmButtons  "
+#*FvwmForm-Setup: Choice  BOX BOX off "FvwmIconBox  "
+*FvwmForm-Setup: Choice  MAN MAN off "FvwmIconMan  "
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Selection meth multiple
+#*FvwmForm-Setup: Choice  IDN IDN off "FvwmIdent    "
+#*FvwmForm-Setup: Choice  PAG PAG off "FvwmPager    "
+#*FvwmForm-Setup: Choice  SCR SCR off "FvwmScroll   "
+#*FvwmForm-Setup: Choice  TSK TSK off "FvwmTaskBar  "
+*FvwmForm-Setup: Line    left
+*FvwmForm-Setup: Selection meth multiple
+#*FvwmForm-Setup: Choice  WIN WIN off "FvwmWinList  "
+
+# Buttons
+*FvwmForm-Setup: Line    center
+*FvwmForm-Setup: Button  quit    "Return - Dismiss" ^M
+*FvwmForm-Setup: Command   Nop
+*FvwmForm-Setup: Button  continue    "F2 - Copy Config File(s)" F2
+*FvwmForm-Setup: Command   $(BASIC?!/bin/cp xFVWM_DATADIRx/ConfigFvwmSetup ${FVWM_USERDIR}/config)
+*FvwmForm-Setup: Command   $(BASIC?!/bin/cp xFVWM_DATADIRx/ConfigFvwmIdent ${FVWM_USERDIR})
+*FvwmForm-Setup: Command   $(BASIC?!/bin/cp xFVWM_DATADIRx/helpfile ${FVWM_USERDIR})
+#*FvwmForm-Setup: Command   $(BAK?!/bin/cp xFVWM_DATADIRx/ConfigFvwmBacker  ${FVWM_USERDIR})
+*FvwmForm-Setup: Command   $(BUT?!/bin/cp xFVWM_DATADIRx/ConfigFvwmButtons ${FVWM_USERDIR})
+*FvwmForm-Setup: Command   $(BUT?!/bin/cp xFVWM_DATADIRx/*.xpm ${FVWM_USERDIR})
+*FvwmForm-Setup: Command   $(BUT?!/bin/cp xFVWM_DATADIRx/fvwm-script-clock.pl ${FVWM_USERDIR}
+*FvwmForm-Setup: Command   $(BUT?!/bin/cp xFVWM_DATADIRx/Interface ${FVWM_USERDIR}
+#*FvwmForm-Setup: Command   $(BOX?!/bin/cp xFVWM_DATADIRx/ConfigFvwmIconBox ${FVWM_USERDIR})
+*FvwmForm-Setup: Command   $(MAN?!/bin/cp xFVWM_DATADIRx/ConfigFvwmIconMan ${FVWM_USERDIR})
+*FvwmForm-Setup: Command   Restart
+#*FvwmForm-Setup: Command   $(IDN?!/bin/cp xFVWM_DATADIRx/ConfigFvwmIdent   ${FVWM_USERDIR})
+#*FvwmForm-Setup: Command   $(PAG?!/bin/cp xFVWM_DATADIRx/ConfigFvwmPager   ${FVWM_USERDIR})
+#*FvwmForm-Setup: Command   $(SCR?!/bin/cp xFVWM_DATADIRx/ConfigFvwmScroll  ${FVWM_USERDIR})
+#*FvwmForm-Setup: Command   $(TSK?!/bin/cp xFVWM_DATADIRx/ConfigFvwmTaskBar ${FVWM_USERDIR})
+#*FvwmForm-Setup: Command   $(WIN?!/bin/cp xFVWM_DATADIRx/ConfigFvwmWinList ${FVWM_USERDIR})
+
+
+# (TA): These were from the old form -- it seems silly to copy over the files
+# and then have to restart FVWM, so this is done explicitly.
+
+#*FvwmForm-Setup: Button  quit    "F3 - Restart fvwm"
+#*FvwmForm-Setup: Command   Restart

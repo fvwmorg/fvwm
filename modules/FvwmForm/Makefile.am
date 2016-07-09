@@ -17,6 +17,7 @@ FvwmTalk: ../../config.h Makefile
 ## NB: Neither _MANS nor _DATA are included by default in
 ## distributions!
 EXTRA_DIST = $(man_MANS) Changes \
+  FvwmForm-Setup.in	  \
   FvwmForm-Form           \
   FvwmForm-Capture        \
   FvwmForm-Desktop        \
@@ -35,6 +36,7 @@ FvwmForm_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
 
 config_DATA =             \
   FvwmForm-Form           \
+  FvwmForm-Setup	  \
   FvwmForm-Capture        \
   FvwmForm-Desktop        \
   FvwmForm-QuitVerify     \
@@ -56,4 +58,9 @@ LDADD = -L$(top_builddir)/libs -lfvwm $(Xft_LIBS) $(X_LIBS)  \
 AM_CPPFLAGS = -I$(top_srcdir) $(Xft_CFLAGS) $(X_CFLAGS) $(iconv_CFLAGS) \
 	$(Bidi_CFLAGS) $(Xrender_CFLAGS)
 
-CLEANFILES = $(module_SCRIPTS)
+FvwmForm-Setup: FvwmForm-Setup.in Makefile
+	rm -f $@
+	sed -e 's,xFVWM_DATADIRx,$(FVWM_DATADIR),' $(top_srcdir)/modules/FvwmForm/FvwmForm-Setup.in > $@-t
+	mv $@-t $@
+
+CLEANFILES = $(module_SCRIPTS) FvwmForm-Setup

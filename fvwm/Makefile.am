@@ -5,7 +5,13 @@ bin_PROGRAMS = fvwm
 
 EXTRA_DIST = $(config_DATA)
 
-config_DATA = ConfigFvwmDefaults
+config_DATA = ConfigFvwmDefaults \
+	      ConfigFvwmSetup \
+	      helpfile \
+	      fvwm-welcome.png \
+	      menu_config \
+	      Interface \
+	      fvwm-banner2.xpm
 
 ## please keep .c file in largest first order to speed up parallel makes
 fvwm_SOURCES = \

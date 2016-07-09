@@ -1,0 +1,56 @@
+#
+# OK: Job One is to provide some way to access the menu
+#
+# Let's Bind it to Windows-C
+#
+Key C A 4 Popup ConfigMenu
+
+#
+# Better define it now
+#
+# The DynamicPopupAction stuff tells FVWM "if we get here and there's not
+# menu in place, call this function"
+#
+DestroyMenu ConfigMenu
+AddToMenu ConfigMenu
++ DynamicPopupAction Function MakeConfigMenu "Select Configuration"
+
+#
+# Adapting this from Sa's setup - destroy menu or destroy func?
+#
+DestroyMenu MakeConfigMenu
+AddToFunc MakeConfigMenu
++ I Echo "Make Config"
++ I DestroyMenu recreate ConfigMenu
++ I AddToMenu ConfigMenu "$0" Title
+#
+# Pet Peeve: There is NO reason why embedded shell commands have to be all on
+# a single line! Unless your intent is to obfuscate, why not lay it out in a 
+# readable manner? No one is going to revoke your 1337 status just because they
+# can understand your bash scripts. </rant>
+#
+# (most of it comes down to pesonal preference -- it is *their* config, after
+# all.  :P) -- TA.
++ I PipeRead '							\
+	for i in ~/.fvwm/config_*; 					\
+	do								\
+		echo + "$( basename "$i" | sed s/config_// )"		\
+			FuncSwitchConfig $i ;				\
+	done								\
+'
+
+DestroyFunc FuncSwitchConfig
+AddToFunc FuncSwitchConfig
++ I Echo FuncSwitchConfig: $0
++ I PipeRead '						\
+	if [ ! -L $HOME/.fvwm/config ];			\
+	then						\
+		mv $HOME/.fvwm/config			\
+		   $HOME/.fvwm/config.fvwm.save;	\
+	fi;						\
+	rm -f $HOME/.fvwm/config;			\
+	ln -s $0 $HOME/.fvwm/config;			\
+	echo Nop;					\
+'
++ I Restart
+

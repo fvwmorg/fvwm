@@ -1,0 +1,704 @@
+# Welcome to FVWM.
+#
+# This is the default configuration file for FVWM. This is the file to edit
+# if you want to change how FVWM works.  As config files go this one is,
+# by design ultra-minimal.  We hope you'll replace it with something more
+# imaginative.
+#
+# For some ideas on how to do that, the "Getting Started" menu option gives
+# some useful resources. Recommended are:
+#
+#       The Fvwm Man Page            (man fvwm)
+#       The Fvwm Modules Manuals     (man -k Fvwm)
+#       The Fvwm Home Page           (http://fvwm.org)
+#       The Fvwm Forum               (http://fvwm.lair.be)
+#       The Fvwm Wiki                (http://www.fvwmwiki.org)
+#
+# As a general resouce, some guides are available, most noteworthy of
+# which are these:
+#
+#   "A Beginner's Guide to Fvwm" (http://www.zensites.net/fvwm/guide/)
+#   "Tutorials"           (http://www.fvwmwiki.org/cgi/moin.cgi/Tutorials)
+#   "Config From Scratch" (http://fvwm.lair.be/viewtopic.php?t=188)
+#   
+# Meanwhile, we'll try and make this file as helpful as possible. We'll start
+# by defining some constants.
+#
+# The SetEnv command sets variables that can be accessed later in the
+# configuration script. The variables are inserted into the environment, and
+# can be accessed by processes initiated by fvwm, so this will include
+# amongst other things Fvwm modules.
+#
+# Environment variables can be accessed using the $[variable-name] syntax
+# eg. $[HOME] below
+# 
+
+SetEnv resource_dir $[HOME]/.fvwm
+SetEnv helpfile $[resource_dir]/helpfile
+SetEnv banner fvwm-welcome.png
+SetEnv xtermapp "xterm -bg navy -fg white"
+SetEnv pager_desk_n 0
+
+#
+# The ImagePath is a colon-separated list of directories Fvwm will
+# search for to load any images you might need (such as images for any
+# icons, pixmaps, etc).  It's similar to other environment variables
+# such as $PATH.  The "+" at the end is a continuator, so that one can
+# continue to define another line and have it appended all as one long
+# directory chain that Fvwm will search in.
+#
+
+ImagePath .:/usr/local/share/fvwm/:/usr/share/fvwm:$[HOME]/.fvwm/
+ImagePath +:/usr/local/share/icons/48x48-infox/:$[FVWM_USERDIR]
+ImagePath +:/usr/share/icons/foxicons
+
+#
+# Useful/Miscellaneous things that don't seem to fit anywhere else...
+
+# Assumes non-greedy
+ColorMapFocus  FollowsMouse
+
+# Avoid MWM-hangup of having the window geometry in the centre, etc.
+# Can be set to 'mwm' if so desired, without any issues of affecting
+# window styles, etc.
+Emulate Fvwm
+
+# The following four lines just give names to each of the desks defined.
+DesktopName 0 Main
+DesktopName 1 Work
+DesktopName 2 Internet
+DesktopName 3 Games
+
+# Set the number of pages in a desk -- 3x3 gives 9
+DesktopSize 3x3
+
+# I don't like flipping pages by accident, so we'll disable it.
+EdgeScroll 0 0
+
+# Useful for dragging windows between pages, irrespective of whether we
+# have EdgeScroll set to 0 0, as above.
+EdgeResistance 500 1
+
+# How far the mouse is from the edge of the screen before EdgeResistance
+# kicks in.  1 seems a reasonable default.
+EdgeThickness 1
+
+# When resizing/moving windows, never hide the notification of its size,
+# in the top-left corner (assumes 'Emulate Fvwm', as above) or in the
+# centre of the screen (assumes 'Emulate Mwm').
+HideGeometryWindow never
+
+# Make moving a window as smooth as possible.
+OpaqueMoveSize -1
+
+# SnapAttraction and SnapGrid are a means of allowing windows to 'snap'
+# together if they're within a certain distance of each other.  Useful
+# when moving windows so that there's no gaps.  The "gap" before windows
+# are snapped together is measured in pixels.  Here, four seems about
+# right.  Note that the "SameType" option assumes the snapping will only
+# take place between window <--> window, and icon <--> icon.
+SnapAttraction 4 SameType
+SnapGrid 1 1
+
+# MoveThreshold assumes a slight delay when moving a window.
+MoveThreshold 3
+
+# Don't send ConfigureNotify events to the window when moving -- should
+# help reduce the flicker somewhat.
+BugOpts FlickeringMoveWorkAround True
+
+
+#
+# Colorsets. Only two used. we might want a couple more for the forms
+# one solid color and one grad - nothing to greedy
+#
+# We have to be careful that the Xserver doesn't get greedy on using up the
+# entire colour-pallet.  Fvwm versions >=2.3 handle this automatically, but
+# people on a low-end spec machine might have issues of colour-grabbing.
+# Note that in 99.9% of cases, this probably won't happen.
+#
+
+#
+# Colorsets (see "man fvwmtheme" for the curious) are the means by which one
+# specifies the color of the window.  There's lots of things you can do with
+# them, and you can define as many colorsets as you like. We've defined two --
+# one that's activated when a window has focus, and one that's activated when
+# a window has no focus.  
+# 
+# Note that in the colorset declarations you don't specify which colorset
+# does which job -- that's done later on when we declare the "Style" of
+# windows. 
+Colorset 1 BGradient 256 blue gray, fg black
+Colorset 2 bg DarkSlateBlue
+DefaultColorset 1
+
+# Used for FvwmButtons and the FvwmPager it swallows
+Colorset 10 BGradient 256 blue gray, fg black, fgsh gray75
+Colorset 11 BGradient 256 red4 gray, fg black, fgsh gray75
+Colorset 12 BGradient 256 green gray, fg black, fgsh gray75
+Colorset 13 BGradient 256 yellow gray, fg black, fgsh gray75
+#
+# styles - the font shadow may be a stretch, but it adds so much for
+# so little effort, I couldn't resist
+#
+# The titlebars just pick up a basic blue.
+# I've defined a darker one for the focus window. Fvwm picks yellow as a
+# good contrast colour, and that in combination with the darker colour is
+# enough to pick out the active window
+#
+
+#
+# A Default Decor. Decors extend and ultimately define all the phyiscal
+# attributes a window can take on. That is, they help define how the
+# window border should look, the buttons a window should have and their
+# placement. Usually defining one decor is sufficient for all windows,
+# so that they all look the same.
+#
+# In this decor (as is common in most setups) four buttons have been
+# defined (although upto ten can be displayed).  The left most button
+# shows a menu of useful options that can be applied to that menu, the
+# button closest to that on the right, iconifies the window, the next
+# maximises it, while the last button closes the window.  Graphically,
+# it looks something like this:
+#
+# +------------------------------------------------------------------+
+# |-|                           Title                          |v|^|x|
+# |------------------------------------------------------------------|
+# 
+
+AddToDecor   DefaultDecor
++ BorderStyle Simple
++ TitleStyle  -- Raised
++ ButtonStyle All -- Raised
++ AddButtonStyle 1 Vector 5 25x40@1 25x60@1 75x60@0 75x40@0 25x40@1
++ AddButtonStyle 4 Vector 4 50x25@1 75x75@0 25x75@0 50x25@1
++ AddButtonStyle 6 Vector 4 50x75@1 25x25@1 75x25@1 50x75@0
++ AddButtonStyle 2 Vector 17 20x20@1 30x20@1 50x40@1 70x20@1 80x20@1 \
+		   80x30@0 60x50@0 80x70@1 80x80@0 70x80@0 50x60@0 30x80@0 \
+		   20x80@0 20x70@0 40x50@1 20x30@0 20x20@1
++ ButtonStyle 1 - Clear MWMDecorMenu
++ ButtonStyle 2 - Clear MWMDecorMax
++ ButtonStyle 4 - Clear MWMDecorMin
+
+#
+# Style lines allows us to define attributes of a window, and there are
+# *hundreds* of available options.  The format of a style line looks like
+# this:
+#
+# Style <window_(name|class|resource)> <options>
+#
+# A "*" as the first parameter to Fvwm indicates that the style line defined
+# should act on ALL windows mapped in Fvwm.  Matches on windows are performed
+# first by Fvwm looking at the window's title -- for most people this is
+# usually sufficient [1], but it might be worth remembering that Fvwm then
+# goes on to match on a window's Class, and then a window's Resource name.  If
+# you're unsure what these mean, don't worry.
+
+Style * Font "Shadow=2 sw:xft:ArialBlack"
+Style * Colorset 1
+Style * HilightColorset 2
+
+#
+# General Style lines.  
+#
+# There are lots of placement policies -- these define where a window
+# should start up on a page, and which pattern to follow.  In this case,
+# the windows will fill up left to right, top to bottom and once that's
+# done will overlap each other, tiling as they go.
+Style * TileCascadePlacement
+
+# There's hundreds of focusing options -- we're using sloppyfocus here
+# which works by not having to click on a window to focus it.
+Style * SloppyFocus
+
+# These options ensure all windows get titles, borders and handles,
+# unless we specifically negate them.
+Style * Title, Handles, Borders
+
+# FvwmBorder creates a slightly rounded border.  FirmBorder ensure's it
+# stays as such and is not pressable.
+Style * FvwmBorder, FirmBorder
+
+#  The width of the border/handles.  Four is about right.  Not too
+#  thick and clunky.
+Style * BorderWidth 4, HandleWidth 4
+
+# This line ensures that Xterms, and other line-oriented windows
+# maximize gracefully.
+Style * ResizeHintOverride
+
+# Important this -- tells all windows to use the decor we defined above.
+Style * UseDecor DefaultDecor
+
+# Specifies explicitly which buttons are to be defined in the titlebar.
+Style * Button 1, Button 6, Button 4, Button 2
+
+# Don't place the window in the last known position.
+Style * NoPPosition
+
+# Transient windows are things like dialogue boxes.  We want these to
+# have decorations like any other window.
+Style * DecorateTransient, ResizeOpaque
+
+# 
+# Application-specific style lines
+#
+Style Fvwm* Sticky, !Title, CirculateSkip
+Style FvwmIconMan Sticky, StaysOnTop, !Title, \
+      HandleWidth 0, BorderWidth 1
+Style "Gecko" Title, Borders, !Sticky
+Style FvwmForm-QuitVerify PositionPlacement center
+Style FvwmForm-Setup      PositionPlacement center
+Style FvwmScript-StartMsg PositionPlacement center, StaysOnTop, Sticky
+
+#
+# Mouse bindings (if only so the Decor can be made visible).
+# "Button Press" - is the number of the mouse button clicked.  "0"
+#                  indicates any button.
+# "Context"      - is where the button was clicked, be it Window, Frame,
+#                  titlebar, etc.
+# "Modifier"     - Whether a modifier key was held.  "A" means Any.
+# "Command"      - What action to take.
+#
+# The following might help:
+# ------------------------------------------------------------------------
+# Contexts:
+#     R = Root Window                 rrrrrrrrrrrrrrrrrrrrrr
+#     W = Application Window          rIrrrrFSSSSSSSSSFrrrrr
+#     F = Frame Corners               rrrrrrS13TTTT642Srrrrr
+#     S = Frame Sides                 rIrrrrSwwwwwwwwwSrrrrr
+#     T = Title Bar                   rrrrrrSwwwwwwwwwSrrrrr
+#     I = Icon                        rIrrrrFSSSSSSSSSFrrrrr
+#                                     rrrrrrrrrrrrrrrrrrrrrr
+# Numbers are buttons: 1 3 5 7 9   0 8 6 4 2
+#
+# Modifiers: (A)ny, (C)ontrol, (S)hift, (M)eta, (N)othing
+# -----------------------------------------------------------------------
+#
+# The format of the mouse command is:
+#
+# Mouse button Context Modifier       Command
+#       press  
+#
+Mouse       0	    1	    A	      FuncWindowOpsOrClose
+Mouse       0	    2	    A	      Close
+Mouse       0	    6	    A	      FuncIconifyDeIconify
+Mouse       0	    4	    A	      FuncMaximiseFullScreen
+Mouse       1     I     A       FuncIconifyDeIconify
+Mouse       1	    SF    A	      FuncRaiseResize
+Mouse       1	    T	    A	      FuncMoveWindowShade
+Mouse       3     SRFT  A       Menu FvwmMenuWindowOps
+
+#
+# Key bindings.  They're powerful, and purely a matter of preference for
+# the user.  The following key binding is a Fvwm-default one to bring
+# up a menu on Alt-Tab.
+#
+
+Key Tab A M WindowList Root c c NoDeskSort
+MenuStyle WindowList SelectOnRelease Meta_L
+MenuStyle WindowList MenuColorset 1
+
+#
+# Although it's not obvious, if this function is defined, it gets run
+# whenever the WindowList does.  It gets run at the end, so any user
+# interactions can be specified here as well.
+#
+
+AddToFunc WindowListFunc
++ I Iconify off
++ I FlipFocus
++ I Raise
++ I WarpToWindow 5p 5p
+
+
+#
+# Menus have thier own style command. this sets the menus to use the same
+# colour gradient as used by the desktop
+# 
+Menustyle *  Font "Shadow=2 sw:xft:ArialBlack"
+Menustyle *  Menucolorset 1
+MenuStyle *  PopupDelayed, PopupDelay 150, PopdownDelayed, PopdownDelay 150
+MenuStyle *  PopupOffset -15 100, TitleWarpOff
+MenuStyle *  TitleUnderlines2, SeparatorsLong, TrianglesRelief
+MenuStyle *  Animation, AutomaticHotkeysOff, DoubleClickTime
+MenuStyle *  PopupAsSubmenu, HoldSubmenus, SubmenusRight
+MenuStyle *  ItemFormat "%.4s%.1|%.5i%.5l%.5l%.5r%.5i%2.3>%1|"
+MenuStyle *  VerticalItemSpacing, VerticalTitleSpacing
+BusyCursor   DynamicMenu True
+
+
+#
+# Fvwm farms out some large chunks of functionality to modules that can
+# be included or not as it suits the user. Module configuration is done as
+# part of the FVWM config file, usually begining with
+#
+#       DestroyModuleConfig ModuleName: *
+#
+# and then a number of lines like this:
+#
+#       *ModuleName: Option Value
+#
+# One such module is FvwmBacker. FvwmBacker manages transitions
+# between desks and pages for FVWM's virtual desktops. In this case,
+# we only have a single desktop, so all we're using FvwmBacker for is to
+# set the background. This requires minimal configuration.
+#
+# man FvwmBacker for further details
+# man fvwm for more about modules and/or virtual desktops
+#
+
+# erases previous settings
+DestroyModuleConfig FvwmBacker: *
+# sets backdrop to the blue-gray grad
+*FvwmBacker: Command Colorset 1
+*FvwmBacker: RetainPixmap
+
+#
+# FvwmBacker config for FvwmButtons
+#
+
+DestroyModuleConfig FvwmBacker: *	
+*FvwmBacker: RetainPixmap
+*FvwmBacker: Command (Desk 0) Colorset 10  	# sets blue-gray
+*FvwmBacker: Command (Desk 1) Colorset 11  	# sets red-gray
+*FvwmBacker: Command (Desk 2) Colorset 12  	# sets green to gray
+*FvwmBacker: Command (Desk 3) Colorset 13  	# sets yellow to gray
+
+#
+# Another module, FvwmBanner popus up a startup banner. This displays the
+# FVWM logo with the "click ANYWHERE for a menu" message.
+#
+
+DestroyModuleConfig FvwmBanner: *
+# means no titlebar, icons, borders...
+*FvwmBanner: NoDecor
+# display the image defined earlier
+*FvwmBanner: PixMap fvwm-welcome.png
+# and do so for six seconds
+*FvwmBanner: Timeout 6 
+
+#
+# FVWM supports functions. This is a simple one whoch launches an
+# xterm scrolling a helpfile. We'll use it in the menu section  later in the file
+#
+DestroyFunc FuncGettingStarted
+AddToFunc FuncGettingStarted
++ I Exec exec xterm -T "Getting Started" -bg navy -fg white -e less $[helpfile]
+
+#
+# StartFunction is a special function. It's user definable and gets
+# called when FVWM starts up. It's a good place to start any modules,
+# gkrellms, desklets, torsmos or whatever apps and/or modules should be
+# running at startup.
+#
+# We just have the two modules we just configured:
+#
+
+DestroyFunc StartFunction
+AddToFunc StartFunction
++ I Module FvwmBacker
++ I Module FvwmBanner
+
+#
+# FvwmScript-StartMsg.  Do we run this or not?
+Test (!R $[FVWM_USERDIR]/.noshow) AddToFunc StartFunction I \
+Module FvwmScript FvwmScript-StartMsg
+
+#
+# Complex Functions for mouse-bindings above...
+#
+
+#
+# This function will Iconfify or deiconfy a window depending on whether
+# the window clicked on is an icon or not.
+DestroyFunc FuncIconifyDeIconify
+AddToFunc   FuncIconifyDeIconify
++ C ThisWindow (!Iconic) Iconify
++ D ThisWindow (Iconic) Iconify
+
+#
+# Maximises the window to full screen.  This also has the effect of
+# toggling the window back to its original size if called again.
+#
+DestroyFunc FuncMaximiseFullScreen
+AddToFunc   FuncMaximiseFullScreen
++ I Maximize 100 100
+
+#
+# Raises and resizes a window immediately
+#
+DestroyFunc FuncRaiseResize
+AddToFunc FuncRaiseResize
++ I Raise
++ I Resize
+
+#
+# Invokes a menu of options applicable to the specific window.
+#
+DestroyFunc FuncWindowOpsOrClose
+AddToFunc FuncWindowOpsOrClose
++ H Menu FvwmMenuWindowOps
++ C Menu FvwmMenuWindowOps
++ D Close
+
+#
+# If a user clicks and holds a button in a titlebar, the window is
+# scheduled to move.  If a user clicks and moves the window, that moves
+# the window too. A Single click in the window, raises and lowers it. A
+# double-click toggles the shading.
+#
+
+DestroyFunc FuncMoveWindowShade
+AddToFunc   FuncMoveWindowShade
++ H Move
++ M Move
++ C RaiseLower
++ D WindowShade toggle
+
+#
+# A helper function to launch man pages repeatedly.
+# 
+DestroyFunc  FuncViewManPage
+AddToFunc FuncViewManPage
++ I Exec exec $[xtermapp] -g 80x40 -fn 7x14 -fb 7x14bold \
+              -n "Manual Page - $0" -T "Manual Page - $0" -e man "$0"
+
+
+#
+# This defines the menu you get when you click on the background. each
+# of the "+" lines is a menu item of the form:
+#
+#       '&menu-text'    Command To Execute If Clicked
+#
+# The char following any '&' char will be underlined and used as a
+# hotkey for that choice.
+# 
+
+DestroyMenu MenuFvwmRoot
+AddToMenu MenuFvwmRoot 'Main Menu' Title
++ "&Shells" Popup FvwmShellMenu
++ "&Editors" Popup FvwmEditorsMenu
++ "&Internet" Popup FvwmInternetMenu
++ "&Graphics" Popup FvwmGraphicsMenu
++ "&Multimedia" Popup FvwmMultiMediaMenu
++ "&File Management" Popup FvwmFileManMenu
++ "" Nop
++ "&Window Operations" Popup FvwmMenuWindowOps
++ "&Modules" Popup FvwmModulesMenu
++ "&Help" Popup FvwmHelpMenu
++ "&Getting Started" Function FuncGettingStarted
++ "" Nop
++ "E&xit Fvwm" Popup FvwmExitFvwmMenu
+
+#
+# These menus try and be intelligent with what's installed -- if it
+# comes across some (not unreasonable) assumed apps, they'll appear in
+# the menus.
+#
+
+#
+# FvwmShellMenu
+#
+DestroyMenu FvwmShellMenu
+AddToMenu   FvwmShellMenu "Shells"  Title
+Test (x xterm)  + "Xterm" Exec exec xterm
+Test (x rxvt)   + "Rxvt"  Exec exec rxvt
+Test (x mrxvt)  + "MRxvt" Exec exec mrxvt
+Test (x aterm)  + "Aterm" Exec exec aterm
+
+#
+# FvwmEditorsMenu
+# 
+DestroyMenu FvwmEditorsMenu
+AddToMenu   FvwmEditorsMenu  "Editors" Title
+Test (x vim)    + "Vim (console)"   Exec exec xterm -e vim
+Test (x gvim)   + "GVim"            Exec exec gvim
+Test (x gedit)  + "GEdit"           Exec exec gedit
+Test (x kwrite) + "Kwrite"          Exec exec kwrite
+Test (x kate)   + "Kate"            Exec exec kate
+Test (x emacs)  + "Emacs"           Exec exec emacs
+Test (x xemacs) + "XEmacs"          Exec exec xemacs
+Test (x nedit)  + "Nedit"           Exec exec nedit
+Test (x scite)  + "Scite"           Exec exec scite
+Test (x soffice) + "OpenOffice"     Exec exec soffice
+Test (x openoffice) + "OpenOffice"  Exec exec openoffice
+Test (x abiword)    + "Abiword"     Exec exec abiword
+Test (x lyx)        + "Lyx"         Exec exec lyx
+
+
+#
+# FvwmInternetMenu
+#
+DestroyMenu FvwmInternetMenu
+AddToMenu   FvwmInternetMenu "Internet" Title
+Test (x firebird)   + "Firebird"    Exec exec firebird
+Test (x firefox)    + "Firefox"     Exec exec firefox
+Test (x mozilla)    + "Mozilla"     Exec exec mozilla
+Test (x links2)     + "Links2"      Exec exec links2 -g
+Test (x epiphany)   + "Epiphany"    Exec exec epiphany
+Test (x elinks)     + "Elinks (xterm)"  Exec exec xterm -e elinks
+Test (x links)      + "Links (xterm)"   Exec exec xterm -e links
+Test (x lynx)       + "Lynx (xterm)"    Exec exec xterm -e lynx
++ "" Nop
+Test (x thunderbird) + "Thunderbird"  Exec exec thunderbird
+Test (x sylpheed)    + "Sylpheed"     Exec exec sylpheed
+Test (x sylpheed-claws) + "Sylpheed-claws" Exec exec sylpheed-claws
+Test (x pine)           + "Pine (xterm)"   Exec exec xterm -e pine
+Test (x mutt)           + "Mutt (xterm)"   Exec exec xterm -e mutt
+Test (x elm)            + "Elm (xterm)"    Exec exec xterm -e elm
+Test (x cone)           + "Cone (xterm)"   Exec exec xterm -e cone
+
+#
+# FvwmGraphisMenu
+#
+
+DestroyMenu FvwmGraphicsMenu
+AddToMenu   FvwmGraphicsMenu "Graphics" Title
+Test (x dia)    + "Dia"       Exec exec dia
+Test (x gimp)   + "The GIMP"  Exec exec gimp
+Test (x xfig)   + "xfig"      Exec exec xfig
+Test (x sodipodi) + "Sodipodi"  Exec exec sodipodi
+Test (x sketch) + "sketch"    Exec exec sketch
+Test (x xv)     + "xv"        Exec exec xv
+
+#
+# FvwmMultiMediaMenu
+#
+
+DestroyMenu FvwmMultiMediaMenu
+AddToMenu   FvwmMultiMediaMenu "Multimedia" Title
+Test (x xmms)   + "Xmms"    Exec exec xmms
+Test (x beep-media-player)    + "Beep Media Player" \
+exec exec beep-media-player 
+Test (x xmcd)   + "Xmcd"    Exec exec xmcd
+Test (x gmpc)   + "gmpc"    Exec exec gmpc
+Test (x timidity)   + "Timidity"  Exec exec timidity
+
+#
+# FvwmFileManMenu
+#
+
+DestroyMenu FvwmFileManMenu
+AddToMenu   FvwmFileManMenu  "File Management" Title
+Test (x rox) + "Rox Filer"  Exec exec rox
+Test (x xfm) + "xfm"        Exec exec xfm
+Test (x nautilus) + "Nautilus" Exec exec nautilus --no-desktop
+Test (x mc)       + "Midnight Commander"  Exec exec xterm -T "mc" -e mc
+
+#
+# FvwmModulesMenu
+#
+# Note that we don't need to test for the existence of these, they're
+# part of Fvwm and hence guaranteed to be there.  Note that some of the
+# modules here will load on the assumption we've created (and hence fvwm
+# has read) the module configurations for them.
+#
+DestroyMenu FvwmModulesMenu
+AddToMenu   FvwmModulesMenu "Fvwm Modules" Title
++ "Fvwm&Auto"    Module FvwmAuto
++ "Fvwm&Banner"  Module FvwmBanner
++ "Fvwm&Console" Module FvwmConsole
++ "Fvwm&Event"   Module FvwmEvent
++ "Fvwm&Ident"   Module FvwmIdent
++ "Fvwm&Proxy"   Module FvwmProxy
+
+#
+# FvwmHelpMenu -- hmm, so we stole this from fvwm-themes... :)
+#
+DestroyMenu FvwmHelpMenu
+AddToMenu   FvwmHelpMenu
++ "&Fvwm"               FuncViewManPage fvwm
++ "Fvwm&Animate"        FuncViewManPage FvwmAnimate
++ "FvwmA&uto"           FuncViewManPage FvwmAuto
++ "Fvwm&Backer"         FuncViewManPage FvwmBacker
++ "FvwmB&anner"         FuncViewManPage FvwmBanner
++ "FvwmB&uttons"        FuncViewManPage FvwmButtons
++ "Fvwm&Command"        FuncViewManPage FvwmCommand
++ "FvwmC&onsole"        FuncViewManPage FvwmConsole
++ "FvwmConsoleC.pl"     FuncViewManPage FvwmConsoleC.pl
++ "FvwmCpp"             FuncViewManPage FvwmCpp
++ "FvwmDebug"           FuncViewManPage FvwmDebug
++ "FvwmDragWell"        FuncViewManPage FvwmDragWell
++ "FvwmEvent"           FuncViewManPage FvwmEvent
++ "FvwmForm"            FuncViewManPage FvwmForm
++ "FvwmGtk"             FuncViewManPage FvwmGtk
++ "FvwmGtkDebug"        FuncViewManPage FvwmGtkDebug
++ "FvwmIconBox"         FuncViewManPage FvwmIconBox
++ "FvwmIconMan"         FuncViewManPage FvwmIconMan
++ "FvwmIdent"           FuncViewManPage FvwmIdent
++ "FvwmM4"              FuncViewManPage FvwmM4
++ "FvwmPager"           FuncViewManPage FvwmPager
++ "FvwmPerl"            FuncViewManPage FvwmPerl
++ "FvwmProxy"           FuncViewManPage FvwmProxy
++ "FvwmRearrange"       FuncViewManPage FvwmRearrange
++ "FvwmSave"            FuncViewManPage FvwmSave
++ "FvwmSaveDesk"        FuncViewManPage FvwmSaveDesk
++ "FvwmScript"          FuncViewManPage FvwmScript
++ "FvwmScroll"          FuncViewManPage FvwmScroll
++ "FvwmTaskBar"         FuncViewManPage FvwmTaskBar
++ "FvwmTheme"           FuncViewManPage FvwmTheme
++ "FvwmWharf"           FuncViewManPage FvwmWharf
++ "FvwmWinList"         FuncViewManPage FvwmWinList
++ "FvwmWindowMenu"      FuncViewManPage FvwmWindowMenu
++ "" Nop
++ "fvwm-config"         FuncViewManPage fvwm-config
++ "fvwm-perllib"        FuncViewManPage fvwm-perllib
++ "fvwm-root"           FuncViewManPage fvwm-root
++ "fvwm-bug"            FuncViewManPage fvwm-bug
++ "fvwm-convert-2.2"    FuncViewManPage fvwm-convert-2.2
++ "fvwm-convert-2.4"    FuncViewManPage fvwm-convert-2.4
++ "" Nop
++ "fvwm-menu-desktop"   FuncViewManPage fvwm-menu-desktop
++ "fvwm-menu-directory" FuncViewManPage fvwm-menu-directory
++ "fvwm-menu-headlines" FuncViewManPage fvwm-menu-headlines
++ "fvwm-menu-xlock"     FuncViewManPage fvwm-menu-xlock
+
+#
+# WindowOps Menu...
+#
+
+DestroyMenu "FvwmMenuWindowOps"
+AddToMenu "FvwmMenuWindowOps" "WindowOps" Title
++              "&Move" Pick Move 
++              "&Resize" Pick Resize 
++              "R&aise" Raise
++              "&Lower" Lower
++              "(De)&Iconify" Iconify
++              "(Un)&Stick" Stick
++              "(Un)Ma&ximize" Function FuncFvwmMaximizeFullScreen
++              "" Nop
++              "Ide&ntify" Module FvwmIdent
++              "" Nop
++              "&Close"  Close
++              "&Delete" Delete 
++              "D&estroy" Destroy
++              "" Nop
++              "Refres&h Screen" Refresh
+
+#
+# FvwmExitFvwmMenu
+#
+DestroyMenu FvwmExitFvwmMenu
+AddToMenu   FvwmExitFvwmMenu
++ "&Restart" Restart 
++ "&Quit"    Module FvwmScript FvwmScript-ConfirmQuit
+
+#
+# The helpful stuff...
+#
+DestroyFunc FuncGettingStarted
+AddToFunc FuncGettingStarted
++ I Exec exec $[xtermapp] -T "Getting Started" -e less $[helpfile] 
+
+#
+# Irrespective of what was selected, try and read the files anyway...
+#
+Read $[FVWM_USERDIR]/ConfigFvwmIdent
+Read $[FVWM_USERDIR]/ConfigFvwmButtons
+Read $[FVWM_USERDIR]/ConfigFvwmIconMan
+
+#
+# Footnotes
+#
+# [1] http://fvwm.lair.be/viewtopic.php?t=273 

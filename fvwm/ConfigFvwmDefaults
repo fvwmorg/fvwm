@@ -1,216 +1,390 @@
-# This file gets installed in the "datadir" during fvwm
-# installation.  Do not remove or change this file.
+# Welcome to FVWM.
 #
-#  Created on 21/Mar/1999 by DanEspen (dje):
-#  - FvwmDefaults file.  Contains fvwm defaults, and enough to help out
-#  the new user with no configuration file.
-#  This picks up from where the builtin table in fvwm.c SetRCDefaults ends.
+# This is the default configuration file for FVWM. This is the file to edit
+# if you want to change how FVWM works.  As config files go this one is,
+# by design ultra-minimal.  We hope you'll replace it with something more
+# imaginative.
+#
+# For some ideas on how to do that, the "Getting Started" menu option gives
+# some useful resources. Recommended are:
+#
+#       The Fvwm Man Page            (man fvwm)
+#       The Fvwm Modules Manuals     (man -k Fvwm)
+#       The Fvwm Home Page           (http://fvwm.org)
+#       The Fvwm Forum               (http://fvwm.lair.be)
+#       The Fvwm Wiki                (http://www.fvwmwiki.org)
+#
+# As a general resouce, some guides are available, most noteworthy of
+# which are these:
+#
+#   "A Beginner's Guide to Fvwm" (http://www.zensites.net/fvwm/guide/)
+#   "Tutorials"           (http://www.fvwmwiki.org/cgi/moin.cgi/Tutorials)
+#   "Config From Scratch" (http://fvwm.lair.be/viewtopic.php?t=188)
+#   
+# Meanwhile, we'll try and make this file as helpful as possible. We'll start
+# by defining some constants.
+#
+# The SetEnv command sets variables that can be accessed later in the
+# configuration script. The variables are inserted into the environment, and
+# can be accessed by processes initiated by fvwm
+#
+# Environment variables can be accessed using the $[variable-name] syntax
+# eg. $[HOME] below
+# 
 
-# TA:  2012-01-02:  Set the default cursor style to a dot, if FVWM is busy
-# in a PipeRead or Read operation.
-BusyCursor Read True
-CursorStyle Wait Dot
+##SetEnv resource_dir $[HOME]/projects/fvwm/files
+SetEnv helpfile /usr/local/share/fvwm/helpfile
+##SetEnv banner fvwm-welcome.png
 
-# Set at least 2 root keys to bring up the builtin menu:
-Silent Key Help R A Popup MenuFvwmRoot
-Key F1 R A Popup MenuFvwmRoot
+#
+# The ImagePath is a colon-separated list of directories Fvwm will
+# search for to load any images you might need (such as images for any
+# icons, pixmaps, etc).  It's similar to other environment variables
+# such as $PATH.  The "+" at the end is a continuator, so that one can
+# continue to define another line and have it appended all as one long
+# directory chain that Fvwm will search in.
+#
 
-# Ctrl-Alt-Escape for aborting Wait pause and ModuleSynchronous command
-Key Escape A MC EscapeFunc
+ImagePath .:/usr/local/share/fvwm/:/usr/share/fvwm:$[HOME]/.fvwm/
 
-# Needed by the builtin WindowList command, this should match the manpage
-AddToFunc WindowListFunc
-+ I Iconify off
-+ I FlipFocus
+#
+# Colorsets. Only two used. we might want a couple more for the forms
+# one solid color and one grad - nothing to greedy
+#
+# We have to be careful that the Xserver doesn't get greedy on using up the
+# entire colour-pallet.  Fvwm versions >=2.3 handle this automatically, but
+# people on a low-end spec machine might have issues of colour-grabbing.
+# Note that in 99.9% of cases, this probably won't happen.
+#
+
+#
+# Colorsets (see "man fvwmtheme" for the curious) are the means by which one
+# specifies the color of the window.  There's lots of things you can do with
+# them, and you can define as many colorsets as you like. We've defined two --
+# one that's activated when a window has focus, and one that's activated when
+# a window has no focus.  
+# 
+# Note that in the colorset declarations you don't specify which colorset
+# does which job -- that's done later on when we declare the "Style" of
+# windows. 
+Colorset 1 BGradient 256 blue gray, fg black
+Colorset 2 bg DarkSlateBlue
+
+#
+# styles - the font shadow may be a stretch, but it adds so much for
+# so little effort, I couldn't resist
+#
+# The titlebars just pick up a basic blue.
+# I've defined a darker one for the focus window. Fvwm picks yellow as a
+# good contrast colour, and that in combination with the darker colour is
+# enough to pick out the active window
+#
+
+#
+# A Default Decor. Decors extend and ultimately define all the phyiscal
+# attributes a window can take on. That is, they help define how the
+# window border should look, the buttons a window should have and their
+# placement. Usually defining one decor is sufficient for all windows,
+# so that they all look the same.
+#
+# In this decor (as is common in most setups) four buttons have been
+# defined (although upto ten can be displayed).  The left most button
+# shows a menu of useful options that can be applied to that menu, the
+# button closest to that on the right, iconifies the window, the next
+# maximises it, while the last button closes the window.  Graphically,
+# it looks something like this:
+#
+# +------------------------------------------------------------------+
+# |-|                           Title                          |v|^|x|
+# |------------------------------------------------------------------|
+# 
+
+AddToDecor   DefaultDecor
++ BorderStyle Simple
++ TitleStyle  -- Raised
++ ButtonStyle All -- Raised
++ AddButtonStyle 1 Vector 5 25x40@1 25x60@1 75x60@0 75x40@0 25x40@1
++ AddButtonStyle 4 Vector 4 50x25@1 75x75@0 25x75@0 50x25@1
++ AddButtonStyle 6 Vector 4 50x75@1 25x25@1 75x25@1 50x75@0
++ AddButtonStyle 2 Vector 17 20x20@1 30x20@1 50x40@1 70x20@1 80x20@1 \
+		   80x30@0 60x50@0 80x70@1 80x80@0 70x80@0 50x60@0 30x80@0 \
+		   20x80@0 20x70@0 40x50@1 20x30@0 20x20@1
++ ButtonStyle 1 - Clear MWMDecorMenu
++ ButtonStyle 2 - Clear MWMDecorMax
++ ButtonStyle 4 - Clear MWMDecorMin
+
+#
+# Style lines allows us to define attributes of a window, and there are
+# *hundreds* of available options.  The format of a style line looks like
+# this:
+#
+# Style <window_(name|class|resource)> <options>
+#
+# A "*" as the first parameter to Fvwm indicates that the style line defined
+# should act on ALL windows mapped in Fvwm.  Matches on windows are performed
+# first by Fvwm looking at the window's title -- for most people this is
+# usually sufficient [1], but it might be worth remembering that Fvwm then
+# goes on to match on a window's Class, and then a window's Resource name.  If
+# you're unsure what these mean, don't worry.
+
+Style * Font "Shadow=2 sw:xft:ArialBlack"
+Style * Colorset 1
+Style * HilightColorset 2
+
+#
+# General Style lines.  
+#
+
+
+# There are lots of placement policies -- these define where a window
+# should start up on a page, and which pattern to follow.  In this case,
+# the windows will fill up left to right, top to bottom and once that's
+# done will overlap each other, tiling as they go.
+Style * TileCascadePlacement
+
+# There's hundreds of focusing options -- we're using sloppyfocus here
+# which works by not having to click on a window to focus it.
+Style * SloppyFocus
+
+# These options ensure all windows get titles, borders and handles,
+# unless we specifically negate them.
+Style * Title, Handles, Borders
+
+# FvwmBorder creates a slightly rounded border.  FirmBorder ensure's it
+# stays as such and is not pressable.
+Style * FvwmBorder, FirmBorder
+
+#  The width of the border/handles.  Four is about right.  Not too
+#  thick and clunky.
+Style * BorderWidth 4, HandleWidth 4
+
+# This line ensures that Xterms, and other line-oriented windows
+# maximize gracefully.
+Style * ResizeHintOverride
+
+# Important this -- tells all windows to use the decor we defined above.
+Style * UseDecor DefaultDecor
+
+# Specifies explicitly which buttons are to be defined in the titlebar.
+Style * Button 1, Button 6, Button 4, Button 2
+
+# Don't place the window in the last known position.
+Style * NoPPosition
+
+# Transient windows are things like dialogue boxes.  We want these to
+# have decorations like any other window.
+Style * DecorateTransient, ResizeOpaque
+
+# 
+# Application-specific style lines
+#
+Style fvwm* Sticky, !Title
+Style FvwmForm-Setup PositionPlacement center
+Style FvwmForm-QuitVerify PositionPlacement center
+
+#
+# Mouse bindings (if only so the Decor can be made visible).
+# "Button Press" - is the number of the mouse button clicked.  "0"
+#                  indicates any button.
+# "Context"      - is where the button was clicked, be it Window, Frame,
+#                  titlebar, etc.
+# "Modifier"     - Whether a modifier key was held.  "A" means Any.
+# "Command"      - What action to take.
+#
+# The following might help:
+# ------------------------------------------------------------------------
+# Contexts:
+#     R = Root Window                 rrrrrrrrrrrrrrrrrrrrrr
+#     W = Application Window          rIrrrrFSSSSSSSSSFrrrrr
+#     F = Frame Corners               rrrrrrS13TTTT642Srrrrr
+#     S = Frame Sides                 rIrrrrSwwwwwwwwwSrrrrr
+#     T = Title Bar                   rrrrrrSwwwwwwwwwSrrrrr
+#     I = Icon                        rIrrrrFSSSSSSSSSFrrrrr
+#                                     rrrrrrrrrrrrrrrrrrrrrr
+# Numbers are buttons: 1 3 5 7 9   0 8 6 4 2
+#
+# Modifiers: (A)ny, (C)ontrol, (S)hift, (M)eta, (N)othing
+# -----------------------------------------------------------------------
+#
+# The format of the mouse command is:
+#
+# Mouse button Context Modifier       Command
+#       press  
+#
+Mouse       0	    1	    A	      FuncWindowOpsOrClose
+Mouse       0	    2	    A	      Close
+Mouse       0	    6	    A	      FuncIconifyDeIconify
+Mouse       0	    4	    A	      FuncMaximiseFullScreen
+Mouse       1     I     A       FuncIconifyDeIconify
+Mouse       1	    SF    A	      FuncRaiseResize
+Mouse       1	    T	    A	      FuncMoveWindowShade
+
+#
+# Complex Functions for mouse-bindings above...
+#
+
+#
+# This function will Iconfify or deiconfy a window depending on whether
+# the window clicked on is an icon or not.
+DestroyFunc FuncIconifyDeIconify
+AddToFunc   FuncIconifyDeIconify
++ C ThisWindow (!Iconic) Iconify
++ D ThisWindow (Iconic) Iconify
+
+#
+# Maximises the window to full screen.  This also has the effect of
+# toggling the window back to its original size if called again.
+#
+DestroyFunc FuncMaximiseFullScreen
+AddToFunc   FuncMaximiseFullScreen
++ I Maximize 100 100
+
+#
+# Raises and resizes a window immediately
+#
+DestroyFunc FuncRaiseResize
+AddToFunc FuncRaiseResize
 + I Raise
-+ I WarpToWindow !raise 5p 5p
-
-# Needed by the ewmh support
-AddToFunc EWMHActivateWindowFunc
-+ I Iconify off
-+ I Focus
-+ I Raise
-
-# Also in the fvwm man page
-AddToFunc UrgencyFunc
-+ I Iconify off
-+ I FlipFocus
-+ I Raise
-+ I WarpToWindow 5p 5p
-AddToFunc UrgencyDoneFunc I Nop
-
-# Needed by modules which use session management
-# FSMExecFuncWithSessionManagment "module_sm_env" "action" "orig_sm_env"
-AddToFunc FSMExecFuncWithSessionManagment
-+ I Setenv SESSION_MANAGER $0
-+ I $1
-+ I Setenv SESSION_MANAGER $2
-
-# Default styles
-Style * LowerTransient, RaiseTransient, StackTransientParent
-Style * TileCascadePlacement, Title, MouseFocus
-Style * UseIconPosition, RightTitleRotatedCW, UseTitleDecorRotation
-Style * EWMHPlacementUseDynamicWorkingArea, EWMHMaximizeUseDynamicWorkingArea
-# Default styles for tear off menus
-Style fvwm_menu NoPPosition, NeverFocus, NoLenience, \
-	WindowListSkip, CirculateSkip
-
-# Alt-Tab:
-Key Tab A M WindowList Root c c NoDeskSort
-
-# Basic Mouse controls:
-Mouse 1 T   A FuncFvwmRaiseLowerX Move
-Mouse 1 FS  A FuncFvwmRaiseLowerX Resize
-Mouse 2 FST A FuncFvwmRaiseLowerX Move
-AddToFunc FuncFvwmRaiseLowerX
-+ I Raise
-+ M $0
-+ D Lower
-
-######################
-# BEGIN MENU BINDINGS
-#
-#
-# hard coded defaults that can not be deleted
-#Key Escape		M A MenuClose
-#Key Return		M A MenuSelectItem
-#Key Left		M A MenuCursorLeft
-#Key Right		M A MenuCursorRight
-#Key Up			M A MenuMoveCursor -1
-#Key Down		M A MenuMoveCursor 1
-#Mouse 1		M A MenuSelectItem
-
-# Normal bindings
-Silent Key Delete	M A MenuClose
-Silent Key KP_Separator	M A MenuClose
-Silent Key KP_Decimal	M A MenuClose
-
-Silent Key Space	M A MenuSelectItem
-Silent Key KP_Enter	M A MenuSelectItem
-
-#  move to last entry of menu ('More...' if this exists) and
-# try to enter the menu.  Otherwise try to enter the current
-# submenu
-Silent Key Insert	M A MenuEnterContinuation
-Silent Key KP_Insert	M A MenuEnterContinuation
-Silent Key KP_0		M A MenuEnterContinuation
-
-Silent Key KP_Left	M A MenuCursorLeft
-Silent Key KP_4		M A MenuCursorLeft
-
-Silent Key KP_Right	M A MenuCursorRight
-Silent Key KP_6		M A MenuCursorRight
-
-#back
-Silent Key b		M A MenuLeaveSubmenu
-#forward
-Silent Key f		M A MenuEnterSubmenu
-
-Silent Key Page_Up	M A MenuMoveCursor -5
-Silent Key KP_Prior	M A MenuMoveCursor -5
-Silent Key KP_9		M A MenuMoveCursor -5
-
-Silent Key Page_Down	M A MenuMoveCursor +5
-Silent Key KP_Next	M A MenuMoveCursor +5
-Silent Key KP_3		M A MenuMoveCursor +5
-
-# Up
-Silent Key KP_Up	M A MenuMoveCursor -1
-Silent Key KP_8		M A MenuMoveCursor -1
-#prior
-Silent Key p		M A MenuMoveCursor -1
-
-Silent Key Up		M S MenuMoveCursor 0 0
-Silent Key KP_Up	M S MenuMoveCursor 0 0
-Silent Key KP_8		M S MenuMoveCursor 0 0
-#prior
-Silent Key p		M S MenuMoveCursor 0 0
-
-Silent Key Up		M C MenuMoveCursor -5
-Silent Key KP_Up	M C MenuMoveCursor -5
-Silent Key KP_8		M C MenuMoveCursor -5
-#prior
-Silent Key p		M C MenuMoveCursor -5
-
-Silent Key Up		M M MenuMoveCursor -1s
-Silent Key KP_Up	M M MenuMoveCursor -1s
-Silent Key KP_8		M M MenuMoveCursor -1s
-#prior
-Silent Key p		M M MenuMoveCursor -1s
-
-# Down
-Silent Key KP_Down	M A MenuMoveCursor 1
-Silent Key KP_2		M A MenuMoveCursor 1
-#next
-Silent Key n		M A MenuMoveCursor 1
-
-Silent Key Down		M S MenuMoveCursor 0 -1
-Silent Key KP_Down	M S MenuMoveCursor 0 -1
-Silent Key KP_2		M S MenuMoveCursor 0 -1
-#next
-Silent Key n		M S MenuMoveCursor 0 -1
-
-Silent Key Down		M C MenuMoveCursor +5
-Silent Key KP_Down	M C MenuMoveCursor +5
-Silent Key KP_2		M C MenuMoveCursor +5
-#next
-Silent Key n		M C MenuMoveCursor +5
-
-Silent Key Down		M M MenuMoveCursor +1s
-Silent Key KP_Down	M M MenuMoveCursor +1s
-Silent Key KP_2		M M MenuMoveCursor +1s
-#next
-Silent Key n		M M MenuMoveCursor +1s
-
-Silent Key Tab		M A MenuMoveCursor +1
-Silent Key Tab		M C MenuMoveCursor +1s
-Silent Key Tab		M MC MenuMoveCursor +5
-Silent Key Tab		M S MenuMoveCursor -1
-Silent Key Tab		M SM MenuMoveCursor -1
-Silent Key Tab		M SC MenuMoveCursor -1s
-Silent Key Tab		M SMC MenuMoveCursor -5
-
-Silent Key Home		M A MenuMoveCursor 0 0
-Silent Key KP_Home	M A MenuMoveCursor 0 0
-Silent Key KP_7		M A MenuMoveCursor 0 0
-
-Silent Key End		M A MenuMoveCursor 0 -1
-Silent Key KP_End	M A MenuMoveCursor 0 -1
-Silent Key KP_1		M A MenuMoveCursor 0 -1
-
-Silent Key BackSpace	M A MenuTearOff
-
-Silent Key KP_Add	M A MenuScroll 1
-Silent Key KP_Subtract	M A MenuScroll -1
-
-# vi bindings
-Silent Key h		M A MenuCursorLeft
-Silent Key l		M A MenuCursorRight
-Silent Key k		M A MenuMoveCursor -1
-Silent Key k		M C MenuMoveCursor -5
-Silent Key j		M A MenuMoveCursor 1
-Silent Key j		M C MenuMoveCursor 5
-
-# emacs bindings
-Silent Key a		M C MenuMoveCursor 0 0
-Silent Key e		M C MenuMoveCursor 0 -1
-Silent Key b		M C MenuMoveCursor -1
-Silent Key f		M C MenuMoveCursor +1
-Silent Key Left		M C MenuMoveCursor -1s
-Silent Key Right	M C MenuMoveCursor +1s
-Silent Key g		M C MenuClose
-
-
-# Mouse bindings
-Mouse 0 		MI A MenuSelectItem
-Mouse 0	     		MTS A MenuLeaveSubmenu
-Silent Mouse 4		MIT A MenuScroll -1
-Silent Mouse 5		MIT A MenuScroll +1
-
-# NB: Only on title -- changes syntax for remapping the TearOff functionality
-Mouse 2			MT A MenuTearOff
++ I Resize
 
 #
+# Invokes a menu of options applicable to the specific window.
 #
-# END MENU BINDINGS
-####################
+DestroyFunc FuncWindowOpsOrClose
+AddToFunc FuncWindowOpsOrClose
++ H Menu FvwmMenuWindowOps
++ C Menu FvwmMenuWindowOps
++ D Close
+
+#
+# If a user clicks and holds a button in a titlebar, the window is
+# scheduled to move.  
+# If a user clicks and moves the window, that moves the window too.
+# A Single click in the window, raises and lowers it.
+# A double-click toggles the shading.
+#
+DestroyFunc FuncMoveWindowShade
+AddToFunc   FuncMoveWindowShade
++ H Move
++ M Move
++ C RaiseLower
++ D WindowShade toggle
+
+#
+# Menus have thier own style command. this sets the menus to use the same
+# colour gradient as used by the desktop
+# 
+Menustyle *  Font "Shadow=2 sw:xft:ArialBlack"
+Menustyle *  Menucolorset 1
+
+#
+# Fvwm farms out some large chunks of functionality to modules that can
+# be included or not as it suits the user. Module configuration is done as
+# part of the FVWM config file, usually begining with
+#
+#       DestroyModuleConfig ModuleName: *
+#
+# and then a number of lines like this:
+#
+#       *ModuleName: Option Value
+#
+# One such module is FvwmBacker. FvwmBacker manages transitions
+# between desks and pages for FVWM's virtual desktops. In this case,
+# we only have a single desktop, so all we're using FvwmBacker for is to
+# set the background. This requires minimal configuration.
+#
+# man FvwmBacker for further details
+# man fvwm for more about modules and/or virtual desktops
+#
+DestroyModuleConfig FvwmBacker: *       # erases previous settings
+*FvwmBacker: Command Colorset 1         # sets backdrop to the blue-gray grad
+
+#
+# Another module, FvwmBanner popus up a startup banner. This displays the
+# FVWM logo with the "click ANYWHERE for a menu" message.
+#
+DestroyModuleConfig FvwmBanner: *
+*FvwmBanner: NoDecor                    # means no titlebar, icons, borders...
+*FvwmBanner: PixMap fvwm-welcome.png    
+# display the image defined earlier
+*FvwmBanner: Timeout 3                  # and do so for six seconds
+
+#
+# FVWM supports functions. This is a simple one whoch launches an
+# xterm scrolling a helpfile. We'll use it in the menu section  later in the file
+#
+DestroyFunc FuncGettingStarted
+AddToFunc FuncGettingStarted
++ I Exec exec xterm -T "Getting Started" -bg navy -fg white -e less $[helpfile]
+
+#
+# StartFunction is a special function. It's user definable and gets
+# called when FVWM starts up. It's a good place to start any modules,
+# gkrellms, desklets, torsmos or whatever apps and/or modules should be
+# running at startup.
+#
+# We just have the two modules we just configured:
+#
+
+DestroyFunc StartFunction
+AddToFunc StartFunction
++ I Module FvwmBacker
++ I Module FvwmBanner
++ I Module FvwmForm FvwmForm-Setup
+
+#
+# This defines the menu you get when you click on the background.
+# each of the "+" lines is a menu item of the form:
+#
+#       '&menu-text'    Command To Execute If Clicked
+#
+# The char following any '&' char will be underlined and used as a hotkey
+# for that choice.
+# 
+
+DestroyMenu MenuFvwmRoot
+AddToMenu MenuFvwmRoot 'Builtin Menu' Title
++ '&1. Xterm' Exec exec xterm -bg navy -fg white
++ '&2. Getting Started' FuncGettingStarted
++ '&3. Setup Form' Module FvwmForm FvwmForm-Setup
++ '&4. Execute FVWM Commands' Module FvwmConsole
++ '&R. Restart' Restart
++ '&Q. Quit' Quit
+
+#
+# WindowOps Menu...
+#
+
+DestroyMenu "FvwmMenuWindowOps"
+AddToMenu "FvwmMenuWindowOps" "WindowOps" Title
++              "Move" Pick Move 
++              "Resize" Pick Resize 
++              "Raise" Raise
++              "Lower" Lower
++              "(De)Iconify" Iconify
++              "(Un)Stick" Stick
++              "(Un)Maximize" Function FuncFvwmMaximizeFullScreen
++              "" Nop
++              "Identify" Module FvwmIdent
++              "" Nop
++              "Close"  Close
++              "Delete" Delete 
++              "Destroy" Destroy
++              "" Nop
++              "Refresh Screen" Refresh
+
+#
+# The helpful stuff...
+#
+DestroyFunc FuncGettingStarted
+AddToFunc FuncGettingStarted
++ I Exec exec xterm -T "Getting Started" -bg navy -fg white -e less \
+  $[helpfile] 
+
+# Should use FvwmForm-Setup
+#read menu_config
+
+#
+# Footnotes
+#
+# [1] http://fvwm.lair.be/viewtopic.php?t=273 

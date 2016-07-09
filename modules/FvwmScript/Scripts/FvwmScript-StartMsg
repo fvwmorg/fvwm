@@ -1,0 +1,63 @@
+WindowTitle {FvwmScript-StartMsg}
+WindowSize 520 420
+Font "xft:ArialBlack"
+Colorset 1
+
+QuitFunc
+Begin
+	If (GetValue 4) == 1 Then
+    Do {Exec touch $[FVWM_USERDIR]/.noshow}
+	Quit 
+End
+
+
+Widget 1
+Property
+	Position 10 10
+	Size 500 100
+	Type ItemDraw
+	Icon fvwm-banner2.xpm
+End
+
+Widget 2
+Property
+	Position 10 165
+	Size 500 10
+	Type ItemDraw
+	Title {Click the backdrop for a menu.                         Alt+P toggles panel visibility}
+	Flags NoReliefString
+End
+
+Widget 3
+Property
+	Position 10 190
+	Size 500 190
+	Type SwallowExec 
+	Title {InterfaceDocument}
+	SwallowExec {Exec xterm -g 80x10 -bg blue4 -fg white -T InterfaceDocument -e less $[FVWM_USERDIR]/Interface}
+	Value -1
+End
+
+Widget 4
+Property
+	Position 270 390
+	Type CheckBox 
+	Title {Do not show this message again}
+	Flags NoReliefString
+End
+
+Widget 5
+Property
+	Position 10 385
+	Type PushButton 
+	Title {Dismiss}
+	Flags NoReliefString
+Main
+	Case message of
+	SingleClic:
+	Begin
+		Quit
+	End
+End
+
+

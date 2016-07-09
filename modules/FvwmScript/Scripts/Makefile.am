@@ -7,7 +7,7 @@ common_samples = \
 	FvwmScript-Colorset FvwmScript-Date FvwmScript-FileBrowser \
 	FvwmScript-Find FvwmScript-KeyboardSetup FvwmScript-PointerSetup \
 	FvwmScript-Quit FvwmScript-ScreenDump FvwmScript-ScreenSetup \
-	FvwmScript-WidgetDemo fvwm-script-ComExample.pl
+	FvwmScript-WidgetDemo fvwm-script-ComExample.pl FvwmScript-StartMsg
 
 config_DATA = $(common_samples) FvwmScript-ComExample
 

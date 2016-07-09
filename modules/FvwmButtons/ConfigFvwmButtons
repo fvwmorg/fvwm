@@ -1,39 +1,519 @@
-################## FvwmButtons button-bar ################################
-*----------------*----*----*---*-----------*
-*                *biff*clck*   *           *
-*  FvwmIconMan   *----*----* ^ *   Pager   *
-*                *  xload  *   *           *
-*----------------*----*----*---*-----------*
-KillModule FvwmButtons
-DestroyModuleConfig FvwmButtons: *
-*FvwmButtons: Geometry 520x100-1-1
-*FvwmButtons: Back bisque3
-*FvwmButtons: (Frame 2, Padding 2 2, Container(Rows 2 Columns 9 Frame 1 Padding 10 0))
-# Show 5 more desks in a popup panel:
-# Unfortunately, a popup shows the desks 1 to 5, then 0
-*FvwmButtons: (4x2, Frame 2, Swallow "FvwmIconMan" "Module FvwmIconMan")
-*FvwmButtons: (2x2, Frame 0, Container(Rows 2 Columns 2 Frame 0))
-*FvwmButtons: (Frame 2, Swallow(UseOld,NoHints,Respawn) "xbiff" `Exec exec xbiff -bg bisque3`)
-*FvwmButtons: (Frame 3, Swallow(UseOld,NoHints,Respawn) "xclock" `Exec exec xclock -bg bisque3 -fg black -hd black -hl black -padding 0 -update 1`)
-*FvwmButtons: (2x1, Frame 2, Swallow(UseOld,NoHints,Respawn) "xload" `Exec exec xload -bg bisque3 -fg black -update 5 -nolabel`)
-*FvwmButtons: (End)
-# The 8 pixels in -108 are to account for the frames:
-*FvwmButtons: (1x2, Panel(up, indicator, position Root 46 -108p) FvwmPagerSubPanel "Module FvwmPager FvwmPagerSubPanel 1 5")
-*FvwmButtons: (2x2, Frame 2, Swallow(UseOld) "Inline" "Module FvwmPager Inline 0 0")
-*FvwmButtons: (End)
+#
+# We use this variable to control the background color of the xterms
+#
+SetEnv FVWM_TERM_BACK blue4
 
-DestroyModuleConfig Inline: *
-*Inline: Rows 1
-*Inline: Columns 1
-DestroyModuleConfig FvwmPagerSubPanel: *
-*FvwmPagerSubPanel: Rows 5
-*FvwmPagerSubPanel: Columns 1
+#
+# in an ideal world the FvmwButtons change_button dynamic command
+# would support changing colorsets. but it doesn't so I need to 
+# define additional colorsets for the sliders
+#
+Colorset 14 BGradient 256 yellow gray, fg black, fgsh gray75
+Colorset 15 BGradient 256 red4 gray, fg black, fgsh gray75
 
-# To include the panel in a button
-#DestroyModuleConfig SubPanel 
-#*SubPanel: (1x2, Frame 0, Swallow(UseOld) "FvwmPager" "Module FvwmPager 5 1")
-#*SubPanel: (Icon my_lock.xpm, Action Exec xlock)
-#*SubPanel: (Icon my_move.xpm, Action Move)
+#
+# STYLES
+#
+Style FvwmButtons-Panel-* !Borders
+Style FvwmButtons-Panel-* NoIcon
+Style FvwmButtons-Panel-* WindowListSkip
+Style FvwmButtons-Panel-* FixedSize
+Style FvwmButtons-Panel-* StaysOnTop
+Style FvwmButtons-Panel-* FixedUSPosition
+Style FvwmButtons-Panel-* VariablePPosition
 
-# Use this command to start it:
-#Module FvwmButtons
+#
+# Application selectors. These are funcs that determine the "best" available
+# application for a number of categories: calendar, mail client,
+# web browser and file manager. Note that "best" means in the highly subjective
+# opinion of the author. The other two launchers on the panel are hard wired 
+# to "top" and "xterm". As ever, you are encouraged to edit this file,
+# change the applications, and generally tinker, modify and ultimately replace.
+#
+# for each there is a function that sets two environment variables.
+# One, ending in _COMMAND is the command that should be run,
+# the other in _HANGON for a hangon string. 
+#
+# See the FvwmButtons man page for a description of hangon strings.
+# If you want to override the selectors and don't fancy tinkering just yet,
+# you can set these variables in your environment.
+#
+# FIXME: I had to guess about some of the hangons
+#
+DestroyFunc FuncDetectBrowser
+AddToFunc FuncDetectBrowser
++ I Test (X $[FVWM_BROWSER_COMMAND]) Break
++ I Test (X firefox)	SetEnv FVWM_BROWSER_COMMAND firefox
++ I TestRc (Match)	SetEnv FVWM_BROWSER_HANGON '"Gecko"'
++ I TestRc (Match)	Break
++ I Test (X mozilla)	SetEnv FVWM_BROWSER_COMMAND mozilla
++ I TestRc (Match)	SetEnv FVWM_BROWSER_HANGON '"Gecko"'
++ I TestRc (Match)	Break
++ I Test (X dillo)	SetEnv FVWM_BROWSER_COMMAND dillo
++ I TestRc (Match)	SetEnv FVWM_BROWSER_HANGON '"dillo"'
++ I TestRc (Match)	Break
++ I Test (X links2)	SetEnv FVWM_BROWSER_COMMAND links2 
++ I TestRc (Match)	SetEnv FVWM_BROWSER_HANGON '"Links"'
++ I TestRc (Match)	Break
++ I Test (X epiphany)	SetEnv FVWM_BROWSER_COMMAND epiphany 
++ I TestRc (Match)	SetEnv FVWM_BROWSER_HANGON '"epiphany"'
++ I TestRc (Match)	Break
++ I Test (X elinks)     SetEnv FVWM_BROWSER_COMMAND xterm -e elinks
++ I TestRc (Match)	SetEnv FVWM_BROWSER_HANGON '"elinks"'
++ I TestRc (Match)	Break
++ I Test (X links)      SetEnv FVWM_BROWSER_COMMAND xterm -e links
++ I TestRc (Match)	SetEnv FVWM_BROWSER_HANGON '"links"'
++ I TestRc (Match)	Break
++ I Test (X lynx)	SetEnv FVWM_BROWSER_COMMAND xterm -e lynx
++ I TestRc (Match)	SetEnv FVWM_BROWSER_HANGON '"lynx"'
++ I TestRc (Match)	Break
++ I Echo WARNING - No Browser Found!
+
+#
+# after rox I don't have a clue here
+#
+DestroyFunc FuncDetectFiler
+AddToFunc   FuncDetectFiler
++ I Test (X $[FVWM_FILER_COMMAND]) Break
++ I Test (X rox)	SetEnv FVWM_FILER_COMMAND rox
++ I TestRc (Match)	SetEnv FVWM_FILER_HANGON '"ROX-Filer"'
++ I TestRc (Match)	Break
++ I Test (X xfm)	SetEnv FVWM_FILER_COMMAND xfm
++ I TestRc (Match)	SetEnv FVWM_FILER_HANGON '"xfm"'
++ I TestRc (Match)	Break
++ I Test (X gentoo)	SetEnv FVWM_FILER_COMMAND gentoo
++ I TestRc (Match)	SetEnv FVWM_FILER_HANGON '"gentoo"'
++ I TestRc (Match)	Break
++ I Test (X nautilus)	SetEnv FVWM_FILER_COMMAND nautilus --no-desktop
++ I TestRc (Match)	SetEnv FVWM_FILER_HANGON '"nautilus"'
++ I TestRc (Match)	Break
++ I Test (X mc)		SetEnv FVWM_FILER_COMMAND xterm -T "mc" -e mc
++ I TestRc (Match)	SetEnv FVWM_FILER_HANGON '"mc"'
++ I TestRc (Match)	Break
++ I Echo WARNING: No File Manager Found
+
+#
+# xterm is the only terminal on offer. It can still be overridden
+#
+SetEnv FVWM_TERMINAL_COMMAND InvokeTerm
+SetEnv FVWM_TERMINAL_HANGON '"xterm"'
+
+#
+# suggestions welcome
+#
+DestroyFunc FuncDetectCalendar
+AddToFunc   FuncDetectCalendar
++ I Test (X $[FVWM_CALENDAR_COMMAND]) Break
++ I Test (X sunbird)	SetEnv FVWM_CALENDAR_COMMAND sunbird
++ I TestRc (Match)	SetEnv FVWM_CALENDAR_HANGON '"sunbird"'
++ I TestRc (Match)	Break
++ I SetEnv FVWM_CALENDAR_COMMAND Nop
++ I SetEnv FVWM_CALENDAR_HANGON ''
++ I Echo WARNING: No Calendar Found
+
+#
+# mail clients
+#
+DestroyFunc FuncDetectMailer
+AddToFunc   FuncDetectMailer
++ I Test (X $[FVWM_MAILER_COMMAND]) Break
++ I Test (X thunderbird)	SetEnv FVWM_MAILER_COMMAND thunderbird
++ I TestRc (Match)      	SetEnv FVWM_MAILER_HANGON '"thunderbird"'
++ I TestRc (Match)		    Break
++ I Test (X sylpheed)		  SetEnv FVWM_MAILER_COMMAND sylpheed
++ I TestRc (Match)     	  SetEnv FVWM_MAILER_HANGON '"*Sylpheed"'
++ I TestRc (Match)		    Break
++ I Test (X sylpheed-claws)	SetEnv FVWM_MAILER_COMMAND sylpheed-claws
++ I TestRc (Match)     		  SetEnv FVWM_MAILER_HANGON '"*Sylpheed"'
++ I TestRc (Match)		      Break
++ I Test (X pine)		SetEnv FVWM_MAILER_COMMAND "xterm -e pine"
++ I TestRc (Match)     		SetEnv FVWM_MAILER_HANGON '"pine"'
++ I TestRc (Match)		Break
++ I Test (X mutt)		SetEnv FVWM_MAILER_COMMAND "xterm -e mutt"
++ I TestRc (Match)     		SetEnv FVWM_MAILER_HANGON '"mutt"'
++ I TestRc (Match)		Break
++ I Test (X elm)		SetEnv FVWM_MAILER_COMMAND "xterm -e elm"
++ I TestRc (Match)		SetEnv FVWM_MAILER_HANGON '"elm"'
++ I TestRc (Match)		Break
++ I Test (X cone)		SetEnv FVWM_MAILER_COMMAND "xterm -e cone"
++ I TestRc (Match)  SetEnv FVWM_MAILER_HANGON '"cone"'
++ I TestRc (Match)	Break
++ I Test (X mail)		SetEnv FVWM_MAILER_COMMAND "xterm -e mail"
++ I TestRc (Match)  SetEnv FVWM_MAILER_HANGON '"mail"'
++ I TestRc (Match)	Break
++ I Echo WARNING: No Mailer Found
+
+#
+# xterm is the only terminal on offer. It can still be overridden
+#
+SetEnv FVWM_USAGE_COMMAND "xterm -T TOP -e top"
+SetEnv FVWM_USAGE_HANGON '"TOP"'
+
+FuncDetectBrowser
+FuncDetectFiler
+FuncDetectMailer
+FuncDetectCalendar
+
+#
+# Modules
+#
+# The panel is actually four separate FvwmButtons instances
+#
+# -------
+# |     |
+# |     |
+# |Moni-|
+# |tor  |
+# |     |
+# |     |
+# -------------
+# |           |
+# |           |
+# | pager     |--------------                                     -------
+# |           |  launcher   |                                     |quit |
+# |           |             |                                     |     |
+# -----------------------------------------------------------------------
+# |controller |            I C O N    M A N A G E R                     |
+# -----------------------------------------------------------------------
+#
+# The larger part of the pager may be withdraw with "Windows"+P
+# leaving only the controller and icon manager visible.
+#
+# the icon manager has its own config file
+#
+
+#
+# This configures the control strip under the pager
+#
+DestroyModuleConfig FvwmButtons-Panel-Controller: *
+*FvwmButtons-Panel-Controller: 
+*FvwmButtons-Panel-Controller: BoxSize	fixed
+*FvwmButtons-Panel-Controller: Rows	1
+*FvwmButtons-Panel-Controller: Columns	8
+*FvwmButtons-Panel-Controller: ButtonGeometry 20x24
+*FvwmButtons-Panel-Controller: Colorset 1
+*FvwmButtons-Panel-Controller: Font "shadow=1 sw:xft:ArialBlack"
+#
+#                        -----------------------------
+# these are the buttons: |  <  | 1 | 2 | 3 | 4 |  >  |
+#                        -----------------------------
+# The sliders ("<" and ">") have two differnt actions:
+# the focus the pager upon a different desk if the pager is visible
+# or change the desk itself if the rest of the panel is withdrawn
+#
+# The other buttons just change to the numbered desktop
+#
+*FvwmButtons-Panel-Controller: (2x1+0+0,		\
+	Title "<", Colorset 14, 			\
+	Action(Mouse 1) FuncBackSlider,			\
+	Action(Mouse 3) FuncNewDesk -1 0 3		\
+)
+*FvwmButtons-Panel-Controller: (1x1+2+0, Title "0",	\
+	Action FuncNewDesk 0 0 0 3, Colorset 10		\
+)
+*FvwmButtons-Panel-Controller: (1x1+3+0, Title "1",	\
+	Action FuncNewDesk 0 1 0 3, Colorset 11		\
+)
+*FvwmButtons-Panel-Controller: (1x1+4+0, Title "2",	\
+	Action FuncNewDesk 0 2 0 3, Colorset 12		\
+)
+*FvwmButtons-Panel-Controller: (1x1+5+0, Title "3",	\
+	Action FuncNewDesk 0 3 0 3, Colorset 13		\
+)
+*FvwmButtons-Panel-Controller: (2x1+6+0,		\
+	Title ">", Colorset 15, 			\
+	Action(Mouse 1) FuncForeSlider,			\
+	Action(Mouse 3) FuncNewDesk 1 0 3		\
+)
+
+
+#
+# Now the Pager
+#
+# We're going to swallow this in the next button box,
+# but first we need to configure it
+#
+DestroyModuleConfig FvwmPager-PanelPager: *
+*FvwmPager-PanelPager: Font none		# titles OFF
+*FvwmPager-PanelPager: Colorset 0 10		# blue
+*FvwmPager-PanelPager: Colorset 1 11		# red
+*FvwmPager-PanelPager: Colorset 2 12		# green
+*FvwmPager-PanelPager: Colorset 3 13		# yellow
+*FvwmPager-PanelPager: SolidSeparators
+*FvwmPager-PanelPager: UseSkipList
+*FvwmPager-PanelPager: Geometry 100x100+0-25
+*FvwmPager-PanelPager: Balloons
+*FvwmPager-PanelPager: BalloonFont 6x10
+*FvwmPager-PanelPager: SmallFont 6x10
+*FvwmPager-PanelPager: SloppyFocus
+
+#
+# Now the pager - since this is a single button pager we could just use the 
+# unswallowed pager, but this makes it easier to maintain a common look
+# between the panel components
+#
+DestroyModuleConfig FvwmButtons-Panel-Pager: *
+*FvwmButtons-Panel-Pager: ButtonGeometry 160x160
+*FvwmButtons-Panel-Pager: Rows 1
+*FvwmButtons-Panel-Pager: Columns 1
+*FvwmButtons-Panel-Pager: BoxSize	fixed
+*FvwmButtons-Panel-Pager: (1x1, Swallow(SwallowNew) "FvwmPager-PanelPager" "Module FvwmPager FvwmPager-PanelPager 0 0")
+
+#
+# The Monitor arm is a vertical panel with monitor applets.
+# time, load, mail. Whatever we thought might be was universal
+#
+DestroyModuleConfig FvwmButtons-Panel-Monitor: *
+*FvwmButtons-Panel-Monitor: ButtonGeometry 80x80
+*FvwmButtons-Panel-Monitor: Rows 3
+*FvwmButtons-Panel-Monitor: Colorset 1
+*FvwmButtons-Panel-Monitor: BoxSize	fixed
+*FvwmButtons-Panel-Monitor: Font "shadow=1 sw:xft:ArialBlack"
+*FvwmButtons-Panel-Monitor: (1x1, Title Time,				\
+	Swallow 'FvwmScript-Clock' FuncInvokeClock, 			\
+	Action Exec $[FVWM_CALENDAR_HANGON] $[FVWM_CALENDAR_COMMAND]	\
+)
+*FvwmButtons-Panel-Monitor: (1x1, Title Mail,				\
+	Swallow 'FvwmScript-Biff' FuncInvokeXBiff,			\
+	Action Exec $[FVWM_MAILER_HANGON] $[FVWM_MAILER_COMMAND]	\
+)
+*FvwmButtons-Panel-Monitor: (1x1, Title CPU,				\
+	Swallow 'xload' 'Exec exec xload -bg black -fg cyan -nolabel',	\
+	Action Exec $[FVWM_USAGE_HANGON] $[FVWM_USAGE_COMMAND]		\
+)
+
+#
+# The FvwmButtons-Panel-Launcher contains application launch buttons
+#
+DestroyModuleConfig FvwmButtons-Panel-Launcher: *
+*FvwmButtons-Panel-Launcher: ButtonGeometry 80x80
+*FvwmButtons-Panel-Launcher: Rows 1
+*FvwmButtons-Panel-Launcher: Colorset 1
+*FvwmButtons-Panel-Launcher: BoxSize	fixed
+*FvwmButtons-Panel-Launcher: Font "shadow=1 sw:xft:ArialBlack"
+*FvwmButtons-Panel-Launcher: (1x1, Icon www.xpm, Title "The Web",	\
+	Action 'Exec $[FVWM_BROWSER_HANGON] $[FVWM_BROWSER_COMMAND]' 	\
+)
+*FvwmButtons-Panel-Launcher: (1x1, Title "Shell", Icon terminal.xpm,	\
+	Action (Mouse 1) FuncInvokeTerm ,				\
+	Action (Mouse 2) FuncPopupTerms $left $top,			\
+	Action (Mouse 3) FuncInvokeConsole				\
+)
+*FvwmButtons-Panel-Launcher: (1x1, Title "Files",Icon file-manager.xpm,	\
+	Action Exec $[FVWM_FILER_HANGON] $[FVWM_FILER_COMMAND]		\
+)
+
+#
+# popup panel with a selction of coloured terms
+#
+# I like to colour code my shells...
+#
+DestroyModuleConfig FvwmButtons-Panel-Terms: *
+*FvwmButtons-Panel-Terms: BoxSize fixed
+*FvwmButtons-Panel-Terms: ButtonGeometry 80x80
+*FvwmButtons-Panel-Terms: Columns 1
+*FvwmButtons-Panel-Terms: Colorset 1
+*FvwmButtons-Panel-Terms: (1x1, Action FuncInvokeTermColour red4,	\
+	Icon terminal_red.xpm						\
+)
+*FvwmButtons-Panel-Terms: (1x1, Action FuncInvokeTermColour orange4,	\
+	Icon terminal_orange.xpm					\
+)
+*FvwmButtons-Panel-Terms: (1x1, Action FuncInvokeTermColour green4,	\
+	Icon terminal_green.xpm						\
+)
+*FvwmButtons-Panel-Terms: (1x1, Action FuncInvokeTermColour blue4,	\
+	Icon terminal_blue.xpm						\
+)
+*FvwmButtons-Panel-Terms: (1x1, Action FuncInvokeTermColour purple4,	\
+	Icon terminal_purple.xpm					\
+)
+
+#
+# popup panel with a selction of coloured terms
+#
+# I like to colour code my shells...
+#
+DestroyModuleConfig FvwmButtons-Panel-Quit: *
+*FvwmButtons-Panel-Quit: BoxSize fixed
+*FvwmButtons-Panel-Quit: ButtonGeometry 80x80
+*FvwmButtons-Panel-Quit: Columns 1
+*FvwmButtons-Panel-Quit: Colorset 1
+*FvwmButtons-Panel-Quit: (1x1, Icon quit.xpm,				\
+	Action (Mouse 1) Module FvwmScript FvwmScript-ConfirmQuit,	\
+	Action (Mouse 3) Restart					\
+)
+
+#
+# Launch Functions
+#
+DestroyFunc	FuncInvokeClock
+AddToFunc	FuncInvokeClock
++ I Module FvwmScript FvwmScript-Clock
+
+DestroyFunc	FuncInvokeXBiff
+AddToFunc	FuncInvokeXBiff
++ I Module FvwmScript FvwmScript-Biff
+
+#
+# Argh! Why doesn't FVWM have a shift operator
+#
+# The idea here is to be able to write InvokeXterm blue
+# or InvokeXterm blue -e foo
+#
+DestroyFunc	FuncInvokeTermColour
+AddToFunc	FuncInvokeTermColour
++ I Exec exec xterm -bg $0 -fg white $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+DestroyFunc	FuncInvokeTerm
+AddToFunc	FuncInvokeTerm
++ I FuncInvokeTermColour $[FVWM_TERM_BACK] $*
+
+DestroyFunc	FuncInvokeConsole
+AddToFunc	FuncInvokeConsole
++ I Module FvwmConsole -terminal xterm -bg grey70 -fg black -g 211x10+0+0
++ I Wait FvwmConsole
++ I All (CurrentPage, !Iconic) ThisWindow ("FvwmConsole") Move 0p 0p
+
+#
+# If I specify geometry then the aspect ration gets messed un in XNest
+# if I don't it appears all over the place
+#
+# Nothing a little brute force can't solve.
+#
+DestroyFunc	FuncInvokePanel
+AddToFunc	FuncInvokePanel
++ I FuncInvokeAt FvwmButtons-Panel-Controller +0p -0p
++ I FuncInvokeAt FvwmButtons-Panel-Pager +0p -24p
++ I FuncInvokeAt FvwmButtons-Panel-Monitor +0p -184p
++ I FuncInvokeAt FvwmButtons-Panel-Launcher +160p -24p
++ I FuncInvokeAt FvwmButtons-Panel-Quit -0p -24p
+
+#
+# SUPPORT FUNCTIONS
+#
+# usage: FuncInvokeAt Alias xmove ymove
+#
+# starts FvwmButtons instance Alias and moves it to xmove ymove
+# situation complicated by the FixedPosition style of buttons
+#
+DestroyFunc	FuncInvokeAt
+AddToFunc	FuncInvokeAt
++ I Style $0	VariablePosition
++ I KillModule	FvwmButtons $0 
++ I Module	FvwmButtons $3 $0 
++ I Wait $0
++ I All ($0)	ThisWindow Move $1 $2
++ I Style $0	FixedPosition
++ I UpdateStyles
+
+#
+# scroll the pager - 1 for forward, -1 for back
+#
+DestroyFunc	FuncScrollPager
+AddToFunc	FuncScrollPager
++ I PipeRead "perl -e 						\
+	'my $increment = shift;					\
+	my $new = ($ENV{pager_desk_n} + $increment) % 4;	\
+	my @cols = qw(blue red4 green yellow);			\
+	my $prev = $cols[ (($new - 1) % 4) ];			\
+	my $next = $cols[ (($new + 1) % 4) ];			\
+	print qq(FuncNewPager $new $prev $next)			\
+' -- $0"
+
+DestroyFunc	FuncNewPager
+AddToFunc	FuncNewPager
++ I SetEnv pager_desk_n $0
++ I KillModule FvwmPager FvwmPager-PanelPager
++ I Colorset 14 BGradient 256 $1 gray, fg black, fgsh gray75
++ I Colorset 15 BGradient 256 $2 gray, fg black, fgsh gray75
++ I Module FvwmPager FvwmPager-PanelPager $0 $0
+
+#
+# These functions controls the sliders on the controlstrip
+#
+# behavior varies according the iconification of the pager
+# pager iconified	-> go to the next lower desk
+# pager normal		-> make the pager display the next desk
+#			   keeping the current desk unchanged
+#
+DestroyFunc	FuncBackSlider
+AddToFunc	FuncBackSlider
++ I Any (FvwmButtons-Panel-Pager,CirculateHit,Iconic)	Nop Changing Desk
++ I TestRc (Match)				FuncNewDesk -1 0 3
++ I TestRc (Match)				Break
++ I Nop
++ I Any (FvwmButtons-Panel-Pager,CirculateHit,!Iconic) 	Nop Change Pager
++ I TestRc (Match)				FuncScrollPager -1 
++ I TestRc (Match)				Break
++ I Nop
++ I None (FvwmButtons-Panel-Pager,CirculateHit)		Nop Recreate Pager
++ I TestRc(Match)				FuncInvokePanel
++ I TestRc(Match) All ("FvwmButtons-Panel-Pager|FvwmButtons-Panel-Monitor|FvwmButtons-Panel-Launcher")	Iconify
++ I TestRc(Match)				FuncScrollPager -1
++ I Break
++ I Echo ### LOGIC ERROR in FuncBackSlider
+
+DestroyFunc	FuncForeSlider
+AddToFunc	FuncForeSlider
++ I Any (FvwmButtons-Panel-Pager,CirculateHit,Iconic)	Nop Changing Desk
++ I TestRc (Match)				FuncNewDesk 1 0 3
++ I TestRc (Match)				Break
++ I Nop
++ I Any (FvwmButtons-Panel-Pager,CirculateHit,!Iconic) 	Nop Change Pager
++ I TestRc (Match)				FuncScrollPager 1 
++ I TestRc (Match)				Break
++ I Nop
++ I None (FvwmButtons-Panel-Pager,CirculateHit)		Nop Recreate Pager
++ I TestRc(Match)				FuncInvokePanel
++ I TestRc(Match) All ("FvwmButtons-Panel-Pager|FvwmButtons-Panel-Monitor|FvwmButtons-Panel-Launcher")	Iconify
++ I TestRc(Match)				FuncScrollPager 1
++ I Break
++ I Echo ### LOGIC ERROR in FuncForeSlider
+
+
+DestroyFunc	FuncNewDesk
+AddToFunc	FuncNewDesk
++ I GotoDesk $*
++ I PipeRead "perl -e 							\
+'	my $curr = shift;						\
+	my $prev = ($curr - 1) % 4;					\
+	my $next = ($curr + 1) % 4;					\
+	my @cols = qw(blue red4 green yellow);				\
+	my @minors = qw(blue4 firebrick4 green4 yellow4);		\
+	print qq(FuncNewPager $curr $cols[$prev] $cols[$next]\\n);	\
+	my $major = $cols[$curr];					\
+	my $minor = $minors[$curr];					\
+	print qq(Colorset 1 BGradient 256 $major gray, fg black\\n);	\
+	print qq(Colorset 2 bg $minor\\n);				\
+	print qq(SetEnv FVWM_TERM_BACK $minor\\n);			\
+' $[desk.n] "
+
+Key P A M All ("FvwmButtons-Panel-*",!"*Controller") Iconify
+
+#
+# Driven by a little perl script that scans the mailbox and looks for messages lacking a 
+# Status line in the header - which appears to be more or less what xbiff does.
+#
+DestroyFunc	FuncCheckMail
+AddToFunc	FuncCheckMail
++ I PipeRead "perl -e ' while(<>) {				\
+		/^From / and $f++;				\
+		/^Status: / and $s++;				\
+	}							\
+	print qq(SendToModule FvwmScript-Biff SendString 1 ); 	\
+	if($f > $s)	{ print qq(1 mail.xpm) }		\
+	else		{ print qq(0 no_mail.xpm) }		\
+' /var/mail/$USER
+
+DestroyFunc FuncPopupTerms
+AddToFunc FuncPopupTerms
++ I FuncInvokeAt FvwmButtons-Panel-Terms 240p 296p -transient
+
+#
+# Load the panel
+#
+FuncInvokePanel
+
+Style FvwmScript-ConfirmQuit !Borders, CenterPlacement, StaysOnTop
+

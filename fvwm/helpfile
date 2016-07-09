@@ -1,0 +1,78 @@
+Welcome To FVWM
+
+Fast and lightweight, FVWM is probably the most completely customisable
+window manager in existence. It won't currently fry the eggs for your
+breakfast or take the dog for a walk, but for most purposes short of
+that FVWM can probably do what you want.
+
+The default configuration does not begin to hint at the possibilities. In
+fact the default configuration is the minimal one we could conceive
+of that wasn't actively ugly. This is partly to make sure that FVWM
+will run out of the box on older machines (we tested this on a P166)
+and partly because we don't want to encourage any preconceived notions
+of what FVWM should be like. We're not talking about the "change the
+wallpaper and icons" themes of some packages. With FVWM you can define
+almost every aspect of the interface. If that isn't enough, FVWM comes
+with a scripting module to define your own X11 forms and screens and a
+module interface that allows you add functionality by writing modules
+in Perl, C or other languages.
+
+The best way to get an idea of the sheer versatility of FVWM is to look
+at the screenshot gallery on the FVWM homepage [A]. For most of them you
+can install the configuration file and just go[1]. Alternatively you
+can code your own from scratch and get something uniquely your own.
+
+Customising FVWM
+================
+
+FVWM installs its config files into $HOME/.fvwm. The default file
+processed by the WM on startup is $HOME/.fvwm/config (and not .fvwm2rc
+as was the case until recently). The config file takes the form of a
+series of scripting commands, so the file is user editable. Changes made
+to this file will alter the look and behaviour of FVWM.
+
+Don't be afraid to experiment. In  the worst case you can delete the
+config which will restore you to the default configuration. Just remember
+to keep a backup if you have a lot of work invested in your setup!
+
+
+Useful resources:
+=================
+
+The fvwm man page
+
+	Yes, it's big, It also has everything you might conceivable want
+	to know about FVWM. There's no need to read it all at once though.
+
+The Fvwm module manuals.
+	FvwmButtons, FvwmPager, FvwmIconMan... There are too many to
+	list here. Again, you don't need to read them all at once,
+	just to be aware that they are there to begin with
+
+The FVWM Home Page [B] The FVWM Forum [C] The FVWM Wiki [D]
+	Full of resources, including FAQs screenshots, configs
+	and HOWTOs.
+
+The Fvwm Beginners Guide [E]
+	A good basic howto
+
+taviso's config [F]
+	A popular configuration used as a starting point by many FVWM
+	newcomers.
+
+There's undoubtedly more, but that should suffice to get you started
+
+Welcome to FVWM. It's going to be an adventure...
+
+References
+==========
+
+[1] Current setup scripts are broken BTW. The create .fvwm2rc files
+rather than $HOME/.fvwm/config 
+
+[A] http://www.fvwm.org/screenshots/desktops/
+[B] http://www.fvwm.org
+[C] http://fvwm.lair.be
+[D] http://www.fvwmwiki.org
+[E] http://www.zensites.net/fvwm/guide/
+[F] http://dev.gentoo.org/~taviso/fvwm2rc.html

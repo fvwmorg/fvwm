@@ -1,0 +1,140 @@
+                   A Quick Guide to the Default FVWM Desktop
+                   =========================================
+
+This file explains how to use your new FVWM desktop. We're assuming that you've
+set up a desktop using the setup form from the default install, and that you've
+not yet started modifying the results. We strongly encourage you to modify
+that setup, but since we don't know how you may modify it, we'll have to
+document what we _do_ know about. We apologise for any inconvenince this may 
+cause ;)
+
+                                  An Overview
+                                  ===========
+
+On startup, your desktop should look something like this.
+
+-------------------------------------------------------------------------------
+|                                                                             |
+|                                                                             |
+------                                                                        |
+|    |                             1                                          |
+| 2  |                                                                        |
+|    |                                                                        |
+|    |                                                                        |
+-----------------                                                             |
+|               |                                                             |
+|               |                                                             |
+|               |------------------                                    -------|
+|      3        |      5          |                                    |  6   |
+|               |                 |                                    |      |
+-------------------------------------------------------------------------------
+|      4        |                          7                                  |
+-------------------------------------------------------------------------------
+
+Don't worry if the panel appears oversized - you can hide it with Alt + P.
+You may wish to change that - See "Changing The Panel Hotkey"
+
+This is what all the bits do:
+
+1 Background. Click on this for a menu.
+
+2 Monitor apps. This is a column of three buttons displaying the time, whether
+  email is waiting in /var/spool and CPU usage. Additionally, clicking
+  on the clock will launch a calendar app, if any can be detected, the
+  mail button will launch a mail client, and the CUP button invokes a
+  TOP listing.
+
+3 Pager. The setup script configures FVWM with four large virtual desktops,
+  each with nine pages. The pager displays a map of the pages on one
+  of those desks. This is initially desk zero, but can be altered using
+  the sliders. Clicking on a page will change to viewport to view that
+  page, while right clicking will centre the viewport on the point
+  clicked. Right dragging will scroll the viewport over the virtual
+  desktop and middle clicking on a window in the pager will allow you
+  to drag and move it. See FvwmPager for full details.
+
+4 Control Bar. The control bar is a strip of buttons to control the
+  pager and desktop. The layout is like this
+
+	-----------------------------
+	|  <  | 1 | 2 | 3 | 4 |  >  |
+	-----------------------------
+
+  The double size buttons marked "<" and ">" are called sliders. If the pager
+  is unhidden and a slider is clicked, the pager will cycle forward (or
+  backwards) through the desks, one desk per click. Desks are colour
+  coded to make it easy to tell which one is being displayed. If the
+  pager is currently hidden, or if the right mouse button is used,
+  the viewport is switched to the desk instead.
+
+  The numbered buttons change the viewport to the desk corresponding to
+  the number.
+
+5 Launcher Buttons. These are three buttons that when clicked launch a
+  web browser, a terminal with a shell prompt, and a file
+  manager. Attempts are made to autodetect available apps and choose
+  sensible defaults. Additionally, the Shell button will launch a
+  FvwmConsole window if right clicked, and if middle clicked, a popup
+  panel of coloured terminals will appear. (One of the authors likes
+  to colour code his terms).
+
+6 Quit Button. Left click launches a "did you really mean it" popup, while
+  right click restarts the window manager
+
+7 Taskbar. This tracks all entities on the current page. Clicking a button will 
+  iconify/de-iconify the corresponding window, while right clicking will summon
+  the window operations menu, again for the corresponding window.
+
+                           Changing The Panel Hotkey
+                           =========================
+
+The scope of setting up keys to work with X11 is out of context with
+Fvwm, but in general the Alt key is already mapped and setup for use.
+To manipulate the key sequences, there's two programs you should use.
+The first is xev(1) -- "xev" will listen for key events and spit out
+useful information about them.  If you can get the keycode for it, then
+you can tell Xmodmap exactly how it is to function.  So if we take for
+example, the left Windows Key.  xev gives me:
+
+KeyRelease event, serial 29, synthetic NO, window 0x5e00001,
+    root 0x40, subw 0x0, time 1478057097, (84,48), root:(952,746),
+    state 0x20, keycode 115 (keysym 0xffeb, Super_L), same_screen YES,
+    XLookupString gives 0 bytes:  ""
+
+The things to note here are the keycode (115).  We need to tell Xmodmap
+to map keycode 115 to something useful to us.  Hence the command:
+
+xmodmap -e "keycode 115 = LeftWin"
+
+With that command we can now refer to the left Windows keys "LeftWin".
+The next thing is to tell X11 that this key is also going to act as a
+modifier, hence:
+
+xmodmap -e "add mod4 = LeftWin"
+
+Then FVWM will know that whenever we press it, it will act as such.
+Note that you can add the two commmands above to your ~/.xsession file,
+or as commands in the StartFunction if you wish.  For further details
+see:  http://www.fvwm.org/documentation/faq/#5.5
+
+                             Design Considerations.
+                             ======================
+
+We've tried to walk some fine lines with the design of this
+configuration. We wanted something up to date, but which did not
+rely on external software (like gkrellm or torsmo for instance) being
+installed. We also wanted something simple enough to be easily understood,
+but which also demonstrated some of the possibilities inherent in
+FVWM. We wanted a look that was distinctive, but not so alien that the
+user could not quickly learn the interface.  We wanted a desktop that
+could be comfortably used for real world tasks, but not one that was so
+cozy as to discourage users from tweaking, hacking, replacing or rewriting
+the configuration.
+
+The last point is important. FVWM is all about choice. It's about
+flexibility. It can be thought of as a meta-window-manager, one that lets
+you choose not only the graphics and appearance, you choose the interface
+that suits you as well. 
+
+Don't get me wrong, we'll be delighted if you use this design and find it
+useful. But we'll be happier still if it inspires you to design your own.
