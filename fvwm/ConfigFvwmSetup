@@ -11,15 +11,14 @@
 #       The Fvwm Man Page            (man fvwm)
 #       The Fvwm Modules Manuals     (man -k Fvwm)
 #       The Fvwm Home Page           (http://fvwm.org)
-#       The Fvwm Forum               (http://fvwm.lair.be)
-#       The Fvwm Wiki                (http://www.fvwmwiki.org)
+#       The Fvwm Forum               (http://fvwmforums.org)
+#       The Fvwm Wiki                (http://www.fvwmforums.org/wiki)
 #
 # As a general resouce, some guides are available, most noteworthy of
 # which are these:
 #
 #   "A Beginner's Guide to Fvwm" (http://www.zensites.net/fvwm/guide/)
 #   "Tutorials"           (http://www.fvwmwiki.org/cgi/moin.cgi/Tutorials)
-#   "Config From Scratch" (http://fvwm.lair.be/viewtopic.php?t=188)
 #   
 # Meanwhile, we'll try and make this file as helpful as possible. We'll start
 # by defining some constants.
@@ -518,11 +517,9 @@ Test (x gedit)  + "GEdit"           Exec exec gedit
 Test (x kwrite) + "Kwrite"          Exec exec kwrite
 Test (x kate)   + "Kate"            Exec exec kate
 Test (x emacs)  + "Emacs"           Exec exec emacs
-Test (x xemacs) + "XEmacs"          Exec exec xemacs
 Test (x nedit)  + "Nedit"           Exec exec nedit
 Test (x scite)  + "Scite"           Exec exec scite
-Test (x soffice) + "OpenOffice"     Exec exec soffice
-Test (x openoffice) + "OpenOffice"  Exec exec openoffice
+Test (x libreoffice) + "LibreOffice"     Exec exec libreoffice
 Test (x abiword)    + "Abiword"     Exec exec abiword
 Test (x lyx)        + "Lyx"         Exec exec lyx
 
@@ -532,9 +529,8 @@ Test (x lyx)        + "Lyx"         Exec exec lyx
 #
 DestroyMenu FvwmInternetMenu
 AddToMenu   FvwmInternetMenu "Internet" Title
-Test (x firebird)   + "Firebird"    Exec exec firebird
 Test (x firefox)    + "Firefox"     Exec exec firefox
-Test (x mozilla)    + "Mozilla"     Exec exec mozilla
+Test (x chromium)   + "Chromium"    Exec exec chromium
 Test (x links2)     + "Links2"      Exec exec links2 -g
 Test (x epiphany)   + "Epiphany"    Exec exec epiphany
 Test (x elinks)     + "Elinks (xterm)"  Exec exec xterm -e elinks
@@ -546,8 +542,6 @@ Test (x sylpheed)    + "Sylpheed"     Exec exec sylpheed
 Test (x sylpheed-claws) + "Sylpheed-claws" Exec exec sylpheed-claws
 Test (x pine)           + "Pine (xterm)"   Exec exec xterm -e pine
 Test (x mutt)           + "Mutt (xterm)"   Exec exec xterm -e mutt
-Test (x elm)            + "Elm (xterm)"    Exec exec xterm -e elm
-Test (x cone)           + "Cone (xterm)"   Exec exec xterm -e cone
 
 #
 # FvwmGraphisMenu
@@ -558,9 +552,7 @@ AddToMenu   FvwmGraphicsMenu "Graphics" Title
 Test (x dia)    + "Dia"       Exec exec dia
 Test (x gimp)   + "The GIMP"  Exec exec gimp
 Test (x xfig)   + "xfig"      Exec exec xfig
-Test (x sodipodi) + "Sodipodi"  Exec exec sodipodi
-Test (x sketch) + "sketch"    Exec exec sketch
-Test (x xv)     + "xv"        Exec exec xv
+Test (x inkscapw) + "inkscape"  Exec exec inkscape
 
 #
 # FvwmMultiMediaMenu
@@ -582,7 +574,7 @@ Test (x timidity)   + "Timidity"  Exec exec timidity
 DestroyMenu FvwmFileManMenu
 AddToMenu   FvwmFileManMenu  "File Management" Title
 Test (x rox) + "Rox Filer"  Exec exec rox
-Test (x xfm) + "xfm"        Exec exec xfm
+Test (x pcmanfm) + "pcmanfm" Exec exec pcmanfm
 Test (x nautilus) + "Nautilus" Exec exec nautilus --no-desktop
 Test (x mc)       + "Midnight Commander"  Exec exec xterm -T "mc" -e mc
 
@@ -616,43 +608,21 @@ AddToMenu   FvwmHelpMenu
 + "FvwmB&uttons"        FuncViewManPage FvwmButtons
 + "Fvwm&Command"        FuncViewManPage FvwmCommand
 + "FvwmC&onsole"        FuncViewManPage FvwmConsole
-+ "FvwmConsoleC.pl"     FuncViewManPage FvwmConsoleC.pl
-+ "FvwmCpp"             FuncViewManPage FvwmCpp
-+ "FvwmDebug"           FuncViewManPage FvwmDebug
-+ "FvwmDragWell"        FuncViewManPage FvwmDragWell
 + "FvwmEvent"           FuncViewManPage FvwmEvent
 + "FvwmForm"            FuncViewManPage FvwmForm
-+ "FvwmGtk"             FuncViewManPage FvwmGtk
-+ "FvwmGtkDebug"        FuncViewManPage FvwmGtkDebug
-+ "FvwmIconBox"         FuncViewManPage FvwmIconBox
 + "FvwmIconMan"         FuncViewManPage FvwmIconMan
 + "FvwmIdent"           FuncViewManPage FvwmIdent
-+ "FvwmM4"              FuncViewManPage FvwmM4
 + "FvwmPager"           FuncViewManPage FvwmPager
 + "FvwmPerl"            FuncViewManPage FvwmPerl
 + "FvwmProxy"           FuncViewManPage FvwmProxy
 + "FvwmRearrange"       FuncViewManPage FvwmRearrange
-+ "FvwmSave"            FuncViewManPage FvwmSave
-+ "FvwmSaveDesk"        FuncViewManPage FvwmSaveDesk
 + "FvwmScript"          FuncViewManPage FvwmScript
-+ "FvwmScroll"          FuncViewManPage FvwmScroll
 + "FvwmTaskBar"         FuncViewManPage FvwmTaskBar
-+ "FvwmTheme"           FuncViewManPage FvwmTheme
-+ "FvwmWharf"           FuncViewManPage FvwmWharf
-+ "FvwmWinList"         FuncViewManPage FvwmWinList
-+ "FvwmWindowMenu"      FuncViewManPage FvwmWindowMenu
 + "" Nop
 + "fvwm-config"         FuncViewManPage fvwm-config
 + "fvwm-perllib"        FuncViewManPage fvwm-perllib
 + "fvwm-root"           FuncViewManPage fvwm-root
-+ "fvwm-bug"            FuncViewManPage fvwm-bug
-+ "fvwm-convert-2.2"    FuncViewManPage fvwm-convert-2.2
-+ "fvwm-convert-2.4"    FuncViewManPage fvwm-convert-2.4
-+ "" Nop
-+ "fvwm-menu-desktop"   FuncViewManPage fvwm-menu-desktop
-+ "fvwm-menu-directory" FuncViewManPage fvwm-menu-directory
-+ "fvwm-menu-headlines" FuncViewManPage fvwm-menu-headlines
-+ "fvwm-menu-xlock"     FuncViewManPage fvwm-menu-xlock
++ "fvwm-convert-2.6"    FuncViewManPage fvwm-convert-2.6
 
 #
 # WindowOps Menu...
