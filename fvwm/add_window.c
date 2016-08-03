@@ -1960,7 +1960,6 @@ void setup_style_and_decor(
 		}
 	}
 
-#ifdef USEDECOR
 	/* search for a UseDecor tag in the style */
 	if (!IS_DECOR_CHANGED(fw))
 	{
@@ -1979,7 +1978,6 @@ void setup_style_and_decor(
 	{
 		fw->decor = &Scr.DefaultDecor;
 	}
-#endif
 
 	GetMwmHints(fw);
 	GetOlHints(fw);
