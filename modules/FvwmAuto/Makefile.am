@@ -2,6 +2,8 @@
 
 moduledir = @FVWM_MODULEDIR@
 module_PROGRAMS = FvwmAuto
+FvwmAuto.1:
+	$(ASCIIDOCTOR) -b manpage FvwmAuto.adoc -o FvwmAuto.1
 man_MANS = FvwmAuto.1
 EXTRA_DIST = $(man_MANS)
 
