@@ -2,6 +2,8 @@
 
 moduledir = @FVWM_MODULEDIR@
 module_PROGRAMS = FvwmAnimate
+FvwmAnimate.1:
+	$(ASCIIDOCTOR) -b manpage FvwmAnimate.adoc -o FvwmAnimate.1
 man_MANS = FvwmAnimate.1
 EXTRA_DIST = $(man_MANS)
 
