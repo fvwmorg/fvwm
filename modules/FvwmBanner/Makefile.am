@@ -4,6 +4,8 @@ moduledir = @FVWM_MODULEDIR@
 
 module_PROGRAMS = FvwmBanner
 
+FvwmBanner.1:
+	$(ASCIIDOCTOR) -b manpage FvwmBanner.adoc -o FvwmBanner.1
 man_MANS = FvwmBanner.1
 EXTRA_DIST = $(man_MANS) fvwm-logo-current.xpm fvwm-logo-current.xbm
 

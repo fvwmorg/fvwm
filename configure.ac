@@ -1529,7 +1529,6 @@ dnl	bin/fvwm-menu-headlines.1
 dnl	bin/fvwm-menu-xlock.1
 dnl	bin/fvwm-perllib.1
 	bin/fvwm-root.1
-	modules/FvwmBanner/FvwmBanner.1
 	modules/FvwmButtons/FvwmButtons.1
 	modules/FvwmCommand/FvwmCommand.1
 	modules/FvwmConsole/FvwmConsole.1
