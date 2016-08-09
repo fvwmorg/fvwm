@@ -4,6 +4,8 @@ moduledir = @FVWM_MODULEDIR@
 configdir = @FVWM_DATADIR@
 
 module_PROGRAMS = FvwmBacker
+FvwmBacker.1:
+	$(ASCIIDOCTOR) -b manpage FvwmBacker.adoc -o FvwmBacker.1
 man_MANS = FvwmBacker.1
 EXTRA_DIST = $(man_MANS) ConfigFvwmBacker
 
