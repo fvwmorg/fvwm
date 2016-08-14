@@ -9,7 +9,7 @@
 void PictureReduceColorName(char **my_color);
 void PictureAllocColors(
 	Display *dpy, Colormap cmap, XColor *colors, int size, Bool no_limit);
-int PictureAllocColor(Display *dpy, Colormap cmap, XColor *c, int no_limit);
+int PictureAllocColor(XColor *c, int no_limit);
 int PictureAllocColorAllProp(
 	Display *dpy, Colormap cmap, XColor *c, int x, int y,
 	Bool no_limit, Bool is_8, Bool do_dither);
@@ -17,7 +17,7 @@ int PictureAllocColorImage(
 	Display *dpy, PictureImageColorAllocator *pica, XColor *c, int x,
 	int y);
 PictureImageColorAllocator *PictureOpenImageColorAllocator(
-	Display *dpy, Colormap cmap, int x, int y, Bool no_limit,
+	Colormap cmap, Bool no_limit,
 	Bool save_pixels, int dither, Bool is_8);
 void PictureCloseImageColorAllocator(
 	Display *dpy, PictureImageColorAllocator *pica,

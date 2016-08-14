@@ -130,10 +130,10 @@ typedef struct
 	unsigned short *green_dither;
 	unsigned short *blue_dither;
 	/* colors allocation function */
-	int (*alloc_color)(Display *dpy, Colormap cmap, XColor *c);
-	int (*alloc_color_no_limit)(Display *dpy, Colormap cmap, XColor *c);
+	int (*alloc_color)(XColor *c);
+	int (*alloc_color_no_limit)(XColor *c);
 	int (*alloc_color_dither)(
-		Display *dpy, Colormap cmap, XColor *c, int x, int y);
+		Colormap cmap, XColor *c, int x, int y);
 	void (*free_colors)(
 		Display *dpy, Colormap cmap, Pixel *pixels, int n,
 		unsigned long planes);
@@ -452,7 +452,7 @@ int alloc_color_in_pct(XColor *c, int index)
 		c->red = Pct[index].color.red;
 		c->green = Pct[index].color.green;
 		c->blue = Pct[index].color.blue;
-		PictureAllocColor(Pdpy, Pcmap, c, True); /* WARN (rec) */
+		PictureAllocColor(Pdpy, Pcmap); /* WARN (rec) */
 		Pct[index].color.pixel = c->pixel;
 		Pct[index].alloc_count = 1;
 		PStrictColorLimit = s;
@@ -577,7 +577,7 @@ int get_color_index(int r, int g, int b, int is_8)
  * Main colors allocator
  */
 static
-int alloc_color_proportion(Display *dpy, Colormap cmap, XColor *c)
+int alloc_color_proportion(XColor *c)
 {
 	c->pixel = (Pixel)(
 		((c->red   >> (16 - Pcsi.red_prec))<< Pcsi.red_shift) +
@@ -588,8 +588,7 @@ int alloc_color_proportion(Display *dpy, Colormap cmap, XColor *c)
 }
 
 static
-int alloc_color_proportion_dither(
-	Display *dpy, Colormap cmap, XColor *c, int x, int y)
+int alloc_color_proportion_dither(XColor *c, int x, int y)
 {
 	/* 8 bit colors !! */
 	c->red = Pcsi.red_dither[
@@ -611,8 +610,7 @@ int alloc_color_proportion_dither(
 }
 
 static
-int alloc_color_proportion_grey(
-	Display *dpy, Colormap cmap, XColor *c)
+int alloc_color_proportion_grey(XColor *c)
 {
 	/* FIXME: is this ok in general? */
 	c->pixel = ((c->red + c->green + c->blue)/3);
@@ -624,7 +622,7 @@ int alloc_color_proportion_grey(
 }
 
 static
-int alloc_color_in_table(Display *dpy, Colormap cmap, XColor *c)
+int alloc_color_in_table(XColor *c)
 {
 
 	int index = get_color_index(c->red,c->green,c->blue, False);
@@ -632,8 +630,7 @@ int alloc_color_in_table(Display *dpy, Colormap cmap, XColor *c)
 }
 
 static
-int alloc_color_in_table_dither(
-	Display *dpy, Colormap cmap, XColor *c, int x, int y)
+int alloc_color_in_table_dither(XColor *c, int x, int y)
 {
 	int index;
 	/* 8 bit colors !! */
@@ -736,7 +733,7 @@ void free_colors_x(
 
 		for(i= 0; i < n; i++)
 		{
-			if (pixels[i] <= nbr_colors)
+			if (pixels[i] <= (unsigned long)nbr_colors)
 			{
 				Pac[pixels[i]].alloc_count--;
 			}
@@ -1765,7 +1762,7 @@ int PictureAllocColorTable(
  * Allocation of a private DirectColor cmap this is broken for depth > 16
  */
 static
-Bool alloc_direct_colors(int *limit, Bool use_my_color_limit)
+Bool alloc_direct_colors(Bool use_my_color_limit)
 {
 	unsigned long nr,ng,nb,r,g,b,cr,cg,cf,pr,pg;
 	unsigned long red_mask, green_mask, blue_mask;
@@ -1888,7 +1885,7 @@ void print_colormap(Colormap cmap)
 
 /* ---------------------------- interface functions ------------------------ */
 
-int PictureAllocColor(Display *dpy, Colormap cmap, XColor *c, int no_limit)
+int PictureAllocColor(XColor *c, int no_limit)
 {
 	if (PStrictColorLimit && Pct != NULL)
 	{
@@ -1897,11 +1894,11 @@ int PictureAllocColor(Display *dpy, Colormap cmap, XColor *c, int no_limit)
 
 	if (no_limit)
 	{
-		return Pcsi.alloc_color_no_limit(dpy, cmap, c);
+		return Pcsi.alloc_color_no_limit(c);
 	}
 	else
 	{
-		return Pcsi.alloc_color(dpy, cmap, c);
+		return Pcsi.alloc_color(c);
 	}
 	return 0;
 }
@@ -1944,7 +1941,7 @@ int PictureAllocColorImage(
 		dpy, pica->cmap, c, x, y,
 		pica->no_limit, pica->is_8, pica->dither);
 	if (r && pica->pixels_table != NULL && pica->pixels_table_size &&
-	    c->pixel < pica->pixels_table_size)
+	    c->pixel < (unsigned long)pica->pixels_table_size)
 	{
 		pica->pixels_table[c->pixel]++;
 	}
@@ -1952,7 +1949,7 @@ int PictureAllocColorImage(
 }
 
 PictureImageColorAllocator *PictureOpenImageColorAllocator(
-	Display *dpy, Colormap cmap, int x, int y, Bool no_limit,
+	Colormap cmap, Bool no_limit,
 	Bool do_not_save_pixels, int dither, Bool is_8)
 {
 	PictureImageColorAllocator *pica;
@@ -2038,7 +2035,7 @@ void PictureCloseImageColorAllocator(
 				{
 					save_pixels[k++] = i;
 				}
-				for(j=1; j < pica->pixels_table[i]; j++)
+				for(j=1; j < (int)pica->pixels_table[i]; j++)
 				{
 					free_pixels[l++] = i;
 				}

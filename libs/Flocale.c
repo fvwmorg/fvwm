@@ -653,7 +653,8 @@ void FlocaleRotateDrawString(
 {
 	static GC my_gc = None;
 	static GC font_gc = None;
-	int j, i, xpfg, ypfg, xpsh, ypsh;
+	u_int j, i;
+	int xpfg, ypfg, xpsh, ypsh;
 	unsigned char *normal_data, *rotated_data;
 	unsigned int normal_w, normal_h, normal_len;
 	unsigned int rotated_w, rotated_h, rotated_len;

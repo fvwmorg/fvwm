@@ -492,7 +492,7 @@ direction_t gravity_parse_dir_argument(
 char *gravity_dir_to_string(direction_t dir, char *default_str)
 {
 	char *str = NULL;
-	int d = dir * STRINGS_PER_DIR;
+	u_int d = dir * STRINGS_PER_DIR;
 
 	if (d >= sizeof(gravity_dir_optlist)/sizeof(gravity_dir_optlist[0]))
 	{
