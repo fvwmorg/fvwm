@@ -2,6 +2,10 @@ FVWM
 ----
 
 [![Build Status](https://travis-ci.org/fvwmorg/fvwm.svg?branch=master)](https://travis-ci.org/fvwmorg/fvwm)
+<a href="https://scan.coverity.com/projects/fvwm">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/10137/badge.svg"/>
+</a>
 
 Welcome to fvwm.  Fvwm is a multiple large virtual desktop window manager,
 originally (a looooong time ago!) derived from twm.

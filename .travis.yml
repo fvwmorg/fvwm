@@ -3,6 +3,10 @@ sudo: false
 branches:
         except:
                 - todo
+env:
+        global:
+                - secure: "bpRFdacbiUuEK9cjlfX0HaFU1nriKUq0DsipY1SmvwC14k+xRlFCL+I4mB33gbvnbM8lE6GPZkUcdbQ3weB7U4B7S/4AtoxrulttbnFl2mmrP/MIdCkXFhLpM6J0qz2ICxT6QOp4gwKqF/wFxIHhdacqa2gMZUct5XZJa/1c52kn2TfmFI1G9gHSFRy8j1DDfoJqc6BDiIkcXxRmNRE8cDB3ZgEWeDzEv2C3KRJSt4P8j83JDob5So2IMYaV9v3SV0YBeU/YM0mG4QMkEN9CNsaEptfRg+7hyCvV64YIQw4qwt2iVfE66xpSwLM2NjYF/EXg89y75eRlwQ0EVGlSoogwWJHFmTxbUr2CHXn645fdUOeXvyLLpOHxJq9euKdD3Y/ijg4536Sj1L+y8RvgK3yf9ML32hliI9zbyEk5o4mSOCxYYv1ERMjHtXCGD8viNKioVedlncBdi7dtydk/7qoI6sQojre5abkzo1H/lXYkH4/ObKTEcR82KIP9Lp1AtMRvJJXBzZbeCzyXOVFH/b0EsJwiqKEgPY7++iHDniWSR46Hamee1/nTsP2xODyofRfzwrRKrMGwvubK9Nvp+nIv/3g/CZkz/o0PhyteDpimoZyNzTrtMiOmHUOZ0HP/p+OmBVYOfv/dF1gnyT9PcF19uaE6vcQmAyOf+raytlw="
+
 matrix:
     include:
         - compiler: gcc
@@ -11,32 +15,39 @@ matrix:
           env: CFLAGS="-g -O2"
 addons:
     apt:
-    packages:
-    - debhelper
-    - autotools-dev
-    - dh-autoreconf
-    - file
-    - fontconfig
-    - gettext
-    - libfontconfig-dev
-    - libfreetype6-dev
-    - libfribidi-dev
-    - libncurses5-dev
-    - libreadline-dev
-    - libpng-dev
-    - libsm-dev
-    - libx11-dev
-    - libxcursor-dev
-    - libxext-dev
-    - libxft-dev
-    - libxi-dev
-    - x11proto-xinerama-dev
-    - libxpm-dev
-    - libxrender-dev
-    - libxt-dev
-    - sharutils
-    - xsltproc
-    - build-essential
+        packages:
+                - debhelper
+                - autotools-dev
+                - dh-autoreconf
+                - file
+                - fontconfig
+                - gettext
+                - libfontconfig-dev
+                - libfreetype6-dev
+                - libfribidi-dev
+                - libncurses5-dev
+                - libreadline-dev
+                - libpng-dev
+                - libsm-dev
+                - libx11-dev
+                - libxcursor-dev
+                - libxext-dev
+                - libxft-dev
+                - libxi-dev
+                - x11proto-xinerama-dev
+                - libxpm-dev
+                - libxrender-dev
+                - libxt-dev
+                - sharutils
+                - xsltproc
+                - build-essential
+    coverity_scan:
+            project:
+                      name: "fvwmorg/fvwm"
+            notification_email: thomas@fvwm.org
+            build_command_prepend: "./autogen.sh"
+            build_command: make
+            branch_pattern: coverity_scan
 script: (CFLAGS= ./autogen.sh) && make
 notifications:
         irc:
