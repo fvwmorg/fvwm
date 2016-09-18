@@ -1,0 +1,22 @@
+# This is a comment.
+
+Colorset -n1 -b red  -f red
+Colorset -n2 -b blue -f blue
+
+# Log new window names...
+hook -g -nafter-map Echo "Mapped $[w.name]"
+
+# Make all clients on screen 0, desk 1, red...
+Style -t 0:1 -w* Colorset 1
+
+# Make only XTerm windows on any screen blue
+Style -g -w c:XTerm Colorset 2
+
+# Focus next window on current monitor.
+Focus -t+1
+
+# Focus next window on monitor 1.
+Focus -t1:+1
+
+# Focus third window on monitor 1
+Focus -t1:+3
