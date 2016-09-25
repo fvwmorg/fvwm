@@ -20,3 +20,8 @@ Focus -t1:+1
 
 # Focus third window on monitor 1
 Focus -t1:+3
+
+Function -n myfunc <<ENDF
+i:hello
+i:goodbye
+ENDF
