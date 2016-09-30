@@ -2396,7 +2396,7 @@ void CMD_Exec(F_CMD_ARGS)
 #if 0
 	if (strncasecmp(action,"exec",4)!=0)
 	{
-		cmd = (char *)safemalloc(strlen(action)+6);
+		cmd = (char *)xmalloc(strlen(action)+6);
 		strcpy(cmd,"exec ");
 		strcat(cmd,action);
 	}
@@ -4149,8 +4149,8 @@ void CMD_StrokeFunc(F_CMD_ARGS)
 		XBell(dpy, 0);
 		return;
 	}
-	x = (int*)safemalloc(coords_size * sizeof(int));
-	y = (int*)safemalloc(coords_size * sizeof(int));
+	x = (int*)xmalloc(coords_size * sizeof(int));
+	y = (int*)xmalloc(coords_size * sizeof(int));
 	e = *exc->x.etrigger;
 	/* set the default option */
 	if (e.type == KeyPress || e.type == ButtonPress)
@@ -4296,12 +4296,12 @@ void CMD_StrokeFunc(F_CMD_ARGS)
 				if (i >= coords_size)
 				{
 					coords_size += STROKE_CHUNK_SIZE;
-					x = (int*)saferealloc(
+					x = (int*)xrealloc(
 						(void *)x, coords_size *
-						sizeof(int));
-					y = (int*)saferealloc(
+						sizeof(int), sizeof(int *));
+					y = (int*)xrealloc(
 						(void *)y, coords_size *
-						sizeof(int));
+						sizeof(int), sizeof(int *));
 				}
 				x[i] = tmpx;
 				y[i] = tmpy;

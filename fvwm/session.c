@@ -1200,7 +1200,7 @@ LoadGlobalState(char *filename)
 				s2++;
 			}
 			sscanf(s2, "%[^\n]", s1);
-			is_key = safestrdup(s1);
+			is_key = xstrdup(s1);
 		}
 		else if (!strcmp(s1, "[VALUE]"))
 		{
@@ -1211,7 +1211,7 @@ LoadGlobalState(char *filename)
 				s2++;
 			}
 			sscanf(s2, "%[^\n]", s1);
-			is_value = safestrdup(s1);
+			is_value = xstrdup(s1);
 
 			fprintf(stderr, "GOT: %s -> %s\n", is_key, is_value);
 

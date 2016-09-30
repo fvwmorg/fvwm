@@ -1797,7 +1797,7 @@ static Bool size_menu_vertically(MenuSizingParameters *msp)
 			 * popdown actions */
 			/* And add the entry pointing to the new menu */
 			gt_name = gettext("More&...");
-			name = safestrdup(gt_name);
+			name = xstrdup(gt_name);
 			AddToMenu(
 				msp->menu, name, tempname,
 				False /* no pixmap scan */, False, True);

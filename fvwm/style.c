@@ -1783,7 +1783,7 @@ static char *style_parse_icon_box_style(
 
 	/* otherwise try to parse the icon box */
 	IconBoxes = xcalloc(1, sizeof(icon_boxes));
-	IconBoxes->IconScreen = FSCREEN_GLOBAL;
+	IconBoxes->IconScreen = "global";
 	/* init grid x */
 	IconBoxes->IconGrid[0] = 3;
 	/* init grid y */
@@ -3986,15 +3986,12 @@ static Bool style_parse_one_style_option(
 			if (s != NULL)
 				m = monitor_by_name(s);
 
-			fprintf(stderr, "STARTSONSCREEN: %s\n", s);
 			if (s != NULL && m != NULL)
 			{
 				ps->flags.use_start_on_screen = 1;
 				ps->flag_mask.use_start_on_screen = 1;
 				ps->change_mask.use_start_on_screen = 1;
 				SSET_START_SCREEN(*ps, s);
-				fprintf(stderr, "SET SCREEN TO: %s\n",
-					SGET_START_SCREEN(*ps));
 			}
 			else
 			{

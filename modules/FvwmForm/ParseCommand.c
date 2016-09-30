@@ -40,7 +40,7 @@ static int N = 8;
 #define AddChar(chr) \
  { if (dn >= N) {\
      N *= 2;\
-     buf = (char *)saferealloc(buf, N);\
+     buf = (char *)xrealloc(buf, N, sizeof(char *));\
    }\
    buf[dn++] = (chr);\
  }

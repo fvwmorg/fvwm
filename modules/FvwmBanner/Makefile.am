@@ -16,9 +16,8 @@ FvwmBanner_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a fvwm-logo-current.xpm
 ## there are sometimes dependencies through functions in libfvwm
 ## so we might as well link against libXpm, if present.
 LDADD = -L$(top_builddir)/libs $(X_LIBS) -lfvwm -lm $(xpm_LIBS)  \
-	$(X_PRE_LIBS) $(Xinerama_LIBS) -lXext -lX11 $(X_EXTRA_LIBS) \
+	$(X_PRE_LIBS) $(XRandR_LIBS) -lXext -lX11 $(X_EXTRA_LIBS) \
 	$(png_LIBS) $(rsvg_LIBS) $(Xrender_LIBS) $(Xcursor_LIBS)
 
 AM_CPPFLAGS = -I$(top_srcdir) $(xpm_CFLAGS) $(X_CFLAGS) $(png_CFLAGS) \
-	$(Xrender_CFLAGS)
-
+	$(Xrender_CFLAGS) $(XRandR_CFLAGS)

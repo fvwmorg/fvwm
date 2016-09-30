@@ -828,16 +828,20 @@ static signed int expand_vars_extended(
 		if (!fw || IS_EWMH_DESKTOP(FW_W(fw))) {
 			return -1;
 		} else {
-			is_numeric = True;
+			is_numeric = False;
 
-			rectangle	g;
+			rectangle	 g;
+			const char	*mon_name;
 			get_unshaded_geometry(fw, &g);
 
-			val = FScreenOfPointerXY(g.x, g.y);
+			mon_name = FScreenOfPointerXY(g.x, g.y);
+			string = (char *)mon_name;
+
+			should_quote = True;
 		}
 		break;
 	case VAR_SCREEN:
-		is_numeric = True;
+		is_numeric = False;
 		val = Scr.screen;
 		break;
 	case VAR_SCHEDULE_LAST:

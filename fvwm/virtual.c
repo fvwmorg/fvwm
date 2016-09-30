@@ -2035,38 +2035,6 @@ void CMD_EdgeResistance(F_CMD_ARGS)
 	return;
 }
 
-void CMD_Xinerama(F_CMD_ARGS)
-{
-	int toggle;
-
-	toggle = ParseToggleArgument(action, NULL, -1, 0);
-	if (toggle == -1)
-	{
-		toggle = !FScreenIsEnabled();
-	}
-	if (!toggle != !FScreenIsEnabled())
-	{
-		Scr.flags.do_need_window_update = True;
-		Scr.flags.has_xinerama_state_changed = True;
-		FScreenOnOff(toggle);
-		broadcast_xinerama_state();
-	}
-
-	return;
-}
-
-void CMD_XineramaPrimaryScreen(F_CMD_ARGS)
-{
-	if (FScreenIsEnabled())
-	{
-		Scr.flags.do_need_window_update = True;
-		Scr.flags.has_xinerama_state_changed = True;
-	}
-	broadcast_xinerama_state();
-
-	return;
-}
-
 void CMD_DesktopSize(F_CMD_ARGS)
 {
 	int val[2];
