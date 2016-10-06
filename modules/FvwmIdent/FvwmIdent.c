@@ -1147,7 +1147,7 @@ void MakeList(void)
 	AddToList("Window ID:",     id);
 	AddToList("Desk:",          desktop);
 	if (FScreenIsEnabled()) {
-		sprintf(xin_str, "%d",
+		sprintf(xin_str, "%s",
 			FScreenOfPointerXY(target.frame_x, target.frame_y));
 		AddToList("Xinerama Screen:", xin_str);
 	}
