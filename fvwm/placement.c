@@ -1973,7 +1973,6 @@ static void __explain_placement(FvwmWindow *fw, pl_reason_t *reason)
 	char explanation[2048];
 	char *r;
 	char *s;
-	char t[32];
 	int do_show_page;
 	int is_placed_by_algo;
 
@@ -2099,11 +2098,11 @@ static void __explain_placement(FvwmWindow *fw, pl_reason_t *reason)
 			r = "bug";
 			break;
 		}
-		//FScreenSpecToString(t, 32, reason->screen.screen);
 		sprintf(
 			s, "  screen: %s: %d %d %dx%d (%s)\n",
-			t, reason->screen.g.x, reason->screen.g.y,
-			reason->screen.g.width, reason->screen.g.height, r);
+			reason->screen.screen, reason->screen.g.x,
+			reason->screen.g.y, reason->screen.g.width,
+			reason->screen.g.height, r);
 		s += strlen(s);
 		if (reason->screen.was_modified_by_ewmh_workingarea == 1)
 		{

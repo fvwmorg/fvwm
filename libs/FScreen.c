@@ -179,6 +179,11 @@ single_screen:
 	TAILQ_INSERT_HEAD(&monitor_q, m, entry);
 
 	already_initialised = 1;
+
+	TAILQ_FOREACH(m, &monitor_q, entry) {
+		fprintf(stderr, "Monitor: %s (x: %d, y: %d, w: %d, h: %d)\n",
+			m->name, m->coord.x, m->coord.y, m->coord.w, m->coord.h);
+	}
 }
 
 /* Intended to be called by modules.  Simply pass in the parameter from the
