@@ -166,6 +166,8 @@ void FScreenInit(Display *dpy)
 
 		XRRFreeCrtcInfo(crtc);
 		XRRFreeOutputInfo(oinfo);
+
+		no_of_screens++;
 	}
 	XRRFreeScreenResources(res);
 
