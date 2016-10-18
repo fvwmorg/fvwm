@@ -1633,8 +1633,6 @@ AC_OUTPUT(
 dnl
 	bin/fvwm-bug.1
 	bin/fvwm-config.1
-	bin/fvwm-convert-2.2.1
-	bin/fvwm-convert-2.4.1
 	bin/fvwm-convert-2.6.1
 	bin/fvwm-menu-desktop.1
 dnl	bin/fvwm-menu-directory.1
@@ -1671,7 +1669,6 @@ dnl
 	bin/fvwm-menu-directory
 	bin/fvwm-menu-desktop
 	bin/fvwm-menu-headlines
-	bin/fvwm-convert-2.4
 	bin/fvwm-convert-2.6
 dnl
 	utils/Makefile
