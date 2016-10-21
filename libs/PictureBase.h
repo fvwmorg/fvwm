@@ -17,6 +17,8 @@
 #define XpmSupport 0
 #endif
 
+/* FIXME: This will change when PNG support is disabled explicitly. */
+#define HAVE_PNG 1
 #ifdef HAVE_PNG
 #define PngSupport 1
 #else
