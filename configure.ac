@@ -1784,6 +1784,7 @@ dnl
 	rpm/fvwm.spec
 	debian/Makefile
 	debian/control
+	default-config/Makefile
 	doc/fvwm.ent
 	doc/footer.html
 	doc/Makefile
