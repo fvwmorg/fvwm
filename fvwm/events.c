@@ -1844,7 +1844,7 @@ void HandleButtonRelease(const evh_args_t *ea)
 	/* got a match, now process it */
 	if (action != NULL && (action[0] != 0))
 	{
-		execute_function(NULL, ea->exc, action, 0);
+		execute_function(NULL, ea->exc, action, NULL, 0);
 		WaitForButtonsUp(True);
 	}
 

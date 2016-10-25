@@ -4457,7 +4457,7 @@ void CMD_StrokeFunc(F_CMD_ARGS)
 		}
 		ecc.x.etrigger = &e;
 		exc2 = exc_clone_context(exc, &ecc, ECC_ETRIGGER);
-		execute_function(cond_rc, exc2, stroke_action, 0);
+		execute_function(cond_rc, exc2, stroke_action, pc, 0);
 		exc_destroy_context(exc2);
 	}
 
