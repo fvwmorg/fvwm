@@ -2,6 +2,34 @@ Note, the changes for the last STABLE release start with release
 2.6.0.
 
 -------------------------------------------------------------------
+Changes in stable release 2.6.7 (UNRELEASED)
+
+* New fvwm features:
+
+  - A new conitional command "Desk n" can restrict matching
+    windows to a specific desk.
+  - A new conditional command "Screen n" to restrict matching
+    windows on a given Xinerama screen.
+  - New expansion variable "w.screen" to ascertain the Xineram
+    screen number a window is on.
+  - New command "InfoStoreClear" to remove all items in the
+    InfoStore.
+
+* New module features:
+
+  - FvwmButtons learned a new option "Colorset" to its
+    ChangeButton command.
+
+* Bug fixes:
+
+  - A bug introduced in 2.6.6 could cause applications with
+    negative coordinates to be placed at strange positions.  This
+    affected for example acroread when switching to fullscreen
+    mode.  This has been fixed.
+  - FvwmButtons "Silent" option for dynamic ChangeButton commands
+    no longer loops infinitely.
+
+-------------------------------------------------------------------
 Changes in stable release 2.6.6 (15-Mar-2016)
 
 * New fvwm features:
@@ -225,10 +253,7 @@ Changes in stable release 2.6.0 (15-Apr-2011)
     flipping.
   - Fix NeverFocus windows from taking focus when opening menus,
     etc.
-
-
-  - Plus *MANY* other fixes, improvements, etc.  Please see the
-    docs/ANNOUNCE file from 2_6_0.
+  - Plus *MANY* other fixes, improvements, etc.
 -------------------------------------------------------------------
 
 -------------------------------------------------------------------
