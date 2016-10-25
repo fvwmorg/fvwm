@@ -1,3 +1,10 @@
+2016-10-25  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
+
+	* libs/FEvent.c (_fev_check_peek_args, FWeedIfEvents): Remove
+	has_predicate from structure.
+	(_fev_pred_weed_if): Properly check whether a predicate is present or
+	not.  This caused the weeding loop to dispose of Expose events.
+
 2015-11-09  Dan Espen  <despen@verizon.net>
 
 	* fvwm/add_window.c (interpolate_titleformat_name): Fix array bounds
