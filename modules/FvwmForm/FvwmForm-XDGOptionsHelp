@@ -104,6 +104,11 @@ DestroyModuleConfig  FvwmForm-XDGOptionsHelp: *
 *FvwmForm-XDGOptionsHelp:   Line    Left
 *FvwmForm-XDGOptionsHelp:   Line    " "
 *FvwmForm-XDGOptionsHelp:   Line    Left
+*FvwmForm-XDGOptionsHelp:   Text    "$[gt.Insert Menu Into:   ]"
+*FvwmForm-XDGOptionsHelp:   Text    "$[gt.Inserts the menu items into the given Menu.]"
+*FvwmForm-XDGOptionsHelp:   Line    Left
+*FvwmForm-XDGOptionsHelp:   Line    " "
+*FvwmForm-XDGOptionsHelp:   Line    Left
 *FvwmForm-XDGOptionsHelp:   Text    "$[gt.Output path:        ]"
 *FvwmForm-XDGOptionsHelp:   Text    "$[gt.Enter here the FULL path of the menu to store. Default path is $FVWM_USERDIR/.menu.]"
 *FvwmForm-XDGOptionsHelp:   Line    Left
