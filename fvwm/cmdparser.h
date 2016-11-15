@@ -44,7 +44,7 @@ typedef struct
 	char *line;
 	/* the current command line */
 	char *cline;
-	/* the expanded command line */
+	/* the expanded command line and whether it needs to be free'd */
 	char *expline;
 	unsigned char do_free_expline : 1;
 	/* the command name */

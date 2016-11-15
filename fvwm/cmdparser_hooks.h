@@ -13,11 +13,17 @@
 
 typedef struct
 {
-	/* in general, functions in this structure that return int return
+	/* In general, functions in this structure that return int return
 	 *    0: success
 	 *  > 0: unsuccessful but not an error condition
 	 *  < 0: unsuccessful, error
 	 */
+
+	/* Create the parser context that is used for processing a top level
+	 * command line.  Zeroes out *dest_context and sets dest_context->line,
+	 * dest_context->call_depth, dest_context->all_pos_args_string,
+	 * dest_context->pos_arg_tokens from the arguments and finally sets the
+	 * is_created flag to 1.  */
 	int (*create_context)(
 		/* context structure to initialise */
 		cmdparser_context_t *dest_context,
@@ -31,29 +37,33 @@ typedef struct
 		char *all_pos_args_string,
 		/* An array of the first CMDPARSER_NUM_POS_ARGS positional
 		 * arguments up to and excluding the first NULL pointer. Must
-		 * (not) all be NULL if all_pos_args_string is (not) NULL. */
+		 * all be (non-)NULL if all_pos_args_string is (non-)NULL. */
 		char *pos_arg_tokens[]
 		);
+	/* Does all work that the parser needs to do once at the start of the
+	 * line, like skipping spaces or handling comments.  If the return
+	 * value is > 0, the command line is syntactically correct but should
+	 * not be executed (for example, if it is a comment or empty).  */
 	int (*handle_line_start)(cmdparser_context_t *context);
-	/* Returns a set of or'ed flags of which prefixes are present on the
+	/* Return a set of or'ed flags of which prefixes are present on the
 	 * command line.  The prefixes are stripped.  */
 	cmdparser_prefix_flags_t (*handle_line_prefix)(
 		cmdparser_context_t *context);
-	/* parses and returns the command name or returns a NULL pointer if not
-	 * possible */
+	/* Parse and return the command name or return a NULL pointer if not
+	 * possible.  */
 	const char *(*parse_command_name)(
 		cmdparser_context_t *context, void *func_rc, const void *exc);
-	/* returns 1 if the stored command is a module configuration command
-	 * and 0 otherwise */
+	/* Returns1 if the stored command is a module configuration command
+	 * and 0 otherwise.  */
 	int (*is_module_config)(cmdparser_context_t *context);
-	/* expandeds the command line */
+	/* Expand the command line.  */
 	void (*expand_command_line)(
 		cmdparser_context_t *context, int is_addto, void *func_rc,
 		const void *exc);
 	/* Release the expline field from the context structure and return it.
 	 * It is then the responsibility of the caller to free() it. */
 	void (*release_expanded_line)(cmdparser_context_t *context);
-	/* Tries to find a builtin function, a complex function or a module
+	/* Try to find a builtin function, a complex function or a module
 	 * config line to execute and returns the type found or
 	 * CP_EXECTYPE_UNKNOWN if none of the above was identified.  For a
 	 * builtin or a complex funtion the pointer to the description is
