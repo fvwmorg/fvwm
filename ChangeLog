@@ -1,3 +1,8 @@
+2016-12-28  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
+
+	* fvwm/add_window.c (GetWindowSizeHintsWithCheck): Improve and simplify
+	size hints warnings.
+
 2016-10-25  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
 	* libs/FEvent.c (_fev_check_peek_args, FWeedIfEvents): Remove

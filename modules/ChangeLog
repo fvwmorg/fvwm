@@ -1,3 +1,8 @@
+2016-12-28  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
+
+	* FvwmIconMan/xmanager.c (release_manager_size, resize_window): Allow
+	resizing manager without warning.
+
 2014-11-14  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
 	* FvwmButtons/dynamic.c (parse_message_line): Do not strip whitespace
