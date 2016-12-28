@@ -1,5 +1,11 @@
 2016-12-28  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
+	* fvwm/events.c (test_map_request, test_withdraw_request): Removed.
+	(HandleMapRequestKeepRaised, HandleUnmapNotify): Fix disappearing
+	windows.
+
+2016-12-28  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
+
 	* fvwm/add_window.c (GetWindowSizeHintsWithCheck): Improve and simplify
 	size hints warnings.
 
