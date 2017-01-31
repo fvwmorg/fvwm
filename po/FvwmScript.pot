@@ -61,11 +61,11 @@ msgid "Volume:"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-BellSetup: line 156
-msgid "Pitch(Hz):"
+msgid "Pitch (Hz):"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-BellSetup: line 182
-msgid "Duration(ms):"
+msgid "Duration (ms):"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-BellSetup: line 207
@@ -81,11 +81,11 @@ msgid "Click Volume (%)"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-KeyboardSetup: line 133
-msgid "AutoRepeat On"
+msgid "AutoRepeat"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-KeyboardSetup: line 159
-msgid "Start Delay:  "
+msgid "Start Delay:"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-KeyboardSetup: line 185
@@ -153,7 +153,7 @@ msgid "Blank"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-ScreenSetup: line 528
-msgid "Timeout(s):"
+msgid "Timeout (s):"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-ScreenSetup: line 554
@@ -161,7 +161,7 @@ msgid "Pattern"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-ScreenSetup: line 569
-msgid "Cycle(s):"
+msgid "Cycle (s):"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-ScreenSetup: line 614
@@ -180,15 +180,15 @@ msgid "Disable"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-ScreenSetup: line 657
-msgid "Standby(s):"
+msgid "Standby (s):"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-ScreenSetup: line 684
-msgid "Suspend(s):"
+msgid "Suspend (s):"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-ScreenSetup: line 711
-msgid "Off(s):"
+msgid "Off (s):"
 msgstr ""
 
 #. ./modules/FvwmScript/Scripts/FvwmScript-ScreenSetup: line 754
