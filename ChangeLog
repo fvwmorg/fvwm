@@ -1,5 +1,9 @@
 2017-03-01  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
+	* fvwm/bindings.c (ParseBinding): Fix pass-through bindings with "--".
+
+2017-03-01  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
+
 	* fvwm/style.h (DEFAULT_TITLE_FORMAT): Moved to defaults.h.
 	* fvwm/ewmh_names.c (EWMH_WMIconName, EWMH_WMName):
 	* fvwm/events.c (HandlePropertyNotify): Rewrite handling of XA_XM_NAME
