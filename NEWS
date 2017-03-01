@@ -12,6 +12,7 @@ Changes in stable release 2.6.8 (not released yet)
     fullscreen and normal state.
   - Updating the window and icon title should now work regardless
     of the format string.
+  - Fix pass-throug bindings with a "--" action.
 
 -------------------------------------------------------------------
 Changes in stable release 2.6.7 (06-Mar-2016)
