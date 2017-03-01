@@ -1,3 +1,28 @@
+2017-03-01  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
+
+	* fvwm/style.h (DEFAULT_TITLE_FORMAT): Moved to defaults.h.
+	* fvwm/ewmh_names.c (EWMH_WMIconName, EWMH_WMName):
+	* fvwm/events.c (HandlePropertyNotify): Rewrite handling of XA_XM_NAME
+	and XA_XM_ICON_NAME to use the new code from add_window.c.
+	* fvwm/session.c (MatchWinToSM): Use setup_visible_names.
+	* fvwm/update.c (apply_window_updates): Use setup_visible_names.
+	* fvwm/add_window.c (setup_visible_names): Replaced setup_visible_name
+	with this new function thant handles icon and window title changes
+	simultaneously.
+	(update_window_names): Helper function that takes care of the details
+	when the window or icon name has changed.
+	(setup_icon, AddWindow): Use setup_visible_names and
+	broadcast_window_names.
+	(interpolate_titleformat_name): Return by which names the string is
+	affected (title or icon title or both).
+	Use new DEFAULT_ICON_TITLE_FORMAT.
+	(broadcast_window_names): Helper function.
+	* fvwm/add_window.h (setup_visible_names, update_window_names): Export
+	new functions.
+	* libs/defaults.h (DEFAULT_TITLE_FORMAT): Moved from style.h to
+	defaults.h
+	(DEFAULT_ICON_TITLE_FORMAT): New.
+
 2016-12-28  Dominik Vogt  <dominik(dot)vogt(at)gmx(dot)de>
 
 	* fvwm/events.c (test_map_request, test_withdraw_request): Removed.
