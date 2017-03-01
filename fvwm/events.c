@@ -3365,6 +3365,8 @@ void HandlePropertyNotify(const evh_args_t *ea)
 	}
 	case XA_WM_NAME:
 	{
+		int changed_names;
+
 		flush_property_notify_stop_at_event_type(
 			te->xproperty.atom, FW_W(fw), 0, 0);
 		if (XGetGeometry(
@@ -3411,17 +3413,7 @@ void HandlePropertyNotify(const evh_args_t *ea)
 		{
 			fw->name.name = NoName; /* must not happen */
 		}
-		setup_visible_name(fw, False);
-		BroadcastWindowIconNames(fw, True, False);
-
-		/* fix the name in the title bar */
-		if (!IS_ICONIFIED(fw))
-		{
-			border_draw_decorations(
-				fw, PART_TITLE, (Scr.Hilite == fw), True,
-				CLEAR_ALL, NULL, NULL);
-		}
-		EWMH_SetVisibleName(fw, False);
+		changed_names = 1;
 		/*
 		 * if the icon name is NoName, set the name of the icon to be
 		 * the same as the window
@@ -3437,10 +3429,9 @@ void HandlePropertyNotify(const evh_args_t *ea)
 )
 		{
 			fw->icon_name = fw->name;
-			setup_visible_name(fw, True);
-			BroadcastWindowIconNames(fw, False, True);
-			RedoIconName(fw);
+			changed_names |= 2;
 		}
+		update_window_names(fw, changed_names);
 		break;
 	}
 	case XA_WM_ICON_NAME:
@@ -3495,10 +3486,7 @@ void HandlePropertyNotify(const evh_args_t *ea)
 			fw->icon_name.name = fw->name.name;
 			SET_WAS_ICON_NAME_PROVIDED(fw, 0);
 		}
-		setup_visible_name(fw, True);
-		BroadcastWindowIconNames(fw, False, True);
-		RedoIconName(fw);
-		EWMH_SetVisibleName(fw, True);
+		update_window_names(fw, 2);
 		break;
 	}
 	case XA_WM_HINTS:
