@@ -303,7 +303,7 @@ if test ! x"$SED" = x; then
 			p
 			n
 			bfindcmd
-	' < fvwm/functable.c`
+	' < $srcdir/fvwm/functable.c`
 	DOC_COMMANDS=`echo $DOC_COMMANDS`
 	# with .xml suffix
 	DOC_COMMANDS_XML=`for i in $DOC_COMMANDS; do echo ${i}.xml; done`
@@ -338,7 +338,7 @@ if test ! x"$SED" = x; then
 	DOC_MODULES_HTML=`for i in $DOC_MODULES; do echo ${i}.html; done`
 	DOC_MODULES_HTML=`echo $DOC_MODULES_HTML`
 	# extract man page section names
-	DOC_SECTIONS=`cat doc/fvwm/sections`
+	DOC_SECTIONS=`cat $srcdir/doc/fvwm/sections`
 	DOC_SECTIONS=`echo $DOC_SECTIONS`
 	DOC_SECTIONS_XML=`for i in $DOC_SECTIONS; do echo ${i}.xml; done`
 	DOC_SECTIONS_XML=`echo $DOC_SECTIONS_XML`
