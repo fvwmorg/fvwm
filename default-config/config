@@ -326,59 +326,59 @@ AddToMenu   BGMenu "Wallpapers" Title
 # Window Operations Menus
 DestroyMenu MenuWindowOps
 AddToMenu   MenuWindowOps
-+ "Move"      Move
-+ "Resize"    Resize
-+ "Iconify"   Iconify
-+ "Maximize"  Maximize
-+ "Shade"     WindowShade
-+ "Stick"     Stick
++ "$[gt.&Move]"         Move
++ "$[gt.&Resize]"       Resize
++ "$[gt.Iconify]"       Iconify
++ "$[gt.Maximize]"      Maximize
++ "$[gt.Shade]"         WindowShade
++ "$[gt.Stick]"         Stick
 + "" Nop
-+ "Close"     Close
-+ "More..."   Menu MenuWindowOpsLong This 0 0
++ "$[gt.&Close]"        Close
++ "$[gt.More&...]"      Menu MenuWindowOpsLong This 0 0
 
 DestroyMenu MenuWindowOpsLong
 AddToMenu   MenuWindowOpsLong
-+ "Move"                Move
-+ "Resize"              Resize
-+ "(De)Iconify"         Iconify
-+ "(Un)Maximize"        Maximize
-+ "(Un)Shade"           WindowShade
-+ "(Un)Sticky"		Stick
-+ "(No)TitleBar"	Pick (CirculateHit) ToggleTitle
-+ "Send To"             Popup MenuSendTo
++ "$[gt.&Move]"         Move
++ "$[gt.&Resize]"       Resize
++ "$[gt.(De)&Iconify]"  Iconify
++ "$[gt.(Un)Ma&ximize]" Maximize
++ "$[gt.(Un)Shade]"     WindowShade
++ "$[gt.(Un)&Sticky]"   Stick
++ "$[gt.(No)TitleBar"]  Pick (CirculateHit) ToggleTitle
++ "$[gt.Send To Desk]"  Popup MenuSendToDesk
 + "" Nop
-+ "Close"               Close
-+ "Destroy"             Destroy
++ "$[gt.&Close]"        Close
++ "$[gt.Destroy]"       Destroy
 + "" Nop
-+ "Raise"		Raise
-+ "Lower"		Lower
++ "$[gt.R&aise]"        Raise
++ "$[gt.&Lower]"        Lower
 + "" Nop
-+ "StaysOnTop"          Pick (CirculateHit) Layer 0 6
-+ "StaysPut"            Pick (CirculateHit) Layer 0 4
-+ "StaysOnBottom"       Pick (CirculateHit) Layer 0 2
++ "$[gt.StaysOnTop]"    Pick (CirculateHit) Layer 0 6
++ "$[gt.StaysPut]"      Pick (CirculateHit) Layer 0 4
++ "$[gt.StaysOnBottom]" Pick (CirculateHit) Layer 0 2
 + "" Nop
-+ "Identify"            Module FvwmIdent
++ "$[gt.Identify]"      Module FvwmIdent
 
 DestroyMenu MenuIconOps
 AddToMenu   MenuIconOps
-+ "(De)Iconify"         Iconify
-+ "(Un)Maximize"        Maximize
-+ "(Un)Shade"           WindowShade
-+ "(Un)Sticky"		Stick
-+ "(No)TitleBar"	Pick (CirculateHit) ToggleTitle
-+ "Send To"             Popup MenuSendTo
++ "$[gt.(De)&Iconify]"  Iconify
++ "$[gt.(Un)Ma&ximize]" Maximize
++ "$[gt.(Un)Shade]"     WindowShade
++ "$[gt.(Un)&Sticky]"   Stick
++ "$[gt.(No)TitleBar]"  Pick (CirculateHit) ToggleTitle
++ "$[gt.Send To Desk]"  Popup MenuSendToDesk
 + "" Nop
-+ "Close"               Close
-+ "Destroy"             Destroy
++ "$[gt.&Close]"        Close
++ "$[gt.Destroy]"       Destroy
 + "" Nop
-+ "Raise"		Raise
-+ "Lower"		Lower
++ "$[gt.R&aise]"        Raise
++ "$[gt.&Lower]"        Lower
 + "" Nop
-+ "StaysOnTop"          Pick (CirculateHit) Layer 0 6
-+ "StaysPut"            Pick (CirculateHit) Layer 0 4
-+ "StaysOnBottom"       Pick (CirculateHit) Layer 0 2
++ "$[gt.StaysOnTop]"    Pick (CirculateHit) Layer 0 6
++ "$[gt.StaysPut]"      Pick (CirculateHit) Layer 0 4
++ "$[gt.StaysOnBottom]" Pick (CirculateHit) Layer 0 2
 + "" Nop
-+ "Identify"            Module FvwmIdent
++ "$[gt.Identify]"      Module FvwmIdent
 
 DestroyMenu MenuSendTo
 AddToMenu MenuSendTo
@@ -388,10 +388,11 @@ AddToMenu MenuSendTo
 
 DestroyMenu MenuSendToDesk
 AddToMenu   MenuSendToDesk
-+ "Desk 0"	MoveToDesk 0 0
-+ "Desk 1"	MoveToDesk 0 1
-+ "Desk 2"	MoveToDesk 0 2
-+ "Desk 3"	MoveToDesk 0 3
++ "$[gt.Current]"       MoveToDesk
++ "$[gt.Desk 0]"        MoveToDesk 0 0
++ "$[gt.Desk 1]"        MoveToDesk 0 1
++ "$[gt.Desk 2]"        MoveToDesk 0 2
++ "$[gt.Desk 3]"        MoveToDesk 0 3
 
 DestroyMenu MenuSendToPage
 AddToMenu   MenuSendToPage
