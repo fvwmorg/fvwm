@@ -24,8 +24,6 @@ FvwmCommand.pm: findcmd.pl $(top_srcdir)/fvwm/functable.c
 
 CLEANFILES = FvwmCommand.sh FvwmCommand.pm
 
-FvwmCommand_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
-
 man_MANS = FvwmCommand.1
 
 EXTRA_DIST = $(man_MANS) findcmd.pl

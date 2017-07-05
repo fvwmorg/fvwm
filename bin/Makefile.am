@@ -2,7 +2,6 @@
 
 bin_PROGRAMS = fvwm-root
 fvwm_root_SOURCE= fvwm-root.c
-fvwm_root_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
 
 bin_SCRIPTS = fvwm-config fvwm-bug fvwm-perllib \
 	fvwm-convert-2.6 \

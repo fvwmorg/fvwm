@@ -30,8 +30,6 @@ fvwm_SOURCES = \
 	menucmd.c ewmh_names.c icccm2.c windowshade.c focus_policy.c repeat.c \
 	execcontext.c menugeometry.c menudim.c condrc.c infostore.c
 
-fvwm_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
-
 LDADD = \
 	-L$(top_builddir)/libs -lfvwm $(Xft_LIBS) $(X_LIBS) $(xpm_LIBS) \
 	$(stroke_LIBS) $(X_PRE_LIBS) $(Xinerama_LIBS) -lXext -lX11 \

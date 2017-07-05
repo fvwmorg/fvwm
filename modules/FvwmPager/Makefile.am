@@ -13,7 +13,6 @@ config_DATA = \
   ConfigFvwmPager
 
 FvwmPager_SOURCES = FvwmPager.c FvwmPager.h x_pager.c
-FvwmPager_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
 
 ## Xpm note: while this module may not depend on Xpm explicitly,
 ## there are sometimes dependencies through functions in libfvwm

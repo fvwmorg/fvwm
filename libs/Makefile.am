@@ -1,9 +1,10 @@
 ## Process this file with automake to create Makefile.in
 
-noinst_LIBRARIES = libfvwm.a
+verpkglibdir = $(pkglibdir)/@VERSION@
+verpkglib_LTLIBRARIES = libfvwm.la
 
 ## please keep .c files in largest first order to speed up parallel makes
-libfvwm_a_SOURCES = \
+libfvwm_la_SOURCES = \
 	BidiJoin.h Bindings.h ClientMsg.h ColorUtils.h Colorset.h \
 	CombineChars.h Cursor.h Event.h FBidi.h FEvent.h FGettext.h FImage.h \
 	FRender.h FRenderInit.h FRenderInterface.h FSMlib.h FScreen.h \
@@ -20,7 +21,7 @@ libfvwm_a_SOURCES = \
 	BidiJoin.c Flocale.c PictureUtils.c FScreen.c Graphics.c \
 	PictureGraphics.c Bindings.c FlocaleCharset.c Parse.c \
 	PictureImageLoader.c Colorset.c ColorUtils.c CombineChars.c Module.c \
-	FRender.c Ficonv.c envvar.c Fft.c  gravity.c \
+	FRender.c Ficonv.c envvar.c Fft.c \
 	XResource.c FEvent.c FImage.c WinMagic.c Target.c Picture.c XError.c \
 	queue.c fvwmsignal.c System.c PictureBase.c Cursor.c Strings.c \
 	fvwmrect.c FRenderInit.c safemalloc.c  FBidi.c \
@@ -28,7 +29,10 @@ libfvwm_a_SOURCES = \
 	FGettext.c Rectangles.c timeout.c flist.c charmap.c wcontext.c \
 	modifiers.c fsm.c FTips.c fio.c fvwmlib.c
 
-libfvwm_a_LIBADD = @LIBOBJS@
+libfvwm_la_LIBADD = @LIBOBJS@
+libfvwm_la_LDFLAGS = $(xpm_LIBS) $(Xft_LIBS) $(X_LIBS) $(iconv_LIBS) \
+	$(Xrender_LIBS) $(Bidi_LIBS) $(png_LIBS) $(rsvg_LIBS) $(intl_LIBS) \
+	$(X_PRE_LIBS) $(Xcursor_LIBS) $(Xinerama_LIBS) $(X_EXTRA_LIBS) -lXext
 
 AM_CPPFLAGS = -I$(top_srcdir) $(xpm_CFLAGS) $(Xft_CFLAGS) $(X_CFLAGS) \
 	$(iconv_CFLAGS) $(Xrender_CFLAGS) $(Bidi_CFLAGS) $(png_CFLAGS) \

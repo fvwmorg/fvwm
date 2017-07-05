@@ -11,7 +11,7 @@ module_PROGRAMS = FvwmScript
 
 FvwmScript_SOURCES = FvwmScript.c Instructions.c libyywrap.c \
 	types.h scanner.c script.c script.h
-FvwmScript_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a Widgets/libWidgets.a
+FvwmScript_DEPENDENCIES = Widgets/libWidgets.a
 
 YFLAGS = -d
 

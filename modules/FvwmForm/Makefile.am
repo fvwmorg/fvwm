@@ -32,8 +32,6 @@ EXTRA_DIST = $(man_MANS) Changes \
 
 FvwmForm_SOURCES = FvwmForm.c FvwmForm.h ReadXServer.c ParseCommand.c
 
-FvwmForm_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
-
 config_DATA =             \
   FvwmForm-Form           \
   FvwmForm-Capture        \

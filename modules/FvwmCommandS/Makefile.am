@@ -7,8 +7,6 @@ module_PROGRAMS = FvwmCommandS
 
 FvwmCommandS_SOURCES = FvwmCommandS.c FvwmCommand.h fifos.c
 
-FvwmCommandS_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
-
 LDADD = -L$(top_builddir)/libs -lfvwm
 
 # FIXME:

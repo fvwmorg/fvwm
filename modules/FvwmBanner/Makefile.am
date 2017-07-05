@@ -10,7 +10,7 @@ man_MANS = FvwmBanner.1
 EXTRA_DIST = $(man_MANS) fvwm-logo-current.xpm fvwm-logo-current.xbm
 
 FvwmBanner_SOURCES = FvwmBanner.c
-FvwmBanner_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a fvwm-logo-current.xpm
+FvwmBanner_DEPENDENCIES = fvwm-logo-current.xpm
 
 ## Xpm note: while this module may not depend on Xpm explicitly,
 ## there are sometimes dependencies through functions in libfvwm

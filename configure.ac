@@ -1356,6 +1356,8 @@ dnl lex+yacc now only needed for FvwmScript developers when syntax is changed
 dnl AM_PROG_LEX
 dnl AC_PROG_YACC
 
+AC_PROG_LIBTOOL
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
