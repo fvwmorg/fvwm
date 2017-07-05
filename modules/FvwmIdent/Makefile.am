@@ -13,7 +13,6 @@ config_DATA = \
   ConfigFvwmIdent
 
 FvwmIdent_SOURCES = FvwmIdent.c FvwmIdent.h
-FvwmIdent_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
 
 ## Xpm note: while this module may not depend on Xpm explicitly,
 ## there are sometimes dependencies through functions in libfvwm

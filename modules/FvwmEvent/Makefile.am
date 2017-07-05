@@ -8,7 +8,6 @@ man_MANS = FvwmEvent.1
 EXTRA_DIST = $(man_MANS)
 
 FvwmEvent_SOURCES = FvwmEvent.c
-FvwmEvent_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
 
 # This module behaves like the old FvwmAudio when invoked with that name.
 install-exec-local: ../../config.h Makefile

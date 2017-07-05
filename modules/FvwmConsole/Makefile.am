@@ -11,9 +11,6 @@ module_SCRIPTS = FvwmConsoleC.pl
 FvwmConsole_SOURCES = FvwmConsole.c FvwmConsole.h
 FvwmConsoleC_SOURCES = FvwmConsoleC.c FvwmConsole.h getline.c
 
-FvwmConsole_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
-FvwmConsoleC_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
-
 man_MANS = FvwmConsole.1 FvwmConsoleC.pl.1
 EXTRA_DIST = FvwmConsoleC.pl.in $(man_MANS) Changes .fvwm2rc.sample
 

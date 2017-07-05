@@ -16,8 +16,6 @@ FvwmButtons_SOURCES = \
 	icons.c icons.h misc.c misc.h output.c parse.c parse.h \
 	dynamic.c dynamic.h
 
-FvwmButtons_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
-
 ## Xpm note: while this module may not depend on Xpm explicitly,
 ## there are sometimes dependencies through functions in libfvwm
 ## so we might as well link against libXpm, if present.
