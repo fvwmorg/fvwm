@@ -286,6 +286,11 @@ Bool FScreenIsEnabled(void)
 	return (!is_xinerama_enabled || num_screens == 0) ? False : True;
 }
 
+int FScreenNumberOfScreens(void)
+{
+	return is_xinerama_enabled ? num_screens : 0;
+}
+
 Bool FScreenIsSLSEnabled(void)
 {
 	return is_sls_enabled;

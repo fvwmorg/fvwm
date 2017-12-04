@@ -47,6 +47,7 @@ void FScreenConfigureModule(char *args);
 const char* FScreenGetConfiguration(void); /* For use by fvwm */
 void FScreenSetDefaultModuleScreen(char *scr_spec);
 void FScreenDisableRandR(void);
+int FScreenNumberOfScreens(void);
 
 void FScreenSetPrimaryScreen(int scr);
 

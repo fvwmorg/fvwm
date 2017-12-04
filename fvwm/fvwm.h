@@ -970,6 +970,7 @@ typedef struct FvwmWindow
 	int ewmh_normal_layer; /* for restoring non ewmh layer */
 	/* memory for the initial _NET_WM_STATE */
 	unsigned long ewmh_hint_desktop;
+	Bool fullscreen_monitors_set; /* has seen _NET_WM_FULLSCREEN_MONITORS */
 
 	/* For the purposes of restoring attributes before/after a window goes
 	 * into fullscreen.
