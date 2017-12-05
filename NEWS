@@ -7,7 +7,7 @@ Changes in stable release 2.6.8 (UNRELEASED)
 * New fvwm features:
 
   - Implementation of _NET_WM_FULLSCREEN_MONITORS EWMH feature, as
-    used e.g. by VirtualBox and VMware Player for Xinerama setups
+    used e.g. by VirtualBox and VMware Workstation for Xinerama setups
     using multiple monitors.
 
 * Bug fixes:
