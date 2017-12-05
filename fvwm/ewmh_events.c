@@ -467,6 +467,60 @@ int ewmh_MoveResize(
 	return 0;
 }
 
+int ewmh_WMFullscreenMonitors(
+	FvwmWindow *fw, XEvent *ev, window_style *style, unsigned long any)
+{
+	int top, bottom, left, right, num_screens;
+	Bool had_fsmonitors_set = fw->fullscreen_monitors_set;
+
+	if (ev == NULL)
+	{
+		return 0;
+	}
+
+	if ((num_screens = FScreenNumberOfScreens()) == 0)
+	{
+		/* no Xinerama (or disabled) */
+		return 0;
+	}
+
+	fw->fullscreen_monitors_set = False;
+
+	top = (int)ev->xclient.data.l[0];
+	bottom = (int)ev->xclient.data.l[1];
+	left = (int)ev->xclient.data.l[2];
+	right = (int)ev->xclient.data.l[3];
+	if (top < num_screens ||
+	    bottom < num_screens ||
+	    left < num_screens ||
+	    right < num_screens)
+	{
+		fw->fullscreen_monitors_set = True;
+	}
+
+	if (fw->fullscreen_monitors_set)
+	{
+		long data[4];
+		data[0] = top;
+		data[1] = bottom;
+		data[2] = left;
+		data[3] = right;
+
+		ewmh_ChangeProperty(FW_W(fw),
+			"_NET_WM_FULLSCREEN_MONITORS",
+			EWMH_ATOM_LIST_CLIENT_WIN,
+			(unsigned char *)data, 4);
+	}
+	else if (had_fsmonitors_set)
+	{
+		ewmh_DeleteProperty(FW_W(fw),
+			"_NET_WM_FULLSCREEN_MONITORS",
+			EWMH_ATOM_LIST_CLIENT_WIN);
+	}
+
+	return 0;
+}
+
 /*
  * WM_STATE*
  */

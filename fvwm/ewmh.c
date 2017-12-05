@@ -126,6 +126,7 @@ ewmh_atom ewmh_atom_client_win[] =
 	ENTRY("_NET_MOVERESIZE_WINDOW", XA_WINDOW,   ewmh_MoveResizeWindow),
 	ENTRY("_NET_RESTACK_WINDOW",    XA_WINDOW,   ewmh_RestackWindow),
 	ENTRY("_NET_WM_DESKTOP",        XA_CARDINAL, ewmh_WMDesktop),
+	ENTRY("_NET_WM_FULLSCREEN_MONITORS", XA_CARDINAL, ewmh_WMFullscreenMonitors),
 	ENTRY("_NET_WM_MOVERESIZE",     XA_WINDOW,   ewmh_MoveResize),
 	ENTRY("_NET_WM_STATE",          XA_ATOM,     ewmh_WMState),
 	{NULL,0,0,0}

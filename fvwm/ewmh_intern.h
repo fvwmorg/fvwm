@@ -133,6 +133,8 @@ int ewmh_RestackWindow(
 	FvwmWindow *fw, XEvent *ev, window_style *style, unsigned long any);
 int ewmh_WMDesktop(
 	FvwmWindow *fw, XEvent *ev, window_style *style, unsigned long any);
+int ewmh_WMFullscreenMonitors(
+	FvwmWindow *fw, XEvent *ev, window_style *style, unsigned long any);
 int ewmh_MoveResize(
 	FvwmWindow *fw, XEvent *ev, window_style *style, unsigned long any);
 
