@@ -2196,13 +2196,6 @@ ENTER_DBG((stderr, "en: exit: found LeaveNotify\n"));
 	{
 		char *edge_command = NULL;
 
-		if (
-			Scr.UnknownWinFocused != None &&
-			(sf = get_focus_window()) != NULL &&
-			sf == Scr.StolenFocusFvwmWin)
-		{
-			__refocus_stolen_focus_win(ea);
-		}
 		/* check for edge commands */
 		if (ewp->window == Scr.PanFrameTop.win)
 		{
@@ -2220,6 +2213,15 @@ ENTER_DBG((stderr, "en: exit: found LeaveNotify\n"));
 		{
 			edge_command = Scr.PanFrameRight.command;
 		}
+
+		if (
+			Scr.UnknownWinFocused != None &&
+			(sf = get_focus_window()) != NULL &&
+			sf == Scr.StolenFocusFvwmWin)
+		{
+			__refocus_stolen_focus_win(ea);
+		}
+
 		if (edge_command && ewp->mode == NotifyUngrab &&
 		    ewp->detail == NotifyAncestor)
 		{
