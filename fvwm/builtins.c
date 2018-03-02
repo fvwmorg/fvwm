@@ -4473,6 +4473,7 @@ void CMD_State(F_CMD_ARGS)
 		return;
 	}
 	toggle = ParseToggleArgument(action, NULL, -1, 0);
+	EWMH_GroupState(fw, state);
 	state = (1 << state);
 	switch (toggle)
 	{

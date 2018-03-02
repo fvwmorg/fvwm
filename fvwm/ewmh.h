@@ -27,6 +27,8 @@ void EWMH_SetNumberOfDesktops(void);
 void EWMH_SetDesktopViewPort(void);
 void EWMH_SetDesktopGeometry(void);
 
+void EWMH_GroupState(FvwmWindow *, unsigned int);
+
 void EWMH_SetActiveWindow(Window w);
 void EWMH_SetWMDesktop(FvwmWindow *fw);
 void EWMH_SetWMState(FvwmWindow *fw, Bool do_restore);

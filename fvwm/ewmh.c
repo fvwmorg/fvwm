@@ -615,6 +615,13 @@ void EWMH_SetWMDesktop(FvwmWindow *fw)
 	return;
 }
 
+void EWMH_GroupState(FvwmWindow *fw, unsigned int desk)
+{
+	ewmh_ChangeProperty(
+		FW_W(fw), "_NET_WM_DESKTOP", EWMH_ATOM_LIST_CLIENT_WIN,
+		(unsigned char *)&desk, 1);
+}
+
 /*
  *  fvwm must maintain the _NET_WM_STATE
  */
