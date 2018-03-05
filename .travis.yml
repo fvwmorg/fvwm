@@ -9,34 +9,36 @@ matrix:
           env: CFLAGS="-g -O2 -Wall -Wpointer-arith -fno-strict-aliasing -Werror -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -Wno-missing-field-initializers"
         - compiler: clang
           env: CFLAGS="-g -O2"
-addons:
-    apt:
-    packages:
-    - debhelper
-    - autotools-dev
-    - dh-autoreconf
-    - file
-    - fontconfig
-    - gettext
-    - libfontconfig-dev
-    - libfreetype6-dev
-    - libfribidi-dev
-    - libncurses5-dev
-    - libreadline-dev
-    - libpng-dev
-    - libsm-dev
-    - libx11-dev
-    - libxcursor-dev
-    - libxext-dev
-    - libxft-dev
-    - libxi-dev
-    - x11proto-xinerama-dev
-    - libxpm-dev
-    - libxrender-dev
-    - libxt-dev
-    - sharutils
-    - xsltproc
-    - build-essential
+before_script:
+        - sudo apt-get -qq update
+        - sudo apt-get -y install
+          debhelper
+          autotools-dev
+          dh-autoreconf
+          file
+          fontconfig
+          gettext
+          libfontconfig-dev
+          libfreetype6-dev
+          libfribidi-dev
+          libncurses5-dev
+          libreadline-dev
+          libpng-dev
+          libsm-dev
+          libx11-dev
+          libxcursor-dev
+          libxext-dev
+          libxft-dev
+          libxrandr-dev
+          x11proto-randr-dev
+          libxi-dev
+          x11proto-xinerama-dev
+          libxpm-dev
+          libxrender-dev
+          libxt-dev
+          sharutils
+          xsltproc
+          build-essential
 script: (CFLAGS= ./autogen.sh) && make
 notifications:
         irc:
