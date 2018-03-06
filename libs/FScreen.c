@@ -32,6 +32,8 @@
 #	define IS_RANDR_ENABLED 0
 #endif
 
+#define GLOBAL_SCREEN_NAME "_global"
+
 /* In fact, only corners matter -- there will never be GRAV_NONE */
 enum {GRAV_POS = 0, GRAV_NONE = 1, GRAV_NEG = 2};
 static int grav_matrix[3][3] =
@@ -42,13 +44,14 @@ static int grav_matrix[3][3] =
 };
 #define DEFAULT_GRAVITY NorthWestGravity
 
-static Bool already_initialised;
 static Display *disp;
 static int no_of_screens;
 
 static struct monitor	*FindScreenOfXY(int x, int y);
 static struct monitor	*monitor_get_current(void);
 static struct monitor	*monitor_new(void);
+static void		 monitor_create_randr_region(struct monitor *m,
+	const char *, struct coord *, int);
 
 static void GetMouseXY(XEvent *eventp, int *x, int *y)
 {
@@ -107,23 +110,22 @@ void FScreenInit(Display *dpy)
 {
 	XRRScreenResources	*res = NULL;
 	XRROutputInfo		*oinfo = NULL;
-	XRRCrtcInfo		*crtc = NULL;
+	XRRCrtcInfo		*crtc_info = NULL;
+	RROutput		 rr_output, rr_output_primary;
 	struct monitor		*m;
-	int			 i;
+	struct coord		 coord;
 	int			 err_base = 0, event = 0;
 	int			 is_randr_present = 0;
+	int			 iscres, is_primary = 0;
 
 	disp = dpy;
-
-	if (already_initialised)
-		return;
 
 	TAILQ_INIT(&monitor_q);
 
 	is_randr_present = XRRQueryExtension(dpy, &event, &err_base);
 
 	if (FScreenIsEnabled() && !is_randr_present) {
-		/* Something went wrong.   Shouldn't we try Xinerama here? */
+		/* Something went wrong. */
 		fprintf(stderr, "Couldn't initialise XRandR: %s\n",
 			strerror(errno));
 		fprintf(stderr, "Falling back to single screen...\n");
@@ -139,32 +141,46 @@ void FScreenInit(Display *dpy)
 		goto single_screen;
 	}
 
-	for (i = 0; i < res->noutput; i++) {
-		oinfo = XRRGetOutputInfo(dpy, res, res->outputs[i]);
+	for (iscres = 0; iscres < res->ncrtc; iscres++) {
+		crtc_info = XRRGetCrtcInfo(dpy, res, res->crtcs[iscres]);
+
+		if (crtc_info->noutput == 0) {
+			fprintf(stderr, "Screen found; no crtc present\n");
+			XRRFreeCrtcInfo(crtc_info);
+			continue;
+		}
+
+		rr_output = crtc_info->outputs[0];
+		rr_output_primary = XRRGetOutputPrimary(dpy,
+			DefaultRootWindow(dpy));
+
+		if (rr_output == rr_output_primary)
+			is_primary = 1;
+		else
+			is_primary = 0;
+
+		oinfo = XRRGetOutputInfo(dpy, res, rr_output);
 
 		if (oinfo == NULL)
 			continue;
 
-		if (oinfo->connection != RR_Connected)
-			continue;
-
-		crtc = XRRGetCrtcInfo(dpy, res, oinfo->crtc);
-
-		if (crtc == NULL || oinfo->crtc == None) {
+		if (oinfo->connection != RR_Connected) {
+			fprintf(stderr, "Tried to create monitor '%s' "
+				"but not connected", oinfo->name);
 			XRRFreeOutputInfo(oinfo);
+			XRRFreeCrtcInfo(crtc_info);
 			continue;
 		}
 
 		m = monitor_new();
-		m->coord.x = crtc->x;
-		m->coord.y = crtc->y;
-		m->coord.w = crtc->width;
-		m->coord.h = crtc->height;
-		m->name = xstrdup(oinfo->name);
+		coord.x = crtc_info->x;
+		coord.y = crtc_info->y;
+		coord.w = crtc_info->width;
+		coord.h = crtc_info->height;
 
-		TAILQ_INSERT_TAIL(&monitor_q, m, entry);
+		monitor_create_randr_region(m, oinfo->name, &coord, is_primary);
 
-		XRRFreeCrtcInfo(crtc);
+		XRRFreeCrtcInfo(crtc_info);
 		XRRFreeOutputInfo(oinfo);
 
 		no_of_screens++;
@@ -173,19 +189,32 @@ void FScreenInit(Display *dpy)
 
 single_screen:
 	m = monitor_new();
-	m->coord.x = 0;
-	m->coord.y = 0;
-	m->coord.w = DisplayWidth(disp, DefaultScreen(disp));
-	m->coord.h = DisplayHeight(disp, DefaultScreen(disp));
-	m->name = xstrdup("global");
-	TAILQ_INSERT_HEAD(&monitor_q, m, entry);
+	coord.x = 0;
+	coord.y = 0;
+	coord.w = DisplayWidth(disp, DefaultScreen(disp));
+	coord.h = DisplayHeight(disp, DefaultScreen(disp));
 
-	already_initialised = 1;
+	monitor_create_randr_region(m, GLOBAL_SCREEN_NAME, &coord, is_primary);
+}
 
-	TAILQ_FOREACH(m, &monitor_q, entry) {
-		fprintf(stderr, "Monitor: %s (x: %d, y: %d, w: %d, h: %d)\n",
-			m->name, m->coord.x, m->coord.y, m->coord.w, m->coord.h);
+static void
+monitor_create_randr_region(struct monitor *m, const char *name,
+	struct coord *coord, int is_primary)
+{
+	fprintf(stderr, "Monitor: %s %s (x: %d, y: %d, w: %d, h: %d)\n",
+		name, is_primary ? "(PRIMARY)" : "",
+		coord->x, coord->y, coord->w, coord->h);
+
+	m->name = xstrdup(name);
+	memcpy(&m->coord, coord, sizeof(*coord));
+
+	if (is_primary) {
+		TAILQ_INSERT_HEAD(&monitor_q, m, entry);
+	} else {
+		TAILQ_INSERT_TAIL(&monitor_q, m, entry);
 	}
+
+	XRRSelectInput(disp, DefaultRootWindow(disp), RRScreenChangeNotifyMask);
 }
 
 /* Intended to be called by modules.  Simply pass in the parameter from the
@@ -255,7 +284,8 @@ FindScreenOfXY(int x, int y)
 		 * on the global screen, as that's separate to XY positioning
 		 * which is only concerned with the *specific* screen.
 		 */
-		if (no_of_screens > 0 && strcmp(m->name, "global") == 0)
+		if (no_of_screens > 0 &&
+		    strcmp(m->name, GLOBAL_SCREEN_NAME) == 0)
 			continue;
 		if (x >= m->coord.x && x < m->coord.x + m->coord.w &&
 		    y >= m->coord.y && y < m->coord.y + m->coord.h)
@@ -272,12 +302,12 @@ FindScreen(fscreen_scr_arg *arg, fscreen_scr_t screen)
 	fscreen_scr_arg  tmp;
 
 	if (no_of_screens == 0)
-		return (monitor_by_name("global"));
+		return (monitor_by_name(GLOBAL_SCREEN_NAME));
 
 	switch (screen)
 	{
 	case FSCREEN_GLOBAL:
-		m = monitor_by_name("global");
+		m = monitor_by_name(GLOBAL_SCREEN_NAME);
 		break;
 	case FSCREEN_PRIMARY:
 	case FSCREEN_CURRENT:
@@ -367,7 +397,8 @@ Bool FScreenGetScrRect(fscreen_scr_arg *arg, fscreen_scr_t screen,
 	if (h)
 		*h = m->coord.h;
 
-	return !((no_of_screens > 1) && (strcmp(m->name, "global") == 0));
+	return !((no_of_screens > 1) &&
+		(strcmp(m->name, GLOBAL_SCREEN_NAME) == 0));
 }
 
 /* Translates the coodinates *x *y from the screen specified by arg_src and
