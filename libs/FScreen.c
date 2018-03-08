@@ -52,6 +52,7 @@ static struct monitor	*monitor_get_current(void);
 static struct monitor	*monitor_new(void);
 static void		 monitor_create_randr_region(struct monitor *m,
 	const char *, struct coord *, int);
+static int		 monitor_check_stale(struct monitor *);
 
 static void GetMouseXY(XEvent *eventp, int *x, int *y)
 {
@@ -106,6 +107,12 @@ monitor_by_name(const char *name)
 	return (NULL);
 }
 
+void
+FScreenSelect(Display *dpy)
+{
+	XRRSelectInput(disp, DefaultRootWindow(disp), RRScreenChangeNotifyMask);
+}
+
 void FScreenInit(Display *dpy)
 {
 	XRRScreenResources	*res = NULL;
@@ -114,15 +121,14 @@ void FScreenInit(Display *dpy)
 	RROutput		 rr_output, rr_output_primary;
 	struct monitor		*m;
 	struct coord		 coord;
-	int			 err_base = 0, event = 0;
+	int			 err_base = 0;
 	int			 is_randr_present = 0;
 	int			 iscres, is_primary = 0;
 
 	disp = dpy;
+	randr_event = 0;
 
-	TAILQ_INIT(&monitor_q);
-
-	is_randr_present = XRRQueryExtension(dpy, &event, &err_base);
+	is_randr_present = XRRQueryExtension(dpy, &randr_event, &err_base);
 
 	if (FScreenIsEnabled() && !is_randr_present) {
 		/* Something went wrong. */
@@ -205,6 +211,9 @@ monitor_create_randr_region(struct monitor *m, const char *name,
 		name, is_primary ? "(PRIMARY)" : "",
 		coord->x, coord->y, coord->w, coord->h);
 
+	if (monitor_check_stale(m))
+		free(m->name);
+
 	m->name = xstrdup(name);
 	memcpy(&m->coord, coord, sizeof(*coord));
 
@@ -213,8 +222,25 @@ monitor_create_randr_region(struct monitor *m, const char *name,
 	} else {
 		TAILQ_INSERT_TAIL(&monitor_q, m, entry);
 	}
+}
 
-	XRRSelectInput(disp, DefaultRootWindow(disp), RRScreenChangeNotifyMask);
+static int
+monitor_check_stale(struct monitor *m)
+{
+	struct monitor	*mcheck = NULL;
+
+	TAILQ_FOREACH(mcheck, &monitor_q, entry) {
+		if (m == NULL || mcheck == NULL)
+			break;
+		if (m->name == NULL || mcheck->name == NULL) {
+			/* Shouldn't happen. */
+			break;
+		}
+		if (strcmp(mcheck->name, m->name) == 0)
+			return (1);
+	}
+
+	return (0);
 }
 
 /* Intended to be called by modules.  Simply pass in the parameter from the
