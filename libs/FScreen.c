@@ -201,6 +201,9 @@ single_screen:
 	coord.h = DisplayHeight(disp, DefaultScreen(disp));
 
 	monitor_create_randr_region(m, GLOBAL_SCREEN_NAME, &coord, is_primary);
+
+	if (++no_of_screens > 0)
+		no_of_screens--;
 }
 
 static void
@@ -241,6 +244,12 @@ monitor_check_stale(struct monitor *m)
 	}
 
 	return (0);
+}
+
+int
+monitor_get_count(void)
+{
+	return (no_of_screens);
 }
 
 /* Intended to be called by modules.  Simply pass in the parameter from the
