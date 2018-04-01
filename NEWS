@@ -22,6 +22,10 @@ Changes in stable release 2.6.8 (UNRELEASED)
   
   - fvwm-menu-desktop(1) now requires python3 as an explicit
     dependency.
+  - The colorset expansion parameters, $[fg.cs<n>], $[bg.cs<n>],
+    etc, can now expand p percent lighter or darker colors by
+    appending .lighten<p> or .darken<p> to the parameter.
+    For example, $[fg.cs3.lighten15] or $[shadow.cs3.darken15].
 
 -------------------------------------------------------------------
 Changes in stable release 2.6.7 (06-Mar-2016)

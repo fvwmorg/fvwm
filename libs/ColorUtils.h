@@ -23,7 +23,7 @@ Pixel GetTintedPixel(Pixel in, Pixel tint, int percent);
  * memory area pointed at by 'output' must be at least 64 bytes (in case of
  * future extensions and multibyte characters).*/
 int pixel_to_color_string(
-	Display *dpy, Colormap cmap, Pixel pixel, char *output, Bool use_hash);
+	Display *dpy, Colormap cmap, Pixel pixel, char *output, Bool use_hash, int adj);
 
 Pixel GetSimpleColor(char *name);
 /* handles colorset color names too */

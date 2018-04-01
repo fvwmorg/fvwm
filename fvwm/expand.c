@@ -350,6 +350,8 @@ static signed int expand_vars_extended(
 	char dummy[64] = "\0";
 	char *target = (output) ? output : dummy;
 	int cs = -1;
+	int csadj = 0;
+	int nn = 0;
 	int n;
 	int i;
 	int l;
@@ -376,7 +378,7 @@ static signed int expand_vars_extended(
 	case VAR_HILIGHT_CS:
 	case VAR_SHADOW_CS:
 	case VAR_FGSH_CS:
-		if (!isdigit(*rest) || (*rest == '0' && *(rest + 1) != 0))
+		if (!isdigit(*rest) || (*rest == '0' && *(rest + 1) != 0 && *(rest + 1) != '.' ))
 		{
 			/* not a non-negative integer without leading zeros */
 			return -1;
@@ -386,6 +388,24 @@ static signed int expand_vars_extended(
 			return -1;
 		}
 		if (*(rest + n) != 0)
+		{
+			/* Check for .lightenN or .darkenN */
+			csadj = 101;
+			l = -1;
+			if (sscanf(rest + n, ".lighten%d%n", &l, &nn) && l >= 0 && l <= 100)
+			{
+				csadj = l;
+			}
+			if (sscanf(rest + n, ".darken%d%n", &l, &nn) && l >= 0 && l <= 100)
+			{
+				csadj = -l;
+			}
+			if (csadj == 101)
+			{
+				return -1;
+			}
+		}
+		if (*(rest + n + nn) != 0)
 		{
 			/* trailing characters */
 			return -1;
@@ -414,7 +434,7 @@ static signed int expand_vars_extended(
 			break;
 		}
 		is_target = True;
-		len = pixel_to_color_string(dpy, Pcmap, pixel, target, False);
+		len = pixel_to_color_string(dpy, Pcmap, pixel, target, False, csadj);
 		goto GOT_STRING;
 	case VAR_GT_:
 		if (rest == NULL)

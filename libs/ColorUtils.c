@@ -392,7 +392,7 @@ Pixel GetTintedPixel(Pixel in, Pixel tint, int percent)
  * memory area pointed at by 'output' must be at least 64 bytes (in case of
  * future extensions and multibyte characters).*/
 int pixel_to_color_string(
-	Display *dpy, Colormap cmap, Pixel pixel, char *output, Bool use_hash)
+	Display *dpy, Colormap cmap, Pixel pixel, char *output, Bool use_hash, int adj)
 {
 	XColor color;
 	int n;
@@ -403,6 +403,22 @@ int pixel_to_color_string(
 	color.blue = 0;
 
 	XQueryColor(dpy, cmap, &color);
+
+	/* Lighten color */
+	if ( adj > 0 && adj <= 100 )
+	{
+		color.red = (int)( ((100 - adj)*color.red + adj*65535)/100 );
+		color.green = (int)( ((100 - adj)*color.green + adj*65535)/100 );
+		color.blue = (int)( ((100 - adj)*color.blue + adj*65535)/100 );
+	}
+	/* Darken color */
+	if ( adj >= -100 && adj < 0 )
+	{
+		color.red = (int)( (100 + adj)*color.red/100 );
+		color.green = (int)( (100 + adj)*color.green/100 );
+		color.blue = (int)( (100 + adj)*color.blue/100 );
+	}
+
 	if (!use_hash)
 	{
 		sprintf(
