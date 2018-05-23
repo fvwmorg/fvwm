@@ -315,25 +315,29 @@ dnl
 dnl Example:
 dnl mg_DEFINE_IF_NOT([#include <features.h>], [defined __USE_BSD], [NON_BSD])
 dnl
-AC_DEFUN([mg_DEFINE_IF_NOT], [
-mg_save_CPPFLAGS="$CPPFLAGS"
-ifelse($4, , , CPPFLAGS="$CPPFLAGS [$4]")
+AC_DEFUN([mg_DEFINE_IF_NOT], 
+if test x"$cross_compiling" = xno; then
+  [
+  mg_save_CPPFLAGS="$CPPFLAGS"
+  ifelse($4, , , CPPFLAGS="$CPPFLAGS [$4]")
 
-AH_TEMPLATE([$3],[$5])
-AC_TRY_RUN([
-#include <stdio.h>
-int main(int c, char **v) {
-$1
-#if $2
-  return 0;
-#else
-  return 1;
-#endif
-}
-], [:], [AC_DEFINE($3)])
+  AH_TEMPLATE([$3],[$5])
+  AC_TRY_RUN([
+  #include <stdio.h>
+  int main(int c, char **v) {
+  $1
+  #if $2
+    return 0;
+  #else
+    return 1;
+  #endif
+  }
+  ], [:], [AC_DEFINE($3)])
 
-CPPFLAGS="$mg_save_CPPFLAGS"
-])
+  CPPFLAGS="$mg_save_CPPFLAGS"
+]
+fi
+)
 
 
 # Check for gdk-imlib
