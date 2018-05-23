@@ -1,5 +1,7 @@
 # Author: Scott Smedley
 
+if FVWM_BUILD_DOC
+
 docdir = @FVWM_DOCDIR@
 
 HTML_FILES = \
@@ -16,3 +18,5 @@ endif
 SUBDIRS = commands images docbook-xml docbook-xsl fvwm
 
 all: $(doc_DATA)
+
+endif
