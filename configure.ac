@@ -283,6 +283,12 @@ esac
 # - version of fribidi without fribidi-config
 AM_CHECK_PKG_CONFIG
 
+AC_ARG_ENABLE(doc,
+  AS_HELP_STRING([--disable-doc], [disable generation of documentation]),
+  [ with_doc="no" ],
+  [ with_doc="yes" ]
+)
+AM_CONDITIONAL([FVWM_BUILD_DOC], [test x"$with_doc" = xyes])
 
 # Building man pages & HTML documentation (from XML source).
 # extract command names
