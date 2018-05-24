@@ -1421,29 +1421,6 @@ else
   problem_gdkimlib=": Failed on gdk-imlib, see config.log"
 fi
 
-# Define some compatibility macros needed for config.h.
-mg_DEFINE_IF_NOT([#include <X11/keysym.h>],
-  [defined XK_Page_Up && defined XK_Page_Down],
-  [COMPAT_OLD_KEYSYMDEF], [$X_CFLAGS],
-  [Old AIX systems (3.2.5) don't define some common keysyms.])
-AH_VERBATIM([_COMPAT_OLD_KEYSYMDEF],
-[#ifdef COMPAT_OLD_KEYSYMDEF
-#  define XK_Page_Up   XK_Prior
-#  define XK_Page_Down XK_Next
-#endif])
-
-if test x"$with_stroke" = xyes; then
-  mg_DEFINE_IF_NOT([#include <stroke.h>],
-    [defined STROKE_MAX_SEQUENCE],
-    [COMPAT_OLD_LIBSTROKE], [$stroke_CFLAGS],
-    [Old libstroke <= 0.4 does not use STROKE_ prefix for constants.])
-fi
-AH_VERBATIM([_COMPAT_OLD_LIBSTROKE],
-[#ifdef COMPAT_OLD_LIBSTROKE
-/* currently we only use one constant */
-#  define STROKE_MAX_SEQUENCE MAX_SEQUENCE
-#endif])
-
 
 # Allow building with dmalloc.  Do this last to avoid screwing up any
 # other checks above.

@@ -302,40 +302,6 @@ else
 fi])
 
 
-dnl Defines a boolean variable for config.h depending on a condition.
-dnl
-dnl Usage:
-dnl mg_DEFINE_IF_NOT(c-code, cpp-if-cond, var-name, extra-flags, var-comment)
-dnl
-dnl c-code       the first code part inside main()
-dnl cpp-if-cond  boolean preprocessor condition
-dnl var-name     this variable will be defined if the given condition is false
-dnl extra-flags  (optional) extra flags for compiling, typically more -I glags
-dnl
-dnl Example:
-dnl mg_DEFINE_IF_NOT([#include <features.h>], [defined __USE_BSD], [NON_BSD])
-dnl
-AC_DEFUN([mg_DEFINE_IF_NOT], [
-mg_save_CPPFLAGS="$CPPFLAGS"
-ifelse($4, , , CPPFLAGS="$CPPFLAGS [$4]")
-
-AH_TEMPLATE([$3],[$5])
-AC_TRY_RUN([
-#include <stdio.h>
-int main(int c, char **v) {
-$1
-#if $2
-  return 0;
-#else
-  return 1;
-#endif
-}
-], [:], [AC_DEFINE($3)])
-
-CPPFLAGS="$mg_save_CPPFLAGS"
-])
-
-
 # Check for gdk-imlib
 AC_DEFUN([AM_PATH_GDK_IMLIB],
 [dnl
