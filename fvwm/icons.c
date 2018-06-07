@@ -787,7 +787,7 @@ void CreateIconWindow(FvwmWindow *fw, int def_x, int def_y)
 			GetUnusedModifiers(), Scr.FvwmCursors[CRS_DEFAULT],
 			True);
 		xwc.sibling = FW_W_FRAME(fw);
-		xwc.stack_mode = Below;
+		xwc.stack_mode = Above;
 		XConfigureWindow(
 			dpy, FW_W_ICON_TITLE(fw), CWSibling|CWStackMode, &xwc);
 	}
