@@ -1522,15 +1522,6 @@ int ewmh_HandleToolBar(
 {
 	fw->ewmh_window_type = EWMH_WINDOW_TYPE_TOOLBAR_ID;
 
-	/* this ok for KDE 2 (and 3??) but I do not think that a toolbar
-	   should be sticky */
-	S_SET_IS_STICKY_ACROSS_PAGES(SCF(*style), 1);
-	S_SET_IS_STICKY_ACROSS_PAGES(SCM(*style), 1);
-	S_SET_IS_STICKY_ACROSS_PAGES(SCC(*style), 1);
-	S_SET_IS_STICKY_ACROSS_DESKS(SCF(*style), 1);
-	S_SET_IS_STICKY_ACROSS_DESKS(SCM(*style), 1);
-	S_SET_IS_STICKY_ACROSS_DESKS(SCC(*style), 1);
-
 	S_SET_DO_WINDOW_LIST_SKIP(SCF(*style), 1);
 	S_SET_DO_WINDOW_LIST_SKIP(SCM(*style), 1);
 	S_SET_DO_WINDOW_LIST_SKIP(SCC(*style), 1);
