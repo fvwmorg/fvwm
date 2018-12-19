@@ -662,7 +662,7 @@ void extract_wm_icon(
 					SQUARE(list[i+1]-wanted_h);
 			}
 		}
-		if (list[i]*list[i+1] > 0)
+		if ((int)(list[i]*list[i+1]) > 0)
 		{
 			i = i + 2 + list[i]*list[i+1];
 		}
