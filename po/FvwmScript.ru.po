@@ -1,15 +1,16 @@
-# Russian translation for fvwm package.
+# Russian translations for fvwm package.
 # Copyright (C) 2013 fvwm workers
 # This file is distributed under the same license as the fvwm package.
 # Ivan Gayevskiy (a.k.a. Spoofing) <ivan.gayevskiy@gmail.com>, 2013.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fvwm\n"
+"Project-Id-Version: FvwmScript\n"
 "POT-Creation-Date: 2002-11-28 14:23+0100\n"
 "PO-Revision-Date: 2013-02-12 14:20+0800\n"
 "Last-Translator: Ivan Gayevskiy <ivan.gayevskiy@gmail.com>\n"
 "Language-Team: Russian\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

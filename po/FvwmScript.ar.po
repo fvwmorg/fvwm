@@ -1,16 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
+# Arabic translations for fvwm package.
 # Copyright (C) YEAR fvwm workers
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# This file is distributed under the same license as the fvwm package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fvwm\n"
+"Project-Id-Version: FvwmScript\n"
 "POT-Creation-Date: 2002-11-28 14:23+0100\n"
 "PO-Revision-Date: 2003-04-13 11:35+0200\n"
-"Last-Translator: NEEDS TRANSLATION <NOONE@MOON.SOLAR>\n"
-"Language-Team: Should be Arabic <NOONE@MOON.SOLAR>\n"
-"Language: \n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ascii\n"
 "Content-Transfer-Encoding: 8bit\n"
