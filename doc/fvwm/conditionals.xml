@@ -373,6 +373,10 @@ condition matches only windows that are allowed to be maximized.</para>
 condition matches only maximized windows.</para>
 
 <para>The
+<emphasis remap='I'>Fullscreen</emphasis>
+condition matches only fullscreen windows.</para>
+
+<para>The
 <emphasis remap='I'>Overlapped</emphasis>
 condition matches only windows that are overlapped by other windows
 on the same layer (or unmanaged windows if the option

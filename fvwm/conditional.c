@@ -574,6 +574,10 @@ void CreateConditionMask(char *flags, WindowConditionMask *mask)
 			SET_MAXIMIZED(mask, on);
 			SETM_MAXIMIZED(mask, 1);
 		}
+		else if (StrEquals(cond, "Fullscreen"))
+		{
+			mask->my_flags.do_check_fullscreen = on;
+		}
 		else if (StrEquals(cond,"FixedSize"))
 		{
 			/* don't set mask here, because we make the test here
@@ -989,6 +993,11 @@ Bool MatchesConditionMask(FvwmWindow *fw, WindowConditionMask *mask)
 		{
 			return False;
 		}
+	}
+
+	if (mask->my_flags.do_check_fullscreen)
+	{
+		return IS_EWMH_FULLSCREEN(fw);
 	}
 
 	if (mask->layer == -1 && sf)

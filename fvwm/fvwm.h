@@ -443,6 +443,7 @@ typedef struct WindowConditionMask
 		unsigned do_check_global_page : 1;
 		unsigned do_check_overlapped : 1;
 		unsigned do_check_page : 1;
+		unsigned do_check_fullscreen : 1;
 		unsigned do_not_check_screen : 1;
 		unsigned needs_current_desk : 1;
 		unsigned needs_current_desk_and_global_page : 1;
