@@ -3,11 +3,16 @@ FVWM
 
 [![Build Status](https://travis-ci.org/fvwmorg/fvwm.svg?branch=master)](https://travis-ci.org/fvwmorg/fvwm)
 
+------------------------------------------------------------------------------
+
 **Please note that FVWM2 is in maintenance mode.  This means it won't be
 receiving any new features.  Bug fixes will be to the core of FVWM2 only.  Any
 problems found in modules will be to fix segfaults only.**
 
-**All users are hereforth redirect to look at fvwm3.**
+**All users are hereforth encouraged to use [fvwm3](https://github.com/fvwmorg/fvwm/3).**
+
+**The rest of this README and associated documentation for FVWM is for
+historical purposes only.**
 
 ------------------------------------------------------------------------------
 
