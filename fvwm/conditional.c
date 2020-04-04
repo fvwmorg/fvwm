@@ -755,7 +755,7 @@ void CreateConditionMask(char *flags, WindowConditionMask *mask)
 		{
 			fvwm_msg(OLD, "CreateConditionMask",
 				 "Use comma instead of whitespace to "
-				 "separate conditions");
+				 "separate conditions (%s)", flags);
 		}
 		else
 		{
