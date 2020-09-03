@@ -1934,8 +1934,14 @@ void SwitchToDeskAndPage(int Desk, XEvent *Event)
   {
     int vx, vy;
     /* patch to let mouse button 3 change desks and do not cling to a page */
-    vx = Event->xbutton.x * Scr.VWidth / (desk_w * Scr.MyDisplayWidth);
-    vy = Event->xbutton.y * Scr.VHeight / (desk_h * Scr.MyDisplayHeight);
+    if (desk_w == 0)
+      vx = 0;
+    else
+      vx = Event->xbutton.x * Scr.VWidth / (desk_w * Scr.MyDisplayWidth);
+    if (desk_h == 0)
+      vy = 0;
+    else
+      vy = Event->xbutton.y * Scr.VHeight / (desk_h * Scr.MyDisplayHeight);
     Scr.Vx = vx * Scr.MyDisplayWidth;
     Scr.Vy = vy * Scr.MyDisplayHeight;
     sprintf(command, "GotoDeskAndPage %d %d %d", Desk + desk1, vx, vy);
@@ -1944,8 +1950,15 @@ void SwitchToDeskAndPage(int Desk, XEvent *Event)
   }
   else
   {
-    int x = Event->xbutton.x * Scr.VWidth / (desk_w * Scr.MyDisplayWidth);
-    int y = Event->xbutton.y * Scr.VHeight / (desk_h * Scr.MyDisplayHeight);
+    int x, y;
+    if (desk_w == 0)
+      x = 0;
+    else
+      x = Event->xbutton.x * Scr.VWidth / (desk_w * Scr.MyDisplayWidth);
+    if (desk_h == 0)
+      y = 0;
+    else
+      y = Event->xbutton.y * Scr.VHeight / (desk_h * Scr.MyDisplayHeight);
 
     /* Fix for buggy XFree86 servers that report button release events
      * incorrectly when moving fast. Not perfect, but should at least prevent
