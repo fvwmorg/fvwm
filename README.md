@@ -3,6 +3,19 @@ FVWM
 
 [![Build Status](https://travis-ci.org/fvwmorg/fvwm.svg?branch=master)](https://travis-ci.org/fvwmorg/fvwm)
 
+------------------------------------------------------------------------------
+
+**Please note that FVWM2 is in maintenance mode.  This means it won't be
+receiving any new features.  Bug fixes will be to the core of FVWM2 only.  Any
+problems found in modules will be to fix segfaults only.**
+
+**All users are hereforth encouraged to use [fvwm3](https://github.com/fvwmorg/fvwm3), and to report any bugs.**
+
+**The rest of this README and associated documentation for FVWM is for
+historical purposes only.**
+
+------------------------------------------------------------------------------
+
 Welcome to fvwm.  Fvwm is a multiple large virtual desktop window manager,
 originally (a looooong time ago!) derived from twm.
 
@@ -13,7 +26,7 @@ compatibility.
 **ALL VERSIONS OF FVWM PRIOR TO 2.6.X ARE NOT SUPPORTED UPSTREAM.**
 
 Users of fvwm prior to 2.6.X can make use of the
-[./bin/fvwm-convert-2.6.in](fvwm-convert-2.6 utility) to try and have their
+[fvwm-convert-2.6 utility](./bin/fvwm-convert-2.6.in) to try and have their
 configuration file converted to a newer syntax.  Please see its manpage for
 more details on how to use it.
 
