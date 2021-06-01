@@ -5,3 +5,7 @@ SUBDIRS = \
 	FvwmCommandS FvwmConsole FvwmCpp FvwmEvent FvwmForm \
 	FvwmIconMan FvwmIdent FvwmM4 FvwmPager \
 	FvwmPerl FvwmProxy FvwmRearrange FvwmScript
+
+uninstall-hook:
+	-rmdir @FVWM_MODULEDIR@
+	-rmdir ${pkglibexecdir}
