@@ -456,7 +456,7 @@ int menu_binding(
 	{
 		fvwm_msg(
 			WARN, "menu_binding", "Binding specified AnyModifier"
-			" and other modifers too. Excess modifiers are"
+			" and other modifiers too. Excess modifiers are"
 			" ignored.");
 		modifier = AnyModifier;
 	}

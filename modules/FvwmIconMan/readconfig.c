@@ -681,7 +681,7 @@ Binding *ParseMouseEntry(char *tline)
 
   modifiers_string_to_modmask(modifiers, &mods);
   if((mods & AnyModifier)&&(mods&(~AnyModifier))) {
-    ConsoleMessage("Binding specified AnyModifier and other modifers too. "
+    ConsoleMessage("Binding specified AnyModifier and other modifiers too. "
 		    "Excess modifiers will be ignored.");
   }
 
@@ -736,7 +736,7 @@ static Binding *ParseKeyEntry(char *tline)
 
   modifiers_string_to_modmask(modifiers, &mods);
   if((mods & AnyModifier)&&(mods&(~AnyModifier))) {
-    ConsoleMessage("Binding specified AnyModifier and other modifers too. Excess modifiers will be ignored.");
+    ConsoleMessage("Binding specified AnyModifier and other modifiers too. Excess modifiers will be ignored.");
   }
 
   /*

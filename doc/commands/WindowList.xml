@@ -243,7 +243,7 @@ causes fvwm to add a menu title with the desk name and/or number
 before each group of windows on the same desk.
 With
 <fvwmopt cmd="WindowList" opt="NoLayer"/>,
-the layer of the window is not diplayed.  The options
+the layer of the window is not displayed.  The options
 <fvwmopt cmd="WindowList" opt="ShowPage"/>,
 <fvwmopt cmd="WindowList" opt="ShowPageX"/> and
 <fvwmopt cmd="WindowList" opt="ShowPageY"/>
