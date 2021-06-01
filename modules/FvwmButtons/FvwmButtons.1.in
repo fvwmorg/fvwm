@@ -711,7 +711,7 @@ like this:
 .sp
 .fi
 Any single character can be quoted with a preceding
-backslash '\\'.
+backslash '\(rs'.
 .RE
 .\" End relative indent
 .SH CREATING PANELS
