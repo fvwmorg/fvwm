@@ -621,8 +621,7 @@ DestroyModuleConfig FvwmIconMan:*
 *FvwmIconMan: UseWinList true
 *FvwmIconMan: ButtonGeometry 120x20
 *FvwmIconMan: ManagerGeometry 1x1
-*FvwmIconMan: Background #003c3c
-*FvwmIconMan: Foreground #ffffff
+*FvwmIconMan: Colorset 10
 *FvwmIconMan: FocusColorset 11
 *FvwmIconMan: IconColorset 14
 *FvwmIconMan: FocusAndSelectColorset 12
