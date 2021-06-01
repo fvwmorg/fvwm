@@ -374,8 +374,8 @@ problem_mandoc=""
 AC_CHECK_PROG(XSLTPROC, xsltproc, xsltproc, "")
 
 AC_ARG_ENABLE(mandoc,
-  AS_HELP_STRING([--disable-mandoc],
-    [disable generation of man pages]),
+  AS_HELP_STRING([--enable-mandoc],
+    [enable generation of man pages]),
   [ if test x"$enableval" = xyes; then
 		with_mandoc="yes, check"
 	else
@@ -1622,9 +1622,6 @@ AC_SUBST(with_xpm)
 dnl with autoconf <2.60 this is needed
 AC_SUBST(datarootdir)
 AC_SUBST(docdir)
-
-LOCAL_BUGADDR=${FVWM_BUGADDR-${USER-${LOGNAME-`whoami`}}}
-AC_SUBST(LOCAL_BUGADDR)
 
 AC_OUTPUT(
 	Makefile
