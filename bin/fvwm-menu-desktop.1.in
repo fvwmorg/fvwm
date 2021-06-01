@@ -123,7 +123,7 @@ are included in the top level menu. \fINAME\fR can be one of \fIregenerate\fR,
 
 .IP "\fB\-\-regen\-cmd\fR \fICMD\fR "
 This option sets the fvwm command \fICMD\fR that is run when the menu item
-\'Regenerate' is selected. The default is "PipeRead `fvwm-menu-desktop`".
+\&'Regenerate' is selected. The default is "PipeRead `fvwm-menu-desktop`".
 
 .IP "\fB\-\-term\-cmd\fR \fICMD\fR "
 This option sets the terminal emulator command \fICMD\fR that is used to
@@ -198,11 +198,11 @@ use this option to specify a different folder.
 
 .IP "\fB\-\-app\-icon\fR \fINAME\fR"
 Sets the default application icon if no others are found. Default is
-\'gnome-applications'.
+\&'gnome-applications'.
 
 .IP "\fB\-\-dir\-icon\fR \fINAME\fR"
 Sets the default directory icon if no others are found. Default is
-\'gnome-fs-directory'.
+\&'gnome-fs-directory'.
 
 .SH USAGE
 \fBfvwm-menu-desktop\fR outputs XDG .menu files in the syntax of fvwm

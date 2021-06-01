@@ -106,7 +106,7 @@ FvwmCommand -i 0 foobar
 will return,
 .EX
 [fvwm][executeModule]: <<ERROR>> No such module
-\'foobar\' in ModulePath '/usr/lib/X11/fvwm'
+\&'foobar' in ModulePath '/usr/lib/X11/fvwm'
 .EE
 
 Note that Fvwm doesn't return any error messages in
@@ -239,7 +239,7 @@ The below will iconify new windows when opened.
 Fvwm -mi3 | perl -ne '
 $|=1;
 print "windowid $1 iconify\\n" if /^(0x\\S+) add/;
-\' > ~/\.FvwmCommandC
+\&' > ~/\.FvwmCommandC
 .EE
 .IP "\fI-r\fR"
 Waits for a reply before it exits.

@@ -165,7 +165,7 @@ string. Example:
 Typing 'bigx<return>' in FvwmConsole will launch xterm. '^' denotes
 the beginning of line in
 .B regular expression.
-\'pl\' in the middle
+\&'pl' in the middle
 of the command will not be replaced. Although the format looks different,
 it takes Perl regular expression.
 It just uses single or double quote as the delimiter.
