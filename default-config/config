@@ -465,7 +465,7 @@ Silent Key Super_R A A Exec exec $[infostore.terminal]
 
 # Window Buttons: [1 3 5 7 9  TTTTT  0 8 6 4 2]
 #   1 - Open the WindowOps menu.
-#   2 - Close on single click, Destory on double click.
+#   2 - Close on single click, Destroy on double click.
 #   4 - Maximize (right/middle button will only maximize vertical/horizontal)
 #   6 - Iconify (minimize)
 Mouse 1 1 A Menu MenuWindowOps Delete
