@@ -6,29 +6,14 @@ SUBDIRS = scripts
 
 bin_PROGRAMS = FvwmCommand
 moduledir = @FVWM_MODULEDIR@
-module_DATA = FvwmCommand.sh FvwmCommand.pm
 
 FvwmCommand_SOURCES = FvwmCommand.c FvwmCommand.h fifos.c
-
-FvwmCommand.sh: findcmd.pl $(top_srcdir)/fvwm/functable.c
-	if test -n "$(PERL)" -a -x "$(PERL)"; then \
-		$(PERL) $(srcdir)/findcmd.pl $(bindir) -sh \
-		< $(top_srcdir)/fvwm/functable.c > $@; \
-	else echo '# Did not find perl during fvwm install' > $@; fi
-
-FvwmCommand.pm: findcmd.pl $(top_srcdir)/fvwm/functable.c
-	if test -n "$(PERL)" -a -x "$(PERL)"; then \
-		$(PERL) $(srcdir)/findcmd.pl $(bindir) \
-		< $(top_srcdir)/fvwm/functable.c > $@; \
-	else echo '# Did not find perl during fvwm install' > $@; fi
-
-CLEANFILES = FvwmCommand.sh FvwmCommand.pm
 
 FvwmCommand_DEPENDENCIES = $(top_builddir)/libs/libfvwm.a
 
 man_MANS = FvwmCommand.1
 
-EXTRA_DIST = $(man_MANS) findcmd.pl
+EXTRA_DIST = $(man_MANS)
 
 LDADD = -L$(top_builddir)/libs -lfvwm
 
