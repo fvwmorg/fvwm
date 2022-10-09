@@ -26,4 +26,6 @@ is 150 milliseconds.  Omitting the delay value resets the
 <emphasis remap='B'>ClickTime</emphasis>
 to the default.</para>
 
+<para><emphasis remap='B'>ClickTime</emphasis> also specifies the delay
+between two clicks to be interpreted as a double-click.</para>
 </section>
