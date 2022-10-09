@@ -281,33 +281,6 @@ FvwmCommand exits if no information or error is returned in a fixed amount of
 time period unless option -m is used.
 The default is 500 ms. This option overrides this default value.
 
-.SH WRAPPER
-.sp
-.sp
-FvwmCommand.sh has bourne shell function definitions
-to keep the syntax similar to fvwm configuration file.
-This file is to be sourced:
-.EX
-\&. FvwmCommand.sh
-.br
-DesktopSize 5x5
-.EE
-.br
-FvwmCommand.pm is for perl in order
-to keep the syntax similar to fvwm configuration file.
-Commas can be used to separate fvwm commands' arguments.
-.EX
-use FvwmCommand;
-if( $ARGV[0] eq 'home' ) {
-    Desk 0,0; GotoPage '1 1';
-}elsif( $ARGV[0] eq 'jump' ) {
-    Desk "0 2"; GotoPage 0, 1;
-}
-.EE
-Although arguments in FvwmCommand are not case sensitive as fvwm,
-the functions defined in FvwmCommand.sh and FvwmCommand.pl are case sensitive.
-
-
 .SH ERRORS
 If the following error message show up, it is most likely that FvwmCommandS
 is not running.
