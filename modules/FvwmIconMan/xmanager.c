@@ -438,6 +438,16 @@ static void resize_window(WinManager *man)
     }
     MyXUngrabServer(theDisplay);
   }
+
+  // Wait until the window has resised to fix the HINTS.
+  // counter is used to break an infinte loop.
+  XWindowAttributes attribs;
+  int counter = 20000;
+  while ( counter && (attribs.width != man->geometry.width ||
+          attribs.height != man->geometry.height)) {
+    XGetWindowAttributes(theDisplay, man->theWindow, &attribs);
+    counter--;
+  }
   fix_manager_size(man, man->geometry.width, man->geometry.height);
 }
 
