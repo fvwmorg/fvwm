@@ -85,7 +85,7 @@ trap 'rm -f $TEMP $TEMP.x' 0
 
 # Who is mail to?
 if test x"$address" = x; then
-	LOCAL=@LOCAL_BUGADDR@
+	LOCAL=
 	WORKERS=fvwm-workers@fvwm.org
 
 	if test "$LOCAL"; then
