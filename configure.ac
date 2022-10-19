@@ -4,7 +4,7 @@ AC_PREREQ(2.60)
 
 dnl should be "yes" only within the released distribution
 ISRELEASED="yes"
-if test $ISRELEASED = "yes"; then
+if test $ISRELEASED = "no"; then
 	RELDATELONG=""
 	RELDATESHORT=""
 	RELDATENUM=""
