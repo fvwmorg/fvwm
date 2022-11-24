@@ -220,7 +220,7 @@ AC_MINIX
 
 # catch -Werror and similar options when running configure
 AC_TRY_COMPILE([#include <stdio.h>],
-[int i; static j; int *p; char *c;
+[int i; int *p; char *c;
   switch (*p = p = *c) { case 0: printf("%Q", c, p); }
   *c = &i; c = p;
   while (1 || (unsigned int)3 >= 0 || ((int)-1) == ((unsigned int)1));
