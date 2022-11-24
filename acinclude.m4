@@ -1154,6 +1154,9 @@ AC_DEFUN([AM_SAFETY_CHECK_MKSTEMP],[
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 int main(void)
 {
   char template[128];
