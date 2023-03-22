@@ -80,7 +80,7 @@ static FvwmWindow *LastScreenFocus = NULL;
 void _focus_set(Window w, FvwmWindow *fw)
 {
 	Scr.focus_in_requested_window = fw;
-	XSetInputFocus(dpy, w, RevertToParent, CurrentTime);
+	XSetInputFocus(dpy, w, RevertToParent, fev_get_evtime());
 
 	return;
 }
@@ -88,7 +88,7 @@ void _focus_set(Window w, FvwmWindow *fw)
 void _focus_reset(void)
 {
 	Scr.focus_in_requested_window = NULL;
-	XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime);
+	XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, fev_get_evtime());
 
 	return;
 }
