@@ -69,7 +69,7 @@ int getostype(char *buf, int max)
 	if (uname( &sysname ) >= 0)
 	{
 		buf[0] = '\0';
-		strncat(buf, sysname.sysname, max);
+		strncat(buf, sysname.sysname, max - 1 );
 		return 0;
 	}
 #endif
