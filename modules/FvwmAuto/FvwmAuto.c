@@ -344,7 +344,7 @@ main(int argc, char **argv)
 	{
 		len += 32;
 	}
-	buf = safemalloc(len);
+	buf = safemalloc(len + 1 + 1 ); // '\n' '\0' at the end of the string
 
 	while (!isTerminated)
 	{
