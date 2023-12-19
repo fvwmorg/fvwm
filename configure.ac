@@ -220,9 +220,8 @@ AC_MINIX
 
 # catch -Werror and similar options when running configure
 AC_TRY_COMPILE([#include <stdio.h>],
-[int i; int *p; char *c;
-  switch (*p = p = *c) { case 0: printf("%Q", c, p); }
-  *c = &i; c = p;
+[int unused; int *p; char *c;
+  printf("%Q", c, p);
   while (1 || (unsigned int)3 >= 0 || ((int)-1) == ((unsigned int)1));
 ], , AC_MSG_ERROR("
 configure is not able to compile programs with warnings.  Please
