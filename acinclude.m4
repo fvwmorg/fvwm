@@ -30,7 +30,7 @@ if test "$ac_cv_func_select" = yes; then
 #ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
 #endif],
-[extern select ($ac_cv_type_fd_set_size_t,
+[extern int select ($ac_cv_type_fd_set_size_t,
  $ac_cv_type_fd_set *,	$ac_cv_type_fd_set *, $ac_cv_type_fd_set *,
  $ac_type_timeval *);],
 [ac_found=yes ; break 3],ac_found=no)
@@ -1154,6 +1154,9 @@ AC_DEFUN([AM_SAFETY_CHECK_MKSTEMP],[
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 int main(void)
 {
   char template[128];
