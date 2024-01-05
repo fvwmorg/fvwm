@@ -26,15 +26,16 @@ is used):</para>
 
 <simplelist>
 <member><envar>$HOME</envar>/.fvwm/config</member>
-<member>/usr/local/share/fvwm/config</member>
+<member><envar>$FVWM_DATADIR</envar>/config</member>
 </simplelist>
 <para output="html"></para>
 <simplelist>
 <member><envar>$HOME</envar>/.fvwm/.fvwm2rc</member>
 <member><envar>$HOME</envar>/.fvwm2rc</member>
-<member>/usr/local/share/fvwm/.fvwm2rc</member>
-<member>/usr/local/share/fvwm/system.fvwm2rc</member>
-<member>/etc/system.fvwm2rc</member>
+<member><envar>$FVWM_DATADIR</envar>/.fvwm2rc</member>
+<member><envar>$FVWM_DATADIR</envar>/system.fvwm2rc</member>
+<member><envar>$FVWM_CONFDIR</envar>/system.fvwm2rc</member>
+<member><envar>$FVWM_DATADIR</envar>/default-config/config</member>
 </simplelist>
 
 <para>Please note, the last 5 locations are not guaranteed to be
